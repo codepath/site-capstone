@@ -3,8 +3,11 @@
 # SITE Capstone Project
 
 SITE Course Year: **20__**
+
 Cohort: **Add Company Sponsor Name**
+
 Team Member Names:**Insert Team Member Names**
+
 Mentors Names: **Insert Professional Mentor Names**
 
 ## Project Overview
