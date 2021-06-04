@@ -20,6 +20,6 @@ Pod Members: **Add Pod Members Names**
 
  Add response here
 
-* Did the weekly assignments and labs prepare you for executing the technical features of your project? Which of your planned capstone features were not covered in the instructional weeks (week 1-4)?
+* Which features and user stories would you consider “at risk”? How will you change your plan if those items remain “at risk”?
 
  Add response here
