@@ -1,14 +1,16 @@
 # Project Proposal
 
-Pod Members: **Add Pod Members Names**
+Pod Members: **ethan sarnevesht, elias arghand, william huang**
 
 ## Problem Statement
 
-Insert your groups problem statement and target audience.
+In a world where Uber and Lyft makes automobile rides uncomfortable with random strangers taking you in their car, we want to make it easier for like-minded or similarly-situated people to carpool together in their activities and form new friendships
 
 ## User Roles
 
-Include at least at least 1, but no more than 3, user roles
+"college student": a university student that likes to go on trips to the beach, to national parks hiking, or other excursions with fellow college student
+
+"commuter worker": A white-collar worker who has a long commute and thus wants to save gas and time by sharing commutes with his fellow co-workers in his area
 
 ## User Personas
 
