@@ -12,7 +12,7 @@ Pod Members: **Add Pod Members Names**
 
  Add response here
 
-* Did you finish all of your tasks in your sprint plan for this week? If you did not finish all of the planned tasks what were some factors that contributed to this?  (i.e over planned, did not know how to implement certain features, miscommunication from the team, had to pivot from original plans, etc.)
+* Did you finish all of your tasks in your sprint plan for this week? If you did not finish all of the planned tasks, how would you prioritize the remaining tasks on your list?  (i.e over planned, did not know how to implement certain features, miscommunication from the team, had to pivot from original plans, etc.)
 
  Add response here
 
