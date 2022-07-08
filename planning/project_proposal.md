@@ -25,10 +25,12 @@ This project is focused on determining the most optimal parking locations for us
 
 ## Related Work
 
-Park Hero: 
+Park Hero
   - shows available parking spaces but parking information and pay through app features are unreliable
+  
 Gas Buddy
   - provides gas price  info but does not have any other features beneficial to the driver 
+ 
 Google Maps
   - Shows current gas prices in select areas
 
