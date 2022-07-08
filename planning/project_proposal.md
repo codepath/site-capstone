@@ -1,23 +1,48 @@
 # Project Proposal
 
-Pod Members: **Add Pod Members Names**
+Pod Members: **Courtney Fenderson, Yasmin Senior, Christian Bryan**
 
 ## Problem Statement
 
-Insert your groups problem statement and target audience.
+The problem is finding parking spaces in an efficient manner at a range of prices.
+
+Combating the uncertainty of finding parking in congested areas such as cities and events. The app also promotes driver safety via a parking spot rating system and a gas price alert feature.
+
+Target audience: City drivers and event-goers looking for parking spots or optimal gas prices, drivers who would benefit from contributing to or learning from a community of other drivers/locals
+
 
 ## Description
 
-What is the main purpose of your project? What are the key features your site has to offer its users? How will your targeted audience use your website?
+This project is focused on determining the most optimal parking locations for users based on their destination. Our app uses a number of different preference parameters to provide parking options to the user such as pricing, parking spot ratings, an activity tracker that determines one’s likelihood of obtaining a parking spot, etc. The app also has additional driver focused features such as a gas price alert and route suggestions based on post-event traffic. Our app is for everyday use whether it be for finding parking at the nearest grocery store or finding parking for the next Harry Styles concert. Our app is intended to take the worry out of the uncertainty that comes with finding a parking space especially in congested areas.
 
 ## Expected Features List
 
-Add a list of your groups's brainstormed features list
+Parking lot activity tracker 
+-Shows parking lot activity and determines likelihood of driver making it to the parking lot before spaces run out 
+
+Parking spot ratings
+
+Gas price alerts 
+
+Route suggestions based on parking location and traffic 
+
+Eco-Friendly Option
+-Determines best parking spot that will have the least amount of traffic to get into/out of 
+-Less traffic = less engine idle time = less pollution 
+
 
 ## Related Work
 
-What similar apps and websites? How will your project stand out from these other websites?
+Park Hero
+Gas Buddy
+-App to find cheap gas
+-Earn gas back when u use them/their card
+Google Maps
+-Shows current gas prices
+
 
 ## Open Questions
 
-What questions do you still have? What topics do you need to research more for your project?
+How can we get an API to show a real time map?
+How can we effectively update the gas station’s prices whenever they change? 
+
