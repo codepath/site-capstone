@@ -18,6 +18,7 @@ This project is focused on determining the most optimal parking locations for us
 ## Expected Features List
 
 Parking lot activity tracker 
+
 -Shows parking lot activity and determines likelihood of driver making it to the parking lot before spaces run out 
 
 Parking spot ratings
@@ -27,17 +28,24 @@ Gas price alerts
 Route suggestions based on parking location and traffic 
 
 Eco-Friendly Option
+
 -Determines best parking spot that will have the least amount of traffic to get into/out of 
+
 -Less traffic = less engine idle time = less pollution 
 
 
 ## Related Work
 
 Park Hero
+
 Gas Buddy
+
 -App to find cheap gas
+
 -Earn gas back when u use them/their card
+
 Google Maps
+
 -Shows current gas prices
 
 
