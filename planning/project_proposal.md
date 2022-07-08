@@ -52,5 +52,6 @@ Google Maps
 ## Open Questions
 
 How can we get an API to show a real time map?
+
 How can we effectively update the gas station’s prices whenever they change? 
 
