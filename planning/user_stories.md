@@ -20,21 +20,21 @@ Include at least at least 1, but no more than 3, user roles
 
 ## User Personas
 
-Student
+**Student**
 
 
 - Dena is a new college student in NYC. Coming from a small town, Dena is used to eating from her family’s farm. She is vegetarian and also is having a hard time on finding healthy options on her huge campus. SHe’s hoping to find restaurants after canceling her meal plan.
 - Sam is a new college student at USC. Sam is severely allergic to tree nuts and constantly worries about cross-contamination at restaurants which makes it difficult for him to eat out despite his busy schedule. Sam is hoping to find a resource that can help him determine which restaurants are safe for him to eat out at.
 
 
-Restaurant owner:
+**Restaurant owner**
 
 
 - Joe is a 40 year old owner of “Eat Good, Feel Good”, an affordable healthy vegan own eatery. As the world eats unhealthier, less traction is brought to his restaurant. He is looking to attract more college students with his student deals.
 - Helen owner of “Helen’s Bagels” is famous for her gluten-free chain bagel company located close to many college campuses. Helen knows how important it is for people with gluten sensitivity and celiac disease to find tasty gluten-free food so she is looking for ways to better market her bagel company to find individuals who may benefit from her gluten-free menu.
 
 
-commentators
+**Commentators**
 
 
 
@@ -53,10 +53,7 @@ commentators
 - “As a **student and commentator**, I want to be able to find the new buzz on restaurants nearby and see what restaurants would have best options”
 - “As a **restaurant owner**, I want to be able to see what different food groups the app may have in order to place my restaurant in a food group.”
 - “As a **restaurant owner**, I want to see what potential customers are interested in and view their opinions to improve their experience.”
-- “As a student,  I want to have different food groups I can join and find restaurants that cater to them.”
+- “As a **student**,  I want to have different food groups I can join and find restaurants that cater to them.”
 - “As a **commentator** , I want to see reviews from other students like me who share common interests.”
 
 
-## Wireframe (Bonus)
-
-Insert link or image to your group's wireframe. 
