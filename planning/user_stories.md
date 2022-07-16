@@ -56,4 +56,7 @@ Include at least at least 1, but no more than 3, user roles
 - “As a **student**,  I want to have different food groups I can join and find restaurants that cater to them.”
 - “As a **commentator** , I want to see reviews from other students like me who share common interests.”
 
+##Wireframe
+
+[SF .pdf](https://github.com/CYC-pod/site-capstone/files/9124821/SF.pdf)
 
