@@ -44,9 +44,9 @@ commentators
 ## User Stories
 
 - “As a **health-conscious student**, I want to search for healthy food options so that I can meet my specific dietary requirements.”
-</br>
+
 - “As an **individual with food allergies,** I want to search for safe food options so that I can meet my dietary restrictions.”
-</br>
+
 - “As a **restaurant owner**, I want to share specific information about my restaurant’s menu options that may be beneficial to students”
 - “As a **commentator**, I want to comment on both good and bad experiences at restaurants so that students can make informed decisions about where they want to buy their meals.
 - “As a **student**, I want to be able to find my school on my the app, where i can find the best options if my school doesn’t”
