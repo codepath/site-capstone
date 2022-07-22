@@ -4,7 +4,8 @@ Pod Members: Courtney Fenderson, Christian Bryan, Yasmin Senior
 
 ## Problem Statement and Description
 
-Insert the latest summary of your problem statement and app description.
+Problem: College Students not being able to find restaurants that fit their dietary requirements near or on their campus.
+Description: HealthHero is an app that helps students find commmunity groups and restaurants that fit their dietary needs/restrictions 
 
 ## User Roles and Personas
 **User role 1:**  “**student**”: a user who is looking for affordable healthy food options near their campus.
