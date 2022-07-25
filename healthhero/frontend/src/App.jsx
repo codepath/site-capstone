@@ -15,7 +15,7 @@ function App() {
       const { data, error } = await apiClient.fetchUserFromToken();
       if (data) setUser(data.user);
     };
-  
+
     const token = localStorage.getItem("token");
     if (token) {
       console.log("token: ", token);

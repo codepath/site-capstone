@@ -83,6 +83,10 @@ export default function Login({ user }) {
         <br />
 
         <div className="form">
+          <select name="people" id="users">
+            <option value="student">Student</option>
+            <option value="owner">Restaurant Owner</option>
+          </select>
           <div className="input-field">
             <label htmlFor="email">Email</label>
             <input
