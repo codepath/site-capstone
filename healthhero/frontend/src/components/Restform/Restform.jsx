@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 // import axios from "axios";
+import { useAuthContext } from "../../AuthContext/auth";
 import "./Restform.css";
 
 export default function Restform() {
   // need to use this when backend is finsihed
+  const { user, setUser } = useAuthContext();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
@@ -87,21 +89,61 @@ export default function Restform() {
 
   return (
     <div className="Restaurant">
-      <div className="card">Add Your Restaurant!</div>
+      <div className="card">
+        <h2>Add Your Restaurant!</h2>
+      </div>
       {errors.form && <span className="error">{errors.form}</span>}
       <br />
 
       <div className="form">
+        <div className="input-field">
+          <label htmlFor="location">Restaurant Name</label>
+          <input
+            type="name"
+            name="name"
+            value={form.name}
+            onChange={handleOnInputChange}
+          />
+          {errors.name && <span className="error">{errors.name}</span>}
+        </div>
         <div className="split-inputs">
           <div className="input-field">
-            <label htmlFor="name">Select a date</label>
+            <label htmlFor="location">Location</label>
             <input
-              type="date"
-              name="date"
-              value={form.date}
+              type="location"
+              name="location"
+              value={form.location}
               onChange={handleOnInputChange}
             />
-            {errors.date && <span className="error">{errors.date}</span>}
+            {errors.location && (
+              <span className="error">{errors.location}</span>
+            )}
+          </div>
+
+          <div className="input-field">
+            <label htmlFor="image">Image</label>
+            <input
+              type="image"
+              name="image"
+              value={form.image_url}
+              onChange={handleOnInputChange}
+            />
+            {errors.image_url && (
+              <span className="error">{errors.image_url}</span>
+            )}
+          </div>
+
+          <div className="input-field">
+            <label htmlFor="description">Description</label>
+            <input
+              type="description"
+              name="description"
+              value={form.description}
+              onChange={handleOnInputChange}
+            />
+            {errors.description && (
+              <span className="error">{errors.description}</span>
+            )}
           </div>
         </div>
       </div>
