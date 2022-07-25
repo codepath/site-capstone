@@ -9,9 +9,6 @@ class User {
       id: user.id,
       email: user.email,
       username: user.username,
-      firstname: user.firstname,
-      lastname: user.lastname,
-      createdAt: user.created_at,
     }
   }
 
@@ -35,7 +32,7 @@ class User {
   }
 
   static async register(credentials) {
-    const requiredFields = ["email", "password", "username", "firstname", "lastname"]
+    const requiredFields = ["email", "password", "username"]
     requiredFields.forEach((property) => {
       if (!credentials.hasOwnProperty(property)) {
         throw new BadRequestError(`Missing ${property} in request body.`)
@@ -60,9 +57,9 @@ class User {
     const normalizedEmail = credentials.email.toLowerCase()
 
     const userResult = await db.query(
-      `INSERT INTO users (email, password, username, firstname, lastname)
-       VALUES ($1, $2, $3, $4, $5)
-       RETURNING id, email, username, firstname, lastname, created_at, updated_at;
+      `INSERT INTO users (email, password, username)
+       VALUES ($1, $2, $3)
+       RETURNING id, email, username;
       `,
       [normalizedEmail, hashedPassword, credentials.username, credentials.firstname, credentials.lastname]
     )
