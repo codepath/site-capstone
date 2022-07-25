@@ -5,6 +5,8 @@ import * as React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar";
 import Login from "./components/Login/Login";
+import Register from "./components/Register/Register";
+import Restform from "./components/Restform/Restform";
 
 function App() {
   return (
@@ -16,6 +18,22 @@ function App() {
           element={
             <>
               <Login />
+            </>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <>
+              <Register />
+            </>
+          }
+        />
+        <Route
+          path="/restaurantForm"
+          element={
+            <>
+              <Restform />
             </>
           }
         />
