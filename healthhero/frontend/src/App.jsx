@@ -9,8 +9,6 @@ import Register from "./components/Register/Register";
 import Restform from "./components/Restform/Restform";
 import apiClient from "../services/apiClient";
 
-
-
 function App() {
   useEffect(() => {
     const fetchAuthUser = async () => {

@@ -7,6 +7,7 @@ import "../Login/Login.css"; //check if connected
 import Navbar from "../Navbar/Navbar";
 // import apiClient from "../../../apiClient"; see if we'll use this/authcontext
 
+
 export default function Login({ user }) {
   const navigate = useNavigate();
   const [isProcessing, setIsProcessing] = useState(false);
@@ -41,20 +42,13 @@ export default function Login({ user }) {
     setErrors((e) => ({ ...e, form: null }));
 
     try {
-      //   const res = await axios.post(
-      //     "https://lifetracker-courtcourt.herokuapp.com/",
-      //     form
-      //   );
-      const res = "http://localhost:3001/auth/login";
+      const res = await apiClient.loginUser(form)
       if (res?.data) {
-        // setUser(res.data.user);
+        setUser(res.data.user);
         setIsProcessing(false);
-        apiClient.setToken(res.data.token);
+        apiClient.setToken(res?.data?.token);
         console.log(res.data);
-        // window.localStorage.setItem(token, "token");
-
         navigate("/activity");
-
         <Navbar>
           <div>
             <p>logged in</p>
