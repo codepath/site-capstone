@@ -5,6 +5,7 @@ import * as React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar";
 import Login from "./components/Login/Login";
+import { AuthContextProvider, useAuthContext } from "../AuthContext/auth";
 import Register from "./components/Register/Register";
 import Restform from "./components/Restform/Restform";
 import apiClient from "../services/apiClient";
@@ -25,36 +26,38 @@ function App() {
   }, []);
 
   return (
-    <BrowserRouter>
-      <Navbar />
-      <Routes>
-        <Route
-          path="/login"
-          element={
-            <>
-              <Login />
-            </>
-          }
-        />
-        <Route
-          path="/register"
-          element={
-            <>
-              <Register />
-            </>
-          }
-        />
-        <Route
-          path="/restaurantForm"
-          element={
-            <>
-              <Restform />
-            </>
-          }
-        />
-      </Routes>
-      <> </>
-    </BrowserRouter>
+    <AuthContextProvider>
+      <BrowserRouter>
+        <Navbar />
+        <Routes>
+          <Route
+            path="/login"
+            element={
+              <>
+                <Login />
+              </>
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <>
+                <Register />
+              </>
+            }
+          />
+          <Route
+            path="/restaurantForm"
+            element={
+              <>
+                <Restform />
+              </>
+            }
+          />
+        </Routes>
+        <> </>
+      </BrowserRouter>
+    </AuthContextProvider>
 
     // const [count, setCount] = useState(0);
     // return (

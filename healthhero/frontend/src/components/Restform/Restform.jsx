@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 // import axios from "axios";
-import { useAuthContext } from "../../AuthContext/auth";
+import { useAuthContext } from "../../../AuthContext/auth";
 import "./Restform.css";
 
 export default function Restform() {
@@ -13,7 +13,7 @@ export default function Restform() {
   const [form, setForm] = useState({
     name: "",
     location: "",
-    image_url: "",
+    image: "",
     description: "",
   });
   const handleOnInputChange = (event) => {
@@ -97,7 +97,7 @@ export default function Restform() {
 
       <div className="form">
         <div className="input-field">
-          <label htmlFor="location">Restaurant Name</label>
+          <label htmlFor="location">Restaurant Name </label>
           <input
             type="name"
             name="name"
@@ -108,7 +108,7 @@ export default function Restform() {
         </div>
         <div className="split-inputs">
           <div className="input-field">
-            <label htmlFor="location">Location</label>
+            <label htmlFor="location">Location </label>
             <input
               type="location"
               name="location"
@@ -121,20 +121,17 @@ export default function Restform() {
           </div>
 
           <div className="input-field">
-            <label htmlFor="image">Image</label>
+            <label htmlFor="location">Add Your Image </label>
             <input
-              type="image"
-              name="image"
-              value={form.image_url}
+              type="img"
+              name="img"
+              value={form.image}
               onChange={handleOnInputChange}
             />
-            {errors.image_url && (
-              <span className="error">{errors.image_url}</span>
-            )}
+            {errors.image && <span className="error">{errors.image}</span>}
           </div>
-
           <div className="input-field">
-            <label htmlFor="description">Description</label>
+            <label htmlFor="description">Description </label>
             <input
               type="description"
               name="description"
@@ -147,6 +144,9 @@ export default function Restform() {
           </div>
         </div>
       </div>
+      <button className="btn" disabled={isLoading} onClick={handleOnSubmit}>
+        {isLoading ? "Loading..." : "Submit"}
+      </button>
     </div>
   );
 }
