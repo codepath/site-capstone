@@ -8,7 +8,9 @@ import Login from "./components/Login/Login";
 import { AuthContextProvider, useAuthContext } from "../AuthContext/auth";
 import Register from "./components/Register/Register";
 import Restform from "./components/Restform/Restform";
+import Landing from "./components/Landing/Landing";
 import apiClient from "../services/apiClient";
+import Slick from "./components/Slick/Slick";
 
 function App() {
   const { user, setUser } = useAuthContext();
@@ -30,6 +32,14 @@ function App() {
     <>
       <Navbar />
       <Routes>
+        <Route
+          path="/"
+          element={
+            <>
+              <Landing />
+            </>
+          }
+        />
         <Route
           path="/login"
           element={

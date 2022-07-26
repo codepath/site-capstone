@@ -22,8 +22,10 @@ export default function Navbar() {
           >
             <MenuIcon />
           </IconButton>
+          Community
+          {/* make button/list item */}
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Community
+            Logo placeholder
           </Typography>
           <Button color="inherit">
             <a href="/login">Login</a>
