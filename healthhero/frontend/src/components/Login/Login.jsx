@@ -5,10 +5,11 @@ import { Link, useNavigate } from "react-router-dom";
 // import axios from "axios";
 import "../Login/Login.css"; //check if connected
 import Navbar from "../Navbar/Navbar";
-// import apiClient from "../../../apiClient"; see if we'll use this/authcontext
+import apiClient from "../../../services/apiClient"
+import { useAuthContext } from "../../../AuthContext/auth";
 
-
-export default function Login({ user }) {
+export default function Login() {
+  const { user, setUser } = useAuthContext();
   const navigate = useNavigate();
   const [isProcessing, setIsProcessing] = useState(false);
   const [errors, setErrors] = useState({});

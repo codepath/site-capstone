@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const { SECRET_KEY } = require("../config");
-const { UnathorizedError } = require("../utils/errors");
+const { UnauthorizedError } = require("../utils/errors");
 
 //create a function to extract jwt from request header
 const jwtFrom = ({ headers }) => {
@@ -16,6 +16,7 @@ const jwtFrom = ({ headers }) => {
 const extractUserFromJwt = (req, res, next) => {
   try {
     const token = jwtFrom(req);
+    console.log("Token:" , token)
     if (token) {
       res.locals.user = jwt.verify(token, SECRET_KEY);
     }
@@ -29,8 +30,9 @@ const extractUserFromJwt = (req, res, next) => {
 const requireAuthenticatedUser = (req, res, next) => {
   try {
     const { user } = res.locals;
+    console.log("user " , user)
     if (!user?.email) {
-      throw new UnathorizedError();
+      throw new UnauthorizedError();
     }
     return next();
   } catch (err) {

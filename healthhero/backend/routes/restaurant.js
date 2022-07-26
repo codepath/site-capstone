@@ -1,7 +1,7 @@
 const express = require("express");
 const Restaurant = require("../models/restaurant");
 const { createUserJwt } = require("../utils/tokens");
-const security = require("../security");
+const security = require("../middleware/security");
 const router = express.Router();
 
 router.get(

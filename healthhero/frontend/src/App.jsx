@@ -11,6 +11,7 @@ import Restform from "./components/Restform/Restform";
 import apiClient from "../services/apiClient";
 
 function App() {
+  const { user, setUser } = useAuthContext();
   useEffect(() => {
     const fetchAuthUser = async () => {
       const { data, error } = await apiClient.fetchUserFromToken();
@@ -26,38 +27,35 @@ function App() {
   }, []);
 
   return (
-    <AuthContextProvider>
-      <BrowserRouter>
-        <Navbar />
-        <Routes>
-          <Route
-            path="/login"
-            element={
-              <>
-                <Login />
-              </>
-            }
-          />
-          <Route
-            path="/register"
-            element={
-              <>
-                <Register />
-              </>
-            }
-          />
-          <Route
-            path="/restaurantForm"
-            element={
-              <>
-                <Restform />
-              </>
-            }
-          />
-        </Routes>
-        <> </>
-      </BrowserRouter>
-    </AuthContextProvider>
+    <>
+      <Navbar />
+      <Routes>
+        <Route
+          path="/login"
+          element={
+            <>
+              <Login />
+            </>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <>
+              <Register />
+            </>
+          }
+        />
+        <Route
+          path="/restaurantForm"
+          element={
+            <>
+              <Restform />
+            </>
+          }
+        />
+      </Routes>
+    </>
 
     // const [count, setCount] = useState(0);
     // return (
