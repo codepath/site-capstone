@@ -23,15 +23,25 @@ CREATE TABLE restrictions(
 
 CREATE TABLE restaurants(
     id          SERIAL PRIMARY KEY,
-    restaurant_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
     name        TEXT NOT NULL, 
     location    INT,
     school_id   INT, 
     image_url   TEXT,
     description TEXT NOT NULL,
-    FOREIGN KEY (restaurant_id) REFERENCES users(id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
     -- email       TEXT NOT NULL UNIQUE CHECK (POSITION('@' IN email) > 1),
     -- username    TEXT NOT NULL,
     -- password    TEXT NOT NULL  
     
-)
+);
+
+CREATE TABLE communities(
+    id          SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    name        TEXT NOT NULL, 
+    school_id   INT, 
+    image_url   TEXT,
+    description TEXT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);

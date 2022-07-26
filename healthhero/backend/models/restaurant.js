@@ -6,7 +6,7 @@ class Restaurant {
     const results = await db.query(
       `SELECT *
       FROM restaurants
-      WHERE restaurant_id = $1;`,
+      WHERE user_id = $1;`,
       [userId]
     );
     return results.rows;
@@ -33,10 +33,10 @@ class Restaurant {
                location,
                image_url,
                description,
-               restaurant_id
+               user_id
             )
             VALUES ($1,$2,$3,$4,$5)
-            RETURNING name,location,image_url, description, restaurant_id;
+            RETURNING name,location,image_url, description, user_id;
             `,
       [
         restaurant.name,

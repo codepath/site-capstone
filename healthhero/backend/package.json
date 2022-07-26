@@ -19,7 +19,6 @@
   "name": "backend",
   "version": "1.0.0",
   "main": "server.js",
-  "devDependencies": {},
   "author": "Christian Bryan, Yasmin Senior, Courtney Fenderson",
   "license": "ISC",
   "description": ""
