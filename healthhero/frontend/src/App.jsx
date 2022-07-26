@@ -54,6 +54,14 @@ function App() {
             </>
           }
         />
+        <Route
+          path="/commForm"
+          element={
+            <>
+              <CommForm />
+            </>
+          }
+        />
       </Routes>
     </>
 
