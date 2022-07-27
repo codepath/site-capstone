@@ -28,6 +28,8 @@ const ColorButton = styled(Button)(({ theme }) => ({
   "&:hover": {
     backgroundColor: brown[700],
   },
+  alignItems: "center",
+  //doesnt change anything
 }));
 
 <>
@@ -76,11 +78,13 @@ export default function Landing() {
 
       {/* 
       swiper js for carousel? */}
-      <img src={USC} alt="USC" />
+
       {/* // src="LicenseHeader229UofSouthernCal_2SportStyleUSC_132524476454863670.png" */}
 
       <Stack spacing={2} direction="row">
-        <ColorButton variant="contained">See All Schools</ColorButton>
+        <ColorButton variant="contained">
+          <a href="/schools">See All Schools</a>
+        </ColorButton>
       </Stack>
     </>
   );

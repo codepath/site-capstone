@@ -11,6 +11,7 @@ import Restform from "./components/Restform/Restform";
 import Landing from "./components/Landing/Landing";
 import apiClient from "../services/apiClient";
 import Slick from "./components/Slick/Slick";
+import SchoolsView from "./components/SchoolsView/SchoolsView";
 
 function App() {
   const { user, setUser } = useAuthContext();
@@ -27,16 +28,28 @@ function App() {
       fetchAuthUser();
     }
   }, []);
+  const logoutuser = async () => {
+    await apiClient.logoutUser();
+    setUser({});
+  };
 
   return (
     <>
-      <Navbar />
+      <Navbar logoutuser={logoutuser} />
       <Routes>
         <Route
           path="/"
           element={
             <>
               <Landing />
+            </>
+          }
+        />
+        <Route
+          path="/schools"
+          element={
+            <>
+              <SchoolsView />
             </>
           }
         />
