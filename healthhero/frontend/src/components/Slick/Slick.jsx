@@ -27,12 +27,12 @@ export default function Slick() {
     <div className="content">
       <div className="controls">
         <button onClick={sliderRef?.slickPrev} id="liBrB">
-          <i class="fa-solid fa-chevron-right"></i>
+          <i className="fa-solid fa-chevron-right"></i>
           {/* doesnt work */}
           {"<"}
         </button>
         <button onClick={sliderRef?.slickNext} id="liBrB">
-          <i class="fa-solid fa-chevron-right"></i>
+          <i className="fa-solid fa-chevron-right"></i>
           {">"}
         </button>
       </div>
@@ -52,9 +52,6 @@ export default function Slick() {
           </div>
           <div id="schoolHome">
             <img src={USF} alt="USF" />
-          </div>
-          <div>
-            <h3>6</h3>
           </div>
         </Slider>
       </div>

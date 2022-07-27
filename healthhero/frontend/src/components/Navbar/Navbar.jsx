@@ -32,11 +32,15 @@ export default function Navbar({ logoutuser }) {
           </Typography>
           {user ? (
             <Button color="inherit">
-              <a href="/login">Login</a>
+              <a href="/login" id="link">
+                Login
+              </a>
             </Button>
           ) : (
             <Button color="inherit" onClick={logoutuser}>
-              <a href="/">Logout</a>
+              <a href="/" id="link">
+                Logout
+              </a>
             </Button>
           )}
         </Toolbar>

@@ -83,7 +83,9 @@ export default function Landing() {
 
       <Stack spacing={2} direction="row">
         <ColorButton variant="contained">
-          <a href="/schools">See All Schools</a>
+          <a href="/schools" id="link">
+            See All Schools
+          </a>
         </ColorButton>
       </Stack>
     </>

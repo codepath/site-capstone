@@ -1,0 +1,7 @@
+.schoolImgs {
+  display: flex;
+  flex-wrap: wrap;
+}
+.schoolImgs img {
+  padding: 15px;
+}
