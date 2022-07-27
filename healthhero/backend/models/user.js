@@ -57,7 +57,7 @@ class User {
     const normalizedEmail = credentials.email.toLowerCase()
 
     const userResult = await db.query(
-      `INSERT INTO users (email, password, username)
+      `INSERT INTO user (email, password, username)
        VALUES ($1, $2, $3)
        RETURNING id, email, username;
       `,
@@ -73,7 +73,7 @@ class User {
       throw new BadRequestError("No email provided")
     }
 
-    const query = `SELECT * FROM users WHERE email = $1`
+    const query = `SELECT * FROM user WHERE email = $1`
 
     const result = await db.query(query, [email.toLowerCase()])
 
@@ -87,7 +87,7 @@ class User {
       throw new BadRequestError("No username provided")
     }
 
-    const query = `SELECT * FROM users WHERE username = $1`
+    const query = `SELECT * FROM user WHERE username = $1`
 
     const result = await db.query(query, [username])
 
