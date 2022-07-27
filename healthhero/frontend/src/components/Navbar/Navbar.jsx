@@ -22,11 +22,17 @@ export default function Navbar() {
           >
             <MenuIcon />
           </IconButton>
+          <Button color="inherit">
+            <a className="hyperLink" href="/communites">Communities</a>
+          </Button>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Community
+          <a className="logoPlaceHolder" href="/">Health Hero</a>
           </Typography>
           <Button color="inherit">
-            <a href="/login">Login</a>
+            <a className="hyperLink" href="/register">Sign up</a>
+          </Button>
+          <Button color="inherit">
+            <a className="hyperLink" href="/login">Login</a>
           </Button>
         </Toolbar>
       </AppBar>
