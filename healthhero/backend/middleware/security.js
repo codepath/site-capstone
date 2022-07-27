@@ -16,7 +16,7 @@ const jwtFrom = ({ headers }) => {
 const extractUserFromJwt = (req, res, next) => {
   try {
     const token = jwtFrom(req);
-    console.log("Token:" , token)
+    console.log("Token:", token);
     if (token) {
       res.locals.user = jwt.verify(token, SECRET_KEY);
     }
@@ -30,7 +30,7 @@ const extractUserFromJwt = (req, res, next) => {
 const requireAuthenticatedUser = (req, res, next) => {
   try {
     const { user } = res.locals;
-    console.log("user " , user)
+    console.log("user ", user);
     if (!user?.email) {
       throw new UnauthorizedError();
     }
@@ -45,3 +45,4 @@ module.exports = {
   extractUserFromJwt,
   requireAuthenticatedUser,
 };
+// what did you encode as jwt payload

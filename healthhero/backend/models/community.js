@@ -2,16 +2,17 @@ const db = require("../db");
 const { BadRequestError } = require("../utils/errors");
 
 class Community {
-  static async listRests(userId) {
+  static async listCommunity(userId) {
     const results = await db.query(
       `SELECT *
-      FROM communities 
+      FROM community 
       WHERE user_id = $1;`,
       [userId]
     );
     return results.rows;
   }
-  static async PostRests(community, userId) {
+  static async PostCommunity(community, userId) {
+    console.log(userId);
     if (community.name.length === 0) {
       throw new BadRequestError("No community name provided");
     }
@@ -24,7 +25,7 @@ class Community {
     }
     const result = await db.query(
       `
-            INSERT INTO communities(
+            INSERT INTO community(
                name,
                image_url,
                description,

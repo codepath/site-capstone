@@ -5,7 +5,7 @@ class Restaurant {
   static async listRests(userId) {
     const results = await db.query(
       `SELECT *
-      FROM restaurants
+      FROM restaurant
       WHERE user_id = $1;`,
       [userId]
     );
@@ -28,13 +28,12 @@ class Restaurant {
     }
     const result = await db.query(
       `
-            INSERT INTO restaurants(
+            INSERT INTO restaurant(
                name,
                location,
                image_url,
                description,
-               user_id
-            )
+           user_id)
             VALUES ($1,$2,$3,$4,$5)
             RETURNING name,location,image_url, description, user_id;
             `,
