@@ -7,8 +7,11 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import "../Navbar/Navbar.css";
+import { useAuthContext } from "../../../AuthContext/auth";
+import App from "../../App";
 
-export default function Navbar() {
+export default function Navbar({ logoutuser }) {
+  const { user, setUser } = useAuthContext();
   return (
     <Box sx={{ flexGrow: 0 }}>
       <AppBar position="static">
@@ -22,12 +25,24 @@ export default function Navbar() {
           >
             <MenuIcon />
           </IconButton>
+          Community
+          {/* make button/list item */}
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Community
+            Logo placeholder
           </Typography>
-          <Button color="inherit">
-            <a href="/login">Login</a>
-          </Button>
+          {user ? (
+            <Button color="inherit">
+              <a href="/login" id="link">
+                Login
+              </a>
+            </Button>
+          ) : (
+            <Button color="inherit" onClick={logoutuser}>
+              <a href="/" id="link">
+                Logout
+              </a>
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
     </Box>

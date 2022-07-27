@@ -11,6 +11,7 @@ class Restaurant {
     );
     return results.rows;
   }
+  
   static async PostRests(restaurant, userId) {
     if (restaurant.name.length === 0) {
       throw new BadRequestError("No restaurant name provided");

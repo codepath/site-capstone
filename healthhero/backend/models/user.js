@@ -67,14 +67,13 @@ class User {
     const normalizedEmail = credentials.email.toLowerCase();
 
     const userResult = await db.query(
-      `INSERT INTO users (email, password, username, type)
-       VALUES ($1, $2, $3, $4)
-       RETURNING id, email, username, type;
+      `INSERT INTO users (email, password, username, school_id, type)
+       VALUES ($1, $2, $3, $4, $5)
+       RETURNING id, email, username, school_id, type;
       `,
-      [normalizedEmail, hashedPassword, credentials.username, credentials.type]
-    );
-    const user = userResult.rows[0];
-
+      [normalizedEmail, hashedPassword, credentials.username, credentials.school_id, credentials.type]
+    )
+    const user = userResult.rows[0]
     return User.makePublicUser(user);
   }
 
