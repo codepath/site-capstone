@@ -6,6 +6,8 @@ const authRouter = require("./routes/auth");
 const RestRouter = require("./routes/restaurant");
 const { NotFoundError } = require("./utils/errors");
 const security = require("./middleware/security")
+const schoolRouter = require("./routes/schoolR")
+
 
 app.use(cors());
 app.use(morgan("tiny"));
@@ -14,7 +16,7 @@ app.use(express.json());
 app.use(security.extractUserFromJwt)
 app.use("/auth", authRouter);
 app.use("/restaurant", RestRouter);
-
+app.use("/schools", schoolRouter)
 
 app.use((req, res, next) => {
   return next(new NotFoundError());

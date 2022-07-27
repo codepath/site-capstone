@@ -2,7 +2,7 @@ CREATE TABLE school(
     id          SERIAL PRIMARY KEY,
     name        TEXT NOT NULL,  
     image       TEXT,
-    location    INT
+    location    INTEGER
 );
 
 
@@ -11,7 +11,7 @@ CREATE TABLE users(
     email       TEXT NOT NULL UNIQUE CHECK (POSITION('@' IN email) > 1),
     username    TEXT NOT NULL UNIQUE,
     password    TEXT NOT NULL,
-    school_id   INT,
+    school_id   INTEGER,
     type        TEXT NOT NULL,
     FOREIGN KEY (school_id) REFERENCES school(id)
 );
@@ -22,11 +22,9 @@ CREATE TABLE restaurant(
     user_id     INTEGER,
     name        TEXT NOT NULL, 
     location    INTEGER,
-    school_id   INTEGER, 
     image_url   TEXT,
     description TEXT NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users(id), 
-    FOREIGN KEY (school_id) REFERENCES school(id)
+    FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 CREATE TABLE restriction(
