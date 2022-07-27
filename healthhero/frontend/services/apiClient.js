@@ -12,9 +12,9 @@ class ApiClient {
     localStorage.setItem(this.tokenName, token);
   }
 
-  async request({endpoint, method = `GET`, data = {}}) {
+  async request({ endpoint, method = `GET`, data = {} }) {
     const url = `${this.remoteHostUrl}/${endpoint}`;
-    console.log("url is: " , url)
+    console.log("url is: ", url);
     const headers = {
       "Content-Type": "application/json",
     };
@@ -38,7 +38,7 @@ class ApiClient {
   }
 
   async fetchUserFromToken() {
-    return await this.request({endpoint: `auth/me`, method: `GET` });
+    return await this.request({ endpoint: `auth/me`, method: `GET` });
   }
 
   async getNutrition() {
@@ -59,6 +59,10 @@ class ApiClient {
       method: `POST`,
       data: credentials,
     });
+  }
+  async logoutUser() {
+    this.setToken(null);
+    localStorage.setItem(this.tokenName, "");
   }
 
   async signupUser(credentials) {
