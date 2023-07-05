@@ -4,7 +4,7 @@ Pod Members: **Add Pod Members Names**
 
 ## Problem Statement
 
-Insert your groups problem statement and target audience.
+Students find it difficult to find volunteer opportunities in their local area.
 
 ## User Roles
 
