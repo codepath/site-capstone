@@ -22,6 +22,5 @@ Include at least 2 personas per User Role
 - As a a user, I want to keep track of all volunteer opportunities I have registered for
 - As a user, I want to filter volunteer opportunities based on certain criteria.
 
-1. **As a [user role], I want to [what], so that [why]**
 
 ## Wireframe (Bonus)
