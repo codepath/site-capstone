@@ -26,7 +26,7 @@ Filter Feature: This allows the user to filter through specific categories based
 
 Search Feature: A search feature for users to find hotels, flights, events, and tourist attractions based on various parameters like location, date, budget, etc.
 
-Flight Tracker Feature: Can track your flight in real time and provide you with information about delays, location of the flight, etc
+Flight Tracker Feature: Can track your flight in real time and provide you with information about delays, location of the flight, etc (If time allows)
 
 Event planning feature: Allow a user to see what events they have planned
 
