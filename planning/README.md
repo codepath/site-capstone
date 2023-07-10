@@ -10,7 +10,7 @@ For each group deliverable, have **one member** of your pod submit a link to thi
 
 * ## **Project Proposal:** Week 4
 * Pod members and team name.
-  * Melyssa, Tom, Kelechi - The KMT   Team
+  * Melyssa, Tom, Kelechi - VolunteerVerse
 * Problem Statement and Target Audience:
   * Students find it difficult to find volunteer opportunities in their local area.
 * Brief Description:
