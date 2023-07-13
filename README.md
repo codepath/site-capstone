@@ -2,7 +2,7 @@
 # Hey brother
 # SITE Capstone Project
 
-SITE Course Year: **20__**
+SITE Course Year: **20__*
 
 Cohort: **Add Company Sponsor Name**
 
