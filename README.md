@@ -1,11 +1,15 @@
 📝 `NOTE` Use this template repo to initialize the contents of your group's capstone repo project. As you work on your assignment over the course of the week, update the appropriate repo deliverables. All project planning should be included in the planning directory. (🚫 Remove this paragraph before submitting your assignment.)
 # Hey brother
+# How are you?
+# e be tingz
+
+# sync fork 
 
 practicing pulling and merging
 
 # SITE Capstone Project
 
-SITE Course Year: **20__**
+SITE Course Yea**20__*
 
 Cohort: **Add Company Sponsor Name**
 
