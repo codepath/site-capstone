@@ -3,6 +3,8 @@
 # How are you?
 # e be tingz
 
+# sync fork 
+
 practicing pulling and merging
 
 # SITE Capstone Project
