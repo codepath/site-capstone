@@ -1,6 +1,7 @@
 import express from 'express';
 const app = express();
 import {PORT} from "../config";
+import { database } from '../db';
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
