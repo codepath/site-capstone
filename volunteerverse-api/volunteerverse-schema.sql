@@ -39,7 +39,8 @@ CREATE TABLE interested_volunteers(
 
 CREATE TABLE project_tags(
     project_id INTEGER,
-    tag_name TEXT NOT NULL
+    tag_name TEXT NOT NULL,
+    FOREIGN KEY (project_id) REFERENCES projects (id)
 );
 
 CREATE TABLE authentication(
