@@ -35,6 +35,7 @@ CREATE TABLE interested_volunteers(
     email TEXT NOT NULL UNIQUE CHECK (position('@' IN email) > 1),
     project_id INTEGER,
     approved BOOLEAN
+    FOREIGN KEY (project_id) REFERENCES projects (id)
 );
 
 CREATE TABLE project_tags(
