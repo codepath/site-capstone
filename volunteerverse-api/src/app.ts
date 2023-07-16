@@ -1,7 +1,7 @@
 import express from 'express';
 const app = express();
 import {PORT} from "../config";
-import { database } from '../db';
+import { database } from '../database';
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
