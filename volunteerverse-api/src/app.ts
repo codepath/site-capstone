@@ -1,5 +1,5 @@
 import express from 'express';
-const app = express();
+export const app = express();
 import { PORT } from './config';
 import { database } from './database';
 

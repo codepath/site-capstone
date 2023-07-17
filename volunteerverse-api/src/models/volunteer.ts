@@ -124,7 +124,6 @@ export class Volunteer {
   static async insertSkill(emailInput: string, skillInput: string) {
     const query = `INSERT into volunteer_skills(email, skill) VALUES ($1, $2) RETURNING *`;
     const result = await database.query(query, [emailInput, skillInput]);
-    const { id, email, skill } = result.rows[0];
   }
 
   /**
