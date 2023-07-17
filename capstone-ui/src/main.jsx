@@ -1,0 +1,12 @@
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './capstone-ui/App.jsx'
+import './index.css'
+
+// Do not delete this file.
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+)
