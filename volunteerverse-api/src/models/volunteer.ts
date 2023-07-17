@@ -10,8 +10,7 @@ export class Volunteer {
     bio: string;
     skills: string[];
   }) {
-    
-  }
+}
 
    /**
      * Fetch a volunteer in the database by email

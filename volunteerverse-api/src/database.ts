@@ -1,4 +1,4 @@
-import { Pool } from "pg";
+import {Pool} from "pg";
 import { getDatabaseURI } from "./config";
 
 export const database = new Pool({
