@@ -1,5 +1,5 @@
 import { AppShell, Box, Header, MantineProvider, Space, Text } from '@mantine/core';
-import Landing from './pages/Landing';
+import Landing from './pages/Landing/Landing';
 import SignUp from './pages/SignUp';
 import Login from './pages/Login';
 import NotFound from './pages/NotFound';
@@ -10,12 +10,16 @@ import Navbar from './components/Navbar';
 
 function App() {
 
-
+// Appshell is used to navbar overlay across all pages 
   return (
     <>
-      <MantineProvider withGlobalStyles withNormalizeCSS>
+      <MantineProvider withGlobalStyles withNormalizeCSS theme={{primaryColor : "violet"}}>
         <BrowserRouter>
-          <AppShell
+          <AppShell pl={0} pr={0}
+          styles={(theme) => ({
+            main: {paddingLeft : 0, paddingRight: 0},
+            root: { height: "100%", backgroundImage: theme.fn.gradient({from: theme.primaryColor,  to: theme.white, deg: 180})}
+          })}
             header={<Navbar />}>
           <Routes>
             <Route path="/" element={<Landing />} />
