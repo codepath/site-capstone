@@ -11,7 +11,7 @@ export class ExpressError extends Error {
 
 /** 400 BAD REQUEST error. */
   
-class BadRequestError extends ExpressError {
+export class BadRequestError extends ExpressError {
   constructor(message = "Bad Request") {
     super(message, 400)
   }
@@ -19,7 +19,7 @@ class BadRequestError extends ExpressError {
 
 /** 401 UNAUTHORIZED error. */
 
-class UnauthorizedError extends ExpressError {
+export class UnauthorizedError extends ExpressError {
   constructor(message = "Unauthorized") {
     super(message, 401)
   }
@@ -27,7 +27,7 @@ class UnauthorizedError extends ExpressError {
 
 /** 403 Forbidden error. */
 
-class ForbiddenError extends ExpressError {
+export class ForbiddenError extends ExpressError {
   constructor(message = "Forbidden") {
     super(message, 403)
   }
@@ -35,7 +35,7 @@ class ForbiddenError extends ExpressError {
 
 /** 404 NOT FOUND error. */
 
-class NotFoundError extends ExpressError {
+export class NotFoundError extends ExpressError {
   constructor(message = "Not Found") {
     super(message, 404)
   }
@@ -49,12 +49,3 @@ export class UnprocessableEntityError extends ExpressError {
     }
   }
   
-
-  module.exports = {
-    ExpressError,
-    BadRequestError,
-    UnauthorizedError,
-    ForbiddenError,
-    NotFoundError,
-    UnprocessableEntityError,
-  }
