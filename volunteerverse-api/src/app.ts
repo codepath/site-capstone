@@ -7,6 +7,7 @@ import morgan from "morgan"
 
 
 import { authRoutes } from './routes/auth';
+import { projectRoutes } from './routes/projects';
 
 export const app = express();
 
@@ -15,6 +16,7 @@ app.use(express.json())
 app.use(morgan("dev"))
 
 app.use("/auth", authRoutes)
+app.use("/project", projectRoutes)
 
 
 
