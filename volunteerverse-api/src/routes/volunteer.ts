@@ -9,14 +9,5 @@ volunteerRoutes.get("/test", async function (req, res, next) {
 })
 
 
-volunteerRoutes.post("/register", async function (req, res, next) {
-  try {
-    console.log("heyyy")
-    const volunteer = await Volunteer.register(req.body)
-    return res.status(201).json({ volunteer })
-  } catch (err) {
-    next(err)
-  }
-})
 
 export {volunteerRoutes}

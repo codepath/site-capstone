@@ -1,8 +1,6 @@
 import { app } from "../app"
 import request from "supertest"
-import { database } from "../db";
-
-
+import { db } from "../db";
 
 
 /************************************** POST /auth/register */
