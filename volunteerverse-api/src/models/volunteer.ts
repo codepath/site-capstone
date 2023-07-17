@@ -48,7 +48,7 @@ export class Volunteer {
       validateFields({
         required: requiredInfo,
         obj: volunteerInfo,
-        location: "user registratio",
+        location: "user registration",
       });
     } catch (error) {
       throw error;
