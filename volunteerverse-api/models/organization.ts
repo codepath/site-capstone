@@ -15,14 +15,18 @@ class Organization {
    * @param {Organization} organization - user from database
    * @returns public organization
    */
-  static _createPublicOrganization(organization) {
+  static async register(organization) {
     return {
+        
+            
+            }
+          
      
     };
   }
 
 
 
-}
+
 
 module.exports = Organization
