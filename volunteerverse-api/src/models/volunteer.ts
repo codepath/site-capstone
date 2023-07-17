@@ -18,7 +18,7 @@ export class Volunteer {
       email: volunteer.email,
       bio: volunteer.bio,
       skills: volunteer.skills,
-      user_type: volunteer.userType,
+      userType: volunteer.userType,
     };
   }
 
@@ -33,7 +33,7 @@ export class Volunteer {
     lastName: string;
     bio: string;
     skills: string[];
-    user_type: string;
+    userType: string;
   }) {
     const requiredInfo = [
       "email",
@@ -42,13 +42,13 @@ export class Volunteer {
       "lastName",
       "bio",
       "skills",
-      "user_type"
+      "userType"
     ];
     try {
       validateFields({
         required: requiredInfo,
         obj: volunteerInfo,
-        location: "user registration",
+        location: "user registratio",
       });
     } catch (error) {
       throw error;
@@ -87,30 +87,31 @@ export class Volunteer {
       volunteerInfo.bio,
     ]);
 
-    const { email, firstName, lastName, bio } = result.rows[0];
+    const { id, email, firstName, lastName, bio } = result.rows[0];
 
     const queryPassword = `INSERT into authentication (email, password, user_type) 
-    VALUES($1, $2, $3) RETURNING *`;
+    VALUES($1, $2, $3) RETURNING id, email, password,user_type as "userType"`;
 
     const passwordResult = await database.query(queryPassword, [
       normalizedEmail,
       hashedPassword,
-      volunteerInfo.user_type,
+      volunteerInfo.userType,
     ]);
 
-    const { user_type } = passwordResult.rows[0];
+    const { userType } = passwordResult.rows[0];
 
     volunteerInfo.skills.forEach((skill) => {
       this.insertSkill(volunteerInfo.email, skill);
     });
 
     return {
+      id: id,
       email: email,
       firstName: firstName,
       lastName: lastName,
       bio: bio,
       skills: volunteerInfo.skills,
-      user_type: user_type,
+      userType: userType,
     };
   }
 
