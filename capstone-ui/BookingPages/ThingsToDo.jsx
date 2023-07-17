@@ -54,12 +54,13 @@ function ActivityCards(){
        
     <div className="Card"> {/* */}
         <div className = "image-container">  {/* media */}
-            <img className ="image" src = {product.image} alt = "Image of activity"/>
+            <img className ="image" src = " https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.womansworld.com%2Fgallery%2Fanimals%2Fbunny-photos-172767&psig=AOvVaw0ojHX_1HCRlEWlVLLnkkx5&ust=1689716254807000&source=images&cd=vfe&opi=89978449&ved=0CBAQjRxqFwoTCOiejNvZloADFQAAAAAdAAAAABAF" alt = "Image of activity"/>
         </div>
         <div className = "info-container">  {/* card-info*/}
             <div className = "info">
-                <p className = "name">{activity.name}</p> 
-                <p className = "price ">${activity.price}</p>                  
+                <p className = "name">activity name</p> 
+                {/* {activity.name} */}
+                <p className = "price ">$price</p>                  
             </div>
             <div className = "cart-btns">
                 <div className="add-btn">
