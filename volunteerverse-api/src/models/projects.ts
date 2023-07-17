@@ -1,4 +1,4 @@
-import { database } from "../database";
+import { db } from "../db";
 
 export class Projects{
 
