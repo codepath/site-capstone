@@ -1,4 +1,4 @@
-import '../index.css'
+import './index.css'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import TextField from '@mui/material/TextField'
 import Chip from '@mui/material/Chip'
@@ -14,6 +14,8 @@ export default function Homepage({ filterFlights, setFilterFlights,
                                    destination, setDestination,
                                    budget, setBudget,
                                    travelers, setTravelers }) {
+    
+    
 
     async function handleSubmit(event) {
         event.preventDefault()
@@ -24,8 +26,9 @@ export default function Homepage({ filterFlights, setFilterFlights,
             <div><h1>Website title</h1></div>
             {/* Input box wrapper */}
             <div className="flex-auto">
+                <div><h2>Book your next adventure</h2></div>
                 {/* Input box buttons */}
-                <div>
+                <div >
                     I want to search for... 
                 </div>
                 <div className="flex space-x-4">
@@ -34,26 +37,29 @@ export default function Homepage({ filterFlights, setFilterFlights,
                         onClick={() => setFilterHotels(!filterHotels)}
                         variant={filterHotels ? "filled" : "outlined"}
                         color={filterHotels ? "success" : "default"}
+                        sx={{'borderRadius':'4px', 'width':'80px'}}
                     />
                     <Chip
                         label="Activities"
                         onClick={() => setFilterActivities(!filterActivities)}
                         variant={filterActivities ? "filled" : "outlined"}
                         color={filterActivities ? "success" : "default"}
+                        sx={{'borderRadius':'4px', 'width':'80px'}}
                     />
                     <Chip
                         label="Flights"
                         onClick={() => setFilterFlights(!filterFlights)}
                         variant={filterFlights ? "filled" : "outlined"}
                         color={filterFlights ? "success" : "default"}
+                        sx={{'borderRadius':'4px', 'width':'80px'}}
                         disabled
                     />
                 </div>
-                <div className="flex space-x-4 w-full border border-gray-300 rounded-md mt-4 shadow-md">
+                <div className="flex space-x-4 w-full border border-blue-500 rounded-lg mt-4 shadow-md">
                     {(!filterHotels && !filterActivities && !filterFlights) && (
-                        <div>Choose at least one search filter to begin.</div>
+                        <div className="p-4"><h1>Choose at least one search filter to begin.</h1></div>
                     )}
-                    {filterHotels && (
+                    {(filterHotels || filterActivities) && (
                         <div>
                             <form className="flex items-center justify-center space-x-4 p-4"
                                   onSubmit={handleSubmit}
@@ -69,6 +75,7 @@ export default function Homepage({ filterFlights, setFilterFlights,
                                 label="Check-in date" 
                                 value={departureDate} 
                                 onChange={(newDate) => setDepartureDate(newDate)}
+                               
                                 
                             />
                             <DatePicker 
@@ -76,6 +83,9 @@ export default function Homepage({ filterFlights, setFilterFlights,
                                 value={arrivalDate} 
                                 onChange={(newDate) => setArrivalDate(newDate)}
                                 variant="standard"
+                               
+                                className="rounded-md"
+                               
                             />
                             <TextField
                                 required
@@ -94,9 +104,11 @@ export default function Homepage({ filterFlights, setFilterFlights,
                                 InputProps={{
                                     required: true,
                                 }}
+                                
                             />
-
-                             <Button disabled={true}>Search</Button>
+                            <Button disabled={true} sx={{'border': '1px solid', 
+                                                         
+                                                         'height' : '55px'}}>Search</Button>
                             </form>
                         </div>
                     )}
