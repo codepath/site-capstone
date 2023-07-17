@@ -125,6 +125,36 @@ export class Volunteer {
   }
 
   /**
+   * Get all the projects the volunteer has applied for or expressed interest in
+   * @param email 
+   * @returns 
+   */
+
+  static async getInterestedProjects(email: string){
+    const query = `SELECT project_id FROM interested_volunteers WHERE email=$1 and approved=FALSE`;
+    const result = await db.query(query, [email])
+    if (result){
+      return result
+    }
+  }
+
+  /**
+   * Get all the currently approved projects for a specific student
+   * @param email 
+   * @returns 
+   */
+  
+  static async getApprovedProjects(email: string){
+    const query = `SELECT project_id FROM interested_volunteers WHERE email=$1 AND approved=TRUE`;
+    const result = await db.query(query, [email]);
+
+    if (result){
+      return result;
+    }
+    return null;
+  }
+
+  /**
    * Fetch a volunteer in the database by email
    * @param email
    */
