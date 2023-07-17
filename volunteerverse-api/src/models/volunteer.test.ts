@@ -1,5 +1,5 @@
 import { Volunteer } from "./volunteer";
-import { database } from "../database";
+import { db } from "../db";
 
 jest.mock("../database", () => {
     return {
@@ -21,14 +21,14 @@ describe("fetchVolunteerByEmail", () => {
     test("should return null when no volunteer is found", async () => {
       // Arrange
       const email = "nonexistent@example.com";
-      database.query.mockResolvedValueOnce({ rows: [] });
+      db.query.mockResolvedValueOnce({ rows: [] });
   
       // Act
       const volunteer = await Volunteer.fetchVolunteerByEmail(email);
   
       // Assert
       expect(volunteer).toBeNull();
-      expect(database.query).toHaveBeenCalledWith(
+      expect(db.query).toHaveBeenCalledWith(
         "SELECT * FROM volunteers WHERE email=$1",
         [email]
       );

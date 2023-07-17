@@ -10,8 +10,8 @@ interface ValidateFieldsOptions {
 }
 
 const validateFields = ({ required, obj, location }: ValidateFieldsOptions): void => {
-  if (!obj) throw new UnprocessableEntityError(`Missing object for validation.`);
 
+  if (!obj) throw new UnprocessableEntityError(`Missing object for validation.`);
   required.forEach((item) => {
     if (isNil(obj[item])) {
       throw new UnprocessableEntityError(

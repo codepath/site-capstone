@@ -46,6 +46,7 @@ CREATE TABLE project_tags(
 );
 
 CREATE TABLE authentication(
+    id SERIAL PRIMARY KEY,
     email TEXT NOT NULL UNIQUE CHECK (position('@' IN email) > 1),
     password TEXT NOT NULL,
     user_type TEXT NOT NULL

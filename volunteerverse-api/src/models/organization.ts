@@ -6,7 +6,7 @@ const { BadRequestError, UnauthorizedError } = require("../utils/errors");
 
 const { BCRYPT_WORK_FACTOR } = require("../config");
 
-class Organization {
+export class Organization {
     /**
    * Convert a user from the database into a user object that can be viewed publically.
    * Don't show user's password
