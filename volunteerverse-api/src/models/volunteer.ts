@@ -7,9 +7,6 @@ import bcrypt from "bcrypt";
 export class Volunteer {
   /**
    * Convert a volunteer from the database into a volunteer object that can be viewed publically.
-
-   *
-   *
    * @param {Volunteer} volunteer - user from database
    * @returns public volunteer info
    */
@@ -141,4 +138,9 @@ export class Volunteer {
     }
     return null;
   }
+
+
+  /**
+   * 
+   */
 }
