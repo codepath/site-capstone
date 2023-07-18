@@ -11,7 +11,7 @@ volunteerRoutes.get("/test", async function (req, res, next) {
 volunteerRoutes.post("/skills", async function(req,res,next){
   const {email} = req.body
   const result = await Volunteer.fetchAllSkills(email)
-  res.send(result)
+  res.json({skills: result})
 })
 
 
