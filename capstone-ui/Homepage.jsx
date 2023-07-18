@@ -23,12 +23,12 @@ export default function Homepage({ filterFlights, setFilterFlights,
     }
     return (
         <div className="px-16">
-            <div><h1>Website title</h1></div>
+            <div ><h1>Website title</h1></div>
             {/* Input box wrapper */}
             <div className="flex-auto">
-                <div><h2>Book your next adventure</h2></div>
+                <div className="text-2xl"><h2>Book your next adventure.</h2></div>
                 {/* Input box buttons */}
-                <div >
+                <div>
                     I want to search for... 
                 </div>
                 <div className="flex space-x-4">
@@ -57,7 +57,7 @@ export default function Homepage({ filterFlights, setFilterFlights,
                 </div>
                 <div className="flex space-x-4 w-full border border-blue-500 rounded-lg mt-4 shadow-md">
                     {(!filterHotels && !filterActivities && !filterFlights) && (
-                        <div className="p-4"><h1>Choose at least one search filter to begin.</h1></div>
+                        <div className="p-4"><h2>Choose at least one search filter to begin.</h2></div>
                     )}
                     {(filterHotels || filterActivities) && (
                         <div>
@@ -75,17 +75,12 @@ export default function Homepage({ filterFlights, setFilterFlights,
                                 label="Check-in date" 
                                 value={departureDate} 
                                 onChange={(newDate) => setDepartureDate(newDate)}
-                               
-                                
                             />
                             <DatePicker 
                                 label="Check-out date" 
                                 value={arrivalDate} 
                                 onChange={(newDate) => setArrivalDate(newDate)}
                                 variant="standard"
-                               
-                                className="rounded-md"
-                               
                             />
                             <TextField
                                 required
@@ -104,7 +99,6 @@ export default function Homepage({ filterFlights, setFilterFlights,
                                 InputProps={{
                                     required: true,
                                 }}
-                                
                             />
                             <Button disabled={true} sx={{'border': '1px solid', 
                                                          

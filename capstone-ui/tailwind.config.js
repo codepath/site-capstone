@@ -5,7 +5,11 @@ export default {
         "./**/*.{js,ts,jsx,tsx}",
     ],
     theme: {
-        extend: {},
+        extend: {
+            fontFamily: {
+                sans: ['IBM Plex Sans', 'sans-serif'],
+            },
+        },
     },
     plugins: [],
 }
