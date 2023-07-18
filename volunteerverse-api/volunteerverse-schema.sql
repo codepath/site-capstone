@@ -3,7 +3,8 @@ CREATE TABLE volunteers(
     email TEXT NOT NULL UNIQUE CHECK (position('@' IN email) > 1),
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
-    bio TEXT NOT NULL
+    bio TEXT NOT NULL,
+    image_url TEXT
 );
 
 CREATE TABLE organizations(

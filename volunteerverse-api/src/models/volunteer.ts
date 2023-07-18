@@ -125,6 +125,21 @@ export class Volunteer {
   }
 
   /**
+   * Gets all the skills logged for the volunteer
+   * @param email 
+   */
+
+  static async fetchAllSkills(email:string){
+    const query = `SELECT skill FROM volunteer_skills WHERE email=$1`
+    const result = await db.query(query, [email])
+    const skills = []
+    result.rows.forEach((row)=> {
+      skills.push(row.skill)
+    })
+    return skills
+  }
+
+  /**
    * Get all the projects the volunteer has applied for or expressed interest in
    * @param email 
    * @returns 

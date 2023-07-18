@@ -48,13 +48,7 @@ export class UnprocessableEntityError extends ExpressError {
       super(message, 422)
     }
   }
-<<<<<<<<< Temporary merge branch 1
 
 
-/** 401 UNAUTHORIZED error. */
-export class UnauthorizedError extends ExpressError {
-  constructor(message = "Unauthorized") {
-    super(message, 401)
-  }
-}
+
 
