@@ -1,7 +1,7 @@
 import {Pool} from "pg";
 import { getDatabaseURI } from "./config";
 
-export const db = new Pool({
+const db = new Pool({
   connectionString: getDatabaseURI(),
 });
 
@@ -12,3 +12,5 @@ db.connect((err: { stack: any }) => {
     console.log("Successfully connected to postgres database!");
   }
 });
+
+export default db

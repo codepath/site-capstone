@@ -1,5 +1,5 @@
 import { Volunteer } from "./volunteer";
-import { db } from "../db";
+import db  from "../db";
 
 jest.mock("../database", () => {
     return {

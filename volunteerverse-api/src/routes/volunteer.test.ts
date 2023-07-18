@@ -1,6 +1,6 @@
 import { app } from "../app"
 import request from "supertest"
-import { db } from "../db";
+import db  from "../db";
 
 
 
