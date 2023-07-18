@@ -107,9 +107,6 @@ export default function Homepage({ filterFlights, setFilterFlights,
                         </div>
                     )}
 
-                    
-                    
-                    
                 </div>
             </div>
         </div>

@@ -44,7 +44,10 @@ function App() {
                         travelers={travelers} setTravelers={setTravelers}
                         budget={budget} setBudget={setBudget}
                 />
+
+              
                 <Footer />
+                
             </div>
         </ThemeProvider>
     </LocalizationProvider>
