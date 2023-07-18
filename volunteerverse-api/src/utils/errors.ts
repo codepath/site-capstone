@@ -9,18 +9,8 @@ export class ExpressError extends Error {
   }
 }
 
-
-/** 422 Unprocessable Entity error */
-
-export class UnprocessableEntityError extends ExpressError {
-    constructor(message = "Unprocessable Entity") {
-      super(message, 422)
-    }
-  }
-
-
 /** 400 BAD REQUEST error. */
-
+  
 export class BadRequestError extends ExpressError {
   constructor(message = "Bad Request") {
     super(message, 400)
@@ -29,6 +19,39 @@ export class BadRequestError extends ExpressError {
 
 /** 401 UNAUTHORIZED error. */
 
+export class UnauthorizedError extends ExpressError {
+  constructor(message = "Unauthorized") {
+    super(message, 401)
+  }
+}
+
+/** 403 Forbidden error. */
+
+export class ForbiddenError extends ExpressError {
+  constructor(message = "Forbidden") {
+    super(message, 403)
+  }
+}
+
+/** 404 NOT FOUND error. */
+
+export class NotFoundError extends ExpressError {
+  constructor(message = "Not Found") {
+    super(message, 404)
+  }
+}
+
+/** 422 Unprocessable Entity error */
+
+export class UnprocessableEntityError extends ExpressError {
+    constructor(message = "Unprocessable Entity") {
+      super(message, 422)
+    }
+  }
+<<<<<<<<< Temporary merge branch 1
+
+
+/** 401 UNAUTHORIZED error. */
 export class UnauthorizedError extends ExpressError {
   constructor(message = "Unauthorized") {
     super(message, 401)

@@ -11,12 +11,13 @@ CREATE TABLE organizations(
     organization_name VARCHAR(255),
     organization_description TEXT,
     organization_email TEXT NOT NULL UNIQUE CHECK (position('@' IN organization_email) > 1),
-    logo_url TEXT
+    logo_url TEXT,
+    founders TEXT
 );
 
 CREATE TABLE volunteer_skills(
     id SERIAL PRIMARY KEY,
-    email TEXT NOT NULL UNIQUE CHECK (position('@' IN email) > 1),
+    email TEXT NOT NULL CHECK (position('@' IN email) > 1),
     skill TEXT NOT NULL
 );
 
