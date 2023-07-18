@@ -41,6 +41,7 @@ CREATE TABLE interested_volunteers(
 );
 
 CREATE TABLE project_tags(
+    id SERIAL PRIMARY KEY,
     project_id INTEGER,
     tag_name TEXT NOT NULL,
     FOREIGN KEY (project_id) REFERENCES projects (id)
