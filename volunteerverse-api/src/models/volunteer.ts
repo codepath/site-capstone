@@ -31,6 +31,7 @@ export class Volunteer {
     password: string;
     firstName: string;
     lastName: string;
+    imageUrl:string;
     bio: string;
     skills: string[];
     userType: string;
@@ -40,6 +41,7 @@ export class Volunteer {
       "password",
       "firstName",
       "lastName",
+      "imageUrl",
       "bio",
       "skills",
       "userType"
@@ -71,23 +73,26 @@ export class Volunteer {
       email,
       first_name,
       last_name,
-      bio
+      bio,
+      image_url
     )
-    VALUES ($1, $2, $3, $4)
+    VALUES ($1, $2, $3, $4, $5)
     RETURNING id,
                   email,            
                   first_name AS "firstName", 
                   last_name AS "lastName",
-                  bio`;
+                  bio,
+                  image_url as "imageUrl"`;
 
     const result = await db.query(query, [
       normalizedEmail,
       volunteerInfo.firstName,
       volunteerInfo.lastName,
       volunteerInfo.bio,
+      volunteerInfo.imageUrl
     ]);
 
-    const { id, email, firstName, lastName, bio } = result.rows[0];
+    const { id, email, firstName, lastName, bio , imageUrl} = result.rows[0];
 
     const queryPassword = `INSERT into authentication (email, password, user_type) 
     VALUES($1, $2, $3) RETURNING id, email, password,user_type as "userType"`;
@@ -109,6 +114,7 @@ export class Volunteer {
       email: email,
       firstName: firstName,
       lastName: lastName,
+      imageUrl: imageUrl,
       bio: bio,
       skills: volunteerInfo.skills,
       userType: userType,
@@ -186,7 +192,14 @@ export class Volunteer {
   }
 
 
-  /**
-   * 
-   */
+  // /**
+  //  * When a volunteer expresses interest in a project, log it into database
+  //  * @param projectId 
+  //  * @param email 
+  //  */
+  // static async expressInterest(projectId:number, email:string){
+  //   const query = `INSERT into interested_volunteers(email, project_id, approved) VALUES ($1,$2,$3) RETURNING email,project_id as "projectId",approved`
+  //   const result = await db.query(query, [email, projectId, false])
+  //   return result.rows[0]
+  // }
 }
