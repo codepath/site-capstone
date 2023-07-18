@@ -49,3 +49,11 @@ export class UnprocessableEntityError extends ExpressError {
     }
   }
   
+
+/** 401 UNAUTHORIZED error. */
+export class UnauthorizedError extends ExpressError {
+  constructor(message = "Unauthorized") {
+    super(message, 401)
+  }
+}
+
