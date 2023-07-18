@@ -6,7 +6,7 @@ Cohort: **CourseHero**
 
 Team Member Names:**Leena, Emily-Ann, Gregory**
 
-Mentors Names: **[Leena's mentor], Hamed, Lucas**
+Mentors Names: **[Leena's mentor], [Emily's mentor], Lucas**
 
 Project Code Repository Links
 
