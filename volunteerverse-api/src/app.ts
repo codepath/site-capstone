@@ -8,6 +8,7 @@ import morgan from "morgan"
 
 import { authRoutes } from './routes/auth';
 import { organizationRoutes } from './routes/organization';
+import { volunteerRoutes } from './routes/volunteer';
 import { projectRoutes } from './routes/projects';
 
 
