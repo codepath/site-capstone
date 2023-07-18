@@ -47,7 +47,7 @@ export class Organization {
   //   };
 
   static async register(creds) {
-   const { organization_name, organization_description, organization_email, logo_url, password } = creds;
+   const { organization_name, organization_description, organization_email, logo_url, password, founders} = creds;
 
    const existingOrganizationWithEmail = await Organization.fetchOrganizationByEmail(organization_email);
     if (existingOrganizationWithEmail) {
@@ -63,15 +63,17 @@ export class Organization {
         organization_name,
         organization_description,
         organization_email,
-       logo_url
+       logo_url,
+       founders
       )
       VALUES ($1, $2, $3, $4)
       RETURNING organization_name,
                 organization_description,
                 organization_email,
-               logo_url 
+               logo_url,
+               founders
                `,
-    [organization_name, organization_description, normalizedOrgEmail , logo_url] )
+    [organization_name, organization_description, normalizedOrgEmail , logo_url, founders] )
    
 
     const authResult = await db.query (
