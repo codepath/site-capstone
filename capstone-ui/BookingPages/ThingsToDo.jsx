@@ -1,5 +1,5 @@
-
-
+import { activities } from "./data"
+const destination = "New York"
 export default function ThingsToDo (){
     return (
         <div className="things-to-do-page">
@@ -13,16 +13,16 @@ export default function ThingsToDo (){
             </div>
             <div className="travel-info">
                 <div className="destination">
-                    <h4> Destination </h4>
-                    <p>Destination Name</p>
+                    <h1> Destination </h1>
+                    <p>{destination}</p>
                 </div>
                 <div className="dates">
-                    <h4> Dates </h4>
+                    <h1> Dates </h1>
                     <p>Day of week, month, day of month —
 day of week, month, day of month</p>
                 </div>
                 <div className="dates">
-                    <h4> Budget Remaining </h4>
+                    <h1> Budget Remaining </h1>
                     <p>$0.00</p>
                 </div>
             </div>
@@ -40,7 +40,9 @@ day of week, month, day of month</p>
                 </div>
             </div>
             <div className="cards">
-                <ActivityCards/>
+            {activities.map((activity) => (
+              <ActivityCards />
+            ))}
 
             </div>
         </div>
