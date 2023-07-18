@@ -1,6 +1,7 @@
 import e from "express";
 import { db } from "../db";
 import { validateFields } from "../utils/validate";
+import { BadRequestError } from "../utils/errors";
 
 export class Projects{
 
@@ -60,6 +61,23 @@ export class Projects{
     static async insertTag(id:number, tag:string){
         const query = `INSERT into project_tags(project_id, tag_name) VALUES ($1,$2) RETURNING *`
         await db.query(query, [id, tag])
+    }
+
+
+    /**
+     * Returns project information given the project id
+     * @param id 
+     */
+
+    static async fetchProjectByProjectId(projectId:number){
+        const query = `SELECT * FROM projects WHERE id=$1`
+        const result = await db.query(query,[projectId])
+
+        if (result){
+        return result.rows[0]}
+
+        return new BadRequestError("User not found")
+
     }
 
 }
