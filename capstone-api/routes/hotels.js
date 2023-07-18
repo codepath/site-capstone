@@ -3,24 +3,24 @@ const router = express.Router()
 const { HotelsData, HotelsDetail, searchHotels, searchLocations } = require("../models/hotels")
 
 
-router.get('/hotels-data', (req, res) => {
-    const products = HotelsData();
+router.post('/hotels-location', (req, res) => { //works on insomnia
+    const products = searchLocations(req.body);
+    res.send(products);
+});
+
+router.post('/hotels-search', (req, res) => { //works on insomnia
+    const products = searchHotels(req.body);
+    res.send(products);
+});
+
+router.post('/hotels-data', (req, res) => {//works on insomnia 
+    const products = HotelsData(req.body);
     res.send(products);
 });
   
 
-router.get('/hotels-detail', (req, res) => {
-    const products = HotelsDetail();
-    res.send(products);
-});
-  
-router.get('/hotels-location', (req, res) => {
-    const products = searchLocations();
-    res.send(products);
-});
-
-router.get('/hotels-search', (req, res) => {
-    const products = searchHotels();
+router.post('/hotels-detail', (req, res) => { //works on insomnia 
+    const products = HotelsDetail(req.body);
     res.send(products);
 });
   
