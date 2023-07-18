@@ -14,6 +14,12 @@ volunteerRoutes.post("/skills", async function(req,res,next){
   res.json({skills: result})
 })
 
+volunteerRoutes.post("/fetch", async function (req,res,next){
+  const {email} = req.body
+  const result = await Volunteer.fetchVolunteerByEmail(email)
+  res.json({volunteer: result})
+})
+
 // volunteerRoutes.post("/:projectId", async function (req, res, next){
 //   const projectId = parseInt(req.params.projectId)
 //   const {email} = req.body
