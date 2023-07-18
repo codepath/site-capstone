@@ -7,6 +7,7 @@ const axios = require('axios');
 
 
 class Hotels {
+  //API
   static destId = '';
 
   //Serach Hotels by locations or name
@@ -197,6 +198,7 @@ class Hotels {
       }
   }
   
+  //Hotel Schema 
   
 }
 
