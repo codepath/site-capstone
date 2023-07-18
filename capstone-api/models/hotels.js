@@ -1,6 +1,10 @@
+const { config } = require('dotenv');
+config();
+
 const { BadRequestError } = require("../utils/errors");
-const { rapidapikey, rapidapihost } = require("../constants");
+const { rapidapikey, rapidapihost } = process.env;
 const axios = require('axios');
+
 
 class Hotels {
   static destId = '';
