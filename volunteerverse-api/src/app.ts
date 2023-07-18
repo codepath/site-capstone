@@ -7,7 +7,9 @@ import morgan from "morgan"
 
 
 import { authRoutes } from './routes/auth';
+import { organizationRoutes } from './routes/organization';
 import { projectRoutes } from './routes/projects';
+
 
 export const app = express();
 
@@ -16,9 +18,11 @@ app.use(express.json())
 app.use(morgan("dev"))
 
 app.use("/auth", authRoutes)
+
+app.use("/volunteer", volunteerRoutes)
+app.use("/organization", organizationRoutes)
+
 app.use("/project", projectRoutes)
-
-
 
 app.get('/', (req, res) => {
   res.send('Hi World Test!');

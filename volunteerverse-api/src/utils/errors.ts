@@ -48,18 +48,10 @@ export class UnprocessableEntityError extends ExpressError {
       super(message, 422)
     }
   }
+<<<<<<<<< Temporary merge branch 1
 
-
-/** 400 BAD REQUEST error. */
-
-export class BadRequestError extends ExpressError {
-  constructor(message = "Bad Request") {
-    super(message, 400)
-  }
-}
 
 /** 401 UNAUTHORIZED error. */
-
 export class UnauthorizedError extends ExpressError {
   constructor(message = "Unauthorized") {
     super(message, 401)
