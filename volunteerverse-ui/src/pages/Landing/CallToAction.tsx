@@ -6,6 +6,7 @@ const useStyles = createStyles((theme) => ({
     container : {
         backgroundImage: theme.fn.gradient({from: "white",  to: theme.colors.violet[1], deg:180}),
         height: "100%",
+        maxWidth: "100%",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
