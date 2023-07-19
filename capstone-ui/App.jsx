@@ -30,10 +30,12 @@ function App() {
     const [travelers, setTravelers] = useState(null)
 
     const [budget, setBudget] = useState(null)
+
+    
     return ( 
     <LocalizationProvider dateAdapter={AdapterDayjs}>
         <ThemeProvider theme={theme} >
-            <div className="w-screen">
+            <div className="w-screen h-screen font-sans">
                 <Navbar />
                 <Homepage filterFlights={filterFlights} setFilterFlights={setFilterFlights}
                         filterActivities={filterActivities} setFilterActivities={setFilterActivities}
@@ -44,7 +46,10 @@ function App() {
                         travelers={travelers} setTravelers={setTravelers}
                         budget={budget} setBudget={setBudget}
                 />
+
+              
                 <Footer />
+                
             </div>
         </ThemeProvider>
     </LocalizationProvider>

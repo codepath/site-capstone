@@ -1,9 +1,35 @@
 import { activities } from "./data"
+import { useState } from "react"
+// import { ActivityCards } from "./ThingsToDoCard"
 const destination = "New York"
+const budget = 1000
+const startDate = "Tuesday, July 18"
+const endDate = "Sunday, July 23"
 export default function ThingsToDo (){
+
+
+
+    const [likes, setLikes] = useState([])
+
+    const addToLikes = (item)=>{
+        if(likes.includes(item)){
+          console.log("already liked")
+        }else{
+            likes.push(item)
+        }
+          setLikes(likes)
+          console.log("Likes")
+          console.log(likes)
+          console.log(likes.length)
+         
+      }
     return (
         <div className="things-to-do-page">
+            {/* make these btns links */}
             <div className="user-actions">
+            <button className="like-btn">
+                    Likes
+                </button>
                 <button className="cart-btn">
                     Cart
                 </button>
@@ -18,12 +44,12 @@ export default function ThingsToDo (){
                 </div>
                 <div className="dates">
                     <h1> Dates </h1>
-                    <p>Day of week, month, day of month —
-day of week, month, day of month</p>
+                    {/* how would i pull a date out? */}
+                    <p>{startDate}-{endDate}</p>
                 </div>
                 <div className="dates">
                     <h1> Budget Remaining </h1>
-                    <p>$0.00</p>
+                    <p>${budget}</p>
                 </div>
             </div>
             <div className="search-actions">
@@ -33,15 +59,28 @@ day of week, month, day of month</p>
                     {/* value = {searchValue} onChange = {handleOnSearch} */}
                 </div>
                 <div className="category">
-                   {/* how to do dropdown */}
+                  <label htmlFor="category">Choose a category:</label>
+                  <select name="category" id="category">
+                    <option value="cat1">Category 1</option> 
+                    <option value="cat2">Category 2</option> 
+                    <option value="cat3">Category 3</option> 
+                    <option value="cat4">Category 4</option> 
+                  </select>
                 </div>
                 <div className="filter-by-price">
-                    {/* filter can also be dropdown */}
+                     <label htmlFor="category">Choose a price range:</label>
+                  <select name="price-range" id="price-range">
+                    <option value="range1">0 - 100 </option> 
+                    <option value="range2">100 - 500 </option> 
+                    <option value="range3"> 500 - 1000</option> 
+                    <option value="range4">1000 - 2000</option> 
+                  </select>
+                  
                 </div>
             </div>
             <div className="cards">
             {activities.map((activity) => (
-              <ActivityCards />
+              <ActivityCards activity = {activity} key = {activity.id} addToLikes = {addToLikes}/>
             ))}
 
             </div>
@@ -51,25 +90,35 @@ day of week, month, day of month</p>
 }
 
 
-function ActivityCards(){
+function ActivityCards({activity, addToLikes}){
+    
+
+      const handleLike = () => {
+        addToLikes(activity)
+    }
+
     return (
        
     <div className="Card"> {/* */}
         <div className = "image-container">  {/* media */}
-            <img className ="image" src = " https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.womansworld.com%2Fgallery%2Fanimals%2Fbunny-photos-172767&psig=AOvVaw0ojHX_1HCRlEWlVLLnkkx5&ust=1689716254807000&source=images&cd=vfe&opi=89978449&ved=0CBAQjRxqFwoTCOiejNvZloADFQAAAAAdAAAAABAF" alt = "Image of activity"/>
+            <img className ="image" src = {activity.image} alt = {activity.alt}/>
         </div>
         <div className = "info-container">  {/* card-info*/}
             <div className = "info">
-                <p className = "name">activity name</p> 
+                <p className = "name">{activity.name}</p> 
                 {/* {activity.name} */}
-                <p className = "price ">$price</p>                  
+                <p className = "price ">${activity.price}</p>                  
             </div>
             <div className = "cart-btns">
                 <div className="add-btn">
                     <button>
                         Add to Itinerary
                     </button>
-                    
+                </div >
+                <div className="like-btn">
+                    <button onClick={handleLike}>
+                        Like
+                    </button>
                 </div >
             </div>
         </div>
