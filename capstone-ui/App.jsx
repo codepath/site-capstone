@@ -30,6 +30,8 @@ function App() {
     const [travelers, setTravelers] = useState(null)
 
     const [budget, setBudget] = useState(null)
+
+    
     return ( 
     <LocalizationProvider dateAdapter={AdapterDayjs}>
         <ThemeProvider theme={theme} >

@@ -1,13 +1,35 @@
 import { activities } from "./data"
+import { useState } from "react"
 // import { ActivityCards } from "./ThingsToDoCard"
 const destination = "New York"
 const budget = 1000
 const startDate = "Tuesday, July 18"
 const endDate = "Sunday, July 23"
 export default function ThingsToDo (){
+
+
+
+    const [likes, setLikes] = useState([])
+
+    const addToLikes = (item)=>{
+        if(likes.includes(item)){
+          console.log("already liked")
+        }else{
+            likes.push(item)
+        }
+          setLikes(likes)
+          console.log("Likes")
+          console.log(likes)
+          console.log(likes.length)
+         
+      }
     return (
         <div className="things-to-do-page">
+            {/* make these btns links */}
             <div className="user-actions">
+            <button className="like-btn">
+                    Likes
+                </button>
                 <button className="cart-btn">
                     Cart
                 </button>
@@ -58,7 +80,7 @@ export default function ThingsToDo (){
             </div>
             <div className="cards">
             {activities.map((activity) => (
-              <ActivityCards activity = {activity} key = {activity.id} />
+              <ActivityCards activity = {activity} key = {activity.id} addToLikes = {addToLikes}/>
             ))}
 
             </div>
@@ -68,7 +90,13 @@ export default function ThingsToDo (){
 }
 
 
-function ActivityCards({activity}){
+function ActivityCards({activity, addToLikes}){
+    
+
+      const handleLike = () => {
+        addToLikes(activity)
+    }
+
     return (
        
     <div className="Card"> {/* */}
@@ -86,7 +114,11 @@ function ActivityCards({activity}){
                     <button>
                         Add to Itinerary
                     </button>
-                    
+                </div >
+                <div className="like-btn">
+                    <button onClick={handleLike}>
+                        Like
+                    </button>
                 </div >
             </div>
         </div>
