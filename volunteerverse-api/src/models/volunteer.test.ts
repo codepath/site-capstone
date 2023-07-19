@@ -1,9 +1,9 @@
 import { Volunteer } from "./volunteer";
 import db  from "../db";
 
-jest.mock("../database", () => {
+jest.mock("../db", () => {
     return {
-      database: {
+      db: {
         query: jest.fn(),
       },
     };
@@ -11,7 +11,6 @@ jest.mock("../database", () => {
 
 
 /** fetchVolunteerByEmail */
-
 describe("fetchVolunteerByEmail", () => {
     afterEach(() => {
       jest.clearAllMocks();
