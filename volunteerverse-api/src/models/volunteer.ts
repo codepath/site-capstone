@@ -3,6 +3,7 @@ import { db } from "../db";
 import { ExpressError, BadRequestError } from "../utils/errors";
 import { validateFields } from "../utils/validate";
 import bcrypt from "bcrypt";
+import { Projects } from "./projects";
 
 export class Volunteer {
   /**
@@ -200,6 +201,18 @@ export class Volunteer {
     const query = `INSERT into interested_volunteers(email, project_id, approved) VALUES ($1,$2,$3) RETURNING email,project_id as "projectId",approved`
     const result = await db.query(query, [email, projectId, false])
     return result.rows[0]
+  }
+
+
+  static async getVolunteersProjectFeed(email:string){
+    const projects = []
+    const volunteerSkills = await this.fetchAllSkills(email)
+    const volunteersProject = await Promise.all(volunteerSkills.map(async (tag: string)=> {
+      const tagProjects = await Projects.getProjectsWithTag(tag)
+      console.log(tagProjects)
+      tagProjects.forEach((project)=>{projects.push(project)})
+    }))
+    return projects
   }
 }
 
