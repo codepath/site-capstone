@@ -199,6 +199,66 @@ class Hotels {
   }
   
   //Hotel Schema 
+  static async getHotelById(id) {
+    if (!id) {
+      throw new BadRequestError("No id provided");
+    }
+    const query = `SELECT * FROM hotels WHERE id = $1`;
+    const result = await db.query(query, id);
+    const user = result.rows[0];
+    return user;
+  }
+
+  static async addHotel(credentials) {
+
+  const requiredFields = ["id", "email", "name", "country", "city", "price"];
+  requiredFields.forEach((field) => {
+    if (!credentials.hasOwnProperty(field)) {
+      throw new BadRequestError(`Missing ${field} in request body.`);
+    }
+  });
+
+  // const exisitingHotel = await Hotels.getHotel(credentials.user_email);
+  
+  // const lowercasedEmail = credentials.user_email.toLowerCase();
+
+  const query = `
+    INSERT INTO hotels (id, email, name, country, city)
+    VALUES ($1, $2, $3, $4, $5)
+  `;
+  const result = await db.query(query, [
+    credentials.id,
+    credentials.email,
+    credentials.name,
+    credentials.country,
+    credentials.city
+  ]);
+  return;
+
+  }
+
+  static async updateHotel(id, updates) {
+    const query = `
+      UPDATE hotels
+      SET name = $1, country = $2, city = $3, price = $4
+      WHERE id = $5
+    `;
+    const { name, country, city, price } = updates;
+    const result = await db.query(query, [name, country, city, price, id]);
+    return;
+  }
+
+  static async deleteHotel(id) {
+    const query = `
+      DELETE FROM hotels
+      WHERE id = $1
+    `;
+    const result = await db.query(query, [id]);
+    return;
+  }
+
+
+
   
 }
 
