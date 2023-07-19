@@ -30,7 +30,7 @@ describe("Organization Model Functions", async () => {
 
   test("it should get email", async function () {
     const result = await Organization.fetchOrganizationByEmail(validEmail);
-    expect(result).toBe({
+    expect(result).toStrictEqual({
       organization_name: "JelloWorld",
       organization_description: "a compnau duh",
       organization_email: "hii@gaffamawfwfil.com ",
