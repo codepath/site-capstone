@@ -1,4 +1,4 @@
-import {db }from "../db" 
+import db from "../db" 
 import bcrypt from "bcrypt"
 import { BadRequestError, ExpressError } from "../utils/errors"
 
@@ -47,7 +47,7 @@ export class Organization {
   //   };
 
   static async register(creds) {
-   const { organization_name, organization_description, organization_email, logo_url, password } = creds;
+   const { organization_name, organization_description, organization_email, logo_url, password, founders} = creds;
 
    const existingOrganizationWithEmail = await Organization.fetchOrganizationByEmail(organization_email);
     if (existingOrganizationWithEmail) {
@@ -63,15 +63,17 @@ export class Organization {
         organization_name,
         organization_description,
         organization_email,
-       logo_url
+       logo_url,
+       founders
       )
-      VALUES ($1, $2, $3, $4)
+      VALUES ($1, $2, $3, $4, $5)
       RETURNING organization_name,
                 organization_description,
                 organization_email,
-               logo_url 
+               logo_url,
+               founders
                `,
-    [organization_name, organization_description, normalizedOrgEmail , logo_url] )
+    [organization_name, organization_description, normalizedOrgEmail, logo_url, founders] )
    
 
     const authResult = await db.query (
@@ -111,7 +113,8 @@ export class Organization {
         organization_name,
         organization_description,
         organization_email,
-        logo_url
+        logo_url,
+        founders
            FROM organizations
            WHERE  organization_email = $1`, // this does to filtering to make sure we are being 
            // specific to the item in the bracket we are looking for 
@@ -120,6 +123,8 @@ export class Organization {
       [ org_email.toLowerCase()] // and this is assigning whatever is in the bracket to the row 
                                 // in that table after we find it 
     )
+
+    console.log("org res", org_result);
 
     const auth_result = await db.query(
       `SELECT 
@@ -130,6 +135,8 @@ export class Organization {
            WHERE  email = $1`,
       [ org_email.toLowerCase()]
     )
+
+    console.log("auth res", auth_result)
 
     if(!auth_result) {
       throw new BadRequestError()
@@ -143,7 +150,7 @@ export class Organization {
     //   user_type: "organization"
     // }  
     if (org_result){
-      return org_result.rows[0]
+      return org_result
     }
     return null
   }

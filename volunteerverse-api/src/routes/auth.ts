@@ -10,6 +10,7 @@ export const authRoutes = express.Router()
 
 
 authRoutes.post("/register", async function(req, res, next){
+    console.log('eday')
     try {
         const {userType} = req.body
         console.log(userType)
@@ -17,6 +18,7 @@ authRoutes.post("/register", async function(req, res, next){
             const volunteer = await Volunteer.register(req.body)
             const token = createUserJwt(volunteer)
             console.log(token)
+            console.log('edayy')
             return res.status(201).json({user: volunteer, token: token})
         }
         else if (userType=="organization"){
