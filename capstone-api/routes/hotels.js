@@ -26,20 +26,55 @@ router.post('/hotels-detail', (req, res) => { //works on insomnia
 
 
 // Hotel Schema
-router.get('/hotels/:id', (req, res) => {
+  router.get('/hotels/:id', async (req, res) => {
     // Logic to retrieve a specific hotel by ID
+    const { id } = req.params;
+
+    try {
+      const hotel = await Hotels.getHotelById(id);
+      if (!hotel) {
+        res.status(404).json({ error: 'Hotel not found.' });
+      } else {
+        res.json(hotel);
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Failed to retrieve hotel.' });
+    }
+
   });
   
-  router.post('/hotels', (req, res) => {
+  router.post('/hotels', async (req, res) => {
     // Logic to create a new hotel
+    const credentials = req.body;
+
+    try {
+      await Hotels.addHotel(credentials);
+      res.sendStatus(201);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Failed to create hotel.' });
+    }
+    
   });
   
-  router.put('/hotels/:id', (req, res) => {
+  router.put('/hotels/:id', async (req, res) => {
     // Logic to update an existing hotel by ID
+    const { id } = req.params;
+  const updates = req.body;
+
+  try {
+    await Hotels.updateHotel(id, updates);
+    res.sendStatus(200);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to update hotel.' });
+  }
   });
   
-  router.delete('/hotels/:id', (req, res) => {
+  router.delete('/hotels/:id', async (req, res) => {
     // Logic to delete a hotel by ID
+    
   });
   
   
