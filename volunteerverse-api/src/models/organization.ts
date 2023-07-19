@@ -14,37 +14,7 @@ export class Organization {
    * @returns public organization
    */
 
-    // static async _createNewOrganization({id, organization_name, organization_description, organization_email, logo_url}) {
-     
-    //   return {
-    //     id: id,
-    //     organization_name: organization_name,
-    //     organization_description: organization_description,
-    //     organization_email: organization_email,
-    //    logo_url: logo_url,
-    //   }
-    // }
-
-
-   /**
-   * Authenticate user with email and password.
-   *
-   * Throws UnauthorizedError if user not found or wrong password.
-   *
-   * @returns organization
-   **/
-    
-  // static async register(organization) {
-  //   const requiredFields = ["organization_name", "organization_description", "organization_email", "logo_url"]
-  //    requiredFields.forEach(field => {
-  //     if(!CredentialsContainer.hasOwnProperty(field)){
-  //       throw new BadRequestError(`Missing %(field) in request body `)
-  //     }
-  //    })
-      
-    
-     
-  //   };
+   
 
   static async register(creds) {
    const { organization_name, organization_description, organization_email, logo_url, password, founders} = creds;
@@ -178,8 +148,25 @@ export class Organization {
       
   }
 
-  
 
+  static async fetchInterestedVolunteersByProjectId(projectId){
+
+    const result = await db.query(
+// make sure this matches spelling in the table too!!
+      `SELECT  
+      email,
+      project_id
+       FROM interested_volunteers
+       WHERE  project_id = $1`,
+       [ projectId]
+       )
+
+       if(!result) {
+        throw new BadRequestError()
+     }
+   return result.rows
+      
   }
+ }
 
 

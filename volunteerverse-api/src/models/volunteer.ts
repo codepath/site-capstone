@@ -1,5 +1,5 @@
 import { BCRYPT_WORK_FACTOR } from "../config";
-import { db } from "../db";
+import  db  from "../db";
 import { ExpressError, BadRequestError } from "../utils/errors";
 import { validateFields } from "../utils/validate";
 import bcrypt from "bcrypt";

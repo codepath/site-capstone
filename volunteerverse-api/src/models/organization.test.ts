@@ -11,7 +11,7 @@ jest.mock("");
 //     };
 //   });
 
-describe("Organization Model Functions", async () => {
+describe("Testing fetchOrgByEmail function", async () => {
   const validEmail = "hii@gaffamawfwfil.com";
 
   const mockData = {
@@ -38,6 +38,36 @@ describe("Organization Model Functions", async () => {
       userType: "organization",
       password: "1234",
       founders: "people",
+    });
+  });
+});
+
+describe("Testing fetchAllOrgProjects function", async () => {
+  const validEmail = "hii@gaffamawfwfil.com";
+
+  const mockData = {
+    project_name: "JelloWorldWebsite",
+      project_description: "doing the website of the compnau duh",
+      image_url: "xgxhhsb",
+      requested_people: 2,
+      approved_people: 3,
+      created_at: "5:30",
+    
+  };
+
+  beforeAll(() => {
+    db.query = jest.fn().mockReturnValue(mockData);
+  });
+
+  test("it should get projects", async function () {
+    const result = await Organization.fetchAllOrganizationProjects(validEmail);
+    expect(result).toStrictEqual({
+      project_name: "JelloWorldWebsite",
+      project_description: "doing the website of the compnau duh",
+      image_url: "xgxhhsb",
+      requested_people: 2,
+      approved_people: 3,
+      created_at: "5:30",
     });
   });
 });
