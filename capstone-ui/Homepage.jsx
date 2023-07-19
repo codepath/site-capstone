@@ -6,6 +6,7 @@ import Stack from '@mui/material/Stack'
 import Button from '@mui/material/Button'
 import { useState } from 'react'
 import ImageCarousel from './ImageCarousel'
+import ThingsToDo from './BookingPages/ThingsToDo'
 
 export default function Homepage({ filterFlights, setFilterFlights,
                                    filterActivities, setFilterActivities,
@@ -132,6 +133,7 @@ export default function Homepage({ filterFlights, setFilterFlights,
                     <div className='h-0.5 bg-blue-500 w-1/3 my-3'></div>
                 </div>
             </div>
+            <ThingsToDo/>
         </div>
     )
 }
