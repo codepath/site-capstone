@@ -26,3 +26,14 @@ projectRoutes.get("/:projectId", async function (req, res, next){
         res.status(404).json( { error: 'Project not found' } )
       }
 })
+
+/**route that gets all projects with given tag */
+projectRoutes.get("/tag/:tag_name", async function(req, res, next){
+    const tag = req.params.tag_name
+    const projects = await Projects.getProjectsWithTag(tag)
+    if (projects) {
+        res.status(201).json({projects: projects})
+      } else {
+        res.status(404).json( { error: 'Projects with given tag not found' } )
+      }
+})

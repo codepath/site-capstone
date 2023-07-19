@@ -31,7 +31,7 @@ export class Volunteer {
     password: string;
     firstName: string;
     lastName: string;
-    imageUrl:string;
+    imageUrl?:string;
     bio: string;
     skills: string[];
     userType: string;
@@ -41,7 +41,6 @@ export class Volunteer {
       "password",
       "firstName",
       "lastName",
-      "imageUrl",
       "bio",
       "skills",
       "userType"
@@ -89,7 +88,7 @@ export class Volunteer {
       volunteerInfo.firstName,
       volunteerInfo.lastName,
       volunteerInfo.bio,
-      volunteerInfo.imageUrl
+      volunteerInfo.imageUrl || null
     ]);
 
     const { id, email, firstName, lastName, bio , imageUrl} = result.rows[0];
@@ -178,13 +177,13 @@ export class Volunteer {
   /**
    * Fetch a volunteer in the database by email
    * @param email
+   * @returns volunteer if found, null if not
    */
 
   static async fetchVolunteerByEmail(email: string) {
     const query = `SELECT * FROM volunteers WHERE email=$1`;
     const result = await db.query(query, [email]);
     const volunteer = result.rows[0];
-
     if (volunteer) {
       return volunteer;
     }
@@ -192,14 +191,18 @@ export class Volunteer {
   }
 
 
-  // /**
-  //  * When a volunteer expresses interest in a project, log it into database
-  //  * @param projectId 
-  //  * @param email 
-  //  */
-  // static async expressInterest(projectId:number, email:string){
-  //   const query = `INSERT into interested_volunteers(email, project_id, approved) VALUES ($1,$2,$3) RETURNING email,project_id as "projectId",approved`
-  //   const result = await db.query(query, [email, projectId, false])
-  //   return result.rows[0]
-  // }
+  /**
+   * When a volunteer expresses interest in a project, log it into database
+   * @param projectId 
+   * @param email 
+   */
+  static async expressInterest(projectId:number, email:string){
+    const query = `INSERT into interested_volunteers(email, project_id, approved) VALUES ($1,$2,$3) RETURNING email,project_id as "projectId",approved`
+    const result = await db.query(query, [email, projectId, false])
+    return result.rows[0]
+  }
 }
+
+
+
+

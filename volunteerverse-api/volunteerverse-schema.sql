@@ -40,15 +40,15 @@ CREATE TABLE interested_volunteers(
     id SERIAL PRIMARY KEY,
     email TEXT NOT NULL CHECK (position('@' IN email) > 1),
     project_id INTEGER,
-    approved BOOLEAN,
-    FOREIGN KEY (project_id) REFERENCES projects (id)
+    approved BOOLEAN
+   
 );
 
 CREATE TABLE project_tags(
     id SERIAL PRIMARY KEY,
     project_id INTEGER,
-    tag_name TEXT NOT NULL,
-    FOREIGN KEY (project_id) REFERENCES projects (id)
+    tag_name TEXT NOT NULL
+    
 );
 
 CREATE TABLE authentication(
