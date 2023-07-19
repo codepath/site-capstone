@@ -1,7 +1,7 @@
 import {Pool} from "pg";
 import { getDatabaseURI } from "./config";
 
-export const db = new Pool({
+const db = new Pool({
   connectionString: getDatabaseURI(),
 });
 
@@ -16,3 +16,5 @@ db.connect((err: { stack: any }) => {
     
   }
 });
+
+export default db

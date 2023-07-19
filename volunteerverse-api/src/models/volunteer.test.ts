@@ -1,7 +1,6 @@
 import { Volunteer } from "./volunteer";
-import { db } from "../db";
-import { BadRequestError, UnprocessableEntityError } from "../utils/errors";
-import { after } from "node:test";
+
+import db  from "../db";
 
 /** fetchVolunteerByEmail */
 describe("fetchVolunteerByEmail", () => {
