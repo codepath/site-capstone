@@ -2,7 +2,6 @@ import './index.css'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import TextField from '@mui/material/TextField'
 import Chip from '@mui/material/Chip'
-import Stack from '@mui/material/Stack'
 import Button from '@mui/material/Button'
 import { useState } from 'react'
 import ImageCarousel from './ImageCarousel'
@@ -57,7 +56,7 @@ export default function Homepage({ filterFlights, setFilterFlights,
                         disabled
                     />
                 </div>
-                <div className="flex space-x-4 w-full border border-blue-500 rounded-lg mt-4 shadow-md">
+                <div className="flex space-x-4 w-full border border-blue-500 rounded-md mt-4 shadow-md">
                     {(!filterHotels && !filterActivities && !filterFlights) && (
                         <div className="p-4"><h2>Choose at least one search filter to begin.</h2></div>
                     )}
@@ -102,8 +101,14 @@ export default function Homepage({ filterFlights, setFilterFlights,
                                     required: true,
                                 }}
                             />
-                            <Button disabled={true} sx={{'border': '1px solid', 
-                                                         'height' : '55px'}}>Search</Button>
+                            <Button disabled={(budget === null || budget === "") 
+                                               || (travelers === null || travelers === "")
+                                               || (arrivalDate === null || arrivalDate === "") 
+                                               || (departureDate === null || departureDate === "") 
+                                               || (destination === null || destination === "") 
+                                               ? true : false} 
+                                    sx={{'border': '1px solid', 
+                                    'height' : '55px'}}>Search</Button>
                             </form>
                         </div>
                     )} 

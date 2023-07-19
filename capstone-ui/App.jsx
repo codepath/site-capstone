@@ -35,7 +35,7 @@ function App() {
     return ( 
     <LocalizationProvider dateAdapter={AdapterDayjs}>
         <ThemeProvider theme={theme} >
-            <div className="w-screen h-screen">
+            <div className="w-screen h-screen font-sans">
                 <Navbar />
                 <Homepage filterFlights={filterFlights} setFilterFlights={setFilterFlights}
                         filterActivities={filterActivities} setFilterActivities={setFilterActivities}
