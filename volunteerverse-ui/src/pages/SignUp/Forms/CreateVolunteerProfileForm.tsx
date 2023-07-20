@@ -6,7 +6,7 @@ import {
     Image, TextInput, Textarea, Title
 } from "@mantine/core";
 
-import { MouseEventHandler, useRef } from "react";
+import { useRef } from "react";
 
 const useStyles = createStyles((theme) => ({
     title : {
@@ -19,7 +19,11 @@ const useStyles = createStyles((theme) => ({
 }));
 
 function CreateVolunteerProfileForm({ form }: { form: UseFormReturnType<VolunteerFormValues> }) {
-    const inputRef = useRef<HTMLInputElement>(null);
+    /**
+     * @todo: upload photos onto imagur for file hosting. maybe limit file size too
+     * and store the image links in the db
+     */
+    const inputRef = useRef<HTMLInputElement>(null); // used to open file broswer
     const { classes } = useStyles();
     const openFileBrowswer = () => {
         inputRef.current?.click();
