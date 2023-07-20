@@ -4,8 +4,7 @@ import Logo from "../assets/Logo.png"
 
 export default function Navbar({appState} : any) {
   /**
-   * @todo define appstate props based on database models
-   * @todo use appstate props to change nav bar conditionally
+   * @todo use navigation route to change navbar conditionallty
    */
   return (
     <Header height={60} sx={(theme) => ({backgroundColor: "transparent", border: "none"})} >
