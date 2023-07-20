@@ -1,4 +1,4 @@
-interface Organization {
+export interface organizationProp {
     /**
      * @todo define organization interface
      */
