@@ -5,10 +5,20 @@ import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
 import './App.css';
-// import Navbar from './components/Navbar';
 import Navbar from './components/Navbar';
 
 function App() {
+  /**
+   * @todo: create API class to make a register and login requests to backend
+   * implement loader states as well
+   * test login 
+   * start building first all functional pages for the volunteer 
+   * then styling each one by one. 
+   * then switch to organization
+   * then look into stretch features:
+   * start web scraping data from democracy lab
+   * email validation, password security, photo image hosting
+   */
 // Appshell is used to navbar overlay across all pages 
   return (
     <>
