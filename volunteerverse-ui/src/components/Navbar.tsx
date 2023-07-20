@@ -8,7 +8,7 @@ export default function Navbar({appState} : any) {
    * @todo use appstate props to change nav bar conditionally
    */
   return (
-    <Header height={60} sx={{backgroundColor: "transparent", border: "none"}} >
+    <Header height={60} sx={(theme) => ({backgroundColor: "transparent", border: "none"})} >
       <Container style={{display: "flex", flexDirection : "row"}}>
         <Group>
           <Text component={Link} to="/signup">Sign Up</Text>
