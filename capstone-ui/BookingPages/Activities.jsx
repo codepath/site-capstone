@@ -133,14 +133,11 @@ function ActivityCards({activity, addToItinerary}){
             </div>
             <div className = "cart-btns">
                 <div className="add-btn">
-                    <button>
+                    <button onClick={handleItinerary}>
                         Add to Itinerary
                     </button>
                 </div >
                 <div className="like-btn">
-                    <button onClick={handleItinerary}>
-                        Like
-                    </button>
                 </div >
             </div>
         </div>

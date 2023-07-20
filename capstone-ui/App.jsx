@@ -6,6 +6,7 @@ import Homepage from './Homepage'
 import Navbar from './Navbar'
 import Footer from './Footer'
 import Activities from './BookingPages/Activities'
+import Hotels from './BookingPages/Hotels';
 import './index.css'
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom"
 
@@ -54,6 +55,9 @@ function App() {
                         } />
                         <Route path="/activities" element={
                             <Activities />} 
+                        />
+                        <Route path="/hotels" element={
+                            <Hotels />} 
                         />
                     </Routes>
                 </Router>
