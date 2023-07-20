@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-// const { User } = require("../models/user.js");
-import User from "../models/user.js"
+const { User, printTableColumns } = require("../models/user.js");
+// import User from "../models/user.js"
 
 // Users
 router.get('/users', async (req, res) => {
@@ -63,5 +63,16 @@ router.delete('/users/:id', async (req, res) => {
     res.status(500).json({ error: "Failed to delete user." });
   }
 });
+
+router.get('/tableinfo', async (req, res) => {
+  try {
+    await printTableColumns();
+    res.sendStatus(200);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to print table information." });
+  }
+});
+
 
 module.exports = router;

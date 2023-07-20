@@ -8,4 +8,4 @@ class Itinerary {
 
 }
 
-module.exports = Itenerary;
+module.exports = Itinerary;

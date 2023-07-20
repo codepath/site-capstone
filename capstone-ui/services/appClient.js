@@ -152,6 +152,11 @@ class ApiClient {
     }
 
 
+    //Schema Table 
+    async printTableInfo() {
+      return await this.request({ endpoint: '/tableinfo', method: 'GET' });
+    }
+
 
     
 

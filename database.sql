@@ -18,3 +18,11 @@ CREATE TABLE hotels (
     city TEXT NOT NULL,
     price TEXT NOT NULL
 );
+
+CREATE TABLE itinerary (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    country TEXT NOT NULL,
+    city TEXT NOT NULL,
+    price TEXT NOT NULL
+);
