@@ -15,7 +15,8 @@ export default function Homepage({ filterFlights, setFilterFlights,
                                    arrivalDate, setArrivalDate,
                                    destination, setDestination,
                                    budget, setBudget,
-                                   travelers, setTravelers }) {
+                                   travelers, setTravelers,
+                                 }) {
     
     const [submit, setSubmit] = useState(false)
 

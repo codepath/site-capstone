@@ -5,7 +5,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Homepage from './Homepage'
 import Navbar from './Navbar'
 import Footer from './Footer'
-import Activities from './BookingPages/Activities';
+import Activities from './BookingPages/Activities'
 import './index.css'
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom"
 
@@ -58,7 +58,6 @@ function App() {
                     </Routes>
                 </Router>
                 <Footer />
-                
             </div>
         </ThemeProvider>
     </LocalizationProvider>
