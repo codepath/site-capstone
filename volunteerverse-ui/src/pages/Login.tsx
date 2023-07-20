@@ -39,7 +39,7 @@ export default function Login() {
   return (
     <Flex align={"center"} justify={"center"} direction={"column"} className={classes.container}>
       <Paper shadow="xl" radius={"xl"} className={classes.content}>
-        <Title p="lg">Login</Title>
+        <Title p="lg">Welcome Back!</Title>
         <TextInput m={"md"} radius={"lg"} size="lg" label="Email" placeholder="your@email.com" />
         <PasswordInput m={"md"} radius={"lg"} size="lg" label="Passowrd" placeholder="Password" />
         <Button loading={visible} mt={"xl"} onClick={handleUserLogin}>Login</Button>
