@@ -12,6 +12,17 @@ const useStyles = createStyles((theme) => ({
     names: {
 
     },
+    title : {
+        color: theme.colors.violet[9],
+        fontSize: `calc(${theme.fontSizes.xl} * 2)`,
+
+        [theme.fn.smallerThan("md")] : {
+            fontSize: `calc(${theme.fontSizes.xl})`
+        },
+        [theme.fn.smallerThan("sm")] : {
+            fontSize: `calc(${theme.fontSizes.lg} * 1.25)`
+        }
+    },
 }))
 
 function CreateOrgAccountForm({ form } : {form: UseFormReturnType<OrgFormValues> }) {
@@ -19,23 +30,31 @@ function CreateOrgAccountForm({ form } : {form: UseFormReturnType<OrgFormValues>
 
     return (
         <Container className={classes.container}>
-            <Title m="xl" >Create an Accont</Title>
+            <Title order={1} className={classes.title} mb="xl" >Create an Accont</Title>
             <TextInput
+                size='md'
+                radius={"xl"}
                 withAsterisk
                 label="Organization Name"
-                placeholder="Organization Name" 
+                placeholder="Organization Name"
                 {...form.getInputProps('org_name')} />
             <TextInput
+                radius={"xl"}
+                size='md'
                 withAsterisk
                 label="Email"
-                placeholder="Email"  
+                placeholder="Email"
                 {...form.getInputProps('email')} />
             <PasswordInput
+                radius={"xl"}
+                size='md'
                 withAsterisk
                 label="Password"
-                placeholder="Password"  
+                placeholder="Password"
                 {...form.getInputProps('password')} />
             <PasswordInput
+                radius={"xl"}
+                size='md'
                 withAsterisk
                 label="Confirm Password"
                 placeholder="Confirm Password" 
