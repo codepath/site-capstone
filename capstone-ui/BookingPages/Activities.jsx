@@ -5,7 +5,7 @@ const destination = "New York"
 const budget = 1000
 const startDate = "Tuesday, July 18"
 const endDate = "Sunday, July 23"
-export default function ThingsToDo (){
+export default function Activities (){
 
 
 
