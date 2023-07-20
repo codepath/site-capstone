@@ -18,12 +18,6 @@ export const activities = [{
     image:"https://www.google.com/imgres?imgurl=https%3A%2F%2Fimage.cnbcfm.com%2Fapi%2Fv1%2Fimage%2F106901699-1624478603272Resorts-World-Las-Vegas---Casino---Credit-Megan-Blair-jpg%3Fv%3D1624478654%26w%3D1600%26h%3D900&tbnid=EL838r0BCZeS2M&vet=12ahUKEwjK-5_i6JaAAxXLCVkFHZAOAZAQMygAegUIARDpAQ..i&imgrefurl=https%3A%2F%2Fwww.cnbc.com%2F2021%2F06%2F24%2Fresorts-world-las-vegas-to-open-as-pandemic-recovery-takes-hold.html&docid=8Y092sQA_Y_02M&w=1600&h=900&q=casino&client=safari&ved=2ahUKEwjK-5_i6JaAAxXLCVkFHZAOAZAQMygAegUIARDpAQ",
     alt: "Image of Casino",
     price: 75
-},
-{
-    id:3,
-    name:"casino",
-    image:"https://www.google.com/imgres?imgurl=https%3A%2F%2Fimage.cnbcfm.com%2Fapi%2Fv1%2Fimage%2F106901699-1624478603272Resorts-World-Las-Vegas---Casino---Credit-Megan-Blair-jpg%3Fv%3D1624478654%26w%3D1600%26h%3D900&tbnid=EL838r0BCZeS2M&vet=12ahUKEwjK-5_i6JaAAxXLCVkFHZAOAZAQMygAegUIARDpAQ..i&imgrefurl=https%3A%2F%2Fwww.cnbc.com%2F2021%2F06%2F24%2Fresorts-world-las-vegas-to-open-as-pandemic-recovery-takes-hold.html&docid=8Y092sQA_Y_02M&w=1600&h=900&q=casino&client=safari&ved=2ahUKEwjK-5_i6JaAAxXLCVkFHZAOAZAQMygAegUIARDpAQ",
-    alt: "Image of Casino",
-    price: 75
 }
+
 ]

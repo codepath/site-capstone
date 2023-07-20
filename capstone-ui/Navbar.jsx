@@ -43,7 +43,7 @@ export default function Navbar() {
             <Modal 
                 open={registerOpen}
                 >
-                    <div class="flex justify-center items-center h-screen font-sans">
+                    <div className="flex justify-center items-center h-screen font-sans">
                         <div className="border w-72 bg-white border-blue-500 rounded-md px-3">
                             <div className="flex justify-end cursor-pointer" onClick={() => setRegisterOpen(false)}>—</div>
                             <div>

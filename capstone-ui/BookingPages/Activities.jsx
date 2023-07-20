@@ -9,18 +9,43 @@ export default function Activities (){
 
 
 
-    const [likes, setLikes] = useState([])
+    const [itinerary, setItinerary] = useState([])
+    const [searchValue, setSearchValue] = useState("")
+    const [ price, setPrice ] = useState(0);
 
-    const addToLikes = (item)=>{
-        if(likes.includes(item)){
+     //creates new array for products that incldue search value in name
+
+     const filterByPrice = price != 0
+    ? activities.filter((activity) => activity.price <= price )
+    : activities
+    
+    const activitiesDisplayed = searchValue
+    ? activities.filter((activity) => activity.name.toLowerCase().includes(searchValue.toLowerCase()))
+    : filterByPrice
+
+
+ const handleOnSearch = (event) => {
+    setSearchValue(event.target.value)
+    console.log("searchValue")
+    console.log(searchValue)
+  }
+
+  const handleInput = (event)=>{
+    setPrice( event.target.value );
+  }
+  
+
+
+    const addToItinerary = (item)=>{
+        if(itinerary.includes(item)){
           console.log("already liked")
         }else{
-            likes.push(item)
+            itinerary.push(item)
         }
-          setLikes(likes)
-          console.log("Likes")
-          console.log(likes)
-          console.log(likes.length)
+          setItinerary(itinerary)
+          console.log("Itinerary")
+          console.log(itinerary)
+          console.log(itinerary.length)
          
       }
     return (
@@ -55,8 +80,8 @@ export default function Activities (){
             <div className="search-actions">
                 <div className="search-bar">
                     {/* what is being searched? */}
-                    <input type = "text" placeholder="Search"/>
-                    {/* value = {searchValue} onChange = {handleOnSearch} */}
+                    <input type = "text" placeholder="Search" value = {searchValue} onChange = {handleOnSearch}/>
+                    
                 </div>
                 <div className="category">
                   <label htmlFor="category">Choose a category:</label>
@@ -68,19 +93,14 @@ export default function Activities (){
                   </select>
                 </div>
                 <div className="filter-by-price">
-                     <label htmlFor="category">Choose a price range:</label>
-                  <select name="price-range" id="price-range">
-                    <option value="range1">0 - 100 </option> 
-                    <option value="range2">100 - 500 </option> 
-                    <option value="range3"> 500 - 1000</option> 
-                    <option value="range4">1000 - 2000</option> 
-                  </select>
+                     <label htmlFor="category">Choose a price range: {price}</label>
+                     <input type="range" onInput={ handleInput } />
                   
                 </div>
             </div>
             <div className="cards">
-            {activities.map((activity) => (
-              <ActivityCards activity = {activity} key = {activity.id} addToLikes = {addToLikes}/>
+            {activitiesDisplayed.map((activity) => (
+              <ActivityCards activity = {activity} key = {activity.id} addToItinerary = {addToItinerary}/>
             ))}
 
             </div>
@@ -90,12 +110,14 @@ export default function Activities (){
 }
 
 
-function ActivityCards({activity, addToLikes}){
+function ActivityCards({activity, addToItinerary}){
     
 
-      const handleLike = () => {
-        addToLikes(activity)
+      const handleItinerary= () => {
+        addToItinerary(activity)
     }
+
+
 
     return (
        
@@ -116,7 +138,7 @@ function ActivityCards({activity, addToLikes}){
                     </button>
                 </div >
                 <div className="like-btn">
-                    <button onClick={handleLike}>
+                    <button onClick={handleItinerary}>
                         Like
                     </button>
                 </div >
