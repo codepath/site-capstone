@@ -1,4 +1,5 @@
 import { Volunteer } from "./volunteer";
+import { BadRequestError, UnprocessableEntityError } from "../utils/errors";
 
 import db  from "../db";
 
@@ -98,9 +99,20 @@ describe("volunteer registration", () => {
     );
   });
 
-  // test("registers a new volunteer successfuly", async () => {
+  test("registers a new volunteer successfuly", async () => {
+    const volunteerInfo = {
+      email: "fiona@gmail.com",
+      password: "123",
+      firstName: "Fiona",
+      lastName: "Apple",
+      bio: "Looking to help out",
+      skills: ["Machine Learning"],
+      userType: "volunteer",
+    }
 
-  // })
+    
+
+  })
 
 
 });
