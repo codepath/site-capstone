@@ -10,10 +10,20 @@ app.use(express.json());
 app.use(morgan("tiny"));
 
 const hotelsRouter = require('./routes/hotels');
+const favoritesRouter = require('./routes/favorites');
+const activitiesRouter = require('./routes/activities');
+const itinerariesRouter = require('./routes/itineraries.js');
+const userRouter = require('./routes/user');
+
 
 console.log("entered server")
 
 app.use('/api', hotelsRouter);
+app.use('/', favoritesRouter);
+app.use('/', activitiesRouter);
+app.use('/', itinerariesRouter);
+app.use('/', userRouter);
+
 
 
 
