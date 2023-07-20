@@ -3,7 +3,8 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import TextField from '@mui/material/TextField'
 import Chip from '@mui/material/Chip'
 import Button from '@mui/material/Button'
-import { useState } from 'react'
+import { Link } from "react-router-dom"
+import { useState, useEffect } from 'react'
 import ImageCarousel from './ImageCarousel'
 import ThingsToDo from './BookingPages/ThingsToDo'
 
@@ -16,7 +17,16 @@ export default function Homepage({ filterFlights, setFilterFlights,
                                    budget, setBudget,
                                    travelers, setTravelers }) {
     
-    
+    const [submit, setSubmit] = useState(false)
+
+    useEffect(() => {
+        if ((budget === null || budget === "") 
+    || (travelers === null || travelers === "")
+    || (arrivalDate === null || arrivalDate === "") 
+    || (departureDate === null || departureDate === "") 
+    || (destination === null || destination === "")) setSubmit(false)
+    else setSubmit(true) 
+    }, [budget, travelers, arrivalDate, departureDate, destination])
 
     async function handleSubmit(event) {
         event.preventDefault()
@@ -29,7 +39,7 @@ export default function Homepage({ filterFlights, setFilterFlights,
             <div className="flex-auto">
                 <div className="text-2xl"><h2>Book your next adventure.</h2></div>
                 {/* Input box buttons */}
-                <div>
+                <div className="mt-3">
                     I want to search for... 
                 </div>
                 <div className="flex space-x-4">
@@ -101,14 +111,11 @@ export default function Homepage({ filterFlights, setFilterFlights,
                                     required: true,
                                 }}
                             />
-                            <Button disabled={(budget === null || budget === "") 
-                                               || (travelers === null || travelers === "")
-                                               || (arrivalDate === null || arrivalDate === "") 
-                                               || (departureDate === null || departureDate === "") 
-                                               || (destination === null || destination === "") 
-                                               ? true : false} 
+                            <Link to={submit ? "/activities" : ""}>
+                            <Button disabled={!submit ? true : false} 
                                     sx={{'border': '1px solid', 
                                     'height' : '55px'}}>Search</Button>
+                            </Link>
                             </form>
                         </div>
                     )} 
