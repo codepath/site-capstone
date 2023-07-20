@@ -16,13 +16,17 @@ function App() {
         <BrowserRouter>
           <AppShell pl={0} pr={0}
           styles={(theme) => ({
-            main: {paddingLeft : 0, paddingRight: 0},
-            root: { height: "100%", backgroundImage: theme.fn.gradient({from: theme.primaryColor,  to: theme.white, deg: 180})}
+            main: {padding : "initial 0"},
+            root: { 
+              height: "100%",
+              backgroundImage: theme.fn.gradient({from: theme.primaryColor,  to: theme.white, deg: 180}),
+            }
           })}
             header={<Navbar />}>
           <Routes>
             <Route path="/" element={<Landing />} />
-            <Route path="/signup" element={<SignUp />} />
+            <Route path="/signup/organization" element={<SignUp userType="organization" />} />
+            <Route path="/signup/volunteer" element={<SignUp userType="volunteer"/>} />
             <Route path="/login" element={<Login />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
