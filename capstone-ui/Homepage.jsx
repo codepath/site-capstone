@@ -6,7 +6,7 @@ import Button from '@mui/material/Button'
 import { Link } from "react-router-dom"
 import { useState, useEffect } from 'react'
 import ImageCarousel from './ImageCarousel'
-import Activities from './BookingPages/Activities'
+
 
 export default function Homepage({ filterFlights, setFilterFlights,
                                    filterActivities, setFilterActivities,
