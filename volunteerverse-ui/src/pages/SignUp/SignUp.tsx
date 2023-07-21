@@ -1,7 +1,6 @@
 import { 
   Button, Group, Paper, Stepper, 
-  createStyles, TextInput, Space, 
-  Checkbox, Title, Text, Container, Flex,
+  createStyles, Checkbox,
 } from "@mantine/core";
 import { useState } from "react";
 import { useForm, UseFormReturnType } from "@mantine/form";
