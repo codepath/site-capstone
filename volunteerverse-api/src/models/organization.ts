@@ -3,6 +3,7 @@ import bcrypt from "bcrypt"
 import { BadRequestError, ExpressError } from "../utils/errors"
 
 import { BCRYPT_WORK_FACTOR } from "../config"
+import { log } from "console";
 
 export class Organization {
     /**
@@ -17,16 +18,15 @@ export class Organization {
    
 
   static async register(creds) {
-   const { organization_name, organization_description, organization_email, logo_url, password, founders} = creds;
 
-   const existingOrganizationWithEmail = await Organization.fetchOrganizationByEmail(organization_email);
+   const existingOrganizationWithEmail = await Organization.fetchOrganizationByEmail(creds.organization_email);
     if (existingOrganizationWithEmail) {
-      throw new BadRequestError(`Duplicate email: ${organization_email}`);
+      throw new BadRequestError(`Duplicate email: ${creds.organization_email}`);
     }
 
    const salt = await bcrypt.genSalt(BCRYPT_WORK_FACTOR );
-   const hashedPassword = await bcrypt.hash(password, salt);
-   const normalizedOrgEmail = organization_email.toLowerCase();
+   const hashedPassword = await bcrypt.hash(creds.password, salt);
+   const normalizedOrgEmail = creds.organization_email.toLowerCase();
 
     const orgResult = await db.query (
       `INSERT INTO organizations (
@@ -37,14 +37,16 @@ export class Organization {
        founders
       )
       VALUES ($1, $2, $3, $4, $5)
-      RETURNING organization_name,
+      RETURNING id,
+      organization_name,
                 organization_description,
                 organization_email,
                logo_url,
                founders
                `,
-    [organization_name, organization_description, normalizedOrgEmail, logo_url, founders] )
+    [creds.organization_name, creds.organization_description, normalizedOrgEmail, creds.logo_url, creds.founders] )
    
+    const {id, organization_email, organization_name, logo_url, founders, organization_description} = orgResult.rows[0]
 
     const authResult = await db.query (
       `INSERT INTO authentication (
@@ -61,6 +63,8 @@ export class Organization {
     
     [normalizedOrgEmail, hashedPassword, "organization"])
 
+    const {user_type} = authResult.rows[0]
+
     // const org = {
     //   organization_name: orgResult.rows[0].organization_name,
     //   organization_description: orgResult.rows[0].organization_description,
@@ -68,7 +72,17 @@ export class Organization {
     //   logo_url: orgResult[0].logo_url,
     //   user_type: "organization"
     // }  
-    return orgResult.rows[0];
+    // return orgResult.rows[0];
+
+    return {
+      id: id,
+      email: organization_email,
+      name: organization_name,
+      description: organization_description,
+      logo: logo_url,
+      founders: founders,
+      userType: user_type
+    }
     
 
   }

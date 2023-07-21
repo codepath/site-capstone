@@ -1,27 +1,11 @@
 import { BCRYPT_WORK_FACTOR } from "../config";
-import  db  from "../db";
+import db from "../db";
 import { ExpressError, BadRequestError } from "../utils/errors";
 import { validateFields } from "../utils/validate";
 import bcrypt from "bcrypt";
+import { Projects } from "./projects";
 
 export class Volunteer {
-  /**
-   * Convert a volunteer from the database into a volunteer object that can be viewed publically.
-   * @param {Volunteer} volunteer - user from database
-   * @returns public volunteer info
-   */
-  static _createPublicUser(volunteer) {
-    return {
-      id: volunteer.id,
-      firstName: volunteer.firstName,
-      lastName: volunteer.lastName,
-      email: volunteer.email,
-      bio: volunteer.bio,
-      skills: volunteer.skills,
-      userType: volunteer.userType,
-    };
-  }
-
   /**
    * Register volunteer with their information in the database
    * @param volunteerInfo
@@ -31,7 +15,7 @@ export class Volunteer {
     password: string;
     firstName: string;
     lastName: string;
-    imageUrl:string;
+    imageUrl?:string;
     bio: string;
     skills: string[];
     userType: string;
@@ -41,7 +25,6 @@ export class Volunteer {
       "password",
       "firstName",
       "lastName",
-      "imageUrl",
       "bio",
       "skills",
       "userType"
@@ -59,7 +42,7 @@ export class Volunteer {
     const existingVolunteer = await this.fetchVolunteerByEmail(
       volunteerInfo.email
     );
-    if (existingVolunteer) {
+    if (existingVolunteer!=null) {
       throw new BadRequestError(`Duplicate email: ${volunteerInfo.email}`);
     }
 
@@ -89,7 +72,7 @@ export class Volunteer {
       volunteerInfo.firstName,
       volunteerInfo.lastName,
       volunteerInfo.bio,
-      volunteerInfo.imageUrl
+      volunteerInfo.imageUrl || null
     ]);
 
     const { id, email, firstName, lastName, bio , imageUrl} = result.rows[0];
@@ -178,13 +161,13 @@ export class Volunteer {
   /**
    * Fetch a volunteer in the database by email
    * @param email
+   * @returns volunteer if found, null if not
    */
 
   static async fetchVolunteerByEmail(email: string) {
     const query = `SELECT * FROM volunteers WHERE email=$1`;
     const result = await db.query(query, [email]);
     const volunteer = result.rows[0];
-
     if (volunteer) {
       return volunteer;
     }
@@ -192,14 +175,30 @@ export class Volunteer {
   }
 
 
-  // /**
-  //  * When a volunteer expresses interest in a project, log it into database
-  //  * @param projectId 
-  //  * @param email 
-  //  */
-  // static async expressInterest(projectId:number, email:string){
-  //   const query = `INSERT into interested_volunteers(email, project_id, approved) VALUES ($1,$2,$3) RETURNING email,project_id as "projectId",approved`
-  //   const result = await db.query(query, [email, projectId, false])
-  //   return result.rows[0]
-  // }
+  /**
+   * When a volunteer expresses interest in a project, log it into database
+   * @param projectId 
+   * @param email 
+   */
+  static async expressInterest(projectId:number, email:string){
+    const query = `INSERT into interested_volunteers(email, project_id, approved) VALUES ($1,$2,$3) RETURNING email,project_id as "projectId",approved`
+    const result = await db.query(query, [email, projectId, false])
+    return result.rows[0]
+  }
+
+
+  static async getVolunteersProjectFeed(email:string){
+    const projects = []
+    const volunteerSkills = await this.fetchAllSkills(email)
+    const volunteersProject = await Promise.all(volunteerSkills.map(async (tag: string)=> {
+      const tagProjects = await Projects.getProjectsWithTag(tag)
+      console.log(tagProjects)
+      tagProjects.forEach((project)=>{projects.push(project)})
+    }))
+    return projects
+  }
 }
+
+
+
+
