@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const pool = require('../db');
 const { User, printTableColumns } = require("../models/user.js");
 // import User from "../models/user.js"
 
@@ -66,7 +67,13 @@ router.delete('/users/:id', async (req, res) => {
 
 router.get('/tableinfo', async (req, res) => {
   try {
-    await printTableColumns();
+    //const query = 'SELECT * FROM hotels'
+    const query = 'SELECT current_database();'
+    pool.query(query)
+    .then((result) => {
+        console.log(result)
+        console.log('worked')
+    })
     res.sendStatus(200);
   } catch (error) {
     console.error(error);
