@@ -34,11 +34,11 @@ export default function Homepage({ filterFlights, setFilterFlights,
 
     }
     return (
-        <div className="px-64 relative">
-            <div className="absolute z-[-1] mx-52 overflow-hidden h-48" >
-                <img src="./Assets/homepage-banner.jpg" className="object-cover object-top"/>
+        <div className="relative">
+            <div className="absolute z-[-1] left-0 right-0 overflow-hidden h-72">
+                <img src="./Assets/homepage-banner.jpg" className="w-full h-full object-cover object-bottom"/>
             </div>
-            <div className="relative p-4">
+            <div className="relative shadow-lg mx-56 py-4 px-8 bg-white bg-opacity-80">
                 <div><h1>Nomadia</h1></div>
                 {/* Input box wrapper */}
                 <div className="flex-auto">
