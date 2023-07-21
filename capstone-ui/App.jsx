@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -6,6 +6,7 @@ import Homepage from './Homepage'
 import Navbar from './Navbar'
 import Footer from './Footer'
 import Activities from './BookingPages/Activities'
+import Hotels from './BookingPages/Hotels';
 import './index.css'
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom"
 
@@ -34,6 +35,27 @@ function App() {
     const [budget, setBudget] = useState(50)
 
     const [authenticated, setAuthenticated] = useState(false)
+
+    const [itinerary, setItinerary] = useState([])
+
+   
+
+  
+    const addToItinerary = (item)=>{
+        
+        if ( itinerary.includes(item) || itinerary.some(item => item.category === 'hotel')) {
+           console.log("already added ")
+        }else{
+            // itinerary.push(item)
+            setItinerary([...itinerary, item])
+        }
+         // setItinerary(itinerary)
+          console.log("Itinerary")
+          console.log(itinerary)
+          console.log(itinerary.length)
+      }
+
+      
     return ( 
     <LocalizationProvider dateAdapter={AdapterDayjs}>
         <ThemeProvider theme={theme}>
@@ -53,7 +75,10 @@ function App() {
                             />
                         } />
                         <Route path="/activities" element={
-                            <Activities />} 
+                            <Activities itinerary ={itinerary} setItinerary = {setItinerary} addToItinerary = {addToItinerary} />} 
+                        />
+                        <Route path="/hotels" element={
+                            <Hotels itinerary ={itinerary} setItinerary = {setItinerary} addToItinerary = {addToItinerary} />} 
                         />
                     </Routes>
                 </Router>
