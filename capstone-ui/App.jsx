@@ -40,12 +40,7 @@ function App() {
 
    
 
-    // useEffect(() => {
-    //     let string = JSON.stringify(itinerary)
-    //     localStorage.setItem("itinerary", string)
-    //     setItinerary(localStorage.getItem("itinerary"))
-    // }, [itinerary])
-    
+  
     const addToItinerary = (item)=>{
         
         if ( itinerary.includes(item) || itinerary.some(item => item.category === 'hotel')) {
