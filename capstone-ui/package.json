@@ -1,10 +1,14 @@
 {
-  "name": "capstone-ui",
+  "name": "capstone_codepath",
   "version": "1.0.0",
   "description": "",
-  "main": "tailwind.config.js",
+  "main": "index.js",
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.14.0",
     "@mui/x-date-pickers": "^6.10.0",
+    "@vitejs/plugin-react": "^4.0.3",
     "acorn": "^8.10.0",
     "acorn-jsx": "^5.3.2",
     "ajv": "^6.12.6",
@@ -85,9 +89,8 @@
     "flatted": "^3.2.7",
     "for-each": "^0.3.3",
     "fraction.js": "^4.2.0",
-    "framer-motion": "^4.1.17",
-    "framesync": "^5.3.0",
     "fs.realpath": "^1.0.0",
+    "fsevents": "^2.3.2",
     "function-bind": "^1.1.1",
     "function.prototype.name": "^1.1.5",
     "functions-have-names": "^1.2.3",
@@ -107,7 +110,6 @@
     "has-proto": "^1.0.1",
     "has-symbols": "^1.0.3",
     "has-tostringtag": "^1.0.0",
-    "hey-listen": "^1.0.8",
     "hoist-non-react-statics": "^3.3.2",
     "ignore": "^5.2.4",
     "import-fresh": "^3.3.0",
@@ -186,7 +188,6 @@
     "picomatch": "^2.3.1",
     "pify": "^2.3.0",
     "pirates": "^4.0.6",
-    "popmotion": "^9.3.6",
     "postcss": "^8.4.26",
     "postcss-import": "^15.1.0",
     "postcss-js": "^4.0.1",
@@ -201,9 +202,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-is": "^16.13.1",
-    "react-material-ui-carousel": "^3.4.2",
     "react-refresh": "^0.14.0",
-    "react-router-dom": "^6.14.2",
     "react-transition-group": "^4.4.5",
     "read-cache": "^1.0.0",
     "readdirp": "^3.6.0",
@@ -229,18 +228,17 @@
     "string.prototype.trimstart": "^1.0.6",
     "strip-ansi": "^6.0.1",
     "strip-json-comments": "^3.1.1",
-    "style-value-types": "^4.1.4",
     "stylis": "^4.2.0",
     "sucrase": "^3.32.0",
     "supports-color": "^5.5.0",
     "supports-preserve-symlinks-flag": "^1.0.0",
+    "tailwindcss": "^3.3.3",
     "text-table": "^0.2.0",
     "thenify": "^3.3.1",
     "thenify-all": "^1.6.0",
     "to-fast-properties": "^2.0.0",
     "to-regex-range": "^5.0.1",
     "ts-interface-checker": "^0.1.13",
-    "tslib": "^2.6.0",
     "type-check": "^0.4.0",
     "type-fest": "^0.20.2",
     "typed-array-byte-offset": "^1.0.0",
@@ -258,14 +256,15 @@
     "yocto-queue": "^0.1.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "vite"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@vitejs/plugin-react": "^4.0.3",
+   "@vitejs/plugin-react": "^4.0.3",
     "tailwindcss": "^3.3.3",
     "vite": "^4.4.6"
+
   }
 }

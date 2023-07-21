@@ -1,9 +1,10 @@
 import './index.css'
 
-export default function ImageCard({ footer=false }) {
+export default function ImageCard({ description, img }) {
     return (
-        <div className="border border-blue-500 rounded-lg">
-            <img src="./Assets/no_img_tst.png" />
+        <div className="h-48 w-full object-cover">
+            <img src={img} />
+            <div>{description}</div>
         </div>
     )
 }
