@@ -38,7 +38,10 @@ export default function Hotels (){
 
     const addToItinerary = (item)=>{
         if(itinerary.includes(item)){
-          console.log("already liked")
+          console.log("already added")
+        }
+        if (itinerary.some(item => item.category === 'hotel')) {
+           console.log("already added hotel")
         }else{
             itinerary.push(item)
         }
@@ -83,8 +86,9 @@ export default function Hotels (){
                 </div>
             
                 <div className="filter-by-price">
+
                      <label htmlFor="category">Choose a price range: {price}</label>
-                     <input type="range" onInput={ handleInput } />
+                     <input type="range" min="0" max="20000"  onInput={ handleInput } />
                   
                 </div>
             </div>

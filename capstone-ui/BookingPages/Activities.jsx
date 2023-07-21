@@ -83,18 +83,9 @@ export default function Activities (){
                     <input type = "text" placeholder="Search" value = {searchValue} onChange = {handleOnSearch}/>
                     
                 </div>
-                <div className="category">
-                  <label htmlFor="category">Choose a category:</label>
-                  <select name="category" id="category">
-                    <option value="cat1">Category 1</option> 
-                    <option value="cat2">Category 2</option> 
-                    <option value="cat3">Category 3</option> 
-                    <option value="cat4">Category 4</option> 
-                  </select>
-                </div>
                 <div className="filter-by-price">
                      <label htmlFor="category">Choose a price range: {price}</label>
-                     <input type="range" onInput={ handleInput } />
+                     <input type="range" min = "0" max = "1000" onInput={ handleInput } />
                   
                 </div>
             </div>
