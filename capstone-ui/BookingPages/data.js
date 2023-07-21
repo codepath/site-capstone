@@ -21,3 +21,35 @@ export const activities = [{
 }
 
 ]
+
+const hotels = [
+    {
+    id:1,
+    category: "hotel",
+    name: "fairview hotel",
+    image:"https://www.google.com/imgres?imgurl=https%3A%2F%2Fdigital.ihg.com%2Fis%2Fimage%2Fihg%2Findependent--sphc--nairobi-8632214358-2x1&tbnid=QKD_WDU5N-28LM&vet=12ahUKEwi4rOTGqp6AAxWvF1kFHSVIDRMQMygBegUIARDoAQ..i&imgrefurl=https%3A%2F%2Fwww.ihg.com%2Fspnd%2Fhotels%2Fus%2Fen%2Fnairobi%2Fnbofn%2Fhoteldetail&docid=N6bmP5foQA0HfM&w=4000&h=2000&q=Fairview%20Hotel&client=safari&ved=2ahUKEwi4rOTGqp6AAxWvF1kFHSVIDRMQMygBegUIARDoAQ",
+    alt:"image of fairview hotel",
+    location: "eagle state",
+    price: 100
+},
+{
+    id:2,
+    category: "hotel",
+    name: "hamptons inn",
+    image: "https://www.google.com/imgres?imgurl=https%3A%2F%2Fassets.vogue.com%2Fphotos%2F62fa8a471ab62ba6e93d5737%2Fmaster%2Fw_1600%252Cc_limit%2FBaronsCoveSept201926.jpg&tbnid=xrRIm45MmuObgM&vet=12ahUKEwiC0Nntqp6AAxVkMWIAHYsXA2kQMygEegUIARDqAQ..i&imgrefurl=https%3A%2F%2Fwww.vogue.com%2Farticle%2Fthe-best-hotels-in-the-hamptons&docid=dnjIl7TwPoQ1mM&w=1600&h=1067&q=hamptons%20hotel&client=safari&ved=2ahUKEwiC0Nntqp6AAxVkMWIAHYsXA2kQMygEegUIARDqAQ",
+    alt:"image of hamptons inn",
+    location: "the hamptons",
+    price: 500  
+},
+{
+    id:3,
+    category: "hotel",
+    name: "capsule hotel ",
+    image: "",
+    alt: "image of capsule hotel",
+    location: "tokyo, japan",
+    price: 50
+}
+]
+
+export {hotels}

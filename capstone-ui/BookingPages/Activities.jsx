@@ -5,11 +5,11 @@ const destination = "New York"
 const budget = 1000
 const startDate = "Tuesday, July 18"
 const endDate = "Sunday, July 23"
-export default function Activities (){
+export default function Activities ({addToItinerary, itinerary}){
 
 
 
-    const [itinerary, setItinerary] = useState([])
+    // const [itinerary, setItinerary] = useState([])
     const [searchValue, setSearchValue] = useState("")
     const [ price, setPrice ] = useState(0);
 
@@ -36,18 +36,18 @@ export default function Activities (){
   
 
 
-    const addToItinerary = (item)=>{
-        if(itinerary.includes(item)){
-          console.log("already liked")
-        }else{
-            itinerary.push(item)
-        }
-          setItinerary(itinerary)
-          console.log("Itinerary")
-          console.log(itinerary)
-          console.log(itinerary.length)
+    // const addToItinerary = (item)=>{
+    //     if(itinerary.includes(item)){
+    //       console.log("already liked")
+    //     }else{
+    //         itinerary.push(item)
+    //     }
+    //       setItinerary(itinerary)
+    //       console.log("Itinerary")
+    //       console.log(itinerary)
+    //       console.log(itinerary.length)
          
-      }
+    //   }
     return (
         <div className="things-to-do-page">
             {/* make these btns links */}
@@ -83,18 +83,9 @@ export default function Activities (){
                     <input type = "text" placeholder="Search" value = {searchValue} onChange = {handleOnSearch}/>
                     
                 </div>
-                <div className="category">
-                  <label htmlFor="category">Choose a category:</label>
-                  <select name="category" id="category">
-                    <option value="cat1">Category 1</option> 
-                    <option value="cat2">Category 2</option> 
-                    <option value="cat3">Category 3</option> 
-                    <option value="cat4">Category 4</option> 
-                  </select>
-                </div>
                 <div className="filter-by-price">
                      <label htmlFor="category">Choose a price range: {price}</label>
-                     <input type="range" onInput={ handleInput } />
+                     <input type="range" min = "0" max = "1000" onInput={ handleInput } />
                   
                 </div>
             </div>
@@ -133,14 +124,11 @@ function ActivityCards({activity, addToItinerary}){
             </div>
             <div className = "cart-btns">
                 <div className="add-btn">
-                    <button>
+                    <button onClick={handleItinerary}>
                         Add to Itinerary
                     </button>
                 </div >
                 <div className="like-btn">
-                    <button onClick={handleItinerary}>
-                        Like
-                    </button>
                 </div >
             </div>
         </div>
