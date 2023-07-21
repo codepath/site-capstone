@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1689872153460" clover="3.2.0">
-  <project timestamp="1689872153460" name="All files">
-    <metrics statements="157" coveredstatements="73" conditionals="45" coveredconditionals="18" methods="36" coveredmethods="11" elements="238" coveredelements="102" complexity="0" loc="157" ncloc="157" packages="3" files="7" classes="7"/>
+<coverage generated="1689959479576" clover="3.2.0">
+  <project timestamp="1689959479576" name="All files">
+    <metrics statements="156" coveredstatements="86" conditionals="45" coveredconditionals="20" methods="35" coveredmethods="13" elements="236" coveredelements="119" complexity="0" loc="156" ncloc="156" packages="3" files="7" classes="7"/>
     <package name="src">
       <metrics statements="18" coveredstatements="17" conditionals="18" coveredconditionals="10" methods="2" coveredmethods="2"/>
       <file name="config.ts" path="/Users/mcristino/capstone/site-capstone-volunteerverse/volunteerverse-api/src/config.ts">
@@ -24,13 +24,13 @@
         <line num="2" count="2" type="stmt"/>
         <line num="4" count="2" type="stmt"/>
         <line num="11" count="2" type="stmt"/>
-        <line num="12" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="12" count="1" type="cond" truecount="1" falsecount="1"/>
         <line num="13" count="0" type="stmt"/>
         <line num="20" count="2" type="stmt"/>
       </file>
     </package>
     <package name="src.models">
-      <metrics statements="116" coveredstatements="36" conditionals="15" coveredconditionals="3" methods="25" coveredmethods="3"/>
+      <metrics statements="115" coveredstatements="49" conditionals="15" coveredconditionals="5" methods="24" coveredmethods="5"/>
       <file name="organization.ts" path="/Users/mcristino/capstone/site-capstone-volunteerverse/volunteerverse-api/src/models/organization.ts">
         <metrics statements="28" coveredstatements="12" conditionals="4" coveredconditionals="1" methods="3" coveredmethods="1"/>
         <line num="1" count="1" type="stmt"/>
@@ -95,7 +95,7 @@
         <line num="101" count="0" type="stmt"/>
       </file>
       <file name="volunteer.ts" path="/Users/mcristino/capstone/site-capstone-volunteerverse/volunteerverse-api/src/models/volunteer.ts">
-        <metrics statements="59" coveredstatements="20" conditionals="6" coveredconditionals="2" methods="13" coveredmethods="2"/>
+        <metrics statements="58" coveredstatements="33" conditionals="6" coveredconditionals="4" methods="12" coveredmethods="4"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
@@ -103,58 +103,57 @@
         <line num="5" count="1" type="stmt"/>
         <line num="6" count="1" type="stmt"/>
         <line num="8" count="1" type="stmt"/>
-        <line num="15" count="0" type="stmt"/>
-        <line num="40" count="2" type="stmt"/>
-        <line num="49" count="2" type="stmt"/>
-        <line num="50" count="2" type="stmt"/>
-        <line num="56" count="1" type="stmt"/>
-        <line num="59" count="1" type="stmt"/>
-        <line num="62" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="63" count="1" type="stmt"/>
-        <line num="66" count="0" type="stmt"/>
-        <line num="70" count="0" type="stmt"/>
-        <line num="72" count="0" type="stmt"/>
-        <line num="87" count="0" type="stmt"/>
-        <line num="95" count="0" type="stmt"/>
-        <line num="97" count="0" type="stmt"/>
-        <line num="100" count="0" type="stmt"/>
-        <line num="106" count="0" type="stmt"/>
-        <line num="108" count="0" type="stmt"/>
-        <line num="109" count="0" type="stmt"/>
-        <line num="112" count="0" type="stmt"/>
-        <line num="129" count="0" type="stmt"/>
-        <line num="130" count="0" type="stmt"/>
+        <line num="23" count="3" type="stmt"/>
+        <line num="32" count="3" type="stmt"/>
+        <line num="33" count="3" type="stmt"/>
+        <line num="39" count="1" type="stmt"/>
+        <line num="42" count="2" type="stmt"/>
+        <line num="45" count="2" type="cond" truecount="1" falsecount="0"/>
+        <line num="46" count="1" type="stmt"/>
+        <line num="49" count="1" type="stmt"/>
+        <line num="53" count="1" type="stmt"/>
+        <line num="55" count="1" type="stmt"/>
+        <line num="70" count="1" type="stmt"/>
+        <line num="78" count="1" type="stmt"/>
+        <line num="80" count="1" type="stmt"/>
+        <line num="83" count="1" type="stmt"/>
+        <line num="89" count="1" type="stmt"/>
+        <line num="91" count="1" type="stmt"/>
+        <line num="92" count="1" type="stmt"/>
+        <line num="95" count="1" type="stmt"/>
+        <line num="112" count="2" type="stmt"/>
+        <line num="113" count="2" type="stmt"/>
+        <line num="122" count="0" type="stmt"/>
+        <line num="123" count="0" type="stmt"/>
+        <line num="124" count="0" type="stmt"/>
+        <line num="125" count="0" type="stmt"/>
+        <line num="126" count="0" type="stmt"/>
+        <line num="128" count="0" type="stmt"/>
+        <line num="138" count="0" type="stmt"/>
         <line num="139" count="0" type="stmt"/>
-        <line num="140" count="0" type="stmt"/>
+        <line num="140" count="0" type="cond" truecount="0" falsecount="1"/>
         <line num="141" count="0" type="stmt"/>
-        <line num="142" count="0" type="stmt"/>
-        <line num="143" count="0" type="stmt"/>
-        <line num="145" count="0" type="stmt"/>
-        <line num="155" count="0" type="stmt"/>
+        <line num="152" count="0" type="stmt"/>
+        <line num="153" count="0" type="stmt"/>
+        <line num="155" count="0" type="cond" truecount="0" falsecount="1"/>
         <line num="156" count="0" type="stmt"/>
-        <line num="157" count="0" type="cond" truecount="0" falsecount="1"/>
         <line num="158" count="0" type="stmt"/>
-        <line num="169" count="0" type="stmt"/>
-        <line num="170" count="0" type="stmt"/>
-        <line num="172" count="0" type="cond" truecount="0" falsecount="1"/>
-        <line num="173" count="0" type="stmt"/>
-        <line num="175" count="0" type="stmt"/>
-        <line num="185" count="2" type="stmt"/>
-        <line num="186" count="2" type="stmt"/>
-        <line num="187" count="2" type="stmt"/>
-        <line num="188" count="2" type="cond" truecount="1" falsecount="0"/>
-        <line num="189" count="1" type="stmt"/>
-        <line num="191" count="1" type="stmt"/>
-        <line num="201" count="0" type="stmt"/>
-        <line num="202" count="0" type="stmt"/>
-        <line num="203" count="0" type="stmt"/>
-        <line num="208" count="0" type="stmt"/>
-        <line num="209" count="0" type="stmt"/>
-        <line num="210" count="0" type="stmt"/>
-        <line num="211" count="0" type="stmt"/>
-        <line num="212" count="0" type="stmt"/>
-        <line num="213" count="0" type="stmt"/>
-        <line num="215" count="0" type="stmt"/>
+        <line num="168" count="2" type="stmt"/>
+        <line num="169" count="2" type="stmt"/>
+        <line num="170" count="2" type="stmt"/>
+        <line num="171" count="2" type="cond" truecount="1" falsecount="0"/>
+        <line num="172" count="1" type="stmt"/>
+        <line num="174" count="1" type="stmt"/>
+        <line num="184" count="0" type="stmt"/>
+        <line num="185" count="0" type="stmt"/>
+        <line num="186" count="0" type="stmt"/>
+        <line num="191" count="0" type="stmt"/>
+        <line num="192" count="0" type="stmt"/>
+        <line num="193" count="0" type="stmt"/>
+        <line num="194" count="0" type="stmt"/>
+        <line num="195" count="0" type="stmt"/>
+        <line num="196" count="0" type="stmt"/>
+        <line num="198" count="0" type="stmt"/>
       </file>
     </package>
     <package name="src.utils">
@@ -180,11 +179,11 @@
         <metrics statements="9" coveredstatements="9" conditionals="7" coveredconditionals="5" methods="3" coveredmethods="3"/>
         <line num="1" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
-        <line num="4" count="9" type="cond" truecount="3" falsecount="0"/>
+        <line num="4" count="16" type="cond" truecount="3" falsecount="0"/>
         <line num="12" count="1" type="stmt"/>
-        <line num="14" count="2" type="cond" truecount="0" falsecount="1"/>
-        <line num="15" count="2" type="stmt"/>
-        <line num="16" count="9" type="cond" truecount="1" falsecount="0"/>
+        <line num="14" count="3" type="cond" truecount="0" falsecount="1"/>
+        <line num="15" count="3" type="stmt"/>
+        <line num="16" count="16" type="cond" truecount="1" falsecount="0"/>
         <line num="17" count="1" type="stmt"/>
         <line num="24" count="1" type="stmt"/>
       </file>

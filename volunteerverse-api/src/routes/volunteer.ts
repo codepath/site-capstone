@@ -17,7 +17,10 @@ volunteerRoutes.post("/skills", async function(req,res,next){
 volunteerRoutes.post("/fetch", async function (req,res,next){
   const {email} = req.body
   const result = await Volunteer.fetchVolunteerByEmail(email)
-  res.json({volunteer: result})
+  if (result){
+    res.status(201).json(result)
+  }else{
+  res.json({error: "error"})}
 })
 
 
