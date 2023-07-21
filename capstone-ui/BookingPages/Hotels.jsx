@@ -5,11 +5,11 @@ const destination = "New York"
 const budget = 1000
 const startDate = "Tuesday, July 18"
 const endDate = "Sunday, July 23"
-export default function Hotels (){
+export default function Hotels ({ addToItinerary, itinerary}){
 
 
 
-    const [itinerary, setItinerary] = useState([])
+    // const [itinerary, setItinerary] = useState([])
     const [searchValue, setSearchValue] = useState("")
     const [ price, setPrice ] = useState(0);
 
@@ -36,21 +36,21 @@ export default function Hotels (){
   
 
 
-    const addToItinerary = (item)=>{
-        if(itinerary.includes(item)){
-          console.log("already added")
-        }
-        if (itinerary.some(item => item.category === 'hotel')) {
-           console.log("already added hotel")
-        }else{
-            itinerary.push(item)
-        }
-          setItinerary(itinerary)
-          console.log("Itinerary")
-          console.log(itinerary)
-          console.log(itinerary.length)
+    // const addToItinerary = (item)=>{
+    //     if(itinerary.includes(item)){
+    //       console.log("already added")
+    //     }
+    //     if (itinerary.some(item => item.category === 'hotel')) {
+    //        console.log("already added hotel")
+    //     }else{
+    //         itinerary.push(item)
+    //     }
+    //       setItinerary(itinerary)
+    //       console.log("Itinerary")
+    //       console.log(itinerary)
+    //       console.log(itinerary.length)
          
-      }
+    //   }
     return (
         <div className="hotels-page">
             {/* make these btns links */}

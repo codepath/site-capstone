@@ -5,11 +5,11 @@ const destination = "New York"
 const budget = 1000
 const startDate = "Tuesday, July 18"
 const endDate = "Sunday, July 23"
-export default function Activities (){
+export default function Activities ({addToItinerary, itinerary}){
 
 
 
-    const [itinerary, setItinerary] = useState([])
+    // const [itinerary, setItinerary] = useState([])
     const [searchValue, setSearchValue] = useState("")
     const [ price, setPrice ] = useState(0);
 
@@ -36,18 +36,18 @@ export default function Activities (){
   
 
 
-    const addToItinerary = (item)=>{
-        if(itinerary.includes(item)){
-          console.log("already liked")
-        }else{
-            itinerary.push(item)
-        }
-          setItinerary(itinerary)
-          console.log("Itinerary")
-          console.log(itinerary)
-          console.log(itinerary.length)
+    // const addToItinerary = (item)=>{
+    //     if(itinerary.includes(item)){
+    //       console.log("already liked")
+    //     }else{
+    //         itinerary.push(item)
+    //     }
+    //       setItinerary(itinerary)
+    //       console.log("Itinerary")
+    //       console.log(itinerary)
+    //       console.log(itinerary.length)
          
-      }
+    //   }
     return (
         <div className="things-to-do-page">
             {/* make these btns links */}

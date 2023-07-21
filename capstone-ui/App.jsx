@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -35,6 +35,32 @@ function App() {
     const [budget, setBudget] = useState(null)
 
     const [authenticated, setAuthenticated] = useState(false)
+
+    const [itinerary, setItinerary] = useState([])
+
+   
+
+    // useEffect(() => {
+    //     let string = JSON.stringify(itinerary)
+    //     localStorage.setItem("itinerary", string)
+    //     setItinerary(localStorage.getItem("itinerary"))
+    // }, [itinerary])
+    
+    const addToItinerary = (item)=>{
+        
+        if ( itinerary.includes(item) || itinerary.some(item => item.category === 'hotel')) {
+           console.log("already added ")
+        }else{
+            // itinerary.push(item)
+            setItinerary([...itinerary, item])
+        }
+         // setItinerary(itinerary)
+          console.log("Itinerary")
+          console.log(itinerary)
+          console.log(itinerary.length)
+      }
+
+      
     return ( 
     <LocalizationProvider dateAdapter={AdapterDayjs}>
         <ThemeProvider theme={theme}>
@@ -54,10 +80,10 @@ function App() {
                             />
                         } />
                         <Route path="/activities" element={
-                            <Activities />} 
+                            <Activities itinerary ={itinerary} setItinerary = {setItinerary} addToItinerary = {addToItinerary} />} 
                         />
                         <Route path="/hotels" element={
-                            <Hotels />} 
+                            <Hotels itinerary ={itinerary} setItinerary = {setItinerary} addToItinerary = {addToItinerary} />} 
                         />
                     </Routes>
                 </Router>
