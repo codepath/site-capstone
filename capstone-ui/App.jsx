@@ -22,16 +22,16 @@ const theme = createTheme({
 function App() {
     const [filterFlights, setFilterFlights] = useState(false)
     const [filterActivities, setFilterActivities] = useState(false)
-    const [filterHotels, setFilterHotels] = useState(false)
+    const [filterHotels, setFilterHotels] = useState(true)
 
     const [departureDate, setDepartureDate] = useState(null)
     const [arrivalDate, setArrivalDate] = useState(null)
 
     const [destination, setDestination] = useState(null)
 
-    const [travelers, setTravelers] = useState(null)
+    const [travelers, setTravelers] = useState(1)
 
-    const [budget, setBudget] = useState(null)
+    const [budget, setBudget] = useState(50)
 
     const [authenticated, setAuthenticated] = useState(false)
     return ( 

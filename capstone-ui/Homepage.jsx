@@ -3,6 +3,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import TextField from '@mui/material/TextField'
 import Chip from '@mui/material/Chip'
 import Button from '@mui/material/Button'
+import InputAdornment from '@mui/material/InputAdornment'
 import { Link } from "react-router-dom"
 import { useState, useEffect } from 'react'
 import ImageCarousel from './ImageCarousel'
@@ -33,13 +34,22 @@ export default function Homepage({ filterFlights, setFilterFlights,
         event.preventDefault()
 
     }
+    
+    const homepage_america = {
+        "Toronto, Canada":"./Assets/toronto.jpg",
+        "New York City, United States":"./Assets/nyc.jpg",
+        "Los Angeles, United States":"./Assets/losangeles.jpg",
+        "Mexico City, Mexico":"./Assets/mexicocity.jpg"
+    }
     return (
         <div className="relative">
             <div className="absolute z-[-1] left-0 right-0 overflow-hidden h-72">
                 <img src="./Assets/homepage-banner.jpg" className="w-full h-full object-cover object-bottom"/>
             </div>
+            <div>
+            
             <div className="relative shadow-lg mx-56 py-4 px-8 bg-white bg-opacity-80">
-                <div><h1>Nomadia</h1></div>
+                <div className="font-semibold"><h1>Nomadia</h1></div>
                 {/* Input box wrapper */}
                 <div className="flex-auto">
                     <div className="text-2xl"><h2>Book your next adventure.</h2></div>
@@ -53,21 +63,25 @@ export default function Homepage({ filterFlights, setFilterFlights,
                             onClick={() => setFilterHotels(!filterHotels)}
                             variant={filterHotels ? "filled" : "outlined"}
                             color={filterHotels ? "success" : "default"}
-                            sx={{'borderRadius':'4px', 'width':'80px'}}
+                            sx={{'borderRadius':'4px', 'width':'63px',
+                                 'fontFamily':'IBM Plex Sans',
+                                }}
                         />
                         <Chip
                             label="Activities"
                             onClick={() => setFilterActivities(!filterActivities)}
                             variant={filterActivities ? "filled" : "outlined"}
                             color={filterActivities ? "success" : "default"}
-                            sx={{'borderRadius':'4px', 'width':'80px'}}
+                            sx={{'borderRadius':'4px', 'width':'80px',
+                                 'fontFamily':'IBM Plex Sans'}}
                         />
                         <Chip
                             label="Flights"
                             onClick={() => setFilterFlights(!filterFlights)}
                             variant={filterFlights ? "filled" : "outlined"}
                             color={filterFlights ? "success" : "default"}
-                            sx={{'borderRadius':'4px', 'width':'80px'}}
+                            sx={{'borderRadius':'4px', 'width':'67px',
+                                 'fontFamily':'IBM Plex Sans'}}
                             disabled
                         />
                     </div>
@@ -104,16 +118,19 @@ export default function Homepage({ filterFlights, setFilterFlights,
                                     label="Travelers"
                                     type="number"
                                     value={travelers}
-                                    onChange={(e) => setTravelers(e.target.value)}
+                                    onChange={(e) => {e.target.value > 0 && e.target.value <= 12 ? setTravelers(e.target.value) : 
+                                                      e.target.value > 12 ? setTravelers(12) : setTravelers(1)}}
                                 />
                                 <TextField
                                     id="outlined-number"
                                     label="Budget (USD)"
+                                    inputAd
                                     type="number"
                                     value={budget}
-                                    onChange={(e) => setBudget(e.target.value)}
+                                    onChange={(e) => {e.target.value > 50 ? setBudget(e.target.value) : setBudget(50)}}
                                     InputProps={{
                                         required: true,
+                                        startAdornment: <InputAdornment position="start">$</InputAdornment>,
                                     }}
                                 />
                                 <Link to={submit ? "/activities" : ""}>
@@ -133,37 +150,37 @@ export default function Homepage({ filterFlights, setFilterFlights,
                     <div className="text-2xl">Trending destinations</div>
                     <div className='h-0.5 bg-blue-500 w-1/3 my-3'></div>
                     <div className='flex justify-between mt-4'>
-                        <div>
+                        <div className="text-2xl">
                             North America
                             <div className="text-2xl font-bold mb-2"></div>
-                            <ImageCarousel height={30}/>
+                            <ImageCarousel images={homepage_america}/>
                         </div>
-                        <div>
+                        <div className="text-2xl">
                             Asia
                         <div className="text-2xl font-bold mb-2"></div>
-                            <ImageCarousel height={30}/>
+                            <ImageCarousel images={homepage_america}/>
                         </div>
-                        <div>
+                        <div className="text-2xl">
                             Europe
                             <div className="text-2xl font-bold mb-2"></div>
-                            <ImageCarousel height={30}/>
+                            <ImageCarousel images={homepage_america}/>
                         </div>
                     </div>
                     <div className='flex justify-between mt-4'>
-                        <div>
+                        <div className="text-2xl">
                             South America
                             <div className="text-2xl font-bold mb-2"></div>
-                            <ImageCarousel height={30}/>
+                            <ImageCarousel images={homepage_america}/>
                         </div>
-                        <div>
+                        <div className="text-2xl">
                             Africa
                         <div className="text-2xl font-bold mb-2"></div>
-                            <ImageCarousel height={30}/>
+                            <ImageCarousel images={homepage_america}/>
                         </div>
-                        <div>
+                        <div className="text-2xl">
                             Oceania
                             <div className="text-2xl font-bold mb-2"></div>
-                            <ImageCarousel height={30}/>
+                            <ImageCarousel images={homepage_america}/>
                         </div>
                     </div>
                     <div>
@@ -171,6 +188,7 @@ export default function Homepage({ filterFlights, setFilterFlights,
                         <div className='h-0.5 bg-blue-500 w-1/3 my-3'></div>
                     </div>
                 </div>
+            </div>
             </div>
         </div>
     )
