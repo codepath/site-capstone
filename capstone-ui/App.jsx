@@ -37,7 +37,7 @@ function App() {
     return ( 
     <LocalizationProvider dateAdapter={AdapterDayjs}>
         <ThemeProvider theme={theme}>
-            <div className="w-screen h-screen font-sans">
+            <div className="font-sans">
                 <Navbar />
                 <Router>
                     <Routes>
