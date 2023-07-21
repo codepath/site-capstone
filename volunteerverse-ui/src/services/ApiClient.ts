@@ -1,6 +1,7 @@
 import axios from "axios";
 import { volunteerProp } from "../props/volunteer";
 import { organizationProp } from "../props/organization";
+import { API_BASE_URL } from "../../constants"
 
 interface requestProp {
     method : string,
@@ -37,10 +38,11 @@ class ApiClient {
                 data: axiosResponse.data,
                 statusCode: axiosResponse.status
             }
-
+            
         }).catch((axiosError) => {
             // update response variable with error if unsuccessful
             return {
+                data: undefined,
                 success: false,
                 statusCode: axiosError.response?.status,
                 error: axiosError,
@@ -65,3 +67,4 @@ class ApiClient {
         return this.request(requestOptions)
     }
 }
+export const apiClient = new ApiClient(API_BASE_URL);
