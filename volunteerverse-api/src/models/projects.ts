@@ -1,5 +1,5 @@
 import e from "express";
-import { db } from "../db";
+import db  from "../db";
 import { validateFields } from "../utils/validate";
 import { BadRequestError } from "../utils/errors";
 

@@ -120,7 +120,7 @@ export class Organization {
     //   user_type: "organization"
     // }  
     if (org_result){
-      return org_result
+      return org_result.rows[0]
     }
     return null
   }
@@ -153,12 +153,18 @@ export class Organization {
 
     const result = await db.query(
 // make sure this matches spelling in the table too!!
+// if this was insert, we would have assigned the data from insomnia
+//to it but since it is select, we would be taking the data under the rows from
+//the table we said
       `SELECT  
       email,
       project_id
        FROM interested_volunteers
        WHERE  project_id = $1`,
        [ projectId]
+// then project_id will then equal what we put in and then using that we can filter
+// what we want from the table!
+//which we then assign to result back in the route and then convert to json.
        )
 
        if(!result) {

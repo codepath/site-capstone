@@ -1,4 +1,4 @@
-import { db } from "../db"
+import db from "../db"
 import { validateFields } from "../utils/validate"
 import bcrypt from "bcrypt"
 import { UnauthorizedError } from "../utils/errors"
