@@ -5,6 +5,8 @@ import { Volunteer } from "../models/volunteer"
 import { Organization } from "../models/organization"
 import { createUserJwt } from "../utils/token"
 import { Auth } from "../models/auth"
+import {requireAuthenticatedUser} from "../middleware/security"
+
 
 export const authRoutes = express.Router()
 
@@ -23,7 +25,7 @@ authRoutes.post("/register", async function(req, res, next){
         }
         else if (userType=="organization"){
             const organization = await Organization.register(req.body)
-            const token = "placeholder"//createUserJwt(organization)
+            const token = createUserJwt(organization)
             return res.status(201).json({user: organization, token: token})
         }
     } catch (error) {
@@ -48,3 +50,23 @@ authRoutes.post("/login", async function( req, res, next){
     }
 
 })
+
+
+authRoutes.get("/me", requireAuthenticatedUser, async (request, response, next) => {
+    // request header should contain auth token
+    try {
+        const { user } = response.locals;
+        console.log("retrieved: ", user)
+        if (user) {
+            response.status(200).json({ user: user });
+        } else{
+            console.log("no user found from repsonse locals: ", response.locals)
+            next();
+        }
+    } catch (error) {
+        console.log("unexpected error occured: ", error)
+        next(error)
+    }
+});
+
+

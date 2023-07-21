@@ -27,5 +27,4 @@ organizationRoutes.post("/projects", async function(req,res,next){
  //res.status(201).send('201')
 })
 
-console.log("hey;y")
 export {organizationRoutes}

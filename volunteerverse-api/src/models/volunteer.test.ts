@@ -1,6 +1,8 @@
 import { Volunteer } from "./volunteer";
-
-import db  from "../db";
+import { BadRequestError, UnprocessableEntityError } from "../utils/errors";
+import db from "../db";
+import { BCRYPT_WORK_FACTOR } from "../config";
+import bcrypt from "bcrypt";
 
 /** fetchVolunteerByEmail */
 describe("fetchVolunteerByEmail", () => {
@@ -98,14 +100,72 @@ describe("volunteer registration", () => {
     );
   });
 
-  // test("registers a new volunteer successfuly", async () => {
+  test("registers a new volunteer successfully", async () => {
+    const volunteerInfo = {
+      email: "kenneth@gmail.com",
+      password: "123",
+      firstName: "Kenneth",
+      lastName: "Cristino",
+      bio: "Looking to help out",
+      skills: ["Machine Learning"],
+      userType: "volunteer",
+    };
 
-  // })
+    const mockResult = {
+      rows: [
+        {
+          email: "kenneth@gmail.com",
+          firstName: "Kenneth",
+          lastName: "Cristino",
+          imageUrl: null,
+          bio: "Looking to help out",
+          skills: ["Machine Learning"],
+          userType: "volunteer",
+        },
+      ],
+    };
 
+    // Mock the fetchVolunteerByEmail method to return null, indicating no duplicate email exists
+    Volunteer.fetchVolunteerByEmail = jest.fn().mockResolvedValue(null);
 
+    // Create a mock for bcrypt.hash to spy on its usage
+    const mockHash = jest.spyOn(bcrypt, "hash");
+
+    db.query = jest.fn().mockReturnValue(mockResult);
+    const volunteer = await Volunteer.register(volunteerInfo);
+    expect(volunteer).toEqual(mockResult.rows[0]);
+    expect(db.query).toHaveBeenCalledTimes(3); //3 query calls made during the register function if done successfully
+
+    expect(mockHash).toHaveBeenCalledWith(
+      volunteerInfo.password,
+      BCRYPT_WORK_FACTOR
+    );
+  });
 });
 
+describe('volunteer skills functions', () => {
+  test('should insert skill for a volunteer in the database', async () => {
+    // Input data for the skill insertion
+    const emailInput = 'john@gmail.com';
+    const skillInput = 'skill';
 
+    db.query = jest.fn().mockReturnValue({ rows: [] }); 
+
+    // Call the insertSkill function
+    await Volunteer.insertSkill(emailInput, skillInput);
+
+    // Verify that db.query was called with the correct query and parameters
+    const expectedQuery = `INSERT into volunteer_skills(email, skill) VALUES ($1, $2) RETURNING *`;
+    const expectedParameters = [emailInput, skillInput];
+
+
+    expect(db.query).toHaveBeenCalledWith(expectedQuery, expectedParameters);
+  })
+
+  test("should fetch all skills for a volunteer from database", async () => {
+
+  })
+})
 
 
 
