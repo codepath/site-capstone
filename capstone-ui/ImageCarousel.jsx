@@ -1,9 +1,9 @@
 import Carousel from 'react-material-ui-carousel'
 import ImageCard from './ImageCard'
 
-export default function ImageCarousel() {
+export default function ImageCarousel({ images }) {
     return (
-        <div className="flex w-60 flex-col">
+        <div className="flex w-80 flex-col">
             <Carousel className="flex-col" navButtonsAlwaysVisible={true}
             fullHeightHover={false} 
                       navButtonsProps={{
@@ -30,10 +30,9 @@ export default function ImageCarousel() {
                         }
                     }}
                     >
-                <ImageCard />
-                <ImageCard />
-                <ImageCard />
-                <ImageCard />
+                {Object.entries(images).map(([key, value], index) => {
+                    return <ImageCard key={index} description={key} img={value} />
+                })}
             </Carousel>
         </div>
     )

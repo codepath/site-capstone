@@ -47,10 +47,12 @@ export default function Navbar() {
                 >
                     <div className="flex justify-center items-center h-screen font-sans">
                         <div className="border w-72 bg-white border-blue-500 rounded-md px-3">
-                            <div className="flex justify-end cursor-pointer" onClick={() => setRegisterOpen(false)}>—</div>
                             <div>
                                 <form onSubmit={handleRegister}>
-                                    <div><h2 className="text-2xl">Register</h2></div>
+                                    <div className="flex justify-between">
+                                        <div><h2 className="text-2xl">Register</h2></div>
+                                        <div title="Close register modal" className="flex cursor-pointer w-5 justify-end" onClick={() => setRegisterOpen(false)}>—</div>
+                                    </div>
                                     <div>Save your itineraries and view past bookings.</div>
                                     <div className="bg-blue-500 w-full h-0.5 my-3"></div>
                                     <div>Email<span className="text-red-500">*</span></div>
@@ -92,10 +94,12 @@ export default function Navbar() {
                 >
                     <div class="flex justify-center items-center h-screen font-sans">
                         <div className="border w-72 bg-white border-blue-500 rounded-md px-3">
-                            <div className="flex justify-end cursor-pointer" onClick={() => setLoginOpen(false)}>—</div>
                             <div>
                                 <form onSubmit={handleLogin}>
-                                    <div><h2 className="text-2xl">Log in</h2></div>
+                                    <div className="flex justify-between">
+                                        <div><h2 className="text-2xl">Log in</h2></div>
+                                        <div title="Close log in modal" className="flex cursor-pointer w-5 justify-end" onClick={() => setLoginOpen(false)}>—</div>
+                                    </div>
                                     <div>View your saved itineraries and past bookings.</div>
                                     <div className="bg-blue-500 w-full h-0.5 my-3"></div>
                                     <div>Email<span className="text-red-500">*</span></div>
