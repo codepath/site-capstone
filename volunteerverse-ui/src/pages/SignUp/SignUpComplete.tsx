@@ -3,6 +3,10 @@ import { Container, Title,
 import { useDisclosure } from "@mantine/hooks";
 import { createStyles } from "@mantine/styles";
 import { useEffect } from "react";
+import { apiClient } from "../../services/ApiClient";
+import { OrgFormValues, VolunteerFormValues } from "../../props/forms";
+import { UseFormReturnType } from "@mantine/form";
+import { useNavigate } from "react-router-dom";
 
 const useStyles = createStyles((theme) => ({
     container : {
@@ -10,16 +14,33 @@ const useStyles = createStyles((theme) => ({
     }
 }));
 
-function SignUpComplete() {
-    const { classes } = useStyles();
-    const [visible, { toggle }] = useDisclosure(true);
-    useEffect(()=> {
-        /**
-         * @todo make axios call to register new user
-         */
-        setTimeout(() => {
-            toggle()
-        }, (2000))
+function SignUpComplete({ form } : {form : UseFormReturnType<VolunteerFormValues> | UseFormReturnType<OrgFormValues>}) {
+    const { classes } = useStyles(); // used for styling
+    const navigate = useNavigate();
+    const [visible, { open: openLoader, close: closeLoader }] = useDisclosure(true);
+    useEffect(()=> { 
+        openLoader()
+        // first remove confirm password and terms of service props
+        const {confirmPassword, termsOfService, ...requestBody} = form.values; 
+
+        // then register attempt user registration
+        apiClient.register(requestBody).then(({success, statusCode, data, error}) => {
+            if (success){
+                console.log("new user. data: ", data);
+                // stateApi.setAuth(data.token);
+                navigate("/home")
+            }else if (statusCode === 400){
+                // statusCode 400 means an invalid input was entered
+            } else{
+                console.log("error status code: ", statusCode)
+                console.log("error trying to register user", error)
+            }
+            closeLoader();
+        }).catch((error) => {
+            console.log("error trying to register new user: ", error)
+            closeLoader();
+        })
+
     }, [])
     return (
 
