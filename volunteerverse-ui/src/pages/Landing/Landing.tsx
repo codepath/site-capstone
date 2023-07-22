@@ -1,4 +1,6 @@
-import { Button, Text, Group, Title, Container, createStyles, Image, LoadingOverlay, Flex, Modal } from "@mantine/core";
+import { Button, Text, Group, 
+  Title, Container, createStyles, 
+  Image, Flex, Modal } from "@mantine/core";
 import WhatWeDo from "./WhatWeDo"
 import CallToAction from "./CallToAction";
 import { Link } from "react-router-dom";
