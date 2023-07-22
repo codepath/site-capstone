@@ -79,7 +79,7 @@ function CreateOrgProfileForm({ form }: { form: UseFormReturnType<OrgFormValues>
           placeholder="Brief Description"
           description="Max: 300 words"
           minRows={5}
-          {...form.getInputProps('org_desc')}
+          {...form.getInputProps('orgDescription')}
         />
       </Flex>
     </Container>
