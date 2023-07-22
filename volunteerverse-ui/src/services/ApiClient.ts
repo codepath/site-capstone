@@ -1,11 +1,10 @@
 import axios from "axios";
-import { volunteerProp } from "../props/volunteer";
-import { organizationProp } from "../props/organization";
 import { API_BASE_URL } from "../../constants"
+import { organizationRegisterProp, volunteerRegisterProp } from "../props/register";
 
 interface requestProp {
     method : string,
-    bodyData: object,
+    bodyData?: object,
     subDirectory : string
 }
 
@@ -36,7 +35,8 @@ class ApiClient {
             return {
                 success: true,
                 data: axiosResponse.data,
-                statusCode: axiosResponse.status
+                statusCode: axiosResponse.status,
+                error: undefined
             }
             
         }).catch((axiosError) => {
@@ -57,7 +57,7 @@ class ApiClient {
         }
         return this.request(requestOptions);
     }
-    async signup(formData: volunteerProp | organizationProp) {
+    async register(formData: volunteerRegisterProp | organizationRegisterProp) {
         // make request to signup user 
         const requestOptions = {
             method: "post",
@@ -65,6 +65,14 @@ class ApiClient {
             subDirectory: "/auth/register"
         }
         return this.request(requestOptions)
+    }
+    async fetchUserFromToken(){
+        // handles user fetch from token
+        const requestOptions = {
+            method: "post",
+            subDirectory: "/auth/me",
+        }
+        return this.request(requestOptions);
     }
 }
 export const apiClient = new ApiClient(API_BASE_URL);
