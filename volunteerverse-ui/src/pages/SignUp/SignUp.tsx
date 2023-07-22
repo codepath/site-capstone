@@ -60,11 +60,8 @@ const useStyles = createStyles((theme) => ({
     }
   },
 }))
-interface userTypeProp {
-  userType : "volunteer" | "organization"
-}
 
-export default function SignUp({ userType } : userTypeProp) {
+export default function SignUp({ userType } : {userType : "volunteer" | "organization"}) {
   /**
    * @todo make userType a prop that is passed down from the app level
    */
@@ -86,24 +83,26 @@ export default function SignUp({ userType } : userTypeProp) {
   const volunteerForm = useForm<VolunteerFormValues>(
     {
       initialValues: {
-        first_name: "",
-        last_name: "",
+        firstName: "",
+        lastName: "",
         password: "",
-        confirm_password: "",
-        image_url: "",
+        skills: [],
+        confirmPassword: "",
+        imageUrl: "",
         email: "",
         bio: "",
-        termsOfService: false
+        termsOfService: false,
+        userType: "volunteer" // need to define userType to make calling backend easier
       },
       validate : (values) => {
         // error validation for all inputs
         // for volunteer forms
         if (activeStep === 0){
           return {
-            first_name: values.first_name.trim().length < 2 ? 'First name cannot be empty' : null,
-            last_name: values.last_name.trim().length < 2 ? 'Last name cannot be empty' : null,
+            firstName: values.firstName.trim().length < 2 ? 'First name cannot be empty' : null,
+            lastName: values.lastName.trim().length < 2 ? 'Last name cannot be empty' : null,
             password: values.password.length < 2 ? 'Please use a stronger password' : null,
-            confirm_password: values.confirm_password !== values.password ? "Password's do not match" : null,
+            confirmPassword: values.confirmPassword !== values.password ? "Password's do not match" : null,
             email : values.email.length < 2 ? 'Invalid email' : null,
           }
         } else if (activeStep === 1){
@@ -123,42 +122,46 @@ export default function SignUp({ userType } : userTypeProp) {
       initialValues: {
         email: "",
         password: "",
-        confirm_password: "",
-        org_name: "",
+        confirmPassword: "",
+        orgName: "",
         founders: "",
-        org_desc: "",
-        image_url: "",
-        termsOfService: false
+        orgDescription: "",
+        imageUrl: "",
+        termsOfService: false,
+        userType: "organization"
       },
       validate : (values) => {
         if (activeStep === 0){
           return {
-            org_name: values.org_name.trim().length < 2 ? 'Organization name cannot be empty' : null,
+            orgName: values.orgName.trim().length < 2 ? 'Organization name cannot be empty' : null,
             password: values.password.length < 2 ? 'Please use a stronger password' : null,
-            confirm_password: values.confirm_password !== values.password ? "Password's do not match" : null,
+            confirmPassword: values.confirmPassword !== values.password ? "Password's do not match" : null,
             email : values.email.length < 2 ? 'Invalid email' : null,
           }
         } else if (activeStep === 1){
           return {
             founders:  values.founders.length > 3 ? "Please include at least one founder" : null,
-            org_desc:  values.org_desc.length < 2 ? "Please include more details in your description." : null,
-            org_name:  values.org_name.length < 1 ? "Please include your organization name" : null,
+            orgDescription:  values.orgDescription.length < 2 ? "Please include more details in your description." : null,
+            orgName:  values.orgName.length < 1 ? "Please include your organization name" : null,
             termsOfService: values.termsOfService === false ? "You must agree to VolunteerVerse's terms of servcie" : null,
-            image_url: values.image_url.length < 1 ? "An image must be provided." : null,
+            imageUrl: values.imageUrl.length < 1 ? "An image must be provided." : null,
           }
         }
         return {}
       }
-
-  })
-  const getTOSInputProps = () => {
-    if (userType === "organization"){
-      return orgForm.getInputProps("termsOfService", {type: 'checkbox'})
-    }else{
+      
+    })
+    const getTOSInputProps = () => {
+      // simple helper functiont to conditionally
+      // return termsOfService input props
+      if (userType === "organization"){
+        return orgForm.getInputProps("termsOfService", {type: 'checkbox'})
+      }else{
       return volunteerForm.getInputProps("termsOfService", {type: 'checkbox'})
     }
   }
   const { classes } = useStyles();
+
   return (
     <Paper className={classes.container} shadow="xl" radius="xl" pos={"relative"}>
       <Stepper styles={(theme) => ({
@@ -200,7 +203,8 @@ export default function SignUp({ userType } : userTypeProp) {
         </Stepper.Step>
         <Stepper.Completed>
           {/* content for completing user signup */}
-          <SignUpComplete />
+
+            <SignUpComplete form={userType === "organization" ? orgForm : volunteerForm} />
           
         </Stepper.Completed>
       </Stepper>
