@@ -18,3 +18,4 @@ db.connect((err: { stack: any }) => {
 });
 
 export default db
+
