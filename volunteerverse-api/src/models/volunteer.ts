@@ -1,28 +1,11 @@
 import { BCRYPT_WORK_FACTOR } from "../config";
-import { db } from "../db";
+import db from "../db";
 import { ExpressError, BadRequestError } from "../utils/errors";
 import { validateFields } from "../utils/validate";
 import bcrypt from "bcrypt";
 import { Projects } from "./projects";
 
 export class Volunteer {
-  /**
-   * Convert a volunteer from the database into a volunteer object that can be viewed publically.
-   * @param {Volunteer} volunteer - user from database
-   * @returns public volunteer info
-   */
-  static _createPublicUser(volunteer) {
-    return {
-      id: volunteer.id,
-      firstName: volunteer.firstName,
-      lastName: volunteer.lastName,
-      email: volunteer.email,
-      bio: volunteer.bio,
-      skills: volunteer.skills,
-      userType: volunteer.userType,
-    };
-  }
-
   /**
    * Register volunteer with their information in the database
    * @param volunteerInfo
@@ -59,7 +42,7 @@ export class Volunteer {
     const existingVolunteer = await this.fetchVolunteerByEmail(
       volunteerInfo.email
     );
-    if (existingVolunteer) {
+    if (existingVolunteer!=null) {
       throw new BadRequestError(`Duplicate email: ${volunteerInfo.email}`);
     }
 
