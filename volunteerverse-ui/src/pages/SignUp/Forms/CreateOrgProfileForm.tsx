@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { ChangeEvent, ChangeEventHandler, useRef, useState } from 'react';
 import {
   TextInput,
   Image, Textarea, Checkbox, Button, Group,
@@ -29,12 +29,25 @@ const useStyles = createStyles((theme) => ({
 
 
 function CreateOrgProfileForm({ form }: { form: UseFormReturnType<OrgFormValues> }) {
+  /**
+   * @todo: 
+   * - change photo value to be a file instead of a string
+   * - (you should extract the string title from the file before
+   *  posting the file to the db)
+   * - handle image hosting
+   */
   const { classes } = useStyles()
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null); 
+  const [imageValue, setImageValue] = useState("")
   const openFileBrowswer = () => {
-    inputRef.current?.click();
+    inputRef.current?.click(); 
   }
-
+  const setImageUrl : ChangeEventHandler  = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    console.log(form.values)
+    form.setFieldValue("imageUrl", file?.name || "");
+  }
+// console.log(form.values)
   return (
     <Container mt={"xl"}>
       <Title className={classes.title} mb={"xl"} >Create Your Profile</Title>
@@ -46,21 +59,33 @@ function CreateOrgProfileForm({ form }: { form: UseFormReturnType<OrgFormValues>
             withPlaceholder
             mb={"md"}
             radius={"50%"} />
-          <Button variant="light"
-            radius={"lg"}
-            mb={"xl"}
-            styles={{
-              root: {
-                maxWidth: "30rem"
-              }
-            }}
-            onClick={openFileBrowswer}>Upload Logo</Button>
-          <TextInput
-            onChange={(event) => console.log(event.target.value)}
-            ref={inputRef}
-            radius={"xl"}
-            styles={{ root: { display: "none" } }}
-            type="file" />
+            <Flex 
+            direction={"column"} 
+            justify={"center"} 
+            align={"center"}
+            gap={"sm"}
+            mb={"xl"}>
+
+            <Button variant="light"
+              {...form.getInputProps("imageUrl")}
+              // value={imageValue}
+              radius={"lg"}
+              styles={{
+                root: {
+                  maxWidth: "30rem"
+                }
+              }}
+              onClick={openFileBrowswer}>{form.values.imageUrl || "Upload Logo"}</Button>
+            <TextInput
+              styles={{
+                input: { display: 'none' }
+              }}
+              onChange={setImageUrl}
+              size='md'
+              ref={inputRef}
+              radius={"xl"}
+              type="file" />
+          </Flex >
         </Flex>
         <TextInput
           size={"md"}
