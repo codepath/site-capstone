@@ -58,7 +58,7 @@ function CreateVolunteerProfileForm({ form }: { form: UseFormReturnType<Voluntee
                 }}
                 onClick={openFileBrowswer}>Upload Photo</Button>
                 <TextInput
-                    {...form.getInputProps("image_url")}
+                    {...form.getInputProps("imageUrl")}
                     onChange={(event) => console.log(event.target.value)}
                     ref={inputRef}
                     radius={"xl"}
