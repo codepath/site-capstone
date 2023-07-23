@@ -1,7 +1,7 @@
-import useAuthentication from '../services/hooks/useAuthentication';
+// import {useAuthentication} from '../services/hooks/useAuthentication';
 
 function ProjectDetails() {
-  const [isAuth, user] = useAuthentication();
+  // const [isAuth, user] = useAuthentication(); \\ uncomment later
 
   return (
     <div>ProjectDetails</div>
