@@ -4,13 +4,25 @@ import { apiClient } from '../ApiClient'
 import { organizationProp, volunteerProp } from '../../props/users';
 
 
-export default function useAuthentication() {
-  // function returns authentication state 
+export interface useAuthenticationUserProp {
+  password: string,
+  email: string,
+  id: number,
+  user_type: string
+
+}
+
+ export const useAuthentication = (): [boolean, useAuthenticationUserProp] => {
+  // function returns authentication state  (boolean, and user)
   // and user after fetching user from the token
   // stored in local storga
   const [sessionState, setSessionState] = useState({ 
     isAuth: false,
-    user : undefined
+    user : {
+      password: "",
+      email: "",
+      id: -1,
+      user_type: ""}
   });
 
   useEffect(() => {
@@ -26,7 +38,7 @@ export default function useAuthentication() {
         // updates appstate if request to backend 
         // was successful
         // if user exists, set isAuth to true if its currently false
-        setSessionState((initialData) => ({
+        setSessionState(() => ({
           isAuth : true,
           user : data.user
         }))
