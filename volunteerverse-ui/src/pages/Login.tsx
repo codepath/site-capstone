@@ -1,6 +1,6 @@
 import {
-  Button, Container, Flex,
-  LoadingOverlay, Paper, PasswordInput,
+  Button, Flex,
+   Paper, PasswordInput,
   TextInput, Title, createStyles
 } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks";
@@ -67,16 +67,18 @@ export default function Login() {
             // status code 401 -> password and email are incorrect
             loginForm.setFieldError("password", "Invalid email and/or password");
           } else {
+            // any other status code -> unknown error occured
             loginForm.setFieldError("password", "An error occured, please try again");
           }
           closeButtonLoader();
         }
         
       }).catch((error) => {
+        // if login is not possible, 
+        // we close the loading button and display and error 
+        loginForm.setFieldError("password", "An Error occured, please try again later");
         closeButtonLoader();
-        console.log("erroring logging in: ", error);
-        // console.log("unable to log user potentially cause their email and/or password are incorrect")
-        // console.log("show forgot login link")
+        console.log("a really unexpected error occured: ", error);
       })
     } else {
       closeButtonLoader();
