@@ -10,34 +10,7 @@ import CreateVolunteerProfileForm from "./Forms/CreateVolunteerProfileForm";
 import CreateVolunteerAccountForm from "./Forms/CreateVolunteerAccountForm";
 import { VolunteerFormValues, OrgFormValues } from "../../props/forms";
 import SignUpComplete from "./SignUpComplete";
-/**
- * @todo: 
- * - style the forms 
- *  - center the inputs to the left
- *  - expand the names inputs to take up entire container
- *  - updating Paper container to be responsive (fix padding)
- * - make inputs have more round corners with slightly bigger text box
- * - effectively style an input tag looking into overriding component= of a TextInput
- * - create final page that redirects user using navigate to the home pages
- *    - (look into makeing an animation with the hand...
- *            im thinking a thumbs up with confetti sprinkles? 
- *            using simple after effects editing )
- * 
- * - create login form with a welcome back title (style appropriately)
- * - accepts email and password and a "remember me checkbox" (to be implemented in the future)
- * - create modal popup that asks if user is a volunteer or an organization (
- *    - structure should be (title : I am a..., 
- *                      body: volunteer image, then organization image. 
- *                      below that text saying volunteer or organization (make responsive).
- *                       entire body should be a button that redirects user to signup page under
- *                        correct userType)
- * 
- * 
- * - develop api requests class in new folder of project
- * - make api calls on login and registration using respective form data
- * - test navigation of user to org or volunteer pages depending on their type 
- * 
- */
+
 const useStyles = createStyles((theme) => ({
   // this object includes all styling for this component
   container : {
@@ -62,9 +35,15 @@ const useStyles = createStyles((theme) => ({
 }))
 
 export default function SignUp({ userType } : {userType : "volunteer" | "organization"}) {
-  /**
-   * @todo make userType a prop that is passed down from the app level
-   */
+/**
+ * @todo: 
+ * - test organization registration
+ *  - use multi select instead for the inputting founders input
+ *  - change the imageUrl to accept a file html element instead
+ *  - perform some pre-processing for organization form prior to making post request to 
+ *  - to properly format data for request body (make modular functions to do this)
+ *  - 
+ */
 
   const [activeStep, setActiveStep] = useState(0);
   const prevStep = () => setActiveStep((current) => (current > 0 ? current - 1 : current));
@@ -73,6 +52,7 @@ export default function SignUp({ userType } : {userType : "volunteer" | "organiz
     if (form.validate().hasErrors){
       // prevents stepper progression
       // if form is invalid
+      console.log("form has errors", form.errors)
       return current;
     }
     // continues in stepper progression if form is valid.
@@ -94,16 +74,17 @@ export default function SignUp({ userType } : {userType : "volunteer" | "organiz
         termsOfService: false,
         userType: "volunteer" // need to define userType to make calling backend easier
       },
+      validateInputOnChange: ["confirmPassword", "password", "email"],
       validate : (values) => {
         // error validation for all inputs
         // for volunteer forms
         if (activeStep === 0){
           return {
-            firstName: values.firstName.trim().length < 2 ? 'First name cannot be empty' : null,
-            lastName: values.lastName.trim().length < 2 ? 'Last name cannot be empty' : null,
+            firstName: values.firstName.trim().length < 2 ? 'First must be longer than 2 characters' : null,
+            lastName: values.lastName.trim().length < 2 ? 'Last must be longer than 2 characters' : null,
             password: values.password.length < 2 ? 'Please use a stronger password' : null,
             confirmPassword: values.confirmPassword !== values.password ? "Password's do not match" : null,
-            email : values.email.length < 2 ? 'Invalid email' : null,
+            email : values.email.length < 2 ? 'Please provide a valid email address' : null,
           }
         } else if (activeStep === 1){
           // only returns these validation contraints once user
@@ -130,17 +111,18 @@ export default function SignUp({ userType } : {userType : "volunteer" | "organiz
         termsOfService: false,
         userType: "organization"
       },
+      validateInputOnChange: ["confirmPassword", "password", "email"],
       validate : (values) => {
         if (activeStep === 0){
           return {
-            orgName: values.orgName.trim().length < 2 ? 'Organization name cannot be empty' : null,
+            orgName: values.orgName.trim().length < 2 ? 'Organization must be longer than 2 characters' : null,
             password: values.password.length < 2 ? 'Please use a stronger password' : null,
             confirmPassword: values.confirmPassword !== values.password ? "Password's do not match" : null,
-            email : values.email.length < 2 ? 'Invalid email' : null,
+            email : values.email.length < 2 ? 'Please provide a valid email address' : null,
           }
         } else if (activeStep === 1){
           return {
-            founders:  values.founders.length > 3 ? "Please include at least one founder" : null,
+            founders:  values.founders.length < 3 ? "Please include at least one founder" : null,
             orgDescription:  values.orgDescription.length < 2 ? "Please include more details in your description." : null,
             orgName:  values.orgName.length < 1 ? "Please include your organization name" : null,
             termsOfService: values.termsOfService === false ? "You must agree to VolunteerVerse's terms of servcie" : null,
@@ -204,7 +186,7 @@ export default function SignUp({ userType } : {userType : "volunteer" | "organiz
         <Stepper.Completed>
           {/* content for completing user signup */}
 
-            <SignUpComplete form={userType === "organization" ? orgForm : volunteerForm} />
+            <SignUpComplete setActiveStep={setActiveStep} form={userType === "organization" ? orgForm : volunteerForm} />
           
         </Stepper.Completed>
       </Stepper>

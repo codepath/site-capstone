@@ -8,13 +8,15 @@ import { OrgFormValues, VolunteerFormValues } from "../../props/forms";
 import { UseFormReturnType } from "@mantine/form";
 import { useNavigate } from "react-router-dom";
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
     container : {
         minHeight : "32rem",
     }
 }));
 
-function SignUpComplete({ form } : {form : UseFormReturnType<VolunteerFormValues> | UseFormReturnType<OrgFormValues>}) {
+function SignUpComplete({ form, setActiveStep} : 
+    {form : UseFormReturnType<VolunteerFormValues> | UseFormReturnType<OrgFormValues>, setActiveStep: (step : number) => void}){
+    
     const { classes } = useStyles(); // used for styling
     const navigate = useNavigate();
     const [visible, { open: openLoader, close: closeLoader }] = useDisclosure(true);
@@ -34,11 +36,13 @@ function SignUpComplete({ form } : {form : UseFormReturnType<VolunteerFormValues
             } else{
                 console.log("error status code: ", statusCode)
                 console.log("error trying to register user", error)
+                /**
+                 * @todo: display error message 
+                 */
+                // setActiveStep(1)
             }
-            closeLoader();
         }).catch((error) => {
-            console.log("error trying to register new user: ", error)
-            closeLoader();
+            console.log("a really strange error as occured", error)
         })
 
     }, [])
