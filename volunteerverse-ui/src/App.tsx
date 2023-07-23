@@ -6,11 +6,13 @@ import NotFound from './pages/NotFound';
 import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
 import './App.css';
 import Navbar from './components/Navbar';
-import useAuthentication from './services/hooks/useAuthentication';
+import { useAuthentication } from './services/hooks/useAuthentication';
 import MyProjects from './pages/Volunteer/MyProjects';
 import ProjectDetails from './pages/ProjectDetails';
-import CreateProject from './pages/CreateProject';
+import CreateProject from './pages/Org/CreateProject';
 import Home from './pages/Home/Home';
+import VolunteerHome from './pages/Home/VolunteerHome';
+import OrgHome from './pages/Home/OrgHome';
 
 
 function App() {
@@ -26,7 +28,7 @@ function App() {
    * email validation, password security, photo image hosting
    */
   // Appshell is used to navbar overlay across all pages 
-
+  const [isAuth, user] = useAuthentication();
   return (
     <>
       <MantineProvider withGlobalStyles withNormalizeCSS theme={{ primaryColor: "violet" }}>
@@ -41,19 +43,24 @@ function App() {
             })}
             header={<Navbar />}>
             <Routes>
-              <Route path="/" element={<Landing />} />
+              <Route path="/" element={
+                isAuth === false ?
+                  (<Landing />) :
+                  user.user_type === "volunteer" ?
+                    (<VolunteerHome user={user} />) :
+                    <OrgHome user={user} />}>
+                {/* Displays project by details page for each user role */}
+                <Route path="projects" element={<MyProjects />} />
+                {/* projects is  specific to the volunteers */}
+                <Route path="projects/:projectId" element={<ProjectDetails />} />
+                {/* projects/projectId is used for both volunteers and organizations */}
+                <Route path="projects/create" element={<CreateProject />} />
+                {/* projects/create is specfic to organizations looking to create a new project */}
+              </Route>
               <Route path="/signup/organization" element={<SignUp userType="organization" />} />
               <Route path="/signup/volunteer" element={<SignUp userType="volunteer" />} />
               <Route path="/login" element={<Login />} />
               {/* Home displays the Dashboard page and the student projects feed */}
-              <Route path="/home" element={<Home />}> 
-              {/* Displays project by details page for each user role */}
-                <Route path="projects/:projectId" element={<ProjectDetails />} />
-                {/* projects/create is specfic to organizations looking to create a new project */}
-                <Route path="projects/create" element={<CreateProject />} />
-                {/* projects is  specific to the volunteers */}
-                <Route path="projects" element={<MyProjects />} />
-              </Route>
               <Route path="*" element={<NotFound />} />
             </Routes>
           </AppShell>
