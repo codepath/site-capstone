@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <coverage generated="1689959479576" clover="3.2.0">
   <project timestamp="1689959479576" name="All files">
     <metrics statements="156" coveredstatements="86" conditionals="45" coveredconditionals="20" methods="35" coveredmethods="13" elements="236" coveredelements="119" complexity="0" loc="156" ncloc="156" packages="3" files="7" classes="7"/>
@@ -30,9 +31,11 @@
       </file>
     </package>
     <package name="src.models">
+
       <metrics statements="115" coveredstatements="49" conditionals="15" coveredconditionals="5" methods="24" coveredmethods="5"/>
       <file name="organization.ts" path="/Users/mcristino/capstone/site-capstone-volunteerverse/volunteerverse-api/src/models/organization.ts">
         <metrics statements="28" coveredstatements="12" conditionals="4" coveredconditionals="1" methods="3" coveredmethods="1"/>
+
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
