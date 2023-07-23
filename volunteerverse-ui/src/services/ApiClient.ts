@@ -69,7 +69,7 @@ class ApiClient {
     async fetchUserFromToken(){
         // handles user fetch from token
         const requestOptions = {
-            method: "post",
+            method: "get",
             subDirectory: "/auth/me",
         }
         return this.request(requestOptions);
