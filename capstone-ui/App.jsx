@@ -6,7 +6,7 @@ import Homepage from './Homepage'
 import Navbar from './Navbar'
 import Footer from './Footer'
 import Activities from './BookingPages/Activities'
-import Hotels from './BookingPages/Hotels';
+import HotelsPage from './BookingPages/HotelsPage';
 import './index.css'
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom"
 
@@ -25,22 +25,17 @@ function App() {
     const [filterActivities, setFilterActivities] = useState(false)
     const [filterHotels, setFilterHotels] = useState(true)
 
-    const [departureDate, setDepartureDate] = useState(null)
-    const [arrivalDate, setArrivalDate] = useState(null)
+    const [departureDate, setDepartureDate] = useState("")
+    const [arrivalDate, setArrivalDate] = useState("")
 
-    const [destination, setDestination] = useState(null)
+    const [destination, setDestination] = useState("")
 
     const [travelers, setTravelers] = useState(1)
-
-    const [budget, setBudget] = useState(50)
 
     const [authenticated, setAuthenticated] = useState(false)
 
     const [itinerary, setItinerary] = useState([])
 
-   
-
-  
     const addToItinerary = (item)=>{
         
         if ( itinerary.includes(item) || itinerary.some(item => item.category === 'hotel')) {
@@ -71,14 +66,17 @@ function App() {
                                     arrivalDate={arrivalDate} setArrivalDate={setArrivalDate}
                                     destination={destination} setDestination={setDestination}
                                     travelers={travelers} setTravelers={setTravelers}
-                                    budget={budget} setBudget={setBudget}
                             />
                         } />
                         <Route path="/activities" element={
                             <Activities itinerary ={itinerary} setItinerary = {setItinerary} addToItinerary = {addToItinerary} />} 
                         />
                         <Route path="/hotels" element={
-                            <Hotels itinerary ={itinerary} setItinerary = {setItinerary} addToItinerary = {addToItinerary} />} 
+                            <HotelsPage 
+                                    travelers={travelers}
+                                    departureDate={departureDate}
+                                    arrivalDate={arrivalDate}
+                                    destination={destination} />} 
                         />
                     </Routes>
                 </Router>

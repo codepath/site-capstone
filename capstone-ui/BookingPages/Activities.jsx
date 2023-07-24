@@ -1,14 +1,14 @@
 import { activities } from "./data"
 import { useState } from "react"
+import '../index.css'
 // import { ActivityCards } from "./ThingsToDoCard"
 const destination = "New York"
 const budget = 1000
 const startDate = "Tuesday, July 18"
 const endDate = "Sunday, July 23"
+
+
 export default function Activities ({addToItinerary, itinerary}){
-
-
-
     // const [itinerary, setItinerary] = useState([])
     const [searchValue, setSearchValue] = useState("")
     const [ price, setPrice ] = useState(0);
