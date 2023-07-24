@@ -34,7 +34,7 @@ const useStyles = createStyles((theme) => ({
 }))
 
 
-export default function Login() {
+export default function Login({ setToken } : {setToken : (val: string) => void}) {
   const [showButtonLoader, { open: openButtonLoader, close: closeButtonLoader }] = useDisclosure(false)
   const { classes } = useStyles();
   const navigate = useNavigate();
@@ -60,8 +60,8 @@ export default function Login() {
           // if request is successful update user_token
           // and navigate to 
           console.log("successfully logged in user", data);
-          localStorage.setItem("user_token", data.token)
-          navigate("/home");
+          setToken(data.token);
+          navigate("/");
         } else {
           if (statusCode === 401) {
             // status code 401 -> password and email are incorrect
