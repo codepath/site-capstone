@@ -1,9 +1,9 @@
 import db from "../db" 
 import bcrypt from "bcrypt"
-import { BadRequestError, ExpressError } from "../utils/errors"
+import { BadRequestError, ExpressError, UnauthorizedError } from "../utils/errors"
 
 import { BCRYPT_WORK_FACTOR } from "../config"
-import { log } from "console";
+
 
 export class Organization {
     /**
@@ -140,11 +140,55 @@ export class Organization {
   }
 
 
-  static async fetchAllOrganizationProjects(org_email){
+  // static async createOrganizationProject (projectInfo) {
+  //   console.log("project info in create function: ", projectInfo)
+  // const result = await db.query(
+  //   `INSERT INTO projects(
+  //     org_id,
+  //     project_name,
+  //     project_description,
+  //     image_url,
+  //     requested_people,
+  //     approved_people)
+  //   VALUES ($1, $2, $3, $4, $5, $6)
+
+  //    RETURNING  org_id, project_name, project_description, image_url, requested_people, approved_people`,
+  //   [projectInfo.org_id , projectInfo.project_name,projectInfo.project_description,projectInfo.image_url,projectInfo.requested_people,projectInfo.approved_people])
+
+  //   return result.rows[0]
+  // }
+
+  static async deleteOrganizationProject (project_id, orgId){
+    const orgResult = await db.query(`SELECT * FROM projects WHERE org_id = $1 AND id = $2`,[orgId, project_id])
+    if(orgResult.rows[0] !== 0){
+    const result = await db.query(`DELETE FROM "projects" WHERE "project_id" = $1`, [project_id])
+    return true;
+    }
+    else {
+      return new UnauthorizedError("Organization/Project not found");
+    }
+  }
+
+  static async updateApprovedVolunteers (approved, email, project_id, orgId) {
+    const orgResult = await db.query(`SELECT * FROM projects WHERE org_id = $1 AND id = $2`,[orgId, project_id])
+
+    if(orgResult.rows[0] !== 0 ) {
+ const result = await db.query(`UPDATE "interested_volunteers" SET "approved" = $1 
+                     WHERE "email" = $2 AND "project_id = $3"`, 
+                     [!approved, email, project_id])
+ return true;
+    }
+    else {
+      return new UnauthorizedError("Organization/Project not found");
+    }
+  }
+
+  static async fetchAllOrganizationProjectsById(org_id){
 
     const result = await db.query(
 // make sure this matches spelling in the table too!!
-      `SELECT  
+      `SELECT 
+      org_id, 
       project_name,
       project_description,
       image_url,
@@ -152,7 +196,7 @@ export class Organization {
       approved_people
        FROM projects
        WHERE  email = $1`,
-       [ org_email.toLowerCase()]
+       [ org_id]
        )
 
        if(!result) {
