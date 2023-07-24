@@ -1,55 +1,83 @@
 
 import React, { useEffect, useState } from 'react'
 import { apiClient } from '../ApiClient'
-import { organizationProp, volunteerProp } from '../../props/users';
-
-
+import { useLocalStorage } from '@mantine/hooks';
+import { useCallback } from 'react';
+// import useLoc
 export interface useAuthenticationUserProp {
   password: string,
   email: string,
   id: number,
-  user_type: string
+  userType: string
+  // make it return first name and last name too?
 
 }
+export interface authProps {
+  isAuth: boolean,
+    user : {
+      password: string,
+      email: string,
+      id: number,
+      userType: string
+    }
+}
 
- export const useAuthentication = (): [boolean, useAuthenticationUserProp] => {
+ export const useAuthentication = (): [authProps, (val: string) => void, () => void] => {
   // function returns authentication state  (boolean, and user)
   // and user after fetching user from the token
   // stored in local storga
+  const [token, setStorageValue, removeStorageValue] = useLocalStorage({ key: 'user_token', defaultValue: '' });
+  const setToken = useCallback((value: string) => {
+    setStorageValue(value);
+  }, [token])
+
+  const removeToken = useCallback(() => {
+    removeStorageValue();
+  }, [token])
+
+
   const [sessionState, setSessionState] = useState({ 
     isAuth: false,
     user : {
       password: "",
       email: "",
       id: -1,
-      user_type: ""}
+      userType: ""}
   });
 
   useEffect(() => {
     const fetchUser = async () => {
-      const token = localStorage.getItem("user_token");
-      console.log("fetched token from storage: ", token);
-      if (token){
-        // sets token if it is not undefined
-        apiClient.setToken(token);
+      if (!token) {
+        setSessionState({
+          isAuth: false,
+          user: {
+            password: "",
+            email: "",
+            id: -1,
+            userType: ""
+          }
+        })
+        return // returns if token is undefined
       }
-      const { data, success, statusCode } = await apiClient.fetchUserFromToken();
+      apiClient.setToken(token);
+      const { data, success, statusCode, error } = await apiClient.fetchUserFromToken();
       if (success) {
-        // updates appstate if request to backend 
-        // was successful
-        // if user exists, set isAuth to true if its currently false
+        // update props if authentication was successful
+        console.log("renaming user_type to userType");
         setSessionState(() => ({
           isAuth : true,
-          user : data.user
+          user : {...data.user, userType: data.user.user_type}
         }))
-      } else {
-        // set isAuth to false if no token exists in 
-        // local storage
-        console.log("unauthenticate user or an error has occured", statusCode)
+      } else if (statusCode === 401) {
+        console.log("unauthenticated user found")
+      } else{
+        console.log("unexpected error has occured.\n","code: ", statusCode);
+        console.log("error: ", error,);
       }
     }
     fetchUser();
 
-  }, []);
-  return [sessionState.isAuth, sessionState.user]
+  }, [token]);
+  console.log("retturnign session state: ", sessionState)
+  return [sessionState, setToken, removeToken]
 };
