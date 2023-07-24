@@ -15,37 +15,7 @@ export class Organization {
    * @returns public organization
    */
 
-    // static async _createNewOrganization({id, organization_name, organization_description, organization_email, logo_url}) {
-     
-    //   return {
-    //     id: id,
-    //     organization_name: organization_name,
-    //     organization_description: organization_description,
-    //     organization_email: organization_email,
-    //    logo_url: logo_url,
-    //   }
-    // }
-
-
-   /**
-   * Authenticate user with email and password.
-   *
-   * Throws UnauthorizedError if user not found or wrong password.
-   *
-   * @returns organization
-   **/
-    
-  // static async register(organization) {
-  //   const requiredFields = ["organization_name", "organization_description", "organization_email", "logo_url"]
-  //    requiredFields.forEach(field => {
-  //     if(!CredentialsContainer.hasOwnProperty(field)){
-  //       throw new BadRequestError(`Missing %(field) in request body `)
-  //     }
-  //    })
-      
-    
-     
-  //   };
+   
 
   static async register(creds) {
 
@@ -192,8 +162,31 @@ export class Organization {
       
   }
 
-  
 
+  static async fetchInterestedVolunteersByProjectId(projectId){
+
+    const result = await db.query(
+// make sure this matches spelling in the table too!!
+// if this was insert, we would have assigned the data from insomnia
+//to it but since it is select, we would be taking the data under the rows from
+//the table we said
+      `SELECT  
+      email,
+      project_id
+       FROM interested_volunteers
+       WHERE  project_id = $1`,
+       [ projectId]
+// then project_id will then equal what we put in and then using that we can filter
+// what we want from the table!
+//which we then assign to result back in the route and then convert to json.
+       )
+
+       if(!result) {
+        throw new BadRequestError()
+     }
+   return result.rows
+      
   }
+ }
 
 
