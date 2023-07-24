@@ -12,13 +12,17 @@ app.use(morgan("tiny"));
 const hotelsRouter = require('./routes/hotels');
 const favoritesRouter = require('./routes/favorites');
 const activitiesRouter = require('./routes/activities');
-const itinerariesRouter = require('./routes/itineraries.js');
+const itinerariesRouter = require('./routes/itineraries');
 const userRouter = require('./routes/user');
+const thingstodoRouter = require('./routes/things-to-do');
+
 
 
 console.log("entered server")
 
 app.use('/api', hotelsRouter);
+app.use('/api', thingstodoRouter);
+
 app.use('/', favoritesRouter);
 app.use('/', activitiesRouter);
 app.use('/', itinerariesRouter);

@@ -20,6 +20,7 @@ router.delete('/itineraries/:id', (req, res) => {
 });
 
 // Itinerary Activities
+
 router.get('/itineraries/:id/activities', (req, res) => {
   // Logic to retrieve activities for a specific itinerary
 });
