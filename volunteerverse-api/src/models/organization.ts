@@ -231,6 +231,19 @@ export class Organization {
    return result.rows
       
   }
+
+  static async getOrgById(orgId:number){
+    const query = `SELECT * FROM organizations WHERE id=$1`;
+    const result = await db.query(query, [orgId]);
+    const org = result.rows[0];
+    if (org) {
+      return org;
+    }
+    return null;
+
+  }
  }
+
+
 
 
