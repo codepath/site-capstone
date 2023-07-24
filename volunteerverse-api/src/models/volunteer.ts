@@ -209,6 +209,11 @@ export class Volunteer {
    * @param email
    */
   static async expressInterest(projectId: number, email: string) {
+    const volunteerCheck = await this.expressedInterest(projectId, email)
+    if (volunteerCheck){
+      throw new BadRequestError("Already expressed interest")
+    }
+
     const query = `INSERT into interested_volunteers(email, project_id, approved) VALUES ($1,$2,$3) RETURNING email,project_id as "projectId",approved`;
     const result = await db.query(query, [email, projectId, false]);
     return result.rows[0];
@@ -228,4 +233,16 @@ export class Volunteer {
     );
     return Array.from(projects);
   }
+
+
+
+static async expressedInterest(projectId: number, email:string){
+  const query = `SELECT * FROM interested_volunteers WHERE email=$1 AND project_id=$2`
+  const result = await db.query(query, [email, projectId])
+  if (result){
+    return result.rows[0]
+  }
+  return null;
+}
+
 }
