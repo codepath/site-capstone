@@ -74,5 +74,11 @@ class ApiClient {
         }
         return this.request(requestOptions);
     }
+    async fetchProjectByid(projectId: string){
+        const requestOptions = {
+
+        }
+        return this.request(requestOptions)
+    }
 }
 export const apiClient = new ApiClient(API_BASE_URL);
