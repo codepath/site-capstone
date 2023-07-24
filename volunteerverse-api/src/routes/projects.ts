@@ -19,13 +19,15 @@ projectRoutes.post("/register", async function (req, res, next){
 /**route that returns project information given the project id */
 projectRoutes.get("/:projectId", async function (req, res, next){
     const projectId = parseInt(req.params.projectId)
-    const project = await Projects.fetchProjectByProjectId(projectId)
-    if (project) {
+    try {
+        const project = await Projects.fetchProjectByProjectId(projectId)
         res.status(201).json(project)
-      } else {
-        res.status(404).json( { error: 'Project not found' } )
+      } catch(error) {
+        next(error)
       }
 })
+
+
 
 /**route that gets all projects with given tag */
 projectRoutes.get("/tag/:tag_name", async function(req, res, next){
