@@ -155,17 +155,17 @@ export default function Landing() {
             <Image alt="VolunteerVerse Logo. A purple hand with a smiley face" className={classes.image} fit={"contain"} src={Logo} />
           </Container>
         </Flex>
-        <WhatWeDo />
+        <WhatWeDo  />
         <CallToAction openModal={openModal} />
         <Modal 
-        styles={(theme) => ({ inner: {paddingLeft: "2rem"}})}
+        styles={() => ({ inner: {paddingLeft: "2rem"}})}
         title={<Title  align="center">Select Your Role:</Title>}
         closeButtonProps={{ 'aria-label': 'Close modal' }}
         opened={showModal} 
         onClose={closeModal} 
         size="auto" 
         centered>
-          <SignUpModal />
+          <SignUpModal close={closeModal} />
         </Modal>
       </Flex>
   )
