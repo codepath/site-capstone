@@ -36,16 +36,52 @@ export default function Homepage({ filterFlights, setFilterFlights,
     }
     
     const homepage_america = {
-        "Toronto, Canada":"./Assets/toronto.jpg",
-        "New York City, United States":"./Assets/nyc.jpg",
-        "Los Angeles, United States":"./Assets/losangeles.jpg",
-        "Mexico City, Mexico":"./Assets/mexicocity.jpg"
+        "Toronto":"./Assets/toronto.jpg",
+        "New York City":"./Assets/nyc.jpg",
+        "Los Angeles":"./Assets/losangeles.jpg",
+        "Mexico City":"./Assets/mexicocity.jpg"
     }
+    const homepage_asia = {
+        "Bali":"./Assets/bali.jpg",
+        "Bangkok":"./Assets/bangkok.jpg",
+        "Seoul":"./Assets/Seoul.jpg",
+        "Tokyo":"./Assets/Tokyo.jpg"
+    }
+
+    const homepage_europe = {
+        "Paris":"./Assets/paris.jpg",
+        "Rome":"./Assets/rome.jpg",
+        "Barcelona":"./Assets/barcelona.jpg",
+        "London":"./Assets/london.jpg"
+    }
+
+    const homepage_latin = {
+        "Rio":"./Assets/rio.jpg",
+        "Machu Pichu":"./Assets/machupichu.jpg",
+        "Buenos Aires":"./Assets/buenosaires.jpg",
+        "Cartagena":"./Assets/cartagena.jpg"
+    }
+
+    const homepage_africa = {
+        "Zanzibar":"./Assets/zanzibar.jpg",
+        "Casablanca":"./Assets/casablanca.jpg",
+        "Cape Town":"./Assets/capetown.jpg",
+        "Giza":"./Assets/giza.jpg",
+    }
+
+    const homepage_oceania = {
+        "Bora Bora":"./Assets/borabora.jpg",
+        "Sydney":"./Assets/sydney.jpg",
+        "Auckland":"./Assets/auckland.jpg",
+        "Oahu":"./Assets/oahu.jpg"
+    }
+
     return (
         <div className="relative">
             <div className="absolute z-[-1] left-0 right-0 overflow-hidden h-72">
                 <img src="./Assets/homepage-banner.jpg" className="w-full h-full object-cover object-bottom"/>
             </div>
+            <div className="absolute z-[-2] bg-gray-100 bg-opacity-75 h-full w-full">ttttt</div>
             <div>
             
             <div className="relative shadow-lg mx-56 py-4 px-8 bg-white bg-opacity-80">
@@ -63,7 +99,7 @@ export default function Homepage({ filterFlights, setFilterFlights,
                             onClick={() => setFilterHotels(!filterHotels)}
                             variant={filterHotels ? "filled" : "outlined"}
                             color={filterHotels ? "success" : "default"}
-                            sx={{'borderRadius':'4px', 'width':'63px',
+                            sx={{'borderRadius':'4px', 'width':'65px',
                                  'fontFamily':'IBM Plex Sans',
                                 }}
                         />
@@ -85,9 +121,9 @@ export default function Homepage({ filterFlights, setFilterFlights,
                             disabled
                         />
                     </div>
-                    <div className="flex space-x-4 w-full border border-blue-500 rounded-md mt-4 shadow-md">
+                    <div className={`flex space-x-4 w-full mt-4 ${filterHotels || filterActivities || filterFlights ? `border bg-white border-blue-500 rounded-md shadow-md` : `pl-0 font-semibold bg-transparent`}`}>
                         {(!filterHotels && !filterActivities && !filterFlights) && (
-                            <div className="p-4"><h2>Choose at least one search filter to begin.</h2></div>
+                            <div><h2>Choose at least one search filter to begin.</h2></div>
                         )}
                         {(filterHotels || filterActivities) && (
                             <div>
@@ -145,9 +181,16 @@ export default function Homepage({ filterFlights, setFilterFlights,
                     <div>
                         <div className='flex mt-4 text-2xl'>The ultimate trip planning tool.</div>
                         <div className='h-0.5 bg-blue-500 w-1/3 my-3'></div>
-                        <div>    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. <br/><br/>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+                        <div className="text-lg">An intuitive, one-stop solution for all your travel needs. Effortlessly book vacation hotel accommodations and excursions and access real-time flight status updates for thousands of destinations worldwide.
+                        </div>
+                        <div className="mt-3 text-lg">
+                            First, pick your destination, travel dates, and number of travelers. Set your budget, and Nomadia will update in real time as you build your itineraries.
+                        </div>
+                        <div className="mt-3 text-lg">
+                            Log in to save your trips and book them later.
+                        </div>
                     </div>
-                    <div className="text-2xl">Trending destinations</div>
+                    <div className="text-2xl">Popular destinations</div>
                     <div className='h-0.5 bg-blue-500 w-1/3 my-3'></div>
                     <div className='flex justify-between mt-4'>
                         <div className="text-2xl">
@@ -158,34 +201,30 @@ export default function Homepage({ filterFlights, setFilterFlights,
                         <div className="text-2xl">
                             Asia
                         <div className="text-2xl font-bold mb-2"></div>
-                            <ImageCarousel images={homepage_america}/>
+                            <ImageCarousel images={homepage_asia}/>
                         </div>
                         <div className="text-2xl">
                             Europe
                             <div className="text-2xl font-bold mb-2"></div>
-                            <ImageCarousel images={homepage_america}/>
+                            <ImageCarousel images={homepage_europe}/>
                         </div>
                     </div>
                     <div className='flex justify-between mt-4'>
                         <div className="text-2xl">
                             South America
                             <div className="text-2xl font-bold mb-2"></div>
-                            <ImageCarousel images={homepage_america}/>
+                            <ImageCarousel images={homepage_latin}/>
                         </div>
                         <div className="text-2xl">
                             Africa
                         <div className="text-2xl font-bold mb-2"></div>
-                            <ImageCarousel images={homepage_america}/>
+                            <ImageCarousel images={homepage_africa}/>
                         </div>
                         <div className="text-2xl">
                             Oceania
                             <div className="text-2xl font-bold mb-2"></div>
-                            <ImageCarousel images={homepage_america}/>
+                            <ImageCarousel images={homepage_oceania}/>
                         </div>
-                    </div>
-                    <div>
-                        <div className='flex mt-4 text-2xl'>Features</div>
-                        <div className='h-0.5 bg-blue-500 w-1/3 my-3'></div>
                     </div>
                 </div>
             </div>
