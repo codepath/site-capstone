@@ -84,7 +84,7 @@ export default function SignUp({ userType } : {userType : "volunteer" | "organiz
             lastName: values.lastName.trim().length < 2 ? 'Last must be longer than 2 characters' : null,
             password: values.password.length < 2 ? 'Please use a stronger password' : null,
             confirmPassword: values.confirmPassword !== values.password ? "Password's do not match" : null,
-            email : values.email.length < 2 ? 'Please provide a valid email address' : null,
+            email : /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(values.email) ? null : 'Please provide a valid email address',
           }
         } else if (activeStep === 1){
           // only returns these validation contraints once user
@@ -118,7 +118,8 @@ export default function SignUp({ userType } : {userType : "volunteer" | "organiz
             orgName: values.orgName.trim().length < 2 ? 'Organization must be longer than 2 characters' : null,
             password: values.password.length < 2 ? 'Please use a stronger password' : null,
             confirmPassword: values.confirmPassword !== values.password ? "Password's do not match" : null,
-            email : values.email.length < 2 ? 'Please provide a valid email address' : null,
+            email : /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(values.email) ? null : 'Please provide a valid email address',
+
           }
         } else if (activeStep === 1){
           return {
