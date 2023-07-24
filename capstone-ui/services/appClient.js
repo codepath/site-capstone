@@ -32,6 +32,20 @@ class ApiClient {
         return { data: null, error: message || String(error) };
       }
     }
+
+    //Places/ThingsToDo API
+    async placesSearch(credentials) {
+        return await this.request({ endpoint: 'api/places-search', method: 'POST', data: credentials });
+    }
+
+    async placesDetail(credentials) {
+        return await this.request({ endpoint: 'api/places-detail', method: 'POST', data: credentials });
+    }
+
+    async placesPhotos(credentials) {
+        return await this.request({ endpoint: 'api/places-photos', method: 'POST', data: credentials });
+    }
+
     //Hotel API
     async hotelsLocation(credentials) {
         return await this.request({ endpoint: 'api/hotels-location', method: 'POST', data: credentials });
