@@ -4,7 +4,8 @@ CREATE TABLE volunteers(
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
     bio TEXT NOT NULL,
-    image_url TEXT
+    image_url TEXT,
+    skills TEXT NOT NULL
 );
 
 CREATE TABLE organizations(
@@ -13,15 +14,10 @@ CREATE TABLE organizations(
     organization_description TEXT,
     organization_email TEXT NOT NULL UNIQUE CHECK (position('@' IN organization_email) > 1),
     logo_url TEXT,
-    founders TEXT
+    founders TEXT,
+    website TEXT
 );
 
-CREATE TABLE volunteer_skills(
-    id SERIAL PRIMARY KEY,
-    email TEXT NOT NULL CHECK (position('@' IN email) > 1),
-    skill TEXT NOT NULL,
-    FOREIGN KEY (email) REFERENCES volunteers (email)
-);
 
 CREATE TABLE projects(
     id SERIAL PRIMARY KEY,
@@ -32,7 +28,8 @@ CREATE TABLE projects(
     image_url TEXT,
     requested_people INTEGER NOT NULL,
     approved_people INTEGER NOT NULL,
-    FOREIGN KEY (org_id) REFERENCES organizations (id)
+    tags TEXT NOT NULL,
+    FOREIGN KEY (org_id) REFERENCES organizations (id) ON DELETE CASCADE
     
 );
 
@@ -40,16 +37,11 @@ CREATE TABLE interested_volunteers(
     id SERIAL PRIMARY KEY,
     email TEXT NOT NULL CHECK (position('@' IN email) > 1),
     project_id INTEGER,
-    approved BOOLEAN
+    approved BOOLEAN,
+    FOREIGN KEY (project_id) REFERENCES projects (id) ON DELETE CASCADE
    
 );
 
-CREATE TABLE project_tags(
-    id SERIAL PRIMARY KEY,
-    project_id INTEGER,
-    tag_name TEXT NOT NULL
-    
-);
 
 CREATE TABLE authentication(
     id SERIAL PRIMARY KEY,
