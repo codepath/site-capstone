@@ -34,19 +34,21 @@ export class Organization {
         organization_description,
         organization_email,
        logo_url,
-       founders
+       founders,
+       website
       )
-      VALUES ($1, $2, $3, $4, $5)
+      VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING id,
       organization_name,
                 organization_description,
                 organization_email,
                logo_url,
-               founders
+               founders,
+               website
                `,
-    [creds.organization_name, creds.organization_description, normalizedOrgEmail, creds.logo_url, creds.founders] )
+    [creds.organization_name, creds.organization_description, normalizedOrgEmail, creds.logo_url, creds.founders, creds.website] )
    
-    const {id, organization_email, organization_name, logo_url, founders, organization_description} = orgResult.rows[0]
+    const {id, organization_email, organization_name, logo_url, founders, organization_description, website} = orgResult.rows[0]
 
     const authResult = await db.query (
       `INSERT INTO authentication (
@@ -65,14 +67,6 @@ export class Organization {
 
     const {user_type} = authResult.rows[0]
 
-    // const org = {
-    //   organization_name: orgResult.rows[0].organization_name,
-    //   organization_description: orgResult.rows[0].organization_description,
-    //   organization_email: orgResult[0].organization_email,
-    //   logo_url: orgResult[0].logo_url,
-    //   user_type: "organization"
-    // }  
-    // return orgResult.rows[0];
 
     return {
       id: id,
@@ -81,7 +75,8 @@ export class Organization {
       description: organization_description,
       logo: logo_url,
       founders: founders,
-      userType: user_type
+      userType: user_type,
+      website: website
     }
     
 
