@@ -3,7 +3,6 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import TextField from '@mui/material/TextField'
 import Chip from '@mui/material/Chip'
 import Button from '@mui/material/Button'
-import InputAdornment from '@mui/material/InputAdornment'
 import { Link } from "react-router-dom"
 import { useState, useEffect } from 'react'
 import ImageCarousel from './ImageCarousel'
@@ -15,20 +14,23 @@ export default function Homepage({ filterFlights, setFilterFlights,
                                    departureDate, setDepartureDate,
                                    arrivalDate, setArrivalDate,
                                    destination, setDestination,
-                                   budget, setBudget,
                                    travelers, setTravelers,
                                  }) {
     
     const [submit, setSubmit] = useState(false)
 
+    function handleSubmit() {
+
+    }
+
     useEffect(() => {
-        if ((budget === null || budget === "") 
-    || (travelers === null || travelers === "")
+        if (
+       (travelers === null || travelers === "")
     || (arrivalDate === null || arrivalDate === "") 
     || (departureDate === null || departureDate === "") 
     || (destination === null || destination === "")) setSubmit(false)
     else setSubmit(true) 
-    }, [budget, travelers, arrivalDate, departureDate, destination])
+    }, [travelers, arrivalDate, departureDate, destination])
 
     async function handleSubmit(event) {
         event.preventDefault()
@@ -140,12 +142,22 @@ export default function Homepage({ filterFlights, setFilterFlights,
                                 <DatePicker 
                                     label="Check-in date" 
                                     value={departureDate} 
-                                    onChange={(newDate) => setDepartureDate(newDate)}
+                                    onChange={(newDate) => setDepartureDate(newDate["$d"].toLocaleString("en-US", {
+                                        weekday: "short",
+                                        year: "numeric",
+                                        month: "short",
+                                        day: "numeric",
+                                      }))}
                                 />
                                 <DatePicker 
                                     label="Check-out date" 
                                     value={arrivalDate} 
-                                    onChange={(newDate) => setArrivalDate(newDate)}
+                                    onChange={(newDate) => setArrivalDate(newDate["$d"].toLocaleString("en-US", {
+                                        weekday: "short",
+                                        year: "numeric",
+                                        month: "short",
+                                        day: "numeric",
+                                      }))}
                                     variant="standard"
                                 />
                                 <TextField
@@ -157,19 +169,8 @@ export default function Homepage({ filterFlights, setFilterFlights,
                                     onChange={(e) => {e.target.value > 0 && e.target.value <= 12 ? setTravelers(e.target.value) : 
                                                       e.target.value > 12 ? setTravelers(12) : setTravelers(1)}}
                                 />
-                                <TextField
-                                    id="outlined-number"
-                                    label="Budget (USD)"
-                                    inputAd
-                                    type="number"
-                                    value={budget}
-                                    onChange={(e) => {e.target.value > 50 ? setBudget(e.target.value) : setBudget(50)}}
-                                    InputProps={{
-                                        required: true,
-                                        startAdornment: <InputAdornment position="start">$</InputAdornment>,
-                                    }}
-                                />
-                                <Link to={submit ? "/activities" : ""}>
+                                <Link to={(submit && filterActivities) ? "/activities" : 
+                                          (submit && filterHotels) ? "/hotels" : ""}>
                                 <Button disabled={!submit ? true : false} 
                                         sx={{'border': '1px solid', 
                                         'height' : '55px'}}>Search</Button>
@@ -181,16 +182,16 @@ export default function Homepage({ filterFlights, setFilterFlights,
                     <div>
                         <div className='flex mt-4 text-2xl'>The ultimate trip planning tool.</div>
                         <div className='h-0.5 bg-blue-500 w-1/3 my-3'></div>
-                        <div className="text-lg">An intuitive, one-stop solution for all your travel needs. Effortlessly book vacation hotel accommodations and excursions and access real-time flight status updates for thousands of destinations worldwide.
+                        <div className="text-lg">An intuitive, one-stop solution for all your travel needs. Effortlessly book hotel accommodations and excursions and access real-time flight status updates for thousands of destinations worldwide.
                         </div>
                         <div className="mt-3 text-lg">
-                            First, pick your destination, travel dates, and number of travelers. Set your budget, and Nomadia will update in real time as you build your itineraries.
+                            First, pick your destination, travel dates, and number of travelers. Nomadia will update in real time as you build your itineraries.
                         </div>
                         <div className="mt-3 text-lg">
                             Log in to save your trips and book them later.
                         </div>
                     </div>
-                    <div className="text-2xl">Popular destinations</div>
+                    <div className="text-2xl mt-3">Popular destinations</div>
                     <div className='h-0.5 bg-blue-500 w-1/3 my-3'></div>
                     <div className='flex justify-between mt-4'>
                         <div className="text-2xl">

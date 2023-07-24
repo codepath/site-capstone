@@ -39,7 +39,6 @@ export default function Navbar({ authenticated, setAuthenticated }) {
     return (
         <div className="px-64 bg-gray-100 bg-opacity-75 justify-end flex h-16 border-b border-blue-500 sticky top-0 z-10">
             <Button>FAQ</Button>
-            <div className="border border-blue-500 w-0.5 my-2"></div>
             <Button onClick={() => setRegisterOpen(true)}>Sign up</Button>
             <Button onClick={() => setLoginOpen(true)}>Log in</Button>
             <Modal 
