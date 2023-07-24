@@ -97,8 +97,7 @@ export class Projects {
       approvedPeople: approved_people,
       tags: tags
     }
-    }
-
+  }
     return new BadRequestError("Project not found");
   }
 
@@ -106,9 +105,6 @@ export class Projects {
     const query = `SELECT project_id FROM project_tags WHERE tag_name=$1`;
     const result = await db.query(query, [tag]);
    
-
-   
-
     if (result.rows.length === 0) {
       // Return an empty array if no projects are found with the given tag
       return []

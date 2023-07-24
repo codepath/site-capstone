@@ -6,6 +6,31 @@ import bcrypt from "bcrypt";
 import { Projects } from "./projects";
 
 export class Volunteer {
+
+      // Static method to make a volunteer object
+      static async createPublicVolunteer(volunteer:{id:number,email:string,first_name:string,last_name:string,bio:string,image_url:string}) {
+        const skills = await this.fetchAllSkills(volunteer.email)
+        const interestedProjects = await this.getInterestedProjects(volunteer.email)
+        const approvedProjects = await this.getApprovedProjects(volunteer.email)
+
+        return {
+            id: volunteer.id,
+            firstName: volunteer.first_name,
+            lastName: volunteer.last_name,
+            email: volunteer.email,
+            bio: volunteer.bio,
+            imageUrl: volunteer.image_url,
+            skills: skills,
+            interestedProjects: interestedProjects,
+            approvedProjects: approvedProjects,
+            userType: "volunteer"
+        }
+    }
+
+  
+
+
+
   /**
    * Register volunteer with their information in the database
    * @param volunteerInfo
@@ -138,7 +163,7 @@ export class Volunteer {
     const query = `SELECT project_id FROM interested_volunteers WHERE email=$1 and approved=FALSE`;
     const result = await db.query(query, [email])
     if (result){
-      return result
+      return result.rows
     }
   }
 
@@ -153,7 +178,7 @@ export class Volunteer {
     const result = await db.query(query, [email]);
 
     if (result){
-      return result;
+      return result.rows;
     }
     return null;
   }
