@@ -29,6 +29,7 @@ volunteerRoutes.post("/fetch", async function (req,res,next){
 volunteerRoutes.post("/interest/:projectId", async function (req, res, next){
   const projectId = parseInt(req.params.projectId)
   const {email} = req.body
+  console.log(res.locals)
   const result = await Volunteer.expressInterest(projectId, email)
   if (result) {
     res.status(201).json(result)
@@ -42,7 +43,7 @@ volunteerRoutes.post("/projects", async function (req,res,next){
   const {email} = req.body
   const result = await Volunteer.getVolunteersProjectFeed(email)
   if (result) {
-    res.status(201).json(result)
+    res.status(201).json({projects: result})
   } else {
     res.status(404).json( { error: 'fucked up'} )
   }

@@ -6,30 +6,34 @@ import bcrypt from "bcrypt";
 import { Projects } from "./projects";
 
 export class Volunteer {
+  // Static method to make a volunteer object
+  static async createPublicVolunteer(volunteer: {
+    id: number;
+    email: string;
+    first_name: string;
+    last_name: string;
+    bio: string;
+    image_url: string;
+  }) {
+    const skills = await this.fetchAllSkills(volunteer.email);
+    const interestedProjects = await this.getInterestedProjects(
+      volunteer.email
+    );
+    const approvedProjects = await this.getApprovedProjects(volunteer.email);
 
-      // Static method to make a volunteer object
-      static async createPublicVolunteer(volunteer:{id:number,email:string,first_name:string,last_name:string,bio:string,image_url:string}) {
-        const skills = await this.fetchAllSkills(volunteer.email)
-        const interestedProjects = await this.getInterestedProjects(volunteer.email)
-        const approvedProjects = await this.getApprovedProjects(volunteer.email)
-
-        return {
-            id: volunteer.id,
-            firstName: volunteer.first_name,
-            lastName: volunteer.last_name,
-            email: volunteer.email,
-            bio: volunteer.bio,
-            imageUrl: volunteer.image_url,
-            skills: skills,
-            interestedProjects: interestedProjects,
-            approvedProjects: approvedProjects,
-            userType: "volunteer"
-        }
-    }
-
-  
-
-
+    return {
+      id: volunteer.id,
+      firstName: volunteer.first_name,
+      lastName: volunteer.last_name,
+      email: volunteer.email,
+      bio: volunteer.bio,
+      imageUrl: volunteer.image_url,
+      skills: skills,
+      interestedProjects: interestedProjects,
+      approvedProjects: approvedProjects,
+      userType: "volunteer",
+    };
+  }
 
   /**
    * Register volunteer with their information in the database
@@ -40,7 +44,7 @@ export class Volunteer {
     password: string;
     firstName: string;
     lastName: string;
-    imageUrl?:string;
+    imageUrl?: string;
     bio: string;
     skills: string[];
     userType: string;
@@ -52,7 +56,7 @@ export class Volunteer {
       "lastName",
       "bio",
       "skills",
-      "userType"
+      "userType",
     ];
     try {
       validateFields({
@@ -67,7 +71,7 @@ export class Volunteer {
     const existingVolunteer = await this.fetchVolunteerByEmail(
       volunteerInfo.email
     );
-    if (existingVolunteer!=null) {
+    if (existingVolunteer != null) {
       throw new BadRequestError(`Duplicate email: ${volunteerInfo.email}`);
     }
 
@@ -97,10 +101,10 @@ export class Volunteer {
       volunteerInfo.firstName,
       volunteerInfo.lastName,
       volunteerInfo.bio,
-      volunteerInfo.imageUrl || null
+      volunteerInfo.imageUrl || null,
     ]);
 
-    const { id, email, firstName, lastName, bio , imageUrl} = result.rows[0];
+    const { id, email, firstName, lastName, bio, imageUrl } = result.rows[0];
 
     const queryPassword = `INSERT into authentication (email, password, user_type) 
     VALUES($1, $2, $3) RETURNING id, email, password,user_type as "userType"`;
@@ -140,44 +144,44 @@ export class Volunteer {
 
   /**
    * Gets all the skills logged for the volunteer
-   * @param email 
+   * @param email
    */
 
-  static async fetchAllSkills(email:string){
-    const query = `SELECT skill FROM volunteer_skills WHERE email=$1`
-    const result = await db.query(query, [email])
-    const skills = []
-    result.rows.forEach((row)=> {
-      skills.push(row.skill)
-    })
-    return skills
+  static async fetchAllSkills(email: string) {
+    const query = `SELECT skill FROM volunteer_skills WHERE email=$1`;
+    const result = await db.query(query, [email]);
+    const skills = [];
+    result.rows.forEach((row) => {
+      skills.push(row.skill);
+    });
+    return skills;
   }
 
   /**
    * Get all the projects the volunteer has applied for or expressed interest in
-   * @param email 
-   * @returns 
+   * @param email
+   * @returns
    */
 
-  static async getInterestedProjects(email: string){
-    const query = `SELECT project_id FROM interested_volunteers WHERE email=$1 and approved=FALSE`;
-    const result = await db.query(query, [email])
-    if (result){
-      return result.rows
+  static async getInterestedProjects(email: string) {
+    const query = `SELECT project_id FROM interested_volunteers WHERE email=$1 and approved=$2`;
+    const result = await db.query(query, [email, false]);
+    if (result) {
+      return result.rows;
     }
   }
 
   /**
    * Get all the currently approved projects for a specific student
-   * @param email 
-   * @returns 
+   * @param email
+   * @returns
    */
-  
-  static async getApprovedProjects(email: string){
+
+  static async getApprovedProjects(email: string) {
     const query = `SELECT project_id FROM interested_volunteers WHERE email=$1 AND approved=TRUE`;
     const result = await db.query(query, [email]);
 
-    if (result){
+    if (result) {
       return result.rows;
     }
     return null;
@@ -199,31 +203,29 @@ export class Volunteer {
     return null;
   }
 
-
   /**
    * When a volunteer expresses interest in a project, log it into database
-   * @param projectId 
-   * @param email 
+   * @param projectId
+   * @param email
    */
-  static async expressInterest(projectId:number, email:string){
-    const query = `INSERT into interested_volunteers(email, project_id, approved) VALUES ($1,$2,$3) RETURNING email,project_id as "projectId",approved`
-    const result = await db.query(query, [email, projectId, false])
-    return result.rows[0]
+  static async expressInterest(projectId: number, email: string) {
+    const query = `INSERT into interested_volunteers(email, project_id, approved) VALUES ($1,$2,$3) RETURNING email,project_id as "projectId",approved`;
+    const result = await db.query(query, [email, projectId, false]);
+    return result.rows[0];
   }
 
+  static async getVolunteersProjectFeed(email: string) {
+    const projects = new Set<any>();
 
-  static async getVolunteersProjectFeed(email:string){
-    const projects = []
-    const volunteerSkills = await this.fetchAllSkills(email)
-    const volunteersProject = await Promise.all(volunteerSkills.map(async (tag: string)=> {
-      const tagProjects = await Projects.getProjectsWithTag(tag)
-      console.log(tagProjects)
-      tagProjects.forEach((project)=>{projects.push(project)})
-    }))
-    return projects
+    const volunteerSkills = await this.fetchAllSkills(email);
+    await Promise.all(
+      volunteerSkills.map(async (tag: string) => {
+        const tagProjects = await Projects.getProjectsWithTag(tag);
+        tagProjects.forEach((project) => {
+          projects.add(project); // Use add() to add unique project objects to the Set
+        });
+      })
+    );
+    return Array.from(projects);
   }
 }
-
-
-
-
