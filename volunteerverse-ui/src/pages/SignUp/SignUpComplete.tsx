@@ -30,7 +30,7 @@ function SignUpComplete({ form, setActiveStep} :
             if (success){
                 console.log("new user. data: ", data);
                 // stateApi.setAuth(data.token);
-                navigate("/home")
+                navigate("/")
             }else if (statusCode === 400){
                 // statusCode 400 means an invalid input was entered
             } else{

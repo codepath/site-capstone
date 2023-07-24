@@ -44,7 +44,7 @@ const useStyles = createStyles((theme) => ({
 function WhatWeDo() {
     const { classes } = useStyles();
     return (
-        <Container className={classes.container}>
+        <Container id={"HowItWorks"} className={classes.container}>
             <Container className={classes.content}>
                 <Title className={classes.title}>How It Works</Title>
 
