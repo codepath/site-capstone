@@ -3,7 +3,7 @@ import Modal from '@mui/material/Modal'
 import axios from 'axios'
 import { useState } from 'react'
 
-export default function Navbar() {
+export default function Navbar({ authenticated, setAuthenticated }) {
     const [registerOpen, setRegisterOpen] = useState(false)
     const [loginOpen, setLoginOpen] = useState(false)
 

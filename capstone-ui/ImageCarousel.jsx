@@ -4,15 +4,20 @@ import ImageCard from './ImageCard'
 export default function ImageCarousel({ images }) {
     return (
         <div className="flex w-80 flex-col">
-            <Carousel className="flex-col" navButtonsAlwaysVisible={true}
-            fullHeightHover={false} 
-                      navButtonsProps={{
-                        style: {
-                          backgroundColor: 'white',
-                          borderRadius: '50%',
-                          color: 'black'
-                        }
-                      }}
+            <Carousel autoPlay={false} 
+                      animation={"slide"}
+                      className="flex-col" navButtonsAlwaysVisible={true}
+                      fullHeightHover={false} 
+                        navButtonsProps={{
+                            style: {
+                            backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                            borderRadius: '50%',
+                            color: 'black',
+                            width:'30px',
+                            height:'30px'
+                            }
+                        }}
+              
                       indicatorIconButtonProps={{
                         style: {
                             borderRadius: '10px',
