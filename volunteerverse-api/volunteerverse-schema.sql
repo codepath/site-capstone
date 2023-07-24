@@ -31,9 +31,7 @@ CREATE TABLE projects(
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     image_url TEXT,
     requested_people INTEGER NOT NULL,
-    approved_people INTEGER NOT NULL,
-    FOREIGN KEY (org_id) REFERENCES organizations (id)
-    
+    approved_people INTEGER NOT NULL  
 );
 
 CREATE TABLE interested_volunteers(
