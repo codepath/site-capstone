@@ -4,6 +4,7 @@ import {
   Image, Textarea, Checkbox, Button, Group,
   Container, Title, Flex, Box, createStyles,
   LoadingOverlay,
+  MultiSelect,
 } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 import { OrgFormValues } from '../../../props/forms';
@@ -85,17 +86,25 @@ function CreateOrgProfileForm({ form }: { form: UseFormReturnType<OrgFormValues>
               ref={inputRef}
               radius={"xl"}
               type="file" />
-          </Flex >
+          </Flex>
         </Flex>
-        <TextInput
+        <MultiSelect
+          withAsterisk
+          data={form.values.founders}
           size={"md"}
           radius={"xl"}
           mb={"xl"}
-          withAsterisk
-          label="Founder(s):"
-          description="Please enter the first and last names of the founders seperated by a comma.E.g. 'Jane Doe, Jack Wobs'"
-          placeholder="Founder(s) Name(s)"
-          {...form.getInputProps('founders')}
+          searchable
+          creatable
+          getCreateLabel={(query : string) => `Add Founder: ${query}`}
+          onCreate={(query) => {
+            const item = { value: query, label: query };
+            console.log(form.values)
+            return item;}}
+            label="Founder(s):"
+            description="Please enter the first and last names of the founders seperated by a comma.E.g. 'Jane Doe, Jack Wobs'"
+            placeholder="Founder(s) Name(s)"
+            {...form.getInputProps('founders')}
         />
         <Textarea
           radius={"lg"}
