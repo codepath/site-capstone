@@ -28,10 +28,10 @@ export default function Homepage({ filterFlights, setFilterFlights,
 
     async function handleSubmit() {
         if (submit) {
-            const id = await axios.post('http://localhost:3002/api/hotels-location', {
+            const response = await axios.post('http://localhost:3002/api/hotels-location', {
                 location_name: destination,
             })
-            setDestID(id)
+            setDestID(response.data)
             if (filterHotels) navigate('/hotels')
             else if (filterActivities) navigate('/activities')
             else navigate('/flights')
@@ -41,10 +41,6 @@ export default function Homepage({ filterFlights, setFilterFlights,
     useEffect(() => {
         console.log(departureDate)
     }, [departureDate])
-
-/*     useEffect(() => {
-        if (submit) handleSubmit()
-    }, [submit]) */
         
     useEffect(() => {
         if (
