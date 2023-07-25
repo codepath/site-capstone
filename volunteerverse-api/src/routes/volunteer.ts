@@ -1,53 +1,48 @@
 /** Routes for authentication. */
 import express from "express";
-import { Volunteer } from "../models/volunteer"
+import { Volunteer } from "../models/volunteer";
 
-const volunteerRoutes = express.Router()
+const volunteerRoutes = express.Router();
 
 volunteerRoutes.get("/test", async function (req, res, next) {
-  res.send("test voluteer")
-})
+  res.send("test voluteer");
+});
 
-volunteerRoutes.post("/skills", async function(req,res,next){
-  const {email} = req.body
-  const result = await Volunteer.fetchAllSkills(email)
-  res.json({skills: result})
-})
+volunteerRoutes.post("/skills", async function (req, res, next) {
+  const { email } = req.body;
+  const result = await Volunteer.fetchAllSkills(email);
+  res.json({ skills: result });
+});
 
-volunteerRoutes.post("/fetch", async function (req,res,next){
-  const {email} = req.body
-  const result = await Volunteer.fetchVolunteerByEmail(email)
-  if (result){
-    res.status(201).json(result)
-  }else{
-  res.json({error: "error"})}
-})
-
-
-
-
-volunteerRoutes.post("/interest/:projectId", async function (req, res, next){
-  const projectId = parseInt(req.params.projectId)
-  const {email} = req.body
-  const result = await Volunteer.expressInterest(projectId, email)
+volunteerRoutes.post("/fetch", async function (req, res, next) {
+  const { email } = req.body;
+  const result = await Volunteer.fetchVolunteerByEmail(email);
   if (result) {
-    res.status(201).json(result)
+    res.status(201).json(result);
   } else {
-    res.status(404).json( { error: 'Already expressed interest'} )
+    res.json({ error: "error" });
   }
+});
 
-})
+volunteerRoutes.post("/interest/:projectId", async function (req, res, next) {
+  try {
+    const projectId = parseInt(req.params.projectId);
+    const { email } = req.body;
+    const result = await Volunteer.expressInterest(projectId, email);
+    res.status(201).json(result);
+  } catch (error) {
+    next(error);
+  }
+});
 
-volunteerRoutes.post("/projects", async function (req,res,next){
-  const {email} = req.body
-  const result = await Volunteer.getVolunteersProjectFeed(email)
+volunteerRoutes.post("/projects", async function (req, res, next) {
+  const { email } = req.body;
+  const result = await Volunteer.getVolunteersProjectFeed(email);
   if (result) {
-    res.status(201).json(result)
+    res.status(201).json({ projects: result });
   } else {
-    res.status(404).json( { error: 'fucked up'} )
+    res.status(404).json({ error: "fucked up" });
   }
-})
+});
 
-
-
-export {volunteerRoutes}
+export { volunteerRoutes };

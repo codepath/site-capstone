@@ -83,10 +83,12 @@ export class Projects {
     if (result){
     const {id, org_id, project_name, project_description, created_at, image_url, requested_people, approved_people} = result.rows[0]
     const tags = await this.getProjectTags(id)
-    const {organization_name} = await Organization.getOrgById(org_id)
+    const {organization_name, founders, website} = await Organization.getOrgById(org_id)
     return {
       id: id,
       orgName: organization_name,
+      founders: founders,
+      website: website,
       projectName: project_name,
       projectDesc: project_description,
       createdAt: created_at,
@@ -95,8 +97,7 @@ export class Projects {
       approvedPeople: approved_people,
       tags: tags
     }
-    }
-
+  }
     return new BadRequestError("Project not found");
   }
 
@@ -104,9 +105,6 @@ export class Projects {
     const query = `SELECT project_id FROM project_tags WHERE tag_name=$1`;
     const result = await db.query(query, [tag]);
    
-
-   
-
     if (result.rows.length === 0) {
       // Return an empty array if no projects are found with the given tag
       return []
