@@ -13,7 +13,8 @@ CREATE TABLE organizations(
     organization_description TEXT,
     organization_email TEXT NOT NULL UNIQUE CHECK (position('@' IN organization_email) > 1),
     logo_url TEXT,
-    founders TEXT
+    founders TEXT, 
+    website TEXT_
 );
 
 CREATE TABLE volunteer_skills(
@@ -31,9 +32,7 @@ CREATE TABLE projects(
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     image_url TEXT,
     requested_people INTEGER NOT NULL,
-    approved_people INTEGER NOT NULL,
-    FOREIGN KEY (org_id) REFERENCES organizations (id)
-    
+    approved_people INTEGER NOT NULL  
 );
 
 CREATE TABLE interested_volunteers(

@@ -3,6 +3,8 @@ import  db  from "../db"
 import { validateFields } from "../utils/validate"
 import bcrypt from "bcrypt"
 import { UnauthorizedError } from "../utils/errors"
+import { Volunteer } from "./volunteer"
+import { Organization } from "./organization"
 
 export class Auth{
 
@@ -16,11 +18,18 @@ export class Auth{
         }
 
         const user = await this.fetchByEmail(creds.email)
+        const {user_type} = user
 
         if (user){
             const isValid = await bcrypt.compare(creds.password, user.password)
             if (isValid===true){
-                return user
+                if (user_type==="volunteer"){
+                    const volunteer = await Volunteer.fetchVolunteerByEmail(creds.email)
+                    return await Volunteer.createPublicVolunteer(volunteer)
+                }
+                if (user_type==="organization"){
+                    return Organization.fetchOrganizationByEmail(creds.email)
+                }
             }
         }
         throw new UnauthorizedError("Invalid username/password")    
