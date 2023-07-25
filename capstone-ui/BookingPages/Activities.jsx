@@ -2,10 +2,10 @@ import { activities } from "./data"
 import { useState } from "react"
 import '../index.css'
 import ActivityCards from "./ActivityCards"
-const destination = "New York"
 
 
-export default function Activities ({addToItinerary, departureDate, arrivalDate, destintion, travelers  }){
+
+export default function Activities ({addToItinerary, departureDate, arrivalDate, destination, travelers  }){
     const [searchValue, setSearchValue] = useState("")
  
     
@@ -50,6 +50,3 @@ export default function Activities ({addToItinerary, departureDate, arrivalDate,
 }
 
 
-
-
-//export {ActivityCards}

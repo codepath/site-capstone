@@ -52,14 +52,7 @@ function App() {
           console.log(itinerary)
           console.log(itinerary.length)
       }
-      const [data, setData] = useState([])
-      useEffect(() => {
-        
-        }
-    
-        fetchData()
-      }, [])
-
+      
       
     return ( 
     <LocalizationProvider dateAdapter={AdapterDayjs}>
