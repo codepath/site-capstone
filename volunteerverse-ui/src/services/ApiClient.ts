@@ -74,9 +74,17 @@ class ApiClient {
         }
         return this.request(requestOptions);
     }
-    async fetchProjectByid(projectId: string){
+    async fetchProjectById(projectId: string){
         const requestOptions = {
-
+            method: "get",
+            subDirectory: `/project/${projectId}`,
+        }
+        return this.request(requestOptions)
+    }
+    async updateProjectInterestByUser(projectId : string){
+        const requestOptions = {
+            method: "get",
+            subDirectory: `/project/${projectId}`,
         }
         return this.request(requestOptions)
     }
