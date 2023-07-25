@@ -1,6 +1,6 @@
 import { 
   Button, Group, Paper, Stepper, 
-  createStyles, Checkbox,
+  createStyles, Checkbox, LoadingOverlay,
 } from "@mantine/core";
 import { useState } from "react";
 import { useForm, UseFormReturnType } from "@mantine/form";
@@ -10,6 +10,9 @@ import CreateVolunteerProfileForm from "./Forms/CreateVolunteerProfileForm";
 import CreateVolunteerAccountForm from "./Forms/CreateVolunteerAccountForm";
 import { VolunteerFormValues, OrgFormValues } from "../../props/forms";
 import SignUpComplete from "./SignUpComplete";
+import { useDisclosure } from "@mantine/hooks";
+import { useNavigate } from "react-router";
+import { apiClient } from "../../services/ApiClient";
 
 const useStyles = createStyles((theme) => ({
   // this object includes all styling for this component
@@ -45,20 +48,7 @@ export default function SignUp({ userType } : {userType : "volunteer" | "organiz
  *  - 
  */
 
-  const [activeStep, setActiveStep] = useState(0);
-  const prevStep = () => setActiveStep((current) => (current > 0 ? current - 1 : current));
-  const nextStep = (form : UseFormReturnType<VolunteerFormValues>  | UseFormReturnType<OrgFormValues>) => setActiveStep((current) => {
-    
-    if (form.validate().hasErrors){
-      // prevents stepper progression
-      // if form is invalid
-      console.log("form has errors", form.errors)
-      return current;
-    }
-    // continues in stepper progression if form is valid.
-    // for more see: https://mantine.dev/form/recipes/ (end of page)
-    return (current < 3 ? current + 1 : current)
-  }); 
+
   
   const volunteerForm = useForm<VolunteerFormValues>(
     {
@@ -105,7 +95,7 @@ export default function SignUp({ userType } : {userType : "volunteer" | "organiz
         password: "",
         confirmPassword: "",
         orgName: "",
-        founders: "",
+        founders: [],
         orgDescription: "",
         imageUrl: "",
         termsOfService: false,
@@ -123,7 +113,7 @@ export default function SignUp({ userType } : {userType : "volunteer" | "organiz
           }
         } else if (activeStep === 1){
           return {
-            founders:  values.founders.length < 3 ? "Please include at least one founder" : null,
+            founders:  values.founders.length < 1 ? "Please include at least one founder" : null,
             orgDescription:  values.orgDescription.length < 2 ? "Please include more details in your description." : null,
             orgName:  values.orgName.length < 1 ? "Please include your organization name" : null,
             termsOfService: values.termsOfService === false ? "You must agree to VolunteerVerse's terms of servcie" : null,
@@ -143,8 +133,50 @@ export default function SignUp({ userType } : {userType : "volunteer" | "organiz
       return volunteerForm.getInputProps("termsOfService", {type: 'checkbox'})
     }
   }
+  const form = userType === "organization" ? orgForm : volunteerForm
   const { classes } = useStyles();
-
+  const [activeStep, setActiveStep] = useState(0);
+  const prevStep = () => setActiveStep((current) => (current > 0 ? current - 1 : current));
+  const [visible, { open: openLoader, close: closeLoader }] = useDisclosure(false);
+  const navigate = useNavigate();
+  const nextStep = (form : UseFormReturnType<VolunteerFormValues>  | UseFormReturnType<OrgFormValues>) => setActiveStep((current) => {
+    
+    if (form.validate().hasErrors){
+      // prevents stepper progression
+      // if form is invalid
+      console.log("form has errors", form.errors)
+      return current;
+    }
+    // continues in stepper progression if form is valid.
+    // for more see: https://mantine.dev/form/recipes/ (end of page)
+    return (current < 3 ? current + 1 : current)
+  }); 
+  const createNewUser = (form : UseFormReturnType<VolunteerFormValues>  | UseFormReturnType<OrgFormValues>) => {
+    if (form.validate().hasErrors === false){
+      openLoader()
+      // first remove confirm password and terms of service props
+      let {confirmPassword, termsOfService, ...requestBody} = form.values;
+      apiClient.register(requestBody).then(({success, statusCode, data, error}) => {
+          if (success){
+              console.log("new user. data: ", data);
+              // stateApi.setAuth(data.token);
+              navigate("/")
+          }else if (statusCode === 400){
+              closeLoader();
+              // statusCode 400 means an invalid input was entered
+          } else{
+              console.log("error status code: ", statusCode)
+              console.log("error trying to register user", error)
+              /**
+               * @todo: display error message 
+               */
+              // setActiveStep(1)
+          }
+      }).catch((error) => {
+          console.log("a really strange error as occured", error)
+      })
+    }
+  }
   return (
     <Paper className={classes.container} shadow="xl" radius="xl" pos={"relative"}>
       <Stepper styles={(theme) => ({
@@ -184,18 +216,26 @@ export default function SignUp({ userType } : {userType : "volunteer" | "organiz
           {...getTOSInputProps()}/>
 
         </Stepper.Step>
-        <Stepper.Completed>
-          {/* content for completing user signup */}
-
-            <SignUpComplete setActiveStep={setActiveStep} form={userType === "organization" ? orgForm : volunteerForm} />
-          
-        </Stepper.Completed>
       </Stepper>
 
       <Group position="center" mt="xl">
-        {activeStep > 0 ? <Button variant="default" onClick={prevStep}>Back</Button> : <></>}
-        <Button onClick={() => nextStep(userType == "organization" ? orgForm : volunteerForm)}>Continue</Button>
+        {
+          activeStep === 1 ?
+          (
+            <Button 
+            disabled={userType === "organization" ? orgForm.isValid() === false : volunteerForm.isValid() === false} 
+            onClick={() => createNewUser(userType == "organization" ? orgForm : volunteerForm)}>Create Account</Button>
+          )
+          :
+            (
+              <>
+                {activeStep > 0 ? <Button variant="default" onClick={prevStep}>Back</Button> : <></>}
+                <Button onClick={() => nextStep(userType == "organization" ? orgForm : volunteerForm)}>Continue</Button>
+              </>
+            )
+        }
       </Group>
+      <LoadingOverlay visible={visible} radius={"xl"}  overlayBlur={2} loaderProps={{ size: "xl"}}/>
     </Paper>
   );
 }
