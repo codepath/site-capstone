@@ -2,7 +2,7 @@ const DEVELOPMENT_API_BASE_URL = "http://localhost:3002";
 const API_BASE_URL = process.env.NODE_ENV === "production" ? PRODUCTION_API_BASE_URL : DEVELOPMENT_API_BASE_URL;
 
 
-class ApiClient {
+export default class ApiClient {
     constructor(remoteHostUrl) {
       this.remoteHostUrl = remoteHostUrl;
     //   this.token = null;
