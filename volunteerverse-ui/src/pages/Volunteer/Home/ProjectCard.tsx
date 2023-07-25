@@ -3,9 +3,9 @@ import { createStyles, useMantineTheme,
     Container, Group, Badge, 
     Text, Image } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-interface ProjectCardProps {
+export interface ProjectCardProps {
     imageUrl: string,
     title: string;
     tags: string[];
@@ -106,13 +106,14 @@ const useStyles = createStyles((theme) => ({
     }
 }));
 export default function ProjectCard(props: ProjectCardProps) {
-
+    const navigate = useNavigate();
     const { classes } = useStyles();
     const theme = useMantineTheme();
     const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
 
     const goToCardDetails = () => {
         console.log("going to card details");
+        navigate("/projects/3");
         /**
          * @todo: navigate to card details page
          */
