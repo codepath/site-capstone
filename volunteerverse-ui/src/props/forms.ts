@@ -3,7 +3,7 @@ export interface OrgFormValues {
     password: string,
     confirmPassword: string,
     orgName: string,
-    founders: string,
+    founders: string[],
     orgDescription: string,
     imageUrl: string,
     termsOfService: boolean
