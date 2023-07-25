@@ -1,8 +1,7 @@
 import React from 'react'
-// import {useAuthentication} from '../../services/hooks/useAuthentication';
+import { useAuthenticationUserProp } from '../../services/hooks/useAuthentication'
 
-function CreateProject() {
-  // const [isAuth, user] = useAuthentication(); uncomment later
+function CreateProject({isAuth, user} : {isAuth : boolean, user : useAuthenticationUserProp}) {
 
   return (
     <div>CreateProject</div>
