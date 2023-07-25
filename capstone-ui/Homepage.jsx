@@ -3,9 +3,11 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import TextField from '@mui/material/TextField'
 import Chip from '@mui/material/Chip'
 import Button from '@mui/material/Button'
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useState, useEffect } from 'react'
 import ImageCarousel from './ImageCarousel'
+import axios from 'axios'
+
 
 
 export default function Homepage({ filterFlights, setFilterFlights,
@@ -14,28 +16,44 @@ export default function Homepage({ filterFlights, setFilterFlights,
                                    departureDate, setDepartureDate,
                                    arrivalDate, setArrivalDate,
                                    destination, setDestination,
-                                   travelers, setTravelers,
+                                   travelers, setTravelers, destID, setDestID
                                  }) {
     
     const [submit, setSubmit] = useState(false)
+    const navigate = useNavigate()
 
-    function handleSubmit() {
+    function padZero(number) {
+        return number.toString().padStart(2, "0")
+      }
 
+    async function handleSubmit() {
+        if (submit) {
+            const id = await axios.post('http://localhost:3002/api/hotels-location', {
+                location_name: destination,
+            })
+            setDestID(id)
+            if (filterHotels) navigate('/hotels')
+            else if (filterActivities) navigate('/activities')
+            else navigate('/flights')
+        }
     }
 
     useEffect(() => {
+        console.log(departureDate)
+    }, [departureDate])
+
+/*     useEffect(() => {
+        if (submit) handleSubmit()
+    }, [submit]) */
+        
+    useEffect(() => {
         if (
-       (travelers === null || travelers === "")
-    || (arrivalDate === null || arrivalDate === "") 
-    || (departureDate === null || departureDate === "") 
-    || (destination === null || destination === "")) setSubmit(false)
-    else setSubmit(true) 
+            (travelers === null || travelers === "")
+            || (arrivalDate === null || arrivalDate === "") 
+            || (departureDate === null || departureDate === "") 
+            || (destination === null || destination === "")) setSubmit(false)
+        else setSubmit(true) 
     }, [travelers, arrivalDate, departureDate, destination])
-
-    async function handleSubmit(event) {
-        event.preventDefault()
-
-    }
     
     const homepage_america = {
         "Toronto":"./Assets/toronto.jpg",
@@ -141,23 +159,20 @@ export default function Homepage({ filterFlights, setFilterFlights,
                                 />
                                 <DatePicker 
                                     label="Check-in date" 
-                                    value={departureDate} 
-                                    onChange={(newDate) => setDepartureDate(newDate["$d"].toLocaleString("en-US", {
-                                        weekday: "short",
-                                        year: "numeric",
-                                        month: "short",
-                                        day: "numeric",
-                                      }))}
+                                    value={arrivalDate} 
+                                    onChange={(newDate) => {
+                                        const formattedDate = `${newDate["$y"]}-${padZero(newDate["$M"] + 1)}-${padZero(newDate["$D"])}`
+                                        setArrivalDate(formattedDate)
+                                    }}
+                                    variant="standard"
                                 />
                                 <DatePicker 
                                     label="Check-out date" 
-                                    value={arrivalDate} 
-                                    onChange={(newDate) => setArrivalDate(newDate["$d"].toLocaleString("en-US", {
-                                        weekday: "short",
-                                        year: "numeric",
-                                        month: "short",
-                                        day: "numeric",
-                                      }))}
+                                    value={departureDate} 
+                                    onChange={(newDate) => {
+                                        const formattedDate = `${newDate["$y"]}-${padZero(newDate["$M"] + 1)}-${padZero(newDate["$D"])}`
+                                        setDepartureDate(formattedDate)
+                                    }}
                                     variant="standard"
                                 />
                                 <TextField
@@ -169,12 +184,11 @@ export default function Homepage({ filterFlights, setFilterFlights,
                                     onChange={(e) => {e.target.value > 0 && e.target.value <= 12 ? setTravelers(e.target.value) : 
                                                       e.target.value > 12 ? setTravelers(12) : setTravelers(1)}}
                                 />
-                                <Link to={(submit && filterActivities) ? "/activities" : 
-                                          (submit && filterHotels) ? "/hotels" : ""}>
                                 <Button disabled={!submit ? true : false} 
                                         sx={{'border': '1px solid', 
-                                        'height' : '55px'}}>Search</Button>
-                                </Link>
+                                        'height' : '55px'}}
+                                        onClick={handleSubmit}
+                                >Search</Button>
                                 </form>
                             </div>
                         )} 

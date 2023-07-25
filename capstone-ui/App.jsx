@@ -25,6 +25,8 @@ function App() {
     const [filterActivities, setFilterActivities] = useState(false)
     const [filterHotels, setFilterHotels] = useState(true)
 
+    const [destID, setDestID] = useState("")
+
     const [departureDate, setDepartureDate] = useState("")
     const [arrivalDate, setArrivalDate] = useState("")
 
@@ -66,6 +68,7 @@ function App() {
                                     arrivalDate={arrivalDate} setArrivalDate={setArrivalDate}
                                     destination={destination} setDestination={setDestination}
                                     travelers={travelers} setTravelers={setTravelers}
+                                    destID={destID} setDestID={setDestID}
                             />
                         } />
                         <Route path="/activities" element={
@@ -76,7 +79,8 @@ function App() {
                                     travelers={travelers}
                                     departureDate={departureDate}
                                     arrivalDate={arrivalDate}
-                                    destination={destination} />} 
+                                    destination={destination}
+                                    destID={destID} setDestID={setDestID} />} 
                         />
                     </Routes>
                 </Router>

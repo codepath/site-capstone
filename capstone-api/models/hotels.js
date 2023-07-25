@@ -1,15 +1,12 @@
-const { config } = require('dotenv');
-config();
+require('dotenv').config();
 
 const { BadRequestError } = require("../utils/errors");
-const { rapidapikey, rapidapihost } = process.env;
+
+const rapidapikey = process.env.rapidapikey
+const rapidapihost = process.env.rapidapihost
 const axios = require('axios');
 
-
 class Hotels {
-  //API
-  static destId = '';
-
   //Serach Hotels by locations or name
   //The user must specificy the location or destination 
   //first (this can happen in the homepage)
@@ -36,12 +33,11 @@ class Hotels {
 
     try {
         const response = await axios.request(options);
-        console.log(response.data);
-        Hotels.destId = response.data[0].dest_id;
-
-        return response.data;
+        console.log(response.data[0].dest_id)
+        return response.data[0].dest_id;
       } catch (error) {
         console.error(error);
+        //console.error("Desination ID:", Hotels.destId)
         throw new BadRequestError("Failed to fetch Search Locations");
       }
 
@@ -53,13 +49,14 @@ class Hotels {
       "adults_number",
       "checkin_date", //2023-09-07 in this format
       "checkout_date",
-      "room_number"];
+      "room_number",
+      "dest_Id"];
     requiredFields.forEach((field) => {
       if (!credentials.hasOwnProperty(field)) {
         throw new BadRequestError(`Missing ${field} in request body.`);
       }
     });
-    
+    console.log(credentials)
     const options = {
       method: 'GET',
       url: 'https://booking-com.p.rapidapi.com/v2/hotels/search',
@@ -85,7 +82,7 @@ class Hotels {
         filter_by_currency: 'USD',
         //Keeping it at USD
 
-        dest_id: Hotels.destId, //'-553173'
+        dest_id: credentials.dest_Id, //'-553173'
         //Once the user searches the hotel by location
         //the dest_id field can be updated 
 
@@ -122,7 +119,8 @@ class Hotels {
       console.log(response.data);
       return response.data;
     } catch (error) {
-      console.error(error);
+      //console.error(error);
+      console.log("destination ID is:", credentials.dest_Id)
       throw new BadRequestError("Failed to fetch Search Hotels");
     }
 
