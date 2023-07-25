@@ -39,6 +39,7 @@ function App() {
     const [itinerary, setItinerary] = useState([])
 
     const addToItinerary = (item)=>{
+
         
         if ( itinerary.includes(item) || itinerary.some(item => item.category === 'hotel')) {
            console.log("already added ")
@@ -51,7 +52,7 @@ function App() {
           console.log(itinerary)
           console.log(itinerary.length)
       }
-
+      
       
     return ( 
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -72,8 +73,13 @@ function App() {
                             />
                         } />
                         <Route path="/activities" element={
-                            <Activities itinerary ={itinerary} setItinerary = {setItinerary} addToItinerary = {addToItinerary} />} 
-                        />
+                            <Activities itinerary ={itinerary}
+                                        setItinerary = {setItinerary}
+                                        addToItinerary = {addToItinerary}
+                                        travelers={travelers}
+                                        departureDate={departureDate}
+                                        arrivalDate={arrivalDate}
+                                        destination={destination} /> }/>
                         <Route path="/hotels" element={
                             <HotelsPage 
                                     travelers={travelers}
