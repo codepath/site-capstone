@@ -37,7 +37,7 @@ function CreateOrgAccountForm({ form } : {form: UseFormReturnType<OrgFormValues>
                 withAsterisk
                 label="Organization Name"
                 placeholder="Organization Name"
-                {...form.getInputProps('org_name')} />
+                {...form.getInputProps('orgName')} />
             <TextInput
                 radius={"xl"}
                 size='md'
@@ -58,7 +58,7 @@ function CreateOrgAccountForm({ form } : {form: UseFormReturnType<OrgFormValues>
                 withAsterisk
                 label="Confirm Password"
                 placeholder="Confirm Password" 
-                {...form.getInputProps('confirm_password')}  />
+                {...form.getInputProps('confirmPassword')}  />
         </Container>
     )
 }

@@ -28,7 +28,7 @@ const useStyles = createStyles((theme) => ({
     }
 }));
 
-function SignUpModal() {
+function SignUpModal( {close: closeModal} : {close : () => void}) {
     const { classes } = useStyles()
     return (
         <Container className={classes.container}>
@@ -40,6 +40,7 @@ function SignUpModal() {
             align={"center"}>
                 <Group align="center" position="center">
                     <Button variant="outline"
+                        onClick={closeModal}
                         className={classes.buttons}
                         size="xl" radius={"xl"}
                         component={Link}
@@ -51,6 +52,7 @@ function SignUpModal() {
                 </Group>
                 <Group align="center" position="center">
                     <Button
+                        onClick={closeModal}
                         variant="outline"
                         className={classes.buttons}
                         size="xl" radius={"xl"}

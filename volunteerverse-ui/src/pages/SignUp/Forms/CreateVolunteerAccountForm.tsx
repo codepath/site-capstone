@@ -44,7 +44,7 @@ function CreateVolunteerAccountForm({ form }: { form: UseFormReturnType<Voluntee
                     label="First Name"
                     placeholder="First Name"
                     className={classes.nameInputs}
-                    {...form.getInputProps('first_name')} />
+                    {...form.getInputProps('firstName')} />
                 <TextInput
                     radius={"lg"}
                     size="md"
@@ -52,7 +52,7 @@ function CreateVolunteerAccountForm({ form }: { form: UseFormReturnType<Voluntee
                     label="Last Name"
                     placeholder="Last Name"
                     className={classes.nameInputs}
-                    {...form.getInputProps('last_name')} />
+                    {...form.getInputProps('lastName')} />
             </Flex>
             <TextInput
             styles={{ label : { marginLeft : "50"}}}
@@ -75,7 +75,7 @@ function CreateVolunteerAccountForm({ form }: { form: UseFormReturnType<Voluntee
                 withAsterisk
                 label="Confirm Password"
                 placeholder="Confirm Password"
-                {...form.getInputProps('confirm_password')} />
+                {...form.getInputProps('confirmPassword')} />
         </Flex>
 
     )

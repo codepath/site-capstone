@@ -1,6 +1,8 @@
 import { createStyles } from "@mantine/styles";
 import { VolunteerFormValues } from "../../../props/forms";
 import { UseFormReturnType } from "@mantine/form";
+import { MultiSelect } from "@mantine/core";
+import { skillsTags } from "../../../../constants";
 import {
     Button, Container, Flex,
     Image, TextInput, Textarea, Title
@@ -25,11 +27,13 @@ function CreateVolunteerProfileForm({ form }: { form: UseFormReturnType<Voluntee
      */
     const inputRef = useRef<HTMLInputElement>(null); // used to open file broswer
     const { classes } = useStyles();
-    const openFileBrowswer = () => {
-        inputRef.current?.click();
-    }
-    console.log(form.values)
-    const { first_name, last_name } = form.values;
+    const openFileBrowswer = () => inputRef.current?.click();
+    const skillsTagsOptions = skillsTags.map((tag) => ({
+        value: tag.toLocaleLowerCase(),
+        label: tag
+    }))
+
+    const { firstName, lastName } = form.values;
     return (
         <Container>
             <Title 
@@ -54,18 +58,27 @@ function CreateVolunteerProfileForm({ form }: { form: UseFormReturnType<Voluntee
                 }}
                 onClick={openFileBrowswer}>Upload Photo</Button>
                 <TextInput
+                    {...form.getInputProps("imageUrl")}
                     onChange={(event) => console.log(event.target.value)}
                     ref={inputRef}
                     radius={"xl"}
                     styles={{ root: { display: "none" } }}
                     type="file" />
             </Flex>
+            <MultiSelect
+            {...form.getInputProps("skills")}
+            searchable
+            data={skillsTagsOptions}
+            label="Select Your Skills"
+            placeholder="Or skills you're interested in "
+             />
             <Textarea
+            {...form.getInputProps("bio")}
             mt={"lg"}
                 radius={"lg"}
                 size="md"
                 label="Short Bio"
-                placeholder={`Hi my name is ${first_name} ${last_name} and...`}
+                placeholder={`Hi my name is ${firstName} ${lastName} and...`}
                 description="This will be seen by organizations when you apply for projects" />
         </Container>
     )

@@ -1,43 +1,57 @@
 import { Button, Container, Group, Title, createStyles } from '@mantine/core'
 import React from 'react'
 import { Link } from 'react-router-dom';
+import SignUpModal from './SignUpModal';
 
 const useStyles = createStyles((theme) => ({
-    container : {
+    container: {
         height: "100%",
-        maxWidth: "100%",
+        minWidth: "100%",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        [theme.fn.smallerThan("md")] : {
+        [theme.fn.smallerThan("md")]: {
             height: "70%"
         }
     },
-    title : {
+    title: {
         fontSize: `calc(${theme.fontSizes.xl} * 1.75)`,
         color: theme.colors.violet[6]
     },
-    body : {
+    body: {
 
     },
-    button : {
-
+    button: {
+        transition: "all 150ms ease-in-out",
+        "&:hover": {
+          backgroundColor: theme.white
+        },
+        borderWidth: 2,
+        [theme.fn.smallerThan('sm')]: {
+          // fontSize: `calc(${})`,
+          paddingLeft: theme.spacing.md,
+          paddingRight: theme.spacing.md,
+          flex: 1
+        }
     },
 
 }));
 
-function CallToAction() {
+function CallToAction({ openModal }: { openModal: () => void }) {
     const { classes } = useStyles();
-  return (
-    <Container className={classes.container}>
-        <Title className={classes.title}>Join Now</Title>
-        <Group mt="xl" pt="xl" pl="md">
-            <Button className={classes.button} size="xl" radius={"xl"} component={Link} to={"/signup"}>Sign Up</Button>
-            {/* <Button className={classes.button} size="xl" radius={"xl"} component={Link} to={"/login"}>Login</Button> */}
-          </Group>
-    </Container>
-  )
+    return (
+        <Container className={classes.container}>
+            <Title className={classes.title}>Join Now</Title>
+            <Group mt="xl" pt="xl" pl="md">
+                <Button
+                    className={classes.button}
+                    sx={(theme) => ({ "&:hover": { color: theme.colors.violet[7] } })}
+                    size="xl" radius={"xl"}
+                    onClick={openModal}>Sign Up</Button>
+            </Group>
+        </Container>
+    )
 }
 
 export default CallToAction

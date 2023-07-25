@@ -1,7 +1,6 @@
 import { 
   Button, Group, Paper, Stepper, 
-  createStyles, TextInput, Space, 
-  Checkbox, Title, Text, Container, Flex,
+  createStyles, Checkbox, LoadingOverlay,
 } from "@mantine/core";
 import { useState } from "react";
 import { useForm, UseFormReturnType } from "@mantine/form";
@@ -11,34 +10,10 @@ import CreateVolunteerProfileForm from "./Forms/CreateVolunteerProfileForm";
 import CreateVolunteerAccountForm from "./Forms/CreateVolunteerAccountForm";
 import { VolunteerFormValues, OrgFormValues } from "../../props/forms";
 import SignUpComplete from "./SignUpComplete";
-/**
- * @todo: 
- * - style the forms 
- *  - center the inputs to the left
- *  - expand the names inputs to take up entire container
- *  - updating Paper container to be responsive (fix padding)
- * - make inputs have more round corners with slightly bigger text box
- * - effectively style an input tag looking into overriding component= of a TextInput
- * - create final page that redirects user using navigate to the home pages
- *    - (look into makeing an animation with the hand...
- *            im thinking a thumbs up with confetti sprinkles? 
- *            using simple after effects editing )
- * 
- * - create login form with a welcome back title (style appropriately)
- * - accepts email and password and a "remember me checkbox" (to be implemented in the future)
- * - create modal popup that asks if user is a volunteer or an organization (
- *    - structure should be (title : I am a..., 
- *                      body: volunteer image, then organization image. 
- *                      below that text saying volunteer or organization (make responsive).
- *                       entire body should be a button that redirects user to signup page under
- *                        correct userType)
- * 
- * 
- * - develop api requests class in new folder of project
- * - make api calls on login and registration using respective form data
- * - test navigation of user to org or volunteer pages depending on their type 
- * 
- */
+import { useDisclosure } from "@mantine/hooks";
+import { useNavigate } from "react-router";
+import { apiClient } from "../../services/ApiClient";
+
 const useStyles = createStyles((theme) => ({
   // this object includes all styling for this component
   container : {
@@ -61,51 +36,45 @@ const useStyles = createStyles((theme) => ({
     }
   },
 }))
-interface userTypeProp {
-  userType : "volunteer" | "organization"
-}
 
-export default function SignUp({ userType } : userTypeProp) {
-  /**
-   * @todo make userType a prop that is passed down from the app level
-   */
+export default function SignUp({ userType } : {userType : "volunteer" | "organization"}) {
+/**
+ * @todo: 
+ * - test organization registration
+ *  - use multi select instead for the inputting founders input
+ *  - change the imageUrl to accept a file html element instead
+ *  - perform some pre-processing for organization form prior to making post request to 
+ *  - to properly format data for request body (make modular functions to do this)
+ *  - 
+ */
 
-  const [activeStep, setActiveStep] = useState(0);
-  const prevStep = () => setActiveStep((current) => (current > 0 ? current - 1 : current));
-  const nextStep = (form : UseFormReturnType<VolunteerFormValues>  | UseFormReturnType<OrgFormValues>) => setActiveStep((current) => {
-    
-    if (form.validate().hasErrors){
-      // prevents stepper progression
-      // if form is invalid
-      return current;
-    }
-    // continues in stepper progression if form is valid.
-    // for more see: https://mantine.dev/form/recipes/ (end of page)
-    return (current < 3 ? current + 1 : current)
-  }); 
+
   
   const volunteerForm = useForm<VolunteerFormValues>(
     {
       initialValues: {
-        first_name: "",
-        last_name: "",
+        firstName: "",
+        lastName: "",
         password: "",
-        confirm_password: "",
-        image_url: "",
+        skills: [],
+        confirmPassword: "",
+        imageUrl: "",
         email: "",
         bio: "",
-        termsOfService: false
+        termsOfService: false,
+        userType: "volunteer" // need to define userType to make calling backend easier
       },
+      validateInputOnChange: ["confirmPassword", "password", "email"],
       validate : (values) => {
         // error validation for all inputs
         // for volunteer forms
         if (activeStep === 0){
           return {
-            first_name: values.first_name.trim().length < 2 ? 'First name cannot be empty' : null,
-            last_name: values.last_name.trim().length < 2 ? 'Last name cannot be empty' : null,
+            firstName: values.firstName.trim().length < 2 ? 'First must be longer than 2 characters' : null,
+            lastName: values.lastName.trim().length < 2 ? 'Last must be longer than 2 characters' : null,
             password: values.password.length < 2 ? 'Please use a stronger password' : null,
-            confirm_password: values.confirm_password !== values.password ? "Password's do not match" : null,
-            email : values.email.length < 2 ? 'Invalid email' : null,
+            confirmPassword: values.confirmPassword !== values.password ? "Password's do not match" : null,
+            email : /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(values.email) ? null : 'Please provide a valid email address',
           }
         } else if (activeStep === 1){
           // only returns these validation contraints once user
@@ -124,42 +93,90 @@ export default function SignUp({ userType } : userTypeProp) {
       initialValues: {
         email: "",
         password: "",
-        confirm_password: "",
-        org_name: "",
-        founders: "",
-        org_desc: "",
-        image_url: "",
-        termsOfService: false
+        confirmPassword: "",
+        orgName: "",
+        founders: [],
+        orgDescription: "",
+        imageUrl: "",
+        termsOfService: false,
+        userType: "organization"
       },
+      validateInputOnChange: ["confirmPassword", "password", "email"],
       validate : (values) => {
         if (activeStep === 0){
           return {
-            org_name: values.org_name.trim().length < 2 ? 'Organization name cannot be empty' : null,
+            orgName: values.orgName.trim().length < 2 ? 'Organization must be longer than 2 characters' : null,
             password: values.password.length < 2 ? 'Please use a stronger password' : null,
-            confirm_password: values.confirm_password !== values.password ? "Password's do not match" : null,
-            email : values.email.length < 2 ? 'Invalid email' : null,
+            confirmPassword: values.confirmPassword !== values.password ? "Password's do not match" : null,
+            email : /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(values.email) ? null : 'Please provide a valid email address',
+
           }
         } else if (activeStep === 1){
           return {
-            founders:  values.founders.length > 3 ? "Please include at least one founder" : null,
-            org_desc:  values.org_desc.length < 2 ? "Please include more details in your description." : null,
-            org_name:  values.org_name.length < 1 ? "Please include your organization name" : null,
+            founders:  values.founders.length < 1 ? "Please include at least one founder" : null,
+            orgDescription:  values.orgDescription.length < 2 ? "Please include more details in your description." : null,
+            orgName:  values.orgName.length < 1 ? "Please include your organization name" : null,
             termsOfService: values.termsOfService === false ? "You must agree to VolunteerVerse's terms of servcie" : null,
-            image_url: values.image_url.length < 1 ? "An image must be provided." : null,
+            imageUrl: values.imageUrl.length < 1 ? "An image must be provided." : null,
           }
         }
         return {}
       }
-
-  })
-  const getTOSInputProps = () => {
-    if (userType === "organization"){
-      return orgForm.getInputProps("termsOfService", {type: 'checkbox'})
-    }else{
+      
+    })
+    const getTOSInputProps = () => {
+      // simple helper functiont to conditionally
+      // return termsOfService input props
+      if (userType === "organization"){
+        return orgForm.getInputProps("termsOfService", {type: 'checkbox'})
+      }else{
       return volunteerForm.getInputProps("termsOfService", {type: 'checkbox'})
     }
   }
+  const form = userType === "organization" ? orgForm : volunteerForm
   const { classes } = useStyles();
+  const [activeStep, setActiveStep] = useState(0);
+  const prevStep = () => setActiveStep((current) => (current > 0 ? current - 1 : current));
+  const [visible, { open: openLoader, close: closeLoader }] = useDisclosure(false);
+  const navigate = useNavigate();
+  const nextStep = (form : UseFormReturnType<VolunteerFormValues>  | UseFormReturnType<OrgFormValues>) => setActiveStep((current) => {
+    
+    if (form.validate().hasErrors){
+      // prevents stepper progression
+      // if form is invalid
+      console.log("form has errors", form.errors)
+      return current;
+    }
+    // continues in stepper progression if form is valid.
+    // for more see: https://mantine.dev/form/recipes/ (end of page)
+    return (current < 3 ? current + 1 : current)
+  }); 
+  const createNewUser = (form : UseFormReturnType<VolunteerFormValues>  | UseFormReturnType<OrgFormValues>) => {
+    if (form.validate().hasErrors === false){
+      openLoader()
+      // first remove confirm password and terms of service props
+      let {confirmPassword, termsOfService, ...requestBody} = form.values;
+      apiClient.register(requestBody).then(({success, statusCode, data, error}) => {
+          if (success){
+              console.log("new user. data: ", data);
+              // stateApi.setAuth(data.token);
+              navigate("/")
+          }else if (statusCode === 400){
+              closeLoader();
+              // statusCode 400 means an invalid input was entered
+          } else{
+              console.log("error status code: ", statusCode)
+              console.log("error trying to register user", error)
+              /**
+               * @todo: display error message 
+               */
+              // setActiveStep(1)
+          }
+      }).catch((error) => {
+          console.log("a really strange error as occured", error)
+      })
+    }
+  }
   return (
     <Paper className={classes.container} shadow="xl" radius="xl" pos={"relative"}>
       <Stepper styles={(theme) => ({
@@ -199,17 +216,26 @@ export default function SignUp({ userType } : userTypeProp) {
           {...getTOSInputProps()}/>
 
         </Stepper.Step>
-        <Stepper.Completed>
-          {/* content for completing user signup */}
-          <SignUpComplete />
-          
-        </Stepper.Completed>
       </Stepper>
 
       <Group position="center" mt="xl">
-        {activeStep > 0 ? <Button variant="default" onClick={prevStep}>Back</Button> : <></>}
-        <Button onClick={() => nextStep(userType == "organization" ? orgForm : volunteerForm)}>Continue</Button>
+        {
+          activeStep === 1 ?
+          (
+            <Button 
+            disabled={userType === "organization" ? orgForm.isValid() === false : volunteerForm.isValid() === false} 
+            onClick={() => createNewUser(userType == "organization" ? orgForm : volunteerForm)}>Create Account</Button>
+          )
+          :
+            (
+              <>
+                {activeStep > 0 ? <Button variant="default" onClick={prevStep}>Back</Button> : <></>}
+                <Button onClick={() => nextStep(userType == "organization" ? orgForm : volunteerForm)}>Continue</Button>
+              </>
+            )
+        }
       </Group>
+      <LoadingOverlay visible={visible} radius={"xl"}  overlayBlur={2} loaderProps={{ size: "xl"}}/>
     </Paper>
   );
 }
