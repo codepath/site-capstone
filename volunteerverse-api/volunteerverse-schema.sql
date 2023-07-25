@@ -14,7 +14,7 @@ CREATE TABLE organizations(
     organization_email TEXT NOT NULL UNIQUE CHECK (position('@' IN organization_email) > 1),
     logo_url TEXT,
     founders TEXT, 
-    website TEXT
+    website TEXT_
 );
 
 CREATE TABLE volunteer_skills(
