@@ -33,8 +33,9 @@ class Hotels {
 
     try {
         const response = await axios.request(options);
-        console.log(response.data[0].dest_id)
-        return response.data[0].dest_id;
+        const destId = response.data[0].dest_id;
+        console.log(destId)
+        return destId
       } catch (error) {
         console.error(error);
         //console.error("Desination ID:", Hotels.destId)

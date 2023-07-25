@@ -16,7 +16,7 @@ export default function HotelsPage({ arrivalDate, departureDate,
             checkin_date: arrivalDate,
             checkout_date: departureDate,
             room_number: '1',
-            dest_Id: '20088325'
+            dest_Id: destID
         };
         await new Promise(resolve => setTimeout(resolve, 2000));
         const response = await axios.post('http://localhost:3002/api/hotels-search', hotelSearch);
