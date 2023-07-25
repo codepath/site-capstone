@@ -37,8 +37,8 @@ organizationRoutes.get("/projects/:org_id", async function(req,res,next){
 // })
 
 organizationRoutes.post("/project/update", async function(req,res,next){
-  const {approved, email, project_id, orgId} = req.body
-  const result = await Organization.updateApprovedVolunteers(approved, email, project_id, orgId)
+  const {approved, email, project_id, org_id} = req.body
+  const result = await Organization.updateApprovedVolunteers(approved, email, project_id, org_id)
   res.json({approvedVolunteer: result})
  
 })
@@ -52,7 +52,7 @@ organizationRoutes.post("/project/delete", async function(req,res,next){
 
 
 
-organizationRoutes.get("/projects/interested/:projectId", async function (req, res, next) {
+organizationRoutes.get("/project/interested/:projectId", async function (req, res, next) {
        //req.body is what we put in insomnia when we test which to equate to what we put in the browser
        //that then goes into the function below 
        const projectId = parseInt(req.params.projectId)
