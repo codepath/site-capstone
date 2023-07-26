@@ -1,14 +1,32 @@
 
 import { useState, useEffect } from "react"
-// import HotelsClass from '../../capstone-api/models/hotels'
 import '../index.css'
+import axios from 'axios'
 
-export default function HotelsPage({ 
-                                  arrivalDate, departureDate,
-                                  travelers, destination, 
-                                  }){
+export default function HotelsPage({ arrivalDate, departureDate,
+                                     travelers, destination, 
+                                     destID
+                                    }){
     const [searchResults, setSearchResults] = useState("")
-   
+
+    async function searchHotels() {
+        const hotelSearch = {
+            order_by: 'popularity',
+            adults_number: travelers.toString(),
+            checkin_date: arrivalDate,
+            checkout_date: departureDate,
+            room_number: '1',
+            dest_Id: '20088325'
+        };
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        const response = await axios.post('http://localhost:3002/api/hotels-search', hotelSearch);
+        console.log(response);
+    }
+
+    useEffect(() => {
+        const data = searchHotels()
+        console.log(data)
+    }, [])
 
     return (
         <div className="flex w-screen h-screen px-64">
