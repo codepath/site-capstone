@@ -209,7 +209,7 @@ userType: "organization";
       `SELECT * FROM projects WHERE org_id = $1 AND id = $2`,
       [orgId, project_id]
     );
-    if (orgResult.rows[0] !== 0) {
+    if (orgResult.rows.length !== 0) {
       const result = await db.query(
         `DELETE FROM "projects" WHERE "id" = $1`,
          [project_id]);
