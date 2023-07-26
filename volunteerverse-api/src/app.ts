@@ -10,6 +10,7 @@ import { authRoutes } from './routes/auth';
 import { organizationRoutes } from './routes/organization';
 import { volunteerRoutes } from './routes/volunteer';
 import { projectRoutes } from './routes/projects';
+import { requireAuthenticatedUser } from './middleware/security';
 
 
 export const app = express();
@@ -21,7 +22,7 @@ app.use(morgan("dev"))
 app.use("/auth", authRoutes)
 
 app.use("/volunteer", volunteerRoutes)
-app.use("/organization", organizationRoutes)
+app.use("/organization", requireAuthenticatedUser ,organizationRoutes)
 
 app.use("/project", projectRoutes)
 

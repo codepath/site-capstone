@@ -6,9 +6,10 @@ const organizationRoutes = express.Router()
 
 
 //make get? request that returns information from database
-organizationRoutes.get("/projects/:org_id", async function(req,res,next){
-  const org_id = parseInt(req.params.org_id)
-  const result = await Organization.fetchAllOrganizationProjectsById(org_id)
+organizationRoutes.get("/projects", async function(req,res,next){
+  // const org_id = parseInt(req.params.org_id)
+  const{id} = res.locals.user
+  const result = await Organization.fetchAllOrganizationProjectsById(id)
   if (result) {
   res.status(201).json({orgProjects: result})
       } else {
@@ -36,23 +37,55 @@ organizationRoutes.get("/projects/:org_id", async function(req,res,next){
 //   res.json({projectInfo: result})
 // })
 
-organizationRoutes.post("/project/update", async function(req,res,next){
-  const {approved, email, project_id, org_id} = req.body
-  const result = await Organization.updateApprovedVolunteers(approved, email, project_id, org_id)
+// organizationRoutes.post("/project/update", async function(req,res,next){
+//   try{
+//   const {approved, email, project_id, org_id} = req.body
+//   const result = await Organization.updateApprovedVolunteers(approved, email, project_id, org_id)
+//   console.log("updateApproved" ,result)
+//   res.json({approvedVolunteer: result})
+//   }catch (error) {
+//     next(error);
+//   }
+ 
+// })
+
+organizationRoutes.put("/project/:projectId", async function(req,res,next){
+  console.log('whyy')
+  try{
+    const projectId = parseInt(req.params.projectId)
+    const { id } = res.locals.user
+    const { email } = req.body
+  const result = await Organization.incrementAndDecrementApprovedVolunteers(email, projectId, id)
+  console.log("updateApproved" ,result)
   res.json({approvedVolunteer: result})
+  }catch (error) {
+    next(error);
+  }
  
 })
 
-organizationRoutes.post("/project/delete", async function(req,res,next){
-  const {project_id, orgId} = req.body
-  console.log("project id: ", project_id)
-  const result = await Organization.deleteOrganizationProject(project_id, orgId)
+organizationRoutes.post("/project/status", async function(req,res,next){
+  try{
+  const {projectId, orgId, active} = req.body
+  const result = await Organization.toggleStateOfOrgProject(projectId, orgId, active)
+  res.json({projectState : result})
+}catch (error) {
+    next(error);
+  }
+ 
+})
+
+organizationRoutes.delete("/project/:projectId", async function(req,res,next){
+  const { id } = res.locals.user
+  const projectId = parseInt(req.params.projectId)
+  console.log("project id: ", projectId)
+  const result = await Organization.deleteOrganizationProject(projectId, id)
   res.json({deleteProject: result})
 })
 
 
 
-organizationRoutes.get("/project/interested/:projectId", async function (req, res, next) {
+organizationRoutes.put("/project/interested/:projectId", async function (req, res, next) {
        //req.body is what we put in insomnia when we test which to equate to what we put in the browser
        //that then goes into the function below 
        const projectId = parseInt(req.params.projectId)
