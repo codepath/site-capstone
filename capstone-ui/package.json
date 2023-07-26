@@ -7,7 +7,7 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/material": "^5.14.0",
-    "@mui/x-date-pickers": "^6.10.0",
+    "@mui/x-date-pickers": "^6.10.1",
     "@vitejs/plugin-react": "^4.0.3",
     "acorn": "^8.10.0",
     "acorn-jsx": "^5.3.2",
@@ -90,7 +90,6 @@
     "for-each": "^0.3.3",
     "fraction.js": "^4.2.0",
     "fs.realpath": "^1.0.0",
-    "fsevents": "^2.3.2",
     "function-bind": "^1.1.1",
     "function.prototype.name": "^1.1.5",
     "functions-have-names": "^1.2.3",
@@ -154,10 +153,12 @@
     "lodash.merge": "^4.6.2",
     "loose-envify": "^1.4.0",
     "lru-cache": "^5.1.1",
+    "material": "^0.5.3",
     "merge2": "^1.4.1",
     "micromatch": "^4.0.5",
     "minimatch": "^3.1.2",
     "ms": "^2.1.2",
+    "mui": "^0.0.1",
     "mz": "^2.7.0",
     "nanoid": "^3.3.6",
     "natural-compare": "^1.4.0",
@@ -202,7 +203,9 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-is": "^16.13.1",
+    "react-material-ui-carousel": "^3.4.2",
     "react-refresh": "^0.14.0",
+    "react-router-dom": "^6.14.2",
     "react-transition-group": "^4.4.5",
     "read-cache": "^1.0.0",
     "readdirp": "^3.6.0",
@@ -232,7 +235,6 @@
     "sucrase": "^3.32.0",
     "supports-color": "^5.5.0",
     "supports-preserve-symlinks-flag": "^1.0.0",
-    "tailwindcss": "^3.3.3",
     "text-table": "^0.2.0",
     "thenify": "^3.3.1",
     "thenify-all": "^1.6.0",
@@ -257,15 +259,14 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev":"vite"
+    "dev": "vite"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-   "@vitejs/plugin-react": "^4.0.3",
+    "@vitejs/plugin-react": "^4.0.3",
     "tailwindcss": "^3.3.3",
     "vite": "^4.4.6"
-
   }
 }
