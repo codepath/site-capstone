@@ -32,16 +32,11 @@ export default function Homepage({ filterFlights, setFilterFlights,
             const id = await axios.post('http://localhost:3002/api/hotels-location', {
                 location_name: destination,
             })
-            const response = await axios.post("http://localhost:3002/api/places-search", {
-                query: "",
-                min_price: "1",
-                max_price: "4",
-                near: destination,
-                sort: "relevance",
-            });
+          
+            
             console.log("DESTINATION")
             console.log(destination)
-            setActivities(response)
+            
             setDestID(id)
             if (filterHotels) navigate('/hotels')
             else if (filterActivities) navigate('/activities')
@@ -53,38 +48,6 @@ export default function Homepage({ filterFlights, setFilterFlights,
         console.log(departureDate)
     }, [departureDate])
 
-    // async function fetchActivities() {
-    //     const activitiesSearch = {
-    //       query: "",
-    //       min_price: "1",
-    //       max_price: "4",
-    //       near: "new york",
-    //       sort: "relevance",
-    //     };
-    
-    //     try {
-    //       const response = await axios.post("http://localhost:3002/api/places-search", activitiesSearch);
-    //       console.log( "res",response); // This should print the data from the backend
-    //       // Handle the response data here, update state or perform other operations as needed
-    //       setActivities(response.data)
-    //       setIsSearched(true)
-    //       //console.log( "res", acts);
-    
-    //     } catch (error) {
-    //       console.error("Error:", error.message);
-    //     }
-        
-    //   }
-    //   console.log( "activities", activities);
-    //   console.log ("acts", acts)
-    
-    //   useEffect(() => {
-    //     fetchActivities();
-    //   }, []);
-    
-/*     useEffect(() => {
-        if (submit) handleSubmit()
-    }, [submit]) */
         
     useEffect(() => {
         if (

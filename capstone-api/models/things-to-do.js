@@ -70,15 +70,7 @@ class ThingsToDo {
             return null
         }
 
-        //  await axios
-        // .request(options)
-        // .then(function (response) {
-        //     console.log(response.data);
-        //     return response.data;
-        // })
-        // .catch(function (error) {
-        //     console.error(error);
-        // });
+      
     }
     //After calling search places 
     //you take the fsq_id and find more info about the place 
@@ -111,15 +103,7 @@ class ThingsToDo {
             console.error(error);
             return null
         }
-        // axios
-        // .request(options)
-        // .then(function (response) {
-        //     console.log(response.data);
-        //     return response.data;
-        // })
-        // .catch(function (error) {
-        //     console.error(error);
-        // });
+    
 
     }
     static async placesPhotos(credentials) {
@@ -173,15 +157,7 @@ class ThingsToDo {
             return null
         }
 
-    //     axios
-    //     .request(options)
-    //     .then(function (response) {
-    //         console.log(response.data);
-    //         return response.data;
-    //     })
-    //     .catch(function (error) {
-    //         console.error(error);
-    //     });
+
     }
 }
 
