@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react'
 import { apiClient } from '../ApiClient'
 import { useLocalStorage } from '@mantine/hooks';
@@ -36,7 +35,7 @@ export interface authProps {
   }, [token])
 
 
-  const [sessionState, setSessionState] = useState({ 
+  const [sessionState, setSessionState] = useState<authProps>({ 
     isAuth: false,
     user : {
       password: "",
@@ -66,7 +65,7 @@ export interface authProps {
         console.log("renaming user_type to userType");
         setSessionState(() => ({
           isAuth : true,
-          user : {...data.user, userType: data.user.user_type}
+          user : {...data.user}
         }))
       } else if (statusCode === 401) {
         console.log("unauthenticated user found")
@@ -78,6 +77,6 @@ export interface authProps {
     fetchUser();
 
   }, [token]);
-  console.log("retturnign session state: ", sessionState)
+  console.log("returning session state: ", sessionState)
   return [sessionState, setToken, removeToken]
 };
