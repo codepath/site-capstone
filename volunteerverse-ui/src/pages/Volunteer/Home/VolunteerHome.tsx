@@ -11,12 +11,14 @@ import ProjectCard from "./ProjectCard";
 import { QueryBar, QueryProps } from "../../../components/QueryBar";
 import { useForm } from "@mantine/form";
 import { useEffect, useState } from "react";
+import NotAuthorized from "../../NotAuthorized";
 
 
-function VolunteerHome({ user }: { user: useAuthenticationUserProp }) {
+function VolunteerHome({ user, isAuth }: { user: useAuthenticationUserProp, isAuth: boolean }) {
   /**
    * @todo: implement loader when fecthing user projects
    */
+  console.log(isAuth, user)
   const { email } = user;
   const fetchProjects = async () => {
     console.log("fetchingProjects")
@@ -38,7 +40,7 @@ function VolunteerHome({ user }: { user: useAuthenticationUserProp }) {
     </Carousel.Slide>
   ));
 
-  return (
+  return (isAuth && user.userType === "volunteer") ? (
     <>
       <Title>Welcome Back {email}!</Title>
       <QueryBar {...queryForm} />
@@ -66,7 +68,7 @@ function VolunteerHome({ user }: { user: useAuthenticationUserProp }) {
         {projectCardSlides}
       </Carousel>
     </>
-  )
+  ) : <NotAuthorized />
 }
 
 export default VolunteerHome
