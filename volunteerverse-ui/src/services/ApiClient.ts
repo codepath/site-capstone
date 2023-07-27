@@ -95,5 +95,20 @@ class ApiClient {
         }
         return this.request(requestOptions)   
     }
+    async toggleVolunteerApproval(volunteerEmail : string, projectId: string){
+        const requestOptions = {
+            method: "put",
+            bodyData: {email: volunteerEmail},
+            subDirectory: `/organization/project/${projectId}`,
+
+        }
+        return this.request(requestOptions)   
+    }
+}
+export interface ApiResponseProp {
+    success: boolean;
+    data?: any;
+    statusCode: number;
+    error?: undefined;
 }
 export const apiClient = new ApiClient(API_BASE_URL);
