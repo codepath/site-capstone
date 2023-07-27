@@ -94,11 +94,10 @@ export default function Navbar({ isAuth, user, removeToken }:
     { label: "Explore", path: "/" },
     { label: "My Projects", path: "/projects" },
   ];
-  // const orgLinks = [
-  // {label : "Dashboard", path:"/"},
-  // {label : "How It Works", path:"/#"},
-  // {label : "About", path:"/#About"},
-  // ];
+  const orgLinks = [
+  {label : "Home", path:"/"},
+  {label : "Create Project", path:"/projects/create"},
+  ];
   const unAuthLinks = [
     { label: "Home", path: "/" },
     { label: "How It Works", path: "/#HowItWorks" },
@@ -129,7 +128,7 @@ export default function Navbar({ isAuth, user, removeToken }:
     return fetchCorrectUserOption(
       mapLinksToElements(unAuthLinks),
       mapLinksToElements(volunteerLinks),
-      <></>,
+      mapLinksToElements(orgLinks),
       { isAuth: isAuth, user: user }
     )
   }, [user, isAuth]);
@@ -138,7 +137,7 @@ export default function Navbar({ isAuth, user, removeToken }:
     return fetchCorrectUserOption(
       mapLinksToElements(unAuthLinks, true),
       mapLinksToElements(volunteerLinks, true),
-      <></>,
+      mapLinksToElements(orgLinks, true),
       { isAuth: isAuth, user: user }
     )
   }, [user, isAuth]);
