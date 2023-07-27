@@ -13,6 +13,7 @@ import VolunteerHome from './pages/Volunteer/Home/VolunteerHome';
 import OrgHome from './pages/Org/Home/OrgHome';
 import { fetchCorrectUserOption } from './utility/utility';
 import VolunteerProjectDetails from './pages/Volunteer/VolunteerProjectDetails';
+import OrgProjectDetails from './pages/Org/OrgProjectDetails/OrgProjectDetails';
 
 
 function App() {
@@ -32,7 +33,12 @@ function App() {
 
   return (
     <>
-      <MantineProvider withGlobalStyles withNormalizeCSS theme={{ primaryColor: "violet" }}>
+      <MantineProvider  withGlobalStyles withNormalizeCSS theme={{ 
+        primaryColor: "violet",
+        globalStyles : ((theme) => ({
+          
+        }))
+        }}>
         <BrowserRouter>
           <AppShell pl={0} pr={0}
             styles={(theme) => ({
@@ -47,15 +53,19 @@ function App() {
             <Routes>
               <Route path="/" element={
                 fetchCorrectUserOption((<Landing />),
-                  (<VolunteerHome user={user} />),
-                  <OrgHome user={user} />,
+                  (<VolunteerHome user={user} isAuth={isAuth} />),
+                  <OrgHome isAuth={isAuth} user={user} />,
                   { isAuth: isAuth, user: user })} />
 
               {/* POST AUTHENTICATION */}
               {/* Displays project by details page for each user role */}
               <Route path="/projects" element={<MyProjects isAuth={isAuth} user={user} />} />
               {/* projects is  specific to the volunteers */}
-              <Route path="/projects/:projectId" element={<VolunteerProjectDetails isAuth={isAuth} user={user} />} />
+              <Route path="/projects/:projectId" element={
+                fetchCorrectUserOption((<Landing />),
+                (<VolunteerProjectDetails user={user} isAuth={isAuth} />),
+                <OrgProjectDetails isAuth={isAuth} user={user} />,
+                { isAuth: isAuth, user: user })} />
               {/* projects/projectId is used for both volunteers and organizations */}
               <Route path="/projects/create" element={<CreateProject isAuth={isAuth} user={user} />} />
               {/* projects/create is specfic to organizations looking to create a new project */}
