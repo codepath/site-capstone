@@ -15,6 +15,7 @@ class ThingsToDo {
 
         const requiredFields = ["query", "min_price", "max_price", "near", "sort"];
         requiredFields.forEach((field) => {
+           // console.log("cred",credentials)
         if (!credentials.hasOwnProperty(field)) {
             throw new BadRequestError(`Missing ${field} in request body.`);
         }
@@ -60,15 +61,24 @@ class ThingsToDo {
         }
         };
 
-        axios
-        .request(options)
-        .then(function (response) {
-            console.log(response.data);
-        })
-        .catch(function (error) {
+       
+        try {
+            const results = await axios.request(options)  
+            return results
+        } catch(error) {
             console.error(error);
-        });
+            return null
+        }
 
+        //  await axios
+        // .request(options)
+        // .then(function (response) {
+        //     console.log(response.data);
+        //     return response.data;
+        // })
+        // .catch(function (error) {
+        //     console.error(error);
+        // });
     }
     //After calling search places 
     //you take the fsq_id and find more info about the place 
@@ -94,14 +104,22 @@ class ThingsToDo {
         }
         };
 
-        axios
-        .request(options)
-        .then(function (response) {
-            console.log(response.data);
-        })
-        .catch(function (error) {
+        try {
+            const results = await axios.request(options)  
+            return results
+        } catch(error) {
             console.error(error);
-        });
+            return null
+        }
+        // axios
+        // .request(options)
+        // .then(function (response) {
+        //     console.log(response.data);
+        //     return response.data;
+        // })
+        // .catch(function (error) {
+        //     console.error(error);
+        // });
 
     }
     static async placesPhotos(credentials) {
@@ -146,14 +164,24 @@ class ThingsToDo {
         }
         };
 
-        axios
-        .request(options)
-        .then(function (response) {
-            console.log(response.data);
-        })
-        .catch(function (error) {
+
+        try {
+            const results = await axios.request(options)  
+            return results
+        } catch(error) {
             console.error(error);
-        });
+            return null
+        }
+
+    //     axios
+    //     .request(options)
+    //     .then(function (response) {
+    //         console.log(response.data);
+    //         return response.data;
+    //     })
+    //     .catch(function (error) {
+    //         console.error(error);
+    //     });
     }
 }
 

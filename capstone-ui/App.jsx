@@ -37,6 +37,7 @@ function App() {
     const [authenticated, setAuthenticated] = useState(false)
 
     const [itinerary, setItinerary] = useState([])
+    const [activities, setActivities] = useState ({})
 
     const addToItinerary = (item)=>{
 
@@ -70,6 +71,7 @@ function App() {
                                     destination={destination} setDestination={setDestination}
                                     travelers={travelers} setTravelers={setTravelers}
                                     destID={destID} setDestID={setDestID}
+                                    setActivities = {setActivities}
                             />
                         } />
                         <Route path="/activities" element={
@@ -79,7 +81,8 @@ function App() {
                                         travelers={travelers}
                                         departureDate={departureDate}
                                         arrivalDate={arrivalDate}
-                                        destination={destination} /> }/>
+                                        destination={destination}
+                                        activities = {activities} /> }/>
                         <Route path="/hotels" element={
                             <HotelsPage 
                                     travelers={travelers}

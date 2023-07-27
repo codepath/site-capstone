@@ -25,7 +25,7 @@ export default function HotelsPage({ arrivalDate, departureDate,
 
     useEffect(() => {
         const data = searchHotels()
-        console.log(data)
+        //console.log(data)
     }, [])
 
     return (

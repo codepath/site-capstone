@@ -6,7 +6,11 @@ const { searchPlaces, placesDetail, placesPhotos } = require("../models/things-t
 router.post('/places-search', async (req, res) => {  //works on insomnia 
     try {
         const products = await searchPlaces(req.body);
+        //if (products == !null)
+        //console.log("PRODUCTS FROM SEARCH ENDPOINT")
+        //console.log(products.data.results)
         res.send(products);
+        
     } catch (error) {
         console.error(error);
         res.status(500).send("Internal Server Error"); 
@@ -16,6 +20,7 @@ router.post('/places-search', async (req, res) => {  //works on insomnia
 router.post('/places-detail', async (req, res) => { //works on insomnia 
     try {
         const products = await placesDetail(req.body);
+        console.log("PRODUCTS FROM detail ENDPOINT")
         res.send(products);
     } catch (error) {
         console.error(error);
