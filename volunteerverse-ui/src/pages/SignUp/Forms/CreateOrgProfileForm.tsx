@@ -97,12 +97,11 @@ function CreateOrgProfileForm({ form }: { form: UseFormReturnType<OrgFormValues>
           {...form.getInputProps('orgDescription')}
         />
         <TextInput
-        {...form.getInputProps("orgWebsite")}
           my={"xl"}
           radius={"xl"}
           label="Website URL (optional)"
           placeholder="websiteurl.org"
-          {...form.getInputProps('orgName')} />
+          {...form.getInputProps("orgWebsite")}/>
       </Flex>
     </Container>
   )
