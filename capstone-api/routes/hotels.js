@@ -3,13 +3,14 @@ const router = express.Router()
 const { HotelsData, HotelsDetail, searchHotels, searchLocations } = require("../models/hotels")
 
 //Hotel API
-router.post('/hotels-location', (req, res) => { //works on insomnia
-    const products = searchLocations(req.body);
-    res.send(products);
+router.post('/hotels-location', async (req, res) => { //works on insomnia
+    const destId = await searchLocations(req.body);
+    //const destId = products[0].dest_id;
+    res.send(destId);
 });
 
-router.post('/hotels-search', (req, res) => { //works on insomnia
-    const products = searchHotels(req.body);
+router.post('/hotels-search', async (req, res) => { //works on insomnia
+    const products = await searchHotels(req.body);
     res.send(products);
 });
 

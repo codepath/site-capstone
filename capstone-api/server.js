@@ -3,6 +3,10 @@ const cors = require("cors");
 const morgan = require("morgan");
 const { BadRequestError, NotFoundError } = require("./utils/errors");
 
+const fs = require('fs'); 
+
+require('graceful-fs').gracefulify(fs);
+
 const app = express();
 
 app.use(cors());

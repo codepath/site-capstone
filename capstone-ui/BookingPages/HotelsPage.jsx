@@ -1,13 +1,14 @@
 
 import { useState, useEffect } from "react"
 import '../index.css'
+import HotelCard from './HotelCard'
 import axios from 'axios'
 
 export default function HotelsPage({ arrivalDate, departureDate,
                                      travelers, destination, 
-                                     destID
+                                     destID, cost, setCost
                                     }){
-    const [searchResults, setSearchResults] = useState("")
+    const [searchResults, setSearchResults] = useState([])
 
     async function searchHotels() {
         const hotelSearch = {
@@ -16,40 +17,62 @@ export default function HotelsPage({ arrivalDate, departureDate,
             checkin_date: arrivalDate,
             checkout_date: departureDate,
             room_number: '1',
-            dest_Id: '20088325'
+            dest_Id: destID
         };
         await new Promise(resolve => setTimeout(resolve, 2000));
         const response = await axios.post('http://localhost:3002/api/hotels-search', hotelSearch);
-        console.log(response);
+        setSearchResults(response.data.results)
     }
 
     useEffect(() => {
-        const data = searchHotels()
-        //console.log(data)
+        searchHotels()
     }, [])
 
     return (
-        <div className="flex w-screen h-screen px-64">
-            <div className="relative shadow-lg  py-4 px-8 bg-white bg-opacity-80 w-screen">
-                <div className="border-b ">
+        <>
+        {searchResults === [] && (
+            <div>
+                <h1>Loading...</h1>
+            </div>
+        )}
+        {searchResults !== [] && (
+        <div className="flex w-screen h-screen px-56 overflow-visible bg-slate-900">
+            <div className="relative shadow-lg  py-4 px-8 bg-white  w-screen">
+                <div className="border-b flex">
+                <div>
                 <div className="flex">
-                    <h1 className="mr-2">Find hotels in </h1>
-                    <h1 className="font-semibold text-blue-500"> {destination.toUpperCase()}</h1>
+                    <div className="mr-2 text-4xl">Hotels in </div>
+                    <div className="font-semibold text-blue-500 text-4xl"> {destination.toUpperCase()}</div>
                 </div>
                 <div className="flex-auto">
                     <div className="text-2xl flex flex-col mt-3">
-                        <div>{arrivalDate} — {departureDate}</div>
+                        <div>{arrivalDate} to {departureDate}</div>
                         <div className="mb-3">{travelers} {travelers > 1 ? 'guests' : 'guest'}</div>
                     </div>
                 </div>
                 </div>
-            <div className="grid-cols-2">
-
+                <div className="ml-auto">
+                <div className="text-2xl font-bold">Total trip cost: ${cost}</div>
+                <div>Excluding taxes and fees.</div>
             </div>
             </div>
-           
-
-
+            
+                
+                
+                
+            {(searchResults !== []) && (
+                <div className="grid grid-cols-3 gap-6 mt-3">
+                    {searchResults.map((item, index) => {
+                        return (
+                            <HotelCard key={index} hotel={item}
+                             />
+                        )})}
+                </div>
+            )}
+            
+            </div>
         </div>
+        )}
+        </>
     )                                
 }

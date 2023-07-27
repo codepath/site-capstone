@@ -23,21 +23,22 @@ export default function Homepage({ filterFlights, setFilterFlights,
     const navigate = useNavigate()
     //const [activities, setActivities] = useState ({}) 
 
+    const [validateArrival, setValidateArrival] = useState({})
+    const [validateDeparture, setValidateDeparture] = useState({})
+    const [validDates, setValidDates] = useState(null)
+
     function padZero(number) {
         return number.toString().padStart(2, "0")
       }
 
     async function handleSubmit() {
-        if (submit) {
-            const id = await axios.post('http://localhost:3002/api/hotels-location', {
+        if (submit && validDates !== false && validDates !== null) {
+            const response = await axios.post('http://localhost:3002/api/hotels-location', {
                 location_name: destination,
             })
+
+            setDestID(response.data)
           
-            
-            console.log("DESTINATION")
-            console.log(destination)
-            
-            setDestID(id)
             if (filterHotels) navigate('/hotels')
             else if (filterActivities) navigate('/activities')
             else navigate('/flights')
@@ -45,16 +46,21 @@ export default function Homepage({ filterFlights, setFilterFlights,
     }
 
     useEffect(() => {
-        console.log(departureDate)
-    }, [departureDate])
-
+        console.log(validateArrival.arrive)
+        console.log(validateDeparture.depart)
+        if (validateArrival.arrive >= validateDeparture.depart) {
+            setValidDates(false)
+        }
+        else setValidDates(true)
+    }, [validateArrival, validateDeparture, departureDate])
         
     useEffect(() => {
         if (
             (travelers === null || travelers === "")
             || (arrivalDate === null || arrivalDate === "") 
             || (departureDate === null || departureDate === "") 
-            || (destination === null || destination === "")) setSubmit(false)
+            || (destination === null || destination === "") ||
+            validateArrival.arrive >= validateDeparture.depart) setSubmit(false)
         else setSubmit(true) 
     }, [travelers, arrivalDate, departureDate, destination])
     
@@ -101,10 +107,9 @@ export default function Homepage({ filterFlights, setFilterFlights,
 
     return (
         <div className="relative">
-            <div className="absolute z-[-1] left-0 right-0 overflow-hidden h-72">
+            <div className="absolute z-[-1] left-0 right-0 overflow-hidden h-72 shadow-md">
                 <img src="./Assets/homepage-banner.jpg" className="w-full h-full object-cover object-bottom"/>
             </div>
-            <div className="absolute z-[-2] bg-gray-100 bg-opacity-75 h-full w-full">ttttt</div>
             <div>
             
             <div className="relative shadow-lg mx-56 py-4 px-8 bg-white bg-opacity-80">
@@ -123,7 +128,7 @@ export default function Homepage({ filterFlights, setFilterFlights,
                             variant={filterHotels ? "filled" : "outlined"}
                             color={filterHotels ? "success" : "default"}
                             sx={{'borderRadius':'4px', 'width':'65px',
-                                 'fontFamily':'IBM Plex Sans',
+                                 'fontFamily':'Cairo',
                                 }}
                         />
                         <Chip
@@ -132,7 +137,7 @@ export default function Homepage({ filterFlights, setFilterFlights,
                             variant={filterActivities ? "filled" : "outlined"}
                             color={filterActivities ? "success" : "default"}
                             sx={{'borderRadius':'4px', 'width':'80px',
-                                 'fontFamily':'IBM Plex Sans'}}
+                                 'fontFamily':'Cairo'}}
                         />
                         <Chip
                             label="Flights"
@@ -140,7 +145,7 @@ export default function Homepage({ filterFlights, setFilterFlights,
                             variant={filterFlights ? "filled" : "outlined"}
                             color={filterFlights ? "success" : "default"}
                             sx={{'borderRadius':'4px', 'width':'67px',
-                                 'fontFamily':'IBM Plex Sans'}}
+                                 'fontFamily':'Cairo'}}
                             disabled
                         />
                     </div>
@@ -161,9 +166,11 @@ export default function Homepage({ filterFlights, setFilterFlights,
                                     onChange={(e) => setDestination(e.target.value)}
                                 />
                                 <DatePicker 
-                                    label="Check-in date" 
+                                    label="Check-in date"
+                                    disablePast 
                                     value={arrivalDate} 
                                     onChange={(newDate) => {
+                                        setValidateArrival({arrive: newDate["$d"]})
                                         const formattedDate = `${newDate["$y"]}-${padZero(newDate["$M"] + 1)}-${padZero(newDate["$D"])}`
                                         setArrivalDate(formattedDate)
                                     }}
@@ -171,8 +178,10 @@ export default function Homepage({ filterFlights, setFilterFlights,
                                 />
                                 <DatePicker 
                                     label="Check-out date" 
+                                    disablePast
                                     value={departureDate} 
                                     onChange={(newDate) => {
+                                        setValidateDeparture({depart: newDate["$d"]})
                                         const formattedDate = `${newDate["$y"]}-${padZero(newDate["$M"] + 1)}-${padZero(newDate["$D"])}`
                                         setDepartureDate(formattedDate)
                                     }}
@@ -193,16 +202,19 @@ export default function Homepage({ filterFlights, setFilterFlights,
                                         onClick={handleSubmit}
                                 >Search</Button>
                                 </form>
+                                {!validDates && (
+                                    <div className="text-red-500 font-bold pl-4 pb-3">Check-out date must be after check-in date.</div>
+                                )}
                             </div>
                         )} 
                     </div>
                     <div>
                         <div className='flex mt-4 text-2xl'>The ultimate trip planning tool.</div>
                         <div className='h-0.5 bg-blue-500 w-1/3 my-3'></div>
-                        <div className="text-lg">An intuitive, one-stop solution for all your travel needs. Effortlessly book hotel accommodations and excursions and access real-time flight status updates for thousands of destinations worldwide.
+                        <div className="text-lg">An intuitive, one-stop solution for all your travel needs. Effortlessly find hotel accommodations, trip excursions, and flights to thousands of destinations worldwide.
                         </div>
                         <div className="mt-3 text-lg">
-                            First, pick your destination, travel dates, and number of travelers. Nomadia will update in real time as you build your itineraries.
+                            First, pick your destination, travel dates, and number of travelers. Nomadia will build your itinerary as you view hotels, flights, and activities.
                         </div>
                         <div className="mt-3 text-lg">
                             Log in to save your trips and book them later.
@@ -244,6 +256,8 @@ export default function Homepage({ filterFlights, setFilterFlights,
                             <ImageCarousel images={homepage_oceania}/>
                         </div>
                     </div>
+                    <div className="text-2xl mt-3">Frequently asked questions</div>
+                    <div className='h-0.5 bg-blue-500 w-1/3 my-3'></div>
                 </div>
             </div>
             </div>

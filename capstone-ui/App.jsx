@@ -9,11 +9,18 @@ import Activities from './BookingPages/Activities'
 import HotelsPage from './BookingPages/HotelsPage';
 import './index.css'
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom"
+import Account from './AccountInfo/Account'
+import Itinerary from './AccountInfo/Itinerary'
+import Favorites from './AccountInfo/Favorites'
+import Booking from './AccountInfo/Booking'
+import Checkout from './AccountInfo/Checkout'
+import Budget from './AccountInfo/Budget'
+
 
 const theme = createTheme({
     typography: {
       allVariants: {
-        fontFamily: ['IBM Plex Sans', 'sans-serif'].join(','),
+        fontFamily: ['Cairo', 'sans-serif'].join(','),
         textTransform: 'none',
         fontSize: 16,
       },
@@ -39,6 +46,8 @@ function App() {
     const [itinerary, setItinerary] = useState([])
     const [activities, setActivities] = useState ({})
 
+    const [cost, setCost] = useState(0.00)
+
     const addToItinerary = (item)=>{
 
         
@@ -59,8 +68,9 @@ function App() {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
         <ThemeProvider theme={theme}>
             <div className="font-sans">
-                <Navbar />
+                
                 <Router>
+                    <Navbar />
                     <Routes>
                         <Route path="/" element={
                             <Homepage filterFlights={filterFlights} setFilterFlights={setFilterFlights}
@@ -89,7 +99,26 @@ function App() {
                                     departureDate={departureDate}
                                     arrivalDate={arrivalDate}
                                     destination={destination}
-                                    destID={destID} setDestID={setDestID} />} 
+                                    destID={destID} setDestID={setDestID}
+                                    cost={cost} setCost={setCost} />} 
+                        />
+                         <Route path="/Account" element={
+                            <Account/>} 
+                        />
+                         <Route path="/Itineraries" element={
+                            <Itinerary/>} 
+                        />
+                         <Route path="/Favorites" element={
+                            <Favorites/>} 
+                        />
+                        <Route path="/Budget" element={
+                            <Budget/>} 
+                        />
+                         <Route path="/Booking" element={
+                            <Booking/>} 
+                        />
+                        <Route path="/Checkout" element={
+                            <Checkout/>} 
                         />
                     </Routes>
                 </Router>

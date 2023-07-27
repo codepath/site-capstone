@@ -2,12 +2,12 @@
 export default {
     content: [
         "./index.html",
-        "./**/*.jsx",
+        "../**/*.jsx",
     ],
     theme: {
         extend: {
             fontFamily: {
-                sans: ['IBM Plex Sans', 'sans-serif'],
+                sans: ['Cairo', 'sans-serif'],
             },
         },
     },

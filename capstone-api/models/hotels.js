@@ -33,8 +33,9 @@ class Hotels {
 
     try {
         const response = await axios.request(options);
-        console.log(response.data[0].dest_id)
-        return response.data[0].dest_id;
+        const destId = response.data[0].dest_id;
+        console.log(destId)
+        return destId
       } catch (error) {
         console.error(error);
         //console.error("Desination ID:", Hotels.destId)
@@ -107,6 +108,18 @@ class Hotels {
         // page_number: '0',
         // children_ages: '5,0',
         // categories_filter_ids: 'class::2,class::4,free_cancellation::1'
+
+        // page_number: '0' //uncomment this to add page number 
+              
+        // Title: Page Number
+
+        // Maximum: 100000
+
+        // Minimum: 0
+
+        // Description: Page number
+
+        // Default: 0
       },
       headers: {
         'X-RapidAPI-Key': rapidapikey,
