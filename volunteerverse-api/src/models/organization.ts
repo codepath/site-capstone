@@ -18,16 +18,28 @@ export class Organization {
    * @returns public organization
    */
 
-  static async register(creds) {
+
+  static async register(creds: {
+    email: string;
+password:string;
+orgName: string;
+founders: string;
+orgDescription: string;
+logoUrl?: string;
+orgWebsite: string;
+userType: "organization";
+
+
+  }) {
     const existingOrganizationWithEmail =
-      await Organization.fetchOrganizationByEmail(creds.organization_email);
+      await Organization.fetchOrganizationByEmail(creds.email);
     if (existingOrganizationWithEmail) {
-      throw new BadRequestError(`Duplicate email: ${creds.organization_email}`);
+      throw new BadRequestError(`Duplicate email: ${creds.email}`);
     }
 
     const salt = await bcrypt.genSalt(BCRYPT_WORK_FACTOR);
     const hashedPassword = await bcrypt.hash(creds.password, salt);
-    const normalizedOrgEmail = creds.organization_email.toLowerCase();
+    const normalizedOrgEmail = creds.email.toLowerCase();
 
     const orgResult = await db.query(
       `INSERT INTO organizations (
@@ -48,12 +60,12 @@ export class Organization {
                website
                `,
       [
-        creds.organization_name,
-        creds.organization_description,
+        creds.orgName,
+        creds.orgDescription,
         normalizedOrgEmail,
-        creds.logo_url,
+        creds.logoUrl,
         creds.founders,
-        creds.website,
+        creds.orgWebsite,
       ]
     );
 
@@ -88,12 +100,12 @@ export class Organization {
     return {
       id: id,
       email: organization_email,
-      name: organization_name,
-      description: organization_description,
-      logo: logo_url,
+      orgName: organization_name,
+      orgDescription: organization_description,
+      logoUrl: logo_url,
       founders: founders,
       userType: user_type,
-      website: website,
+      orgWebsite: website,
     };
   }
   static async fetchInterestedVolunteersByEmail(email) {
@@ -174,19 +186,36 @@ export class Organization {
 
   //   return result.rows[0]
   // }
+  static async toggleStateOfOrgProject(projectId, orgId, active) {
+    const orgResult = await db.query(
+      `SELECT * FROM projects WHERE org_id = $1 AND id = $2`,
+      [orgId, projectId]
+    )
+    if (orgResult.rows.length !== 0) {
+      const result = await db.query(
+        `UPDATE "projects" SET "active" = $1 
+                   WHERE "id" = $2 AND "org_id" = $3
+                   RETURNING *`,
+        [!active, projectId, orgId]
+      );
+      return result.rows;
+    } else {
+     throw new UnauthorizedError("Organization/Project not found");
+    }
+  }
 
   static async deleteOrganizationProject(project_id, orgId) {
     const orgResult = await db.query(
       `SELECT * FROM projects WHERE org_id = $1 AND id = $2`,
       [orgId, project_id]
     );
-    if (orgResult.rows[0] !== 0) {
-      const result = await db.query(`DELETE FROM "projects" WHERE "id" = $1`, [
-        project_id,
-      ]);
+    if (orgResult.rows.length !== 0) {
+      const result = await db.query(
+        `DELETE FROM "projects" WHERE "id" = $1`,
+         [project_id]);
       return true;
     } else {
-      return new UnauthorizedError("Organization/Project not found");
+     throw new UnauthorizedError("Organization/Project not found");
     }
   }
 
@@ -213,15 +242,69 @@ export class Organization {
                      WHERE "email" = $2 AND "project_id" = $3
                      RETURNING *`,
           [!approved, email, project_id]
+         
         );
-        return result.rows;
+        console.log("updating approved works!", result.rows)
+
+        return result.rows[0];
+        
       } else {
-        return new UnauthorizedError("Organization/Project not found");
+        throw new UnauthorizedError("Organization/Project not found");
       }
     } else {
-      return new UnauthorizedError("Volunteer Email not found");
+      throw new UnauthorizedError("Volunteer Email not found");
+    }
+    
+  }
+
+  static async incrementAndDecrementApprovedVolunteers(email, projectId, orgId){
+    const approvedResult = await db.query(`SELECT approved FROM interested_volunteers 
+                              WHERE project_id = $1 AND email = $2`,
+                               [projectId, email])
+
+     const approvedPeopleResult = await db.query(`SELECT approved_people FROM projects
+                               WHERE id = $1 AND org_id = $2`,
+                                [projectId, orgId])
+
+
+      console.log("approvedResult", approvedResult)
+      console.log("approvedPeopleResult", approvedPeopleResult)
+    
+    const approvedVolunteerState = await Organization.updateApprovedVolunteers(approvedResult.rows[0], email, projectId, orgId)
+
+     console.log("bringing volunteer state into incre/decre works!",approvedVolunteerState)
+     
+     console.log("approvedPeopleohhhhhh", approvedPeopleResult.rows[0].approved_people )
+     if (approvedVolunteerState.approved === true){
+
+       console.log("here works!",approvedVolunteerState.approved)
+       const result = await db.query(
+         `UPDATE "projects" SET "approved_people" = $1 
+         WHERE "org_id" = $2 AND "id" = $3
+         RETURNING *`,
+         [approvedPeopleResult.rows[0].approved_people + 1 ,orgId, projectId]
+         
+         );
+         console.log(" the if in incre/decre works!",approvedVolunteerState.approved)
+         return result.rows;
+         
+        }  else if (approvedVolunteerState.approved === false){
+          console.log("oh wellllllll")
+          const result = await db.query(
+            `UPDATE "projects" SET "approved_people" = $1 
+            WHERE "org_id" = $2 AND "id" = $3
+            RETURNING *`,
+            [approvedPeopleResult.rows[0].approved_people - 1 ,orgId, projectId]
+        
+      );
+      return result.rows;
+ 
+    } else{
+      throw new UnauthorizedError("Volunteer increment/decrement failed");
     }
   }
+
+
 
   static async fetchAllOrganizationProjectsById(org_id) {
     const result = await db.query(

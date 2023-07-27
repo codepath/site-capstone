@@ -8,7 +8,8 @@ export const projectRoutes = express.Router()
 
 projectRoutes.post("/register", async function (req, res, next){
     try{
-        const project = await Projects.registerProject(req.body)
+      const {id} = res.locals.user
+        const project = await Projects.registerProject({...req.body, orgId: id})
         return res.status(201).json(project)
     } catch (error){
         next(error)
