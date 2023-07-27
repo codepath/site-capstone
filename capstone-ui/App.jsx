@@ -106,7 +106,14 @@ function App() {
                             <Account/>} 
                         />
                          <Route path="/Itineraries" element={
-                            <Itinerary/>} 
+                            <Itinerary
+                                    travelers={travelers}
+                                    departureDate={departureDate}
+                                    arrivalDate={arrivalDate}
+                                    destination={destination}
+                                    destID={destID} setDestID={setDestID}
+                                    cost={cost} setCost={setCost}
+                            />} 
                         />
                          <Route path="/Favorites" element={
                             <Favorites/>} 

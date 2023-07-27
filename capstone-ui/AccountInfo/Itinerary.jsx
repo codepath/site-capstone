@@ -3,17 +3,32 @@ import React from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import backgroundImage from './Assets/backgroundImage.jpg'
+import { useState, useEffect } from "react"
+import data from './mockdata-hotels'
+import HotelCard from '../BookingPages/HotelCard'
 
-function Itinerary() {
+
+
+function Itinerary({ arrivalDate, departureDate,
+  travelers, destination, 
+  destID, cost, setCost
+ }) {
+
+  const [searchResults, setSearchResults] = useState([])
+
+  useEffect(() => {
+    setSearchResults(data.results);
+  }, []);
+
   return (
     <div>
-     <ItineraryMenu/>
+     <ItineraryMenu searchResults={searchResults}/>
     </div>
     
   );
 }
 
-function ItineraryMenu() {
+function ItineraryMenu({searchResults}) {
   return (
     <>
     <div className="flex w-screen h-screen px-64"
@@ -62,29 +77,16 @@ function ItineraryMenu() {
             </div>
 
             <div className="border-t border-black-500 border-2"/>
-            stuff
-            <div>
-
-            <div>
-              stuff 
-            </div>
-            <div>
-
-            </div>
-              <div>
-
+            <div className="flex flex-col min-h-screen">
+            {(searchResults.length !== 0) && (
+              <div className="flex-grow grid grid-cols-1 gap-4 px-4 py-6 md:grid-cols-2 lg:grid-cols-3">
+                {searchResults.map((item, index) => (
+                  <HotelCard key={index} hotel={item} />
+                ))}
               </div>
-              <div>
-
-              </div>
-
-              <div>
-
-              </div>
-              <div>
-
-              </div>
-            </div>
+            )}
+          </div>
+          
 
         </div>
       </div>
