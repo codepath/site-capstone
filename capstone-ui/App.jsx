@@ -5,7 +5,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Homepage from './Homepage'
 import Navbar from './Navbar'
 import Footer from './Footer'
-import Activities from './BookingPages/Activities'
+import Activities from './BookingPages/Activities';
 import HotelsPage from './BookingPages/HotelsPage';
 import './index.css'
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom"
