@@ -8,14 +8,16 @@ import {
   Flex,
   ActionIcon
 } from '@mantine/core';
-import { ProjectProp } from './VolunteerProjectDetails';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { QueryBar, QueryProps } from '../../components/QueryBar';
 import { useForm } from '@mantine/form';
 import NotAuthorized from '../NotAuthorized';
 import { projectDetailsData } from './Home/data';
+import NoneFound from '../../components/NoneFound';
+import { VolunteerProjectProp } from '../../props/projects';
 
-function SlimProjectCard(project: ProjectProp) {
+function SlimProjectCard(project: VolunteerProjectProp) {
+  // use for org projects too
   const openMenu = () => {
     console.log("this is where menu opens")
   }
@@ -49,7 +51,7 @@ function SlimProjectCard(project: ProjectProp) {
 
 
 function MyProjects({ isAuth, user }: { isAuth: boolean, user: useAuthenticationUserProp }) {
-  const [myProjects, setMyProjects] = useState<undefined | ProjectProp[]>(undefined)
+  const [myProjects, setMyProjects] = useState<undefined | VolunteerProjectProp[]>(undefined)
 
   const queryForm = useForm<QueryProps>({
     initialValues: {
@@ -59,11 +61,10 @@ function MyProjects({ isAuth, user }: { isAuth: boolean, user: useAuthentication
     }
   });
   const searchMyProjects = async () => {
-    console.log("searching/setting my projects using query form ");
+    console.log("fetching myprojects");
     setMyProjects([projectDetailsData, projectDetailsData, projectDetailsData]);
   }
   useEffect(() => {
-    console.log("fetching myprojects, call searchMyProjects here");
     searchMyProjects()
   }, [])
   console.log("nothing to see here");
@@ -87,12 +88,12 @@ function MyProjects({ isAuth, user }: { isAuth: boolean, user: useAuthentication
       <Container ml={"auto"} mr={"auto"}  maw={800}>
         <Skeleton visible={myProjects === undefined}>
           <Flex mt={"xl"} gap={"xl"} direction={"column"}>
-          {myProjects?.length ? myProjects?.map((project: ProjectProp, index: number) => {
+          {myProjects?.length ? myProjects?.map((project: VolunteerProjectProp, index: number) => {
             return (
               <SlimProjectCard key={`${project.createdAt}`} {...project} />
             )
           }) :
-            <NoneFound />
+            <NoneFound title='hello' />
           }
           </Flex>
         </Skeleton>
@@ -102,12 +103,6 @@ function MyProjects({ isAuth, user }: { isAuth: boolean, user: useAuthentication
 }
 
 
-function NoneFound() {
-  return (
-    <Title>
-      No Projects Found
-    </Title>
-  )
-}
+
 
 export default MyProjects
