@@ -41,7 +41,8 @@ export default function Navbar({ authenticated, setAuthenticated }) {
         <div className="px-56 bg-gray-100 bg-opacity-75 flex h-16 border-b border-blue-500 sticky top-0 z-10 justify-between">
             <Link to="/" className="flex">
                 <div className="flex">
-                    <Button>Home</Button>
+                    {/*TODO: fix nav bar home button.*/}
+                    <Button disabled={true}>Home</Button>
                 </div>
             </Link>
             <div className="flex">
