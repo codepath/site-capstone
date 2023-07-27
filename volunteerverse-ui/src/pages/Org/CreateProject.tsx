@@ -49,7 +49,7 @@ function CreateProject({ isAuth, user }: { isAuth: boolean, user: useAuthenticat
   const [tags, setTags] = useState<string[]>([]);
   useEffect(() => {
     // fecthes all all tags from db
-    const {data, success, error} = apiClient.fecthAllTags();
+    const {data, success, error} = apiClient.fetchAllTags();
     if (success){
       setTags(data.tags);
     }else{
