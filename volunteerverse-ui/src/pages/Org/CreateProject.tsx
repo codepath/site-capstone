@@ -5,7 +5,7 @@ import { ProjectFormValues } from '../../props/forms';
 import {
   Button, Container, FileButton,
   Flex, MultiSelect, TextInput,
-  Textarea, Title, Image, createStyles
+  Textarea, Title, Image, createStyles, Paper, Divider, ColorSchemeProvider
 } from '@mantine/core';
 import { apiClient } from '../../services/ApiClient';
 
@@ -18,6 +18,7 @@ const useStyles = createStyles((theme) => ({
 
   },
   title: {
+    color: theme.colors.violet[9],
     [theme.fn.smallerThan("md")]: {
       fontSize: `calc(${theme.fontSizes.xl})`
     },
@@ -37,8 +38,8 @@ function CreateProject({ isAuth, user }: { isAuth: boolean, user: useAuthenticat
       tags: []
     },
     validate: (values) => ({
-      title: values.title.trim().length > 1 ? null : "Please provide a title",
-      desc: values.desc.trim().length > 10 ? null : "Please provide a longer description",
+      title: values.title.trim().length > 0 ? null : "Please provide a title",
+      desc: values.desc.trim().length > 500 ? null : "Please provide a shorter description",
       imageFile: values.imageFile ? null : "Please provide a project photo",
       requestedPeople: values.requestedPeople > 0 ? null : "Requested people must be greater than 0",
       // tags: no validation needed for tags
@@ -47,26 +48,37 @@ function CreateProject({ isAuth, user }: { isAuth: boolean, user: useAuthenticat
   });
   const { classes } = useStyles();
   const [tags, setTags] = useState<string[]>([]);
-  useEffect(() => {
-    // fecthes all all tags from db
-    const {data, success, error} = apiClient.fetchAllTags();
-    if (success){
-      setTags(data.tags);
-    }else{
-      console.log("unable to retrieve all tags. error: ", error)
+  const createNewProject = () => {
+    if (!form.validate().hasErrors){
+
+      console.log("creating new project with the following form values: ", form.values)
+    } else{
+      console.log("form has errros: ", form.errors)
     }
+  }
+  useEffect(() => {
+    apiClient.fetchAllTags().then(({data, success, error}) => {
+      // fecthes all all tags from db then sets state
+      if (success){
+        setTags(data.tags);
+      }else{
+        console.log("unable to retrieve all tags. error: ", error)
+      }
+    });
   }, [])
   return (
+    <Paper maw={900} mx={"auto"} radius={"lg"} p={"xl"}>
     <Container mt={"xl"}>
-      <Title className={classes.title} mb={"xl"} >Create Your Profile</Title>
+      <Title className={classes.title} mb={"xl"} >Create a New Project</Title>
+      <Divider py={"md"} />
       <Flex direction={"column"}>
         <Flex direction={"column"} gap={"md"} align={"center"}>
           <Image
-            width={200}
-            height={200}
+            width={"100%"}
+            height={300}
             withPlaceholder
-            mb={"md"}
-            radius={"50%"} />
+            radius={"lg"} 
+            mb={"md"}/>
           <Flex
             direction={"column"}
             justify={"center"}
@@ -81,64 +93,54 @@ function CreateProject({ isAuth, user }: { isAuth: boolean, user: useAuthenticat
                     maxWidth: "30rem"
                   }
                 }}
-                {...props}
-              >{form.values.imageFile?.name || "Upload Logo"}</Button>}
-
+                {...props}>
+                  {form.values.imageFile?.name || "Upload Project Cover"}</Button>}
             </FileButton>
           </Flex>
         </Flex>
         <TextInput
                 size='md'
-                radius={"xl"}
+                radius={"lg"}
                 withAsterisk
                 label="Project Title"
                 placeholder="Your project title"
                 description="Full stack developer needed for..."
-                {...form.getInputProps('orgName')} />
-        <MultiSelect
-            {...form.getInputProps("skills")}
+            {...form.getInputProps('title')}
+            mb={"md"} />
+          <TextInput
+            type='number'
+            min={1}
+            size='md'
+            radius={"lg"}
+            label="Volunteer Capacity (optional)"
+            placeholder="Maximum volunteers needed"
+            description=""
+            {...form.getInputProps('requestedPeople')}
+            mb={"md"} />
+          <MultiSelect
+            {...form.getInputProps("tags")}
+            size='md'
+            radius={"lg"}
             searchable
             data={tags}
-            label="Select Your Skills"
-            placeholder="Or skills you're interested in "
+            label="Project Tags"
+            placeholder="Select tags relevant to this project"
+            mb={"md"}
              />
-        {/* <MultiSelect
-          withAsterisk
-          data={form.values.founders}
-          size={"md"}
-          radius={"xl"}
-          mb={"xl"}
-          searchable
-          creatable
-          getCreateLabel={(query: string) => `Add Founder: ${query}`}
-          onCreate={(query) => {
-            const item = { value: query, label: query };
-            console.log(form.values)
-            return item;
-          }}
-          label="Founder(s):"
-          description="Please enter the first and last names of the founders seperated by a comma.E.g. 'Jane Doe, Jack Wobs'"
-          placeholder="Founder(s) Name(s)"
-          {...form.getInputProps('founders')}
-        /> */}
         <Textarea
           radius={"lg"}
+          size='md'
           withAsterisk
-          label="Brief Description:"
-          placeholder="Brief Description"
-          description="Max: 300 words"
+          label="Project Description:"
+          placeholder= {`Hey there, we're a ${user.userType} looking to...`}
+          description="Max: 500 words"
           minRows={5}
           {...form.getInputProps('desc')}
         />
-        {/* <TextInput
-          {...form.getInputProps("orgWebsite")}
-          my={"xl"}
-          radius={"xl"}
-          label="Website URL (optional)"
-          placeholder="websiteurl.org"
-          {...form.getInputProps('orgName')} /> */}
       </Flex>
     </Container>
+    <Button onClick={createNewProject} radius={"lg"} size='lg' mt={"xl"}>Create Project</Button>
+    </Paper>
   )
 
 }
