@@ -108,6 +108,18 @@ class Hotels {
         // page_number: '0',
         // children_ages: '5,0',
         // categories_filter_ids: 'class::2,class::4,free_cancellation::1'
+
+        // page_number: '0' //uncomment this to add page number 
+              
+        // Title: Page Number
+
+        // Maximum: 100000
+
+        // Minimum: 0
+
+        // Description: Page number
+
+        // Default: 0
       },
       headers: {
         'X-RapidAPI-Key': rapidapikey,

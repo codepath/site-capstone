@@ -1,7 +1,8 @@
 export default function ActivityCards({activity, addToItinerary}){
     
 
-    const handleItinerary= () => {
+    const handleItinerary= (e) => {
+        e.preventDefault()
       addToItinerary(activity)
   }
 
@@ -9,8 +10,8 @@ export default function ActivityCards({activity, addToItinerary}){
 
   return (
      
-  <div className="flex space-x-4"> {/* */}
-      <div className = "h-48 w-full object-cover">  {/* media */}
+  <div className="space-x-4"> 
+      <div className = "h-48 w-full object-cover">  
           <img className ="image" src = {activity.image} alt = {activity.alt}/>
       </div>
       <div className = "info-container">  {/* card-info*/}
