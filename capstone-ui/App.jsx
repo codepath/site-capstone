@@ -9,6 +9,13 @@ import Activities from './BookingPages/Activities'
 import HotelsPage from './BookingPages/HotelsPage';
 import './index.css'
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom"
+import Account from './AccountInfo/Account'
+import Itinerary from './AccountInfo/Itinerary'
+import Favorites from './AccountInfo/Favorites'
+import Booking from './AccountInfo/Booking'
+import Checkout from './AccountInfo/Checkout'
+import Budget from './AccountInfo/Budget'
+
 
 const theme = createTheme({
     typography: {
@@ -87,6 +94,24 @@ function App() {
                                     arrivalDate={arrivalDate}
                                     destination={destination}
                                     destID={destID} setDestID={setDestID} />} 
+                        />
+                         <Route path="/Account" element={
+                            <Account/>} 
+                        />
+                         <Route path="/Itineraries" element={
+                            <Itinerary/>} 
+                        />
+                         <Route path="/Favorites" element={
+                            <Favorites/>} 
+                        />
+                        <Route path="/Budget" element={
+                            <Budget/>} 
+                        />
+                         <Route path="/Booking" element={
+                            <Booking/>} 
+                        />
+                        <Route path="/Checkout" element={
+                            <Checkout/>} 
                         />
                     </Routes>
                 </Router>
