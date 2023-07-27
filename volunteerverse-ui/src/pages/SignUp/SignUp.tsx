@@ -37,7 +37,7 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
-export default function SignUp({ userType }: { userType: "volunteer" | "organization" }) {
+export default function SignUp({ userType, setToken }: { userType: "volunteer" | "organization", setToken : (val: string) => void }) {
   /**
    * @todo: 
    * - test organization registration
@@ -85,7 +85,7 @@ export default function SignUp({ userType }: { userType: "volunteer" | "organiza
           }
         }
         return {}
-      }
+      },
     },
   );
   const orgForm = useForm<OrgFormValues>({
@@ -102,7 +102,8 @@ export default function SignUp({ userType }: { userType: "volunteer" | "organiza
       termsOfService: false,
       userType: "organization"
     },
-    validateInputOnChange: ["confirmPassword", "password", "email"],
+    validateInputOnChange: ["confirmPassword", "password", "email", "imageFile", "termsOfService"],
+    
     validate: (values) => {
       if (activeStep === 0) {
         return {
@@ -118,7 +119,7 @@ export default function SignUp({ userType }: { userType: "volunteer" | "organiza
           orgDescription: values.orgDescription.length < 2 ? "Please include more details in your description." : null,
           orgName: values.orgName.length < 1 ? "Please include your organization name" : null,
           termsOfService: values.termsOfService === false ? "You must agree to VolunteerVerse's terms of servcie" : null,
-          imageFile: values.imageFile ? "A logo must be provided." : null,
+          imageFile: values.imageFile ?  null : "A logo must be provided.",
           // orgWebsite:  ^(http(s):\/\/.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$.test(values.orgWebsite) || values.orgWebsite === "" ? null : "Please provide a valid website link",
           
         }
@@ -156,12 +157,16 @@ export default function SignUp({ userType }: { userType: "volunteer" | "organiza
     if (form.validate().hasErrors === false) {
       let { confirmPassword, termsOfService, imageFile, ...rest } = form.values;
       await sendRegisterRequest({ ...rest, founders: rest.founders.toString(), imageUrl: imageFile?.name || "" })
+    } else{
+      console.log("form has errors", form.errors, form.values)
     }
   };
   const registerVolunteer = async (form: UseFormReturnType<VolunteerFormValues>) => {
     if (form.validate().hasErrors === false) {
       let { confirmPassword, termsOfService, imageFile, ...rest } = form.values;
       await sendRegisterRequest({ ...rest, imageUrl: imageFile?.name || "" })
+    } else{
+      console.log("form has errors", form.errors)
     }
   };
   const sendRegisterRequest = async (requestBody: VolunteerRegisterProp | OrganizationRegisterProp) => {
@@ -170,6 +175,7 @@ export default function SignUp({ userType }: { userType: "volunteer" | "organiza
       if (success) {
         console.log("new user. data: ", data);
         // stateApi.setAuth(data.token);
+        setToken(data.token);
         navigate("/")
       } else if (statusCode === 400) {
         closeLoader();
@@ -234,7 +240,7 @@ export default function SignUp({ userType }: { userType: "volunteer" | "organiza
               <>
                 <Button variant="default" onClick={prevStep}>Back</Button>
                 <Button
-                  disabled={userType === "organization" ? orgForm.isValid() === false : volunteerForm.isValid() === false}
+                  // disabled={userType === "organization" ? orgForm.isValid() === false : volunteerForm.isValid() === false}
                   onClick={() => userType == "organization" ? registerOrg(orgForm) : registerVolunteer(volunteerForm)}>Create Account</Button>
               </>
             )
