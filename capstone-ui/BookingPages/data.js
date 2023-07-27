@@ -1,4 +1,4 @@
-export const activities = [{
+export const acts = [{
     id:1,
     name:"golfing",
     image:"https://www.google.com/imgres?imgurl=https%3A%2F%2Fgolf.com%2Fwp-content%2Fuploads%2F2022%2F11%2Fgolfer-swings.jpg&tbnid=ToNR7jLuzx7jnM&vet=12ahUKEwi6_6LS45aAAxUcDWIAHbMvAxYQMygHegUIARD4AQ..i&imgrefurl=https%3A%2F%2Fgolf.com%2Finstruction%2F1-round-killing-mistake-amateurs-make%2F&docid=u1L2Ji8iaMULkM&w=1856&h=1044&q=golfing&client=safari&ved=2ahUKEwi6_6LS45aAAxUcDWIAHbMvAxYQMygHegUIARD4AQ",

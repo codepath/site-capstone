@@ -43,7 +43,8 @@ function App() {
 
     const [authenticated, setAuthenticated] = useState(false)
 
-    const [itinerary, setItinerary] = useState({})
+    const [itinerary, setItinerary] = useState([])
+    const [activities, setActivities] = useState ({})
 
     const [cost, setCost] = useState(0.00)
 
@@ -80,6 +81,7 @@ function App() {
                                     destination={destination} setDestination={setDestination}
                                     travelers={travelers} setTravelers={setTravelers}
                                     destID={destID} setDestID={setDestID}
+                                    setActivities = {setActivities}
                             />
                         } />
                         <Route path="/activities" element={
@@ -89,7 +91,8 @@ function App() {
                                         travelers={travelers}
                                         departureDate={departureDate}
                                         arrivalDate={arrivalDate}
-                                        destination={destination} /> }/>
+                                        destination={destination}
+                                        activities = {activities} /> }/>
                         <Route path="/hotels" element={
                             <HotelsPage 
                                     travelers={travelers}
@@ -100,6 +103,7 @@ function App() {
                                     cost={cost} setCost={setCost}
                                     itinerary={itinerary} setItinerary={setItinerary}
                                     filterActivities={filterActivities} />} 
+
                         />
                          <Route path="/account" element={
                             <Account/>} 

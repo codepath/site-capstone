@@ -33,6 +33,7 @@ export default function HotelCard({ hotel, setModalOpen, modalOpen, itinerary,
         <>
         {!modalOpen && (
         <div className="cursor-pointer flex flex-col rounded-md w-76 shadow-md border border-blue-500">
+
             
             <div className="overflow-hidden">
                 <img className="w-full object-cover h-56 rounded-md"src={hotel.photoMainUrl} />
@@ -69,5 +70,6 @@ export default function HotelCard({ hotel, setModalOpen, modalOpen, itinerary,
                             hotel={hotel} />
             )}
         </>
+
     )
 }

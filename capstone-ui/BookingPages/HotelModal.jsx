@@ -10,6 +10,8 @@ export default function HotelModal({ setModalOpen, modalOpen, hotel }) {
                     <div>Worked...</div>
                 </div>
             </div>
+
+
         </Modal>
     )
 }
