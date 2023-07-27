@@ -17,21 +17,9 @@ import {
 import NotAuthorized from "../NotAuthorized";
 import { projectDetailsData } from "./Home/data";
 import GoBackButton from "../../components/GoBackButton";
+import { VolunteerProjectProp } from "../../props/projects";
 
-export interface ProjectProp {
-  id: number
-  title: string,
-  createdAt: number | undefined,
-  description: string,
-  orgName: string,
-  orgUrl: string,
-  imageUrl: string,
-  orgDesc: string,
-  founders: string,
-  interested: boolean,
-  tags: string[],
-  approved: boolean,
-}
+
 
 const useStyles = createStyles((theme) => ({
   container: {
@@ -65,7 +53,7 @@ function VolunteerProjectDetails({ isAuth, user }: { isAuth: boolean, user: useA
   const { projectId } = params;
   const { classes } = useStyles();
 
-  const [project, setProject] = useState<ProjectProp | undefined>(projectId ? {
+  const [project, setProject] = useState<VolunteerProjectProp | undefined>(projectId ? {
     title: "",
     createdAt: undefined,
     description: "",
