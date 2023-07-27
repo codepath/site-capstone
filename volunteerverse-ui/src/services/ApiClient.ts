@@ -1,6 +1,6 @@
 import axios from "axios";
 import { API_BASE_URL } from "../../constants"
-import { organizationRegisterProp, volunteerRegisterProp } from "../props/register";
+import { OrganizationRegisterProp, VolunteerRegisterProp } from "../props/register";
 
 interface requestProp {
     method : string,
@@ -57,7 +57,7 @@ class ApiClient {
         }
         return this.request(requestOptions);
     }
-    async register(formData: volunteerRegisterProp | organizationRegisterProp) {
+    async register(formData: VolunteerRegisterProp | OrganizationRegisterProp) {
         // make request to signup user 
         const requestOptions = {
             method: "post",
@@ -87,6 +87,13 @@ class ApiClient {
             subDirectory: `/project/${projectId}`,
         }
         return this.request(requestOptions)
+    }
+    async fetchAllTags(){
+        const requestOptions = {
+            method: "get",
+            subDirectory: `/tags`
+        }
+        return this.request(requestOptions)   
     }
 }
 export const apiClient = new ApiClient(API_BASE_URL);
