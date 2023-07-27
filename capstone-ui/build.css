@@ -44,7 +44,7 @@ html {
   -o-tab-size: 4;
      tab-size: 4;
   /* 3 */
-  font-family: IBM Plex Sans, sans-serif;
+  font-family: 'Cairo', sans-serif;
   /* 4 */
   font-feature-settings: normal;
   /* 5 */
@@ -2099,7 +2099,7 @@ video {
 }
 
 .font-sans {
-  font-family: IBM Plex Sans, sans-serif;
+  font-family: 'Cairo', sans-serif;
 }
 
 .text-2xl {
