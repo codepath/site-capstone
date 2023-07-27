@@ -4,13 +4,58 @@ import "../index.css";
 import ActivityCards from "./ActivityCards";
 import { acts } from "./data"; // Check the correct path for this import
 
-export default function Activities({ addToItinerary, departureDate, arrivalDate, destination, travelers, activities }) {
+// export default function Activities({ addToItinerary, departureDate, arrivalDate, destination, travelers, activities }) {
+//   const [searchValue, setSearchValue] = useState("");
+
+//Stuff added 
+
+export default function Activities({
+  addToItinerary,
+  departureDate,
+  arrivalDate,
+  destination,
+  travelers,
+}) {
   const [searchValue, setSearchValue] = useState("");
-  //const [activitiesDisplayed, setActivitiesDisplayed] = useState(activities);
- 
+  const [activities, setActivities] = useState([]); // Initialize as an empty array
+
+  useEffect(() => {
+    // Fetch activities data from the server
+    axios
+      .post("http://localhost:3002/api/places-search", {
+        query: searchValue,
+        min_price: "1",
+        max_price: "4",
+        near: destination,
+        sort: "relevance",
+      })
+      .then((response) => {
+        // Update the activities state with the fetched data
+        setActivities(response.data.results);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [searchValue, destination]); // Add searchValue and destination to the dependencies array
 
   const handleOnSearch = (event) => {
     setSearchValue(event.target.value);
+  };
+
+
+
+
+// end 
+
+
+
+
+  //const [activitiesDisplayed, setActivitiesDisplayed] = useState(activities);
+
+ 
+
+  // const handleOnSearch = (event) => {
+  //   setSearchValue(event.target.value);
 //     const response = await axios.post("http://localhost:3002/api/places-search", {
 //         query: searchValue,
 //         min_price: "1",
@@ -18,7 +63,7 @@ export default function Activities({ addToItinerary, departureDate, arrivalDate,
 //         near: destination,
 //         sort: "relevance",
 //   };
-}
+//}
 
 //   const filterByName = searchValue
 //     ? activities.filter((activity) => activity.location.toLowerCase().includes(searchValue.toLowerCase()))
