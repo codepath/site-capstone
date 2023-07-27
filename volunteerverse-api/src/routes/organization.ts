@@ -49,6 +49,17 @@ organizationRoutes.get("/projects", async function(req,res,next){
  
 // })
 
+organizationRoutes.put("/project/status/:projectId", async function(req,res,next){
+  try{
+    const { id } = res.locals.user
+    const projectId = parseInt(req.params.projectId)
+    //const {active} = req.body
+    const result = await Organization.toggleStateOfOrgProject(projectId, id)
+    res.json({projectState : result})
+  }catch (error) {
+    next(error);
+  }
+})
 organizationRoutes.put("/project/:projectId", async function(req,res,next){
   console.log('whyy')
   try{
@@ -64,16 +75,7 @@ organizationRoutes.put("/project/:projectId", async function(req,res,next){
  
 })
 
-organizationRoutes.post("/project/status", async function(req,res,next){
-  try{
-  const {projectId, orgId, active} = req.body
-  const result = await Organization.toggleStateOfOrgProject(projectId, orgId, active)
-  res.json({projectState : result})
-}catch (error) {
-    next(error);
-  }
- 
-})
+
 
 organizationRoutes.delete("/project/:projectId", async function(req,res,next){
   const { id } = res.locals.user
@@ -85,7 +87,8 @@ organizationRoutes.delete("/project/:projectId", async function(req,res,next){
 
 
 
-organizationRoutes.put("/project/interested/:projectId", async function (req, res, next) {
+
+organizationRoutes.get("/project/interested/:projectId", async function (req, res, next) {
        //req.body is what we put in insomnia when we test which to equate to what we put in the browser
        //that then goes into the function below 
        const projectId = parseInt(req.params.projectId)
