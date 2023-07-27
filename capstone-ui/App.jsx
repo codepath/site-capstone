@@ -5,7 +5,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Homepage from './Homepage'
 import Navbar from './Navbar'
 import Footer from './Footer'
-import Activities from './BookingPages/Activities'
+import Activities from './BookingPages/Activities';
 import HotelsPage from './BookingPages/HotelsPage';
 import './index.css'
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom"
@@ -100,9 +100,12 @@ function App() {
                                     arrivalDate={arrivalDate}
                                     destination={destination}
                                     destID={destID} setDestID={setDestID}
-                                    cost={cost} setCost={setCost} />} 
+                                    cost={cost} setCost={setCost}
+                                    itinerary={itinerary} setItinerary={setItinerary}
+                                    filterActivities={filterActivities} />} 
+
                         />
-                         <Route path="/Account" element={
+                         <Route path="/account" element={
                             <Account/>} 
                         />
                          <Route path="/Itineraries" element={
@@ -114,18 +117,13 @@ function App() {
                                     destID={destID} setDestID={setDestID}
                                     cost={cost} setCost={setCost}
                             />} 
+
                         />
-                         <Route path="/Favorites" element={
+                         <Route path="/favorites" element={
                             <Favorites/>} 
                         />
-                        <Route path="/Budget" element={
-                            <Budget/>} 
-                        />
-                         <Route path="/Booking" element={
+                         <Route path="/booking" element={
                             <Booking/>} 
-                        />
-                        <Route path="/Checkout" element={
-                            <Checkout/>} 
                         />
                     </Routes>
                 </Router>

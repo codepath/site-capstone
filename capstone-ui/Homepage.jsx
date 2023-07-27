@@ -27,6 +27,10 @@ export default function Homepage({ filterFlights, setFilterFlights,
     const [validateDeparture, setValidateDeparture] = useState({})
     const [validDates, setValidDates] = useState(null)
 
+    const [validateArrival, setValidateArrival] = useState({})
+    const [validateDeparture, setValidateDeparture] = useState({})
+    const [validDates, setValidDates] = useState(null)
+
     function padZero(number) {
         return number.toString().padStart(2, "0")
       }
@@ -52,7 +56,8 @@ export default function Homepage({ filterFlights, setFilterFlights,
             setValidDates(false)
         }
         else setValidDates(true)
-    }, [validateArrival, validateDeparture, departureDate])
+    }, [validateArrival, validateDeparture])
+
         
     useEffect(() => {
         if (
