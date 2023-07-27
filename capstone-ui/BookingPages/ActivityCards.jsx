@@ -5,14 +5,14 @@ export default function ActivityCards({activity, addToItinerary}){
         e.preventDefault()
       addToItinerary(activity)
   }
-
+///console.log(activity.photos)
 
 
   return (
      
   <div className="space-x-4"> 
       <div className = "h-48 w-full object-cover">  
-          <img className ="image" src = {activity.image} alt = {activity.alt}/>
+          <img className ="image" src = {activity.photos} alt = "photo of ${activity.name}" />
       </div>
       <div className = "info-container">  {/* card-info*/}
           <div className = "info">

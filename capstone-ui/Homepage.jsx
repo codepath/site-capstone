@@ -16,11 +16,12 @@ export default function Homepage({ filterFlights, setFilterFlights,
                                    departureDate, setDepartureDate,
                                    arrivalDate, setArrivalDate,
                                    destination, setDestination,
-                                   travelers, setTravelers, destID, setDestID
+                                   travelers, setTravelers, destID, setDestID, setActivities
                                  }) {
     
     const [submit, setSubmit] = useState(false)
     const navigate = useNavigate()
+    //const [activities, setActivities] = useState ({}) 
 
     const [validateArrival, setValidateArrival] = useState({})
     const [validateDeparture, setValidateDeparture] = useState({})
@@ -35,7 +36,9 @@ export default function Homepage({ filterFlights, setFilterFlights,
             const response = await axios.post('http://localhost:3002/api/hotels-location', {
                 location_name: destination,
             })
+
             setDestID(response.data)
+          
             if (filterHotels) navigate('/hotels')
             else if (filterActivities) navigate('/activities')
             else navigate('/flights')
@@ -49,7 +52,7 @@ export default function Homepage({ filterFlights, setFilterFlights,
             setValidDates(false)
         }
         else setValidDates(true)
-    }, [validateArrival, validateDeparture])
+    }, [validateArrival, validateDeparture, departureDate])
         
     useEffect(() => {
         if (
