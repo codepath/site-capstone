@@ -1,6 +1,6 @@
 import axios from "axios";
 import { API_BASE_URL } from "../../constants"
-import { OrganizationRegisterProp, VolunteerRegisterProp } from "../props/register";
+import { OrganizationRegisterProp, VolunteerRegisterProp, ProjectRegisterProp } from "../props/register";
 
 interface requestProp {
     method : string,
@@ -66,12 +66,29 @@ class ApiClient {
         }
         return this.request(requestOptions)
     }
+    async createProject(formData: ProjectRegisterProp ) {
+        // creates new project for organizations
+        const requestOptions = {
+            method: "post",
+            bodyData: formData,
+            subDirectory: "/project"
+        }
+        return this.request(requestOptions)
+    }
     async fetchUserFromToken(){
         // handles user fetch from token
         const requestOptions = {
             method: "get",
             subDirectory: "/auth/me",
         }
+        return this.request(requestOptions);
+    }
+
+    async fetchProjects(userType: "organization" | "volunteer") {
+        const requestOptions = {
+            method: "get",
+            subDirectory: `/${userType}/projects/`,
+        };
         return this.request(requestOptions);
     }
     async fetchProjectById(projectId: string){
