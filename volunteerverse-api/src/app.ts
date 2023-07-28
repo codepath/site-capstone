@@ -11,6 +11,7 @@ import { organizationRoutes } from './routes/organization';
 import { volunteerRoutes } from './routes/volunteer';
 import { projectRoutes } from './routes/projects';
 import { requireAuthenticatedUser } from './middleware/security';
+import { requireAuthenticatedUser } from './middleware/security';
 
 
 export const app = express();

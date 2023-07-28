@@ -1,4 +1,6 @@
-import { Button, Text, Group, Title, Container, createStyles, Image, LoadingOverlay, Flex, Modal } from "@mantine/core";
+import { Button, Text, Group, 
+  Title, Container, createStyles, 
+  Image, Flex, Modal } from "@mantine/core";
 import WhatWeDo from "./WhatWeDo"
 import CallToAction from "./CallToAction";
 import { Link } from "react-router-dom";
@@ -11,9 +13,11 @@ const useStyles = createStyles((theme) => ({
     padding: `0 ${theme.spacing.xl}`,
     width: "100%",
     minHeight: `150rem`,
-    overflowX: "hidden",
+    alignSelf: "flex-end",
     [theme.fn.smallerThan("md")] : {
       minHeight: `130rem`,
+    },
+    [theme.fn.smallerThan("sm")]: {
     }
   },
   landingContainer: {
@@ -21,7 +25,7 @@ const useStyles = createStyles((theme) => ({
     height: "100%",
     margin: 0,
     [theme.fn.smallerThan("md")] : {
-      paddingLeft: theme.spacing.xs
+      // paddingLeft: theme.spacing.xs
     }
   },
   content: {
@@ -37,6 +41,8 @@ const useStyles = createStyles((theme) => ({
     [theme.fn.smallerThan("sm")]: {
       gap: 0,
       padding: 0,
+      flexDirection: "column-reverse",
+      alignItems: "center"
     }
   },
   title: {
@@ -71,10 +77,13 @@ const useStyles = createStyles((theme) => ({
     padding: 0
   },
   image: {
+    cursor: "grab",
     position: "relative",
     minWidth: 420,
     height: "100%",
     width: "100%",
+    maxWidth: 420,
+    maxHeight: 420,
     [theme.fn.smallerThan('lg')]: {
       minWidth: 250,
     },
@@ -99,10 +108,10 @@ const useStyles = createStyles((theme) => ({
     }
   },
   highlight: {
-    fontWeight: 700,
+    fontWeight: 900,
     position: 'relative',
-    color: theme.fn.variant({ variant: 'dark', color: theme.primaryColor }).background,
-    // backgroundColor: theme.fn.variant({ variant: 'light', color: theme.white }).background,
+    textDecoration: `${theme.colors.violet[7]} 4px underline`,
+    color: theme.fn.variant({ variant: 'light', color: theme.primaryColor }).background,
     borderRadius: theme.radius.sm,
     padding: `${4} ${12}`
   },
@@ -114,11 +123,13 @@ export default function Landing() {
    */
   const [showModal, {open : openModal, close : closeModal} ] = useDisclosure(false);
   const { classes } = useStyles();
+
   return (
 
       <Flex 
       m={0} p={0}
-      direction={"column"}
+      direction={"row"}
+      wrap={"wrap"}
       justify={"space-evenly"}
       align={"center"}  
       className={classes.mainContainer} >
@@ -144,16 +155,17 @@ export default function Landing() {
             <Image alt="VolunteerVerse Logo. A purple hand with a smiley face" className={classes.image} fit={"contain"} src={Logo} />
           </Container>
         </Flex>
-        <WhatWeDo />
-        <CallToAction />
+        <WhatWeDo  />
+        <CallToAction openModal={openModal} />
         <Modal 
+        styles={() => ({ inner: {paddingLeft: "2rem"}})}
         title={<Title  align="center">Select Your Role:</Title>}
         closeButtonProps={{ 'aria-label': 'Close modal' }}
         opened={showModal} 
         onClose={closeModal} 
         size="auto" 
         centered>
-          <SignUpModal />
+          <SignUpModal close={closeModal} />
         </Modal>
       </Flex>
   )

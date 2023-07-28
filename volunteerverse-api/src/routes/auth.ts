@@ -30,9 +30,7 @@ authRoutes.post("/register", async function(req, res, next){
         }
     } catch (error) {
         next(error)
-
     }
-
 })
 
 authRoutes.post("/login", async function( req, res, next){

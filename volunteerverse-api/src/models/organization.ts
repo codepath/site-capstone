@@ -37,6 +37,7 @@ userType: "organization";
       await Organization.fetchOrganizationByEmail(creds.email);
     if (existingOrganizationWithEmail) {
       throw new BadRequestError(`Duplicate email: ${creds.email}`);
+      throw new BadRequestError(`Duplicate email: ${creds.email}`);
     }
 
     const salt = await bcrypt.genSalt(BCRYPT_WORK_FACTOR);
@@ -64,9 +65,13 @@ userType: "organization";
       [
         creds.orgName,
         creds.orgDescription,
+        creds.orgName,
+        creds.orgDescription,
         normalizedOrgEmail,
         creds.logoUrl,
+        creds.logoUrl,
         creds.founders,
+        creds.orgWebsite,
         creds.orgWebsite,
       ]
     );
@@ -105,8 +110,12 @@ userType: "organization";
       orgName: organization_name,
       orgDescription: organization_description,
       logoUrl: logo_url,
+      orgName: organization_name,
+      orgDescription: organization_description,
+      logoUrl: logo_url,
       founders: founders,
       userType: user_type,
+      orgWebsite: website,
       orgWebsite: website,
     };
   }
@@ -223,8 +232,13 @@ userType: "organization";
       const result = await db.query(
         `DELETE FROM "projects" WHERE "id" = $1`,
          [project_id]);
+    if (orgResult.rows.length !== 0) {
+      const result = await db.query(
+        `DELETE FROM "projects" WHERE "id" = $1`,
+         [project_id]);
       return true;
     } else {
+     throw new UnauthorizedError("Organization/Project not found");
      throw new UnauthorizedError("Organization/Project not found");
     }
   }
@@ -255,12 +269,18 @@ userType: "organization";
                      RETURNING *`,
           [!approved, email, project_id]
          
+         
         );
         console.log("updating approved works!", result.rows)
 
         return result.rows[0];
         
+        console.log("updating approved works!", result.rows)
+
+        return result.rows[0];
+        
       } else {
+        throw new UnauthorizedError("Organization/Project not found");
         throw new UnauthorizedError("Organization/Project not found");
       }
     } else {
@@ -315,6 +335,8 @@ userType: "organization";
       throw new UnauthorizedError("Volunteer increment/decrement failed");
     }
   }
+
+
 
 
 

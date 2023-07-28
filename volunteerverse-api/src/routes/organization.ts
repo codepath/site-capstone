@@ -49,17 +49,6 @@ organizationRoutes.get("/projects", async function(req,res,next){
  
 // })
 
-organizationRoutes.put("/project/status/:projectId", async function(req,res,next){
-  try{
-    const { id } = res.locals.user
-    const projectId = parseInt(req.params.projectId)
-    //const {active} = req.body
-    const result = await Organization.toggleStateOfOrgProject(projectId, id)
-    res.json({projectState : result})
-  }catch (error) {
-    next(error);
-  }
-})
 organizationRoutes.put("/project/:projectId", async function(req,res,next){
   console.log('whyy')
   try{
@@ -75,7 +64,16 @@ organizationRoutes.put("/project/:projectId", async function(req,res,next){
  
 })
 
-
+organizationRoutes.post("/project/status", async function(req,res,next){
+  try{
+  const {projectId, orgId, active} = req.body
+  const result = await Organization.toggleStateOfOrgProject(projectId, orgId, active)
+  res.json({projectState : result})
+}catch (error) {
+    next(error);
+  }
+ 
+})
 
 organizationRoutes.delete("/project/:projectId", async function(req,res,next){
   const { id } = res.locals.user
@@ -84,7 +82,6 @@ organizationRoutes.delete("/project/:projectId", async function(req,res,next){
   const result = await Organization.deleteOrganizationProject(projectId, id)
   res.json({deleteProject: result})
 })
-
 
 
 
