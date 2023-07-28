@@ -96,6 +96,7 @@ function CreateProject() {
       if (success) {
         setTags(data.tags);
       } else {
+        setTags([])
         console.log("unable to retrieve all tags. error: ", error)
       }
     });
