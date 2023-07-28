@@ -4,6 +4,7 @@ import {UnauthorizedError, ExpressError} from "../utils/errors"
 import {Auth} from "../models/auth"
 
 export function getJWT(request){
+    console.log('GET JWT')
     const authToken = request.headers["bearer"];
     console.log("processed token: ", authToken);
     if (!authToken || authToken == "undefined" || authToken == "null"){
@@ -34,7 +35,6 @@ export async function getUserFromToken(request){
 }
 
 export async function requireAuthenticatedUser(request, response, next){
-
     // if token exists, check user exists 
     try {
         const user = await getUserFromToken(request)

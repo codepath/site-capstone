@@ -1,9 +1,8 @@
-const puppeteer = require('puppeteer');
+const browserObject = require('./browser');
+const scraperController = require('./pageController');
 
-(async () => {
-  const browser = await puppeteer.launch({headless:"new", defaultViewport:false,});
-  const page = await browser.newPage();
-  await page.goto('https://www.democracylab.org/projects');
-  await page.screenshot({path: 'example.png'});
-  await browser.close();
-})();
+//Start the browser and create a browser instance
+let browserInstance = browserObject.startBrowser();
+
+// Pass the browser instance to the scraper controller
+scraperController(browserInstance)

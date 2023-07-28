@@ -4,44 +4,37 @@ import { Volunteer } from "../models/volunteer";
 
 const volunteerRoutes = express.Router();
 
-volunteerRoutes.get("/test", async function (req, res, next) {
-  res.send("test voluteer");
-});
-
-volunteerRoutes.post("/skills", async function (req, res, next) {
-  const { email } = req.body;
-  const result = await Volunteer.fetchAllSkills(email);
-  res.json({ skills: result });
-});
-
-volunteerRoutes.post("/fetch", async function (req, res, next) {
-  const { email } = req.body;
-  const result = await Volunteer.fetchVolunteerByEmail(email);
-  if (result) {
-    res.status(201).json(result);
-  } else {
-    res.json({ error: "error" });
-  }
-});
-
-volunteerRoutes.post("/interest/:projectId", async function (req, res, next) {
+/** Route that fetches all the skills for the logged in volunteer */
+volunteerRoutes.get("/skills", async function (req, res, next) {
+  const { email } = res.locals.user;
   try {
-    const projectId = parseInt(req.params.projectId);
-    const { email } = req.body;
-    const result = await Volunteer.expressInterest(projectId, email);
-    res.status(201).json(result);
+    const result = await Volunteer.fetchAllSkills(email);
+    res.status(200).json({skills: result});
   } catch (error) {
     next(error);
   }
 });
 
-volunteerRoutes.post("/projects", async function (req, res, next) {
-  const { email } = req.body;
-  const result = await Volunteer.getVolunteersProjectFeed(email);
-  if (result) {
-    res.status(201).json({ projects: result });
-  } else {
-    res.status(404).json({ error: "fucked up" });
+/** Route that handles when a volunteer expresses interest in a project - adds it to database */
+volunteerRoutes.put("/interest", async function (req, res, next) {
+  try {
+    const { email } = res.locals.user;
+    const { projectId } = req.body;
+    const result = await Volunteer.expressInterest(projectId, email);
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
+});
+
+/** Route that returns the project feed for a volunteer */
+volunteerRoutes.get("/projects", async function (req, res, next) {
+  const { email } = res.locals.user;
+  try{
+    const result = await Volunteer.getVolunteersProjectFeed(email);
+    res.status(200).json(result)
+  } catch (error){
+    next (error)
   }
 });
 

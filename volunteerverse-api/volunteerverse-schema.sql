@@ -27,6 +27,7 @@ CREATE TABLE volunteer_skills(
 CREATE TABLE projects(
     id SERIAL PRIMARY KEY,
     org_id INTEGER NOT NULL,
+    org_name TEXT NOT NULL,
     project_name TEXT NOT NULL UNIQUE,
     project_description TEXT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
