@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useAuthenticationUserProp } from '../../../services/hooks/useAuthentication'
 import {
   ActionIcon, Badge, Button,
@@ -12,6 +12,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import NoneFound from '../../../components/NoneFound';
 import { projectDetailsData } from '../../Volunteer/Home/data';
 import { VolunteerProjectProp } from '../../../props/projects';
+import { ApiResponseProp, apiClient } from '../../../services/ApiClient';
+import { AuthenticationContext } from '../../../context/AuthenicationContext';
 
 function SlimProjectCard(project: VolunteerProjectProp) {
   // use for org projects too
@@ -46,10 +48,9 @@ function SlimProjectCard(project: VolunteerProjectProp) {
   )
 }
 
-
-
-function OrgHome({ user, isAuth }: { user: useAuthenticationUserProp, isAuth: boolean }) {
+function OrgHome() {
   const [postedProjects, setPostedProjects] = useState<VolunteerProjectProp[] | undefined>(undefined);
+  const {isAuth, user, } = useContext(AuthenticationContext);
   const navigate = useNavigate();
   const queryForm = useForm<QueryProps>({
     initialValues: {
@@ -58,10 +59,25 @@ function OrgHome({ user, isAuth }: { user: useAuthenticationUserProp, isAuth: bo
       timeRange: "Year"
     }
   });
-  const { email } = user;
+
   const searchPostedProjects = () => {
     console.log("gettting org projects here");
-    setPostedProjects([projectDetailsData, projectDetailsData, projectDetailsData]);
+    if (user) {
+      apiClient.fetchProjects(user.userType).then(({ success, statusCode, data, error }: ApiResponseProp) => {
+        if (success) {
+          console.log("successfully receieved posted projects", data);
+          setPostedProjects(data.orgProjects)
+        } else {
+          // maybe set state for an error message
+          console.log("an error occcured sending a request to fetch all projects", error);
+        }
+      }).catch((error) => {
+        console.log("something very unexpected has occured while trying to search for project from an organization", error)
+      })
+    } else {
+      console.log("user is undefined", user)
+    }
+    // setPostedProjects([projectDetailsData, projectDetailsData, projectDetailsData]);
   }
   useEffect(() => {
     searchPostedProjects();
@@ -69,7 +85,7 @@ function OrgHome({ user, isAuth }: { user: useAuthenticationUserProp, isAuth: bo
   /**
    * @todo - display dashboard for orgs to view/create/delete projects they've posted
    */
-  return !(isAuth && user.userType === "organization") ? <NotAuthorized /> : (
+  return !(isAuth && user?.userType === "organization") ? <NotAuthorized /> : (
     <>
       <Title align='left'>My Projects</Title>
       <Paper shadow={"md"} radius={"md"}>
