@@ -2,7 +2,7 @@ import {
   Button, Group, Paper, Stepper,
   createStyles, Checkbox, LoadingOverlay,
 } from "@mantine/core";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useForm, UseFormReturnType } from "@mantine/form";
 import CreateOrgAccountForm from "./Forms/CreateOrgAccountForm";
 import CreateOrgProfileForm from "./Forms/CreateOrgProfileForm";
@@ -13,6 +13,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { useNavigate } from "react-router";
 import { apiClient } from "../../services/ApiClient";
 import { OrganizationRegisterProp, VolunteerRegisterProp } from "../../props/register";
+import { AuthenticationContext } from "../../context/AuthenicationContext";
 
 const useStyles = createStyles((theme) => ({
   // this object includes all styling for this component
@@ -37,7 +38,9 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
-export default function SignUp({ userType, setToken }: { userType: "volunteer" | "organization", setToken : (val: string) => void }) {
+export default function SignUp( {  userType } : {userType : "organization" | "volunteer"}) {
+  
+  const { setToken } = useContext(AuthenticationContext);
   /**
    * @todo: 
    * - test organization registration
@@ -47,8 +50,6 @@ export default function SignUp({ userType, setToken }: { userType: "volunteer" |
    *  - to properly format data for request body (make modular functions to do this)
    *  - 
    */
-
-
 
   const volunteerForm = useForm<VolunteerFormValues>(
     {
@@ -175,7 +176,7 @@ export default function SignUp({ userType, setToken }: { userType: "volunteer" |
       if (success) {
         console.log("new user. data: ", data);
         // stateApi.setAuth(data.token);
-        setToken(data.token);
+        setToken?.(data.token);
         navigate("/")
       } else if (statusCode === 400) {
         closeLoader();

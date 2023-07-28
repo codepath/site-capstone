@@ -9,10 +9,11 @@ import {
 import { useDisclosure } from '@mantine/hooks';
 import { useNavigate } from "react-router-dom";
 import SignUpModal from "../pages/Landing/SignUpModal";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useAuthenticationUserProp } from "../services/hooks/useAuthentication";
 import { fetchCorrectUserOption } from "../utility/utility";
 import { useMemo } from "react";
+import { AuthenticationContext } from "../context/AuthenicationContext";
 
 const useStyles = createStyles((theme) => ({
   link: {
@@ -78,11 +79,11 @@ interface linkProp {
   path: string,
   id?: string, // use this if needed to select specific links
 }
-export default function Navbar({ isAuth, user, removeToken }:
-  { user: useAuthenticationUserProp, isAuth: boolean, removeToken: () => void }) {
+export default function Navbar() {
   /**
    * @todo use navigation route to change navbar conditionallty
    */
+  const { isAuth, user, removeToken} = useContext(AuthenticationContext)
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const [showModal, { open: openModal, close: closeModal }] = useDisclosure(false);
   const navigate = useNavigate();
@@ -125,11 +126,12 @@ export default function Navbar({ isAuth, user, removeToken }:
   }, [urlLocation])
   const fetchCorrectUserLinks = useMemo(() => {
     // using usememo here is more performant
+    
     return fetchCorrectUserOption(
       mapLinksToElements(unAuthLinks),
       mapLinksToElements(volunteerLinks),
       mapLinksToElements(orgLinks),
-      { isAuth: isAuth, user: user }
+      { isAuth: isAuth || false, user: user }
     )
   }, [user, isAuth]);
   const fetchCorrectUserLinksMobile = useMemo(() => {
@@ -138,20 +140,20 @@ export default function Navbar({ isAuth, user, removeToken }:
       mapLinksToElements(unAuthLinks, true),
       mapLinksToElements(volunteerLinks, true),
       mapLinksToElements(orgLinks, true),
-      { isAuth: isAuth, user: user }
+      { isAuth: isAuth || false, user: user }
     )
   }, [user, isAuth]);
   return (
     <Box >
       <Header height={60} px="md">
         <Group position="apart" sx={{ height: '100%' }}>
-          <Text size={"xl"} fw={600} variant="gradient" gradient={{from: "violet", to : "violet.2", deg:45}}>VolunteerVerse</Text>
+          <Text component={Link} to={"/"} size={"xl"} fw={600} variant="gradient" gradient={{from: "violet", to : "violet.2", deg:45}}>VolunteerVerse</Text>
           <Group sx={{ height: '100%' }} spacing={0} className={classes.hiddenMobile}>
             {fetchCorrectUserLinks}
           </Group>
           <Group className={classes.hiddenMobile}>
             {
-              isAuth ? <Button onClick={()=> {removeToken(); navigate("/")}} radius={"lg"} variant="outline">Log Out</Button> :
+              isAuth ? <Button onClick={()=> {removeToken?.(); navigate("/")}} radius={"lg"} variant="outline">Log Out</Button> :
                 <>
                   <Button radius={"lg"} onClick={() => navigate("/login")} variant="default">Log in</Button>
                   <Button radius={"lg"} onClick={openModal}>Sign up</Button>
@@ -191,7 +193,7 @@ export default function Navbar({ isAuth, user, removeToken }:
       </Drawer>
       <Modal
         styles={{ inner: { paddingLeft: "2rem" } }}
-        title={<Text align="center">Select Your Role:</Text>}
+        title={<Title align="center">Select Your Role:</Title>}
         closeButtonProps={{ 'aria-label': 'Close modal' }}
         opened={showModal}
         onClose={closeModal}

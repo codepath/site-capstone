@@ -10,16 +10,18 @@ import { useAuthenticationUserProp } from "../../../services/hooks/useAuthentica
 import ProjectCard from "./ProjectCard";
 import { QueryBar, QueryProps } from "../../../components/QueryBar";
 import { useForm } from "@mantine/form";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import NotAuthorized from "../../NotAuthorized";
+import { AuthenticationContext } from "../../../context/AuthenicationContext";
 
 
-function VolunteerHome({ user, isAuth }: { user: useAuthenticationUserProp, isAuth: boolean }) {
+function VolunteerHome() {
   /**
    * @todo: implement loader when fecthing user projects
    */
+  const { isAuth, user } = useContext(AuthenticationContext);
   console.log(isAuth, user)
-  const { email } = user;
+
   const fetchProjects = async () => {
     console.log("fetchingProjects")
   }
@@ -40,9 +42,9 @@ function VolunteerHome({ user, isAuth }: { user: useAuthenticationUserProp, isAu
     </Carousel.Slide>
   ));
 
-  return (isAuth && user.userType === "volunteer") ? (
+  return (isAuth && user?.userType === "volunteer") ? (
     <>
-      <Title>Welcome Back {email}!</Title>
+      <Title>Welcome Back</Title>
       <QueryBar {...queryForm} />
       <Button size="lg" radius={"md"} compact onClick={fetchProjects}>Search Projects</Button>
       <Carousel

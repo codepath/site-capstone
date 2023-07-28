@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useAuthenticationUserProp } from "../../services/hooks/useAuthentication";
 import { useParams } from "react-router-dom"
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
@@ -18,6 +18,7 @@ import NotAuthorized from "../NotAuthorized";
 import { projectDetailsData } from "./Home/data";
 import GoBackButton from "../../components/GoBackButton";
 import { VolunteerProjectProp } from "../../props/projects";
+import { AuthenticationContext } from "../../context/AuthenicationContext";
 
 
 
@@ -45,7 +46,8 @@ const useStyles = createStyles((theme) => ({
 
 }))
 
-function VolunteerProjectDetails({ isAuth, user }: { isAuth: boolean, user: useAuthenticationUserProp }) {
+function VolunteerProjectDetails() {
+  const {isAuth, user} = useContext(AuthenticationContext)
   const params = useParams();
   const theme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
