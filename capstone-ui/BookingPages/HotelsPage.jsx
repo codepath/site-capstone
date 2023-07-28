@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import '../index.css';
-import HotelCard from './HotelCard';
-import axios from 'axios';
-import { CircularProgress } from "@mui/material";
+import { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
+import CircularProgress from '@mui/material/CircularProgress'
+import '../index.css'
+import HotelCard from './HotelCard'
+import axios from 'axios'
 
 export default function HotelsPage({ arrivalDate, departureDate, travelers, destination, destID, cost, setCost, itinerary, setItinerary, filterActivities }) {
   const navigate = useNavigate();
