@@ -14,7 +14,6 @@ import Itinerary from './AccountInfo/Itinerary'
 import Favorites from './AccountInfo/Favorites'
 import Booking from './AccountInfo/Booking'
 import Checkout from './AccountInfo/Checkout'
-import Budget from './AccountInfo/Budget'
 
 
 const theme = createTheme({
@@ -123,7 +122,10 @@ function App() {
                             <Favorites/>} 
                         />
                          <Route path="/booking" element={
-                            <Booking/>} 
+                            <Booking itinerary={itinerary}/>} 
+                        />
+                         <Route path="/checkout" element={
+                            <Checkout itinerary={itinerary} arrivalDate={arrivalDate} departureDate={departureDate} destination={destination}/>} 
                         />
                     </Routes>
                 </Router>
