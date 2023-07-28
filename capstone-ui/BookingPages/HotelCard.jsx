@@ -25,7 +25,7 @@ export default function HotelCard({ hotel, setModalOpen, modalOpen, itinerary,
     }
 
     useEffect(() => {
-        if (Object.keys(itinerary).length === 0) return
+        if (Object?.keys(itinerary).length === 0) return
         if (itinerary.Hotel.name === hotel.name) setAdded(true)
         else setAdded(false)
     }, [itinerary])
@@ -42,7 +42,7 @@ export default function HotelCard({ hotel, setModalOpen, modalOpen, itinerary,
             <div className="font-bold text-2xl h-10 overflow-scroll">{hotel.name}</div>
             <div className="flex">
                 <div className="flex flex-col">
-                    <div className="font-bold">${hotel.priceBreakdown.grossPrice.value.toFixed(2)}</div>
+                    <div className="font-bold">${hotel?.priceBreakdown?.grossPrice?.value?.toFixed(2)}</div>
                     <div>Rating: {hotel.reviewScore}</div>
                 </div>
                 <div className="flex flex-col ml-2">

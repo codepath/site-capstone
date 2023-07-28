@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import '../index.css';
 import HotelCard from './HotelCard';
 import axios from 'axios';
+import { CircularProgress } from "@mui/material";
 
 export default function HotelsPage({ arrivalDate, departureDate, travelers, destination, destID, cost, setCost, itinerary, setItinerary, filterActivities }) {
   const navigate = useNavigate();

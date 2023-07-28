@@ -27,10 +27,6 @@ export default function Homepage({ filterFlights, setFilterFlights,
     const [validateDeparture, setValidateDeparture] = useState({})
     const [validDates, setValidDates] = useState(null)
 
-    const [validateArrival, setValidateArrival] = useState({})
-    const [validateDeparture, setValidateDeparture] = useState({})
-    const [validDates, setValidDates] = useState(null)
-
     function padZero(number) {
         return number.toString().padStart(2, "0")
       }
