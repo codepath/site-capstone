@@ -11,6 +11,7 @@ export class Auth{
 
     static async authenticate(creds: {email:string, password:string}){
         const requiredCreds = ["email", "password"]
+        console.log("authenticate", requiredCreds)
         try{
             validateFields({required:requiredCreds, obj:creds, location:"user authentication"})
         } catch(error) {
@@ -18,6 +19,7 @@ export class Auth{
         }
 
         const user = await this.fetchByEmail(creds.email)
+        console.log(user.rows)
         const {user_type} = user
 
         if (user){
@@ -41,7 +43,9 @@ export class Auth{
         const query = `SELECT * FROM authentication WHERE email=$1`
         const result = await db.query(query, [email])
         const user = result.rows[0]
+        console.log(user)
         if (user){
+            
             return user
         }
         return null

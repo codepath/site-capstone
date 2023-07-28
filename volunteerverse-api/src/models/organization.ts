@@ -7,7 +7,9 @@ import {
 } from "../utils/errors";
 
 import { BCRYPT_WORK_FACTOR } from "../config";
-
+/**
+ * @todo: change get org by email function or refactor
+ */
 export class Organization {
   /**
    * Convert a user from the database into a user object that can be viewed publically.
@@ -35,12 +37,11 @@ userType: "organization";
       await Organization.fetchOrganizationByEmail(creds.email);
     if (existingOrganizationWithEmail) {
       throw new BadRequestError(`Duplicate email: ${creds.email}`);
-      throw new BadRequestError(`Duplicate email: ${creds.email}`);
     }
 
     const salt = await bcrypt.genSalt(BCRYPT_WORK_FACTOR);
     const hashedPassword = await bcrypt.hash(creds.password, salt);
-    const normalizedOrgEmail = creds.email.toLowerCase();
+    const normalizedOrgEmail = creds.email.toLowerCase().trim();
 
     const orgResult = await db.query(
       `INSERT INTO organizations (
@@ -63,13 +64,9 @@ userType: "organization";
       [
         creds.orgName,
         creds.orgDescription,
-        creds.orgName,
-        creds.orgDescription,
         normalizedOrgEmail,
         creds.logoUrl,
-        creds.logoUrl,
         creds.founders,
-        creds.orgWebsite,
         creds.orgWebsite,
       ]
     );
@@ -110,7 +107,7 @@ userType: "organization";
       logoUrl: logo_url,
       founders: founders,
       userType: user_type,
-      orgWebsite: website
+      orgWebsite: website,
     };
   }
   static async fetchInterestedVolunteersByEmail(email) {
@@ -136,9 +133,10 @@ userType: "organization";
     // item(that is access it) in the bracket(email in this case)
     const org_result = await db.query(
       `SELECT 
+         id,
         organization_name,
         organization_description,
-        organization_email,
+        organization_email AS "email",
         logo_url,
         founders
            FROM organizations
@@ -191,7 +189,14 @@ userType: "organization";
 
   //   return result.rows[0]
   // }
-  static async toggleStateOfOrgProject(projectId, orgId, active) {
+  static async toggleStateOfOrgProject(projectId, orgId) {
+
+    const activeResult = await db.query(`SELECT active FROM projects
+    WHERE id = $1 `,
+     [projectId])
+
+     console.log ("active result", activeResult.rows[0].active)
+
     const orgResult = await db.query(
       `SELECT * FROM projects WHERE org_id = $1 AND id = $2`,
       [orgId, projectId]
@@ -201,7 +206,7 @@ userType: "organization";
         `UPDATE "projects" SET "active" = $1 
                    WHERE "id" = $2 AND "org_id" = $3
                    RETURNING *`,
-        [!active, projectId, orgId]
+        [!activeResult.rows[0].active, projectId, orgId]
       );
       return result.rows;
     } else {
@@ -214,7 +219,6 @@ userType: "organization";
       `SELECT * FROM projects WHERE org_id = $1 AND id = $2`,
       [orgId, project_id]
     );
-    
     if (orgResult.rows.length !== 0) {
       const result = await db.query(
         `DELETE FROM "projects" WHERE "id" = $1`,
@@ -226,22 +230,24 @@ userType: "organization";
   }
 
   static async updateApprovedVolunteers(approved, email, project_id, org_id) {
-    //returns all the volunteers interested in the project
+    // to check if the volunteer exist(if this does interestedVoluteersInfo will be populated)
     const interestedVolunteersInfo =
       await Organization.fetchInterestedVolunteersByEmail(email);
 
+       // to check if the project and( / for the )org exists if it does orgResult will be populated
     const orgResult = await db.query(
       `SELECT * FROM projects WHERE org_id = $1 AND id = $2`,
       [org_id, project_id]
     );
-    console.log("the info under the projectid and orgid", orgResult.rows);
-
+    console.log("orgResult is here", orgResult);
+// to check if the volunteer exist
     if (interestedVolunteersInfo.length !== 0) {
       console.log(
         "the info of the volunteer if they exist",
         interestedVolunteersInfo
       );
 
+      // to check if the project and( / for the )org exists 
       if (orgResult.rows.length !== 0) {
         const result = await db.query(
           `UPDATE "interested_volunteers" SET "approved" = $1 
@@ -249,20 +255,19 @@ userType: "organization";
                      RETURNING *`,
           [!approved, email, project_id]
          
-         
         );
         console.log("updating approved works!", result.rows)
 
         return result.rows[0];
-     
         
+      } else {
+        throw new UnauthorizedError("Organization/Project not found");
       }
     } else {
       throw new UnauthorizedError("Volunteer Email not found");
     }
     
   }
-  
 
   static async incrementAndDecrementApprovedVolunteers(email, projectId, orgId){
     const approvedResult = await db.query(`SELECT approved FROM interested_volunteers 
@@ -274,12 +279,12 @@ userType: "organization";
                                 [projectId, orgId])
 
 
-      console.log("approvedResult", approvedResult)
-      console.log("approvedPeopleResult", approvedPeopleResult)
+      console.log("approvedResult", approvedResult.rows[0])
+      console.log("approvedPeopleResult", approvedPeopleResult.rows[0])
     
-    const approvedVolunteerState = await Organization.updateApprovedVolunteers(approvedResult.rows[0], email, projectId, orgId)
+    const approvedVolunteerState = await Organization.updateApprovedVolunteers(approvedResult.rows[0].approved, email, projectId, orgId)
 
-     console.log("bringing volunteer state into incre/decre works!",approvedVolunteerState)
+     console.log("bringing volunteer state into incre/decre works!",approvedVolunteerState.approved)
      
      console.log("approvedPeopleohhhhhh", approvedPeopleResult.rows[0].approved_people )
      if (approvedVolunteerState.approved === true){
@@ -296,7 +301,7 @@ userType: "organization";
          return result.rows;
          
         }  else if (approvedVolunteerState.approved === false){
-          console.log("oh wellllllll")
+          console.log("approved is false", typeof approvedPeopleResult.rows[0].approved_people)
           const result = await db.query(
             `UPDATE "projects" SET "approved_people" = $1 
             WHERE "org_id" = $2 AND "id" = $3
@@ -310,8 +315,6 @@ userType: "organization";
       throw new UnauthorizedError("Volunteer increment/decrement failed");
     }
   }
-
-
 
 
 
