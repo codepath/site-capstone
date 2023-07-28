@@ -44,7 +44,7 @@ function ItineraryMenu({searchResults}) {
       {/* Main content */}
       <div className="h-full flex flex-grow items-center justify-center">
         <div className="w-1/3 flex-grow p-4 mb-10">
-          <h1 className="text-5xl mb-8 ml-6 font-bold font-sans">Nomadia</h1>
+          <h1 className="text-5xl mb-20 ml-2 font-bold font-sans">Nomadia</h1>
           <div className="w-36 h-36 bg-white rounded-full border border-black ml-16"></div>
             <div className="w-full h-full ml-9">
 
@@ -59,9 +59,9 @@ function ItineraryMenu({searchResults}) {
                 <span className="w-3/5 h-10 bg-blue-300 flex flex-row justify-center text-2xl font-black pb-2 rounded-lg mt-5 border border-black border-2 shadow-md">
                   Itineraries
                 </span>
-            <Link to='/Budget' className='text-black'>
+            <Link to='/booking' className='text-black'>
               <span className="w-3/5 h-10 bg-blue-500 flex flex-row justify-center text-2xl font-black pb-2 rounded-lg mt-5 border border-black border-2 shadow-md">
-                  Budget
+                  Booking
                 </span>
             </Link>
             <Link to='/Favorites' className='text-black'>
@@ -78,13 +78,13 @@ function ItineraryMenu({searchResults}) {
 
             <div className="border-t border-black-500 border-2"/>
             <div className="flex flex-col min-h-screen">
-            {(searchResults.length !== 0) && (
+            {/* {(searchResults.length !== 0) && (
               <div className="flex-grow grid grid-cols-1 gap-4 px-4 py-6 md:grid-cols-2 lg:grid-cols-3">
                 {searchResults.map((item, index) => (
                   <HotelCard key={index} hotel={item} />
                 ))}
               </div>
-            )}
+            )} */}
           </div>
           
 

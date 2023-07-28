@@ -47,9 +47,9 @@ function AccountMenu() {
                   Itineraries
                 </span>
               </Link>
-             <Link to='/Budget' className='text-black'>
+             <Link to='/booking' className='text-black'>
               <span className="w-3/5 h-10 bg-blue-500 flex flex-row justify-center text-2xl font-black pb-2 rounded-lg mt-5 border border-black border-2 shadow-md">
-                  Budget
+                  Booking
                 </span>
              </Link>
              <Link to='/Favorites' className='text-black'>

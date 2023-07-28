@@ -70,6 +70,10 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+.white-text {
+  color: white;
+  overflow: auto; /* Use 'auto' if you want the scrollbar to appear only when necessary, or 'scroll' to force it always */
+} 
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
