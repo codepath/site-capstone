@@ -203,8 +203,6 @@ export class Volunteer {
     return null;
   }
 
-  // add a check to make sure that the user type IS volunteer (middleware). do the same for organization
-
   /**
    * When a volunteer expresses interest in a project, log it into database
    * @param projectId
@@ -215,7 +213,7 @@ export class Volunteer {
     if (volunteerCheck){
       throw new BadRequestError("Already expressed interest")
     }
-    
+
     const query = `INSERT into interested_volunteers(email, project_id, approved) VALUES ($1,$2,$3) RETURNING email,project_id as "projectId",approved`;
     const result = await db.query(query, [email, projectId, false]);
     return result.rows[0];

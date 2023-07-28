@@ -7,9 +7,7 @@ import {
 } from "../utils/errors";
 
 import { BCRYPT_WORK_FACTOR } from "../config";
-/**
- * @todo: change get org by email function or refactor
- */
+
 export class Organization {
   /**
    * Convert a user from the database into a user object that can be viewed publically.
@@ -42,7 +40,7 @@ userType: "organization";
 
     const salt = await bcrypt.genSalt(BCRYPT_WORK_FACTOR);
     const hashedPassword = await bcrypt.hash(creds.password, salt);
-    const normalizedOrgEmail = creds.email.toLowerCase().trim();
+    const normalizedOrgEmail = creds.email.toLowerCase();
 
     const orgResult = await db.query(
       `INSERT INTO organizations (
@@ -138,10 +136,9 @@ userType: "organization";
     // item(that is access it) in the bracket(email in this case)
     const org_result = await db.query(
       `SELECT 
-         id,
         organization_name,
         organization_description,
-        organization_email AS "email",
+        organization_email,
         logo_url,
         founders
            FROM organizations
@@ -194,14 +191,7 @@ userType: "organization";
 
   //   return result.rows[0]
   // }
-  static async toggleStateOfOrgProject(projectId, orgId) {
-
-    const activeResult = await db.query(`SELECT active FROM projects
-    WHERE id = $1 `,
-     [projectId])
-
-     console.log ("active result", activeResult.rows[0].active)
-
+  static async toggleStateOfOrgProject(projectId, orgId, active) {
     const orgResult = await db.query(
       `SELECT * FROM projects WHERE org_id = $1 AND id = $2`,
       [orgId, projectId]
@@ -211,7 +201,7 @@ userType: "organization";
         `UPDATE "projects" SET "active" = $1 
                    WHERE "id" = $2 AND "org_id" = $3
                    RETURNING *`,
-        [!activeResult.rows[0].active, projectId, orgId]
+        [!active, projectId, orgId]
       );
       return result.rows;
     } else {
@@ -236,24 +226,22 @@ userType: "organization";
   }
 
   static async updateApprovedVolunteers(approved, email, project_id, org_id) {
-    // to check if the volunteer exist(if this does interestedVoluteersInfo will be populated)
+    //returns all the volunteers interested in the project
     const interestedVolunteersInfo =
       await Organization.fetchInterestedVolunteersByEmail(email);
 
-       // to check if the project and( / for the )org exists if it does orgResult will be populated
     const orgResult = await db.query(
       `SELECT * FROM projects WHERE org_id = $1 AND id = $2`,
       [org_id, project_id]
     );
-    console.log("orgResult is here", orgResult);
-// to check if the volunteer exist
+    console.log("the info under the projectid and orgid", orgResult.rows);
+
     if (interestedVolunteersInfo.length !== 0) {
       console.log(
         "the info of the volunteer if they exist",
         interestedVolunteersInfo
       );
 
-      // to check if the project and( / for the )org exists 
       if (orgResult.rows.length !== 0) {
         const result = await db.query(
           `UPDATE "interested_volunteers" SET "approved" = $1 
@@ -286,12 +274,12 @@ userType: "organization";
                                 [projectId, orgId])
 
 
-      console.log("approvedResult", approvedResult.rows[0])
-      console.log("approvedPeopleResult", approvedPeopleResult.rows[0])
+      console.log("approvedResult", approvedResult)
+      console.log("approvedPeopleResult", approvedPeopleResult)
     
-    const approvedVolunteerState = await Organization.updateApprovedVolunteers(approvedResult.rows[0].approved, email, projectId, orgId)
+    const approvedVolunteerState = await Organization.updateApprovedVolunteers(approvedResult.rows[0], email, projectId, orgId)
 
-     console.log("bringing volunteer state into incre/decre works!",approvedVolunteerState.approved)
+     console.log("bringing volunteer state into incre/decre works!",approvedVolunteerState)
      
      console.log("approvedPeopleohhhhhh", approvedPeopleResult.rows[0].approved_people )
      if (approvedVolunteerState.approved === true){
@@ -308,7 +296,7 @@ userType: "organization";
          return result.rows;
          
         }  else if (approvedVolunteerState.approved === false){
-          console.log("approved is false", typeof approvedPeopleResult.rows[0].approved_people)
+          console.log("oh wellllllll")
           const result = await db.query(
             `UPDATE "projects" SET "approved_people" = $1 
             WHERE "org_id" = $2 AND "id" = $3

@@ -34,7 +34,7 @@ CREATE TABLE projects(
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     image_url TEXT,
     requested_people INTEGER NOT NULL,
-    approved_people INTEGER NOT NULL DEFAULT 0,
+    approved_people INTEGER NOT NULL,
     active BOOLEAN DEFAULT TRUE
 );
 
