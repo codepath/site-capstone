@@ -67,7 +67,7 @@ organizationRoutes.put("/project/:projectId", async function(req,res,next){
 organizationRoutes.post("/project/status", async function(req,res,next){
   try{
   const {projectId, orgId, active} = req.body
-  const result = await Organization.toggleStateOfOrgProject(projectId, orgId, active)
+  const result = await Organization.toggleStateOfOrgProject(projectId, orgId)
   res.json({projectState : result})
 }catch (error) {
     next(error);

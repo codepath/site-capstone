@@ -110,13 +110,9 @@ userType: "organization";
       orgName: organization_name,
       orgDescription: organization_description,
       logoUrl: logo_url,
-      orgName: organization_name,
-      orgDescription: organization_description,
-      logoUrl: logo_url,
       founders: founders,
       userType: user_type,
-      orgWebsite: website,
-      orgWebsite: website,
+      orgWebsite: website
     };
   }
   static async fetchInterestedVolunteersByEmail(email) {
@@ -228,17 +224,13 @@ userType: "organization";
       `SELECT * FROM projects WHERE org_id = $1 AND id = $2`,
       [orgId, project_id]
     );
-    if (orgResult.rows.length !== 0) {
-      const result = await db.query(
-        `DELETE FROM "projects" WHERE "id" = $1`,
-         [project_id]);
+    
     if (orgResult.rows.length !== 0) {
       const result = await db.query(
         `DELETE FROM "projects" WHERE "id" = $1`,
          [project_id]);
       return true;
     } else {
-     throw new UnauthorizedError("Organization/Project not found");
      throw new UnauthorizedError("Organization/Project not found");
     }
   }
@@ -274,20 +266,15 @@ userType: "organization";
         console.log("updating approved works!", result.rows)
 
         return result.rows[0];
+     
         
-        console.log("updating approved works!", result.rows)
-
-        return result.rows[0];
-        
-      } else {
-        throw new UnauthorizedError("Organization/Project not found");
-        throw new UnauthorizedError("Organization/Project not found");
       }
     } else {
       throw new UnauthorizedError("Volunteer Email not found");
     }
     
   }
+  
 
   static async incrementAndDecrementApprovedVolunteers(email, projectId, orgId){
     const approvedResult = await db.query(`SELECT approved FROM interested_volunteers 
