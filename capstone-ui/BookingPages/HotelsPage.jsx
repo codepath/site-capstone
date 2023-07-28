@@ -60,15 +60,15 @@ export default function HotelsPage({ arrivalDate, departureDate, travelers, dest
                   <div>Excluding taxes and fees.</div>
                   <div>
                     <button
-                      disabled={Object.keys(itinerary).length === 0 ? true : false}
+                      disabled={itinerary.Hotel == null? true : false}
                       onClick={() => {
                         filterActivities
                           ? navigate('/activities')
                           : navigate('/booking');
                       }}
-                      className={Object.keys(itinerary).length === 0 ? `bg-gray-100 text-gray-400` : ``}
+                      className={itinerary.Hotel == null ? `bg-gray-100 text-gray-400` : ``}
                     >
-                      {Object.keys(itinerary).length === 0 ? 'Select a hotel to continue' : 'Continue'}
+                      {itinerary.Hotel == null ? 'Select a hotel to continue' : 'Continue'}
                     </button>
                   </div>
                 </div>

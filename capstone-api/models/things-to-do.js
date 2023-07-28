@@ -2,7 +2,7 @@ const { config } = require('dotenv');
 config();
 
 const { BadRequestError } = require("../utils/errors");
-const { authorization } = process.env;
+const authorization = "fsq31LDK9vloB6M3nFx1hNBD1pEvLDgar9CFbNcXfKbxVfw="
 const axios = require('axios');
 
 
@@ -11,7 +11,8 @@ class ThingsToDo {
     //you have to store the fsq_id for each place the user selects 
     //this will be used in other endpoints to get more information like place detail
     //or for place photos 
-    static async searchPlaces(credentials) {   
+    static async searchPlaces(credentials) {  
+        console.log('Credentials', credentials) 
 
         const requiredFields = ["query", "min_price", "max_price", "near", "sort"];
         requiredFields.forEach((field) => {

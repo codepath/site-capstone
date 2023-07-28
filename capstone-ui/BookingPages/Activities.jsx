@@ -3,6 +3,7 @@ import axios from "axios"
 import "../index.css"
 import CircularProgress from '@mui/material/CircularProgress'
 import ActivityCards from "./ActivityCards"
+import { useNavigate } from "react-router-dom"
 import { acts } from "./data"; // Check the correct path for this import
 
 // export default function Activities({ addToItinerary, departureDate, arrivalDate, destination, travelers, activities }) {
@@ -16,13 +17,16 @@ export default function Activities({
                                     arrivalDate,
                                     destination,
                                     travelers,
+                                    itinerary,
+                                    setItinerary,
+                                    cost
 }) {
     const [searchValue, setSearchValue] = useState("")
     const [priceValue, setPriceValue] = useState(1)
     const [sortValue , setSortValue] = useState("relevance")
     const [activities, setActivities] = useState([]) // Initialize as an empty array
     const [loading, setLoading] = useState(false)
-    
+    const navigate = useNavigate();
     useEffect(() => {
         // Fetch activities data from the server
         setLoading(true)
@@ -67,23 +71,44 @@ export default function Activities({
             </div>
         )}
         {!loading && (
-        <>
-        <div className="flex flex-row items-center pl-64">
-            <div className="text-center ml-8 mt-8 mb-8">
-            <h1 className="text-2xl"> Destination </h1>
-            <p className="text-lg">{destination}</p>
-            </div>
-            <div className="text-center ml-8 mt-8 mb-8">
-            <h1 className="text-2xl"> Dates </h1>
-            <p className="text-lg">
-                {departureDate}-{arrivalDate}
-            </p>
-            </div>
-            <div className="search-bar ml-8 mt-8 mb-8">
-            <input type="text" placeholder="Search" value={searchValue} onChange={handleOnSearch} />
-            </div>
+        <div className="flex w-screen h-screen px-56 bg-slate-900">
+            <div className="relative shadow-lg py-4 px-8 bg-white w-screen overflow-y-scroll">
+            <div className="flex border-b">
             <div>
-                <label htmlFor="price-range">Choose A Price Range:</label> 
+                <div className="flex">
+                    <div className="mr-2 text-4xl">Activities in </div>
+                    <div className="font-semibold text-blue-500 text-4xl"> {destination.toUpperCase()}</div>
+                </div>
+                <div className="flex-auto">
+                    <div className="text-2xl flex flex-col mt-3">
+                        <div>{arrivalDate} to {departureDate}</div>
+                        <div className="mb-3">{travelers} {travelers > 1 ? 'guests' : 'guest'}</div>
+                    </div>
+                </div>
+            </div>
+            <div className="ml-auto">
+                <div className="text-2xl font-bold">Total trip cost: ${cost}</div>
+                <div>
+                  <div>Excluding taxes and fees.</div>
+                  <div>
+                    <button
+                      disabled={itinerary['Activities'].length === 0 === 0 ? true : false}
+                      onClick={() => {
+                        navigate('/booking');
+                      }}
+                      className={itinerary['Activities'].length === 0 ? `bg-gray-100 text-gray-400` : ``}
+                    >
+                      {itinerary['Activities'].length === 0 ? 'Select an activity to continue' : 'Continue'}
+                    </button>
+                  </div>
+                </div>
+            </div>
+            </div>
+            <div className="mt-8 mb-8 flex justify-between">
+                <input type="text" placeholder="Search" value={searchValue} onChange={handleOnSearch} />
+            <div className="flex">
+            <div>
+                <label htmlFor="price-range" className="mr-2">Price:</label> 
                     <select name="price-range" id="price-range" value={priceValue} onChange={handlePriceSelect}> 
                         <option value= "1" >$</option> 
                         <option value= "2" >$$</option> 
@@ -91,21 +116,25 @@ export default function Activities({
                         <option value= "4" >$$$$</option> 
                     </select>
             </div>
-            <div>
-                <label htmlFor="sort">Sort By: </label> 
-                    <select name="sort" id="sort" value={sortValue} onChange={handleSortSelect}> 
-                        <option value= "relevance" > relevance </option> 
-                        <option value= "rating" > rating </option> 
-                        <option value= "distance" > distance</option> 
-                    </select>
+                <div className="ml-2">
+                    <label htmlFor="sort" className="mr-2">Sort By: </label> 
+                        <select name="sort" id="sort" value={sortValue} onChange={handleSortSelect}> 
+                            <option value= "relevance" > relevance </option> 
+                            <option value= "rating" > rating </option> 
+                            <option value= "distance" > distance</option> 
+                        </select>
+                </div>
             </div>
-        </div>
-        <div className="grid grid-cols-3">
+            </div>
+        <div className="grid grid-cols-3 gap-6 mt-3">
             {activities?.map((activity) => (
-            <ActivityCards activity={activity} key={activity.id} addToItinerary={addToItinerary} />
+                <ActivityCards activity={activity} key={activity.id} 
+                               itinerary={itinerary}
+                               setItinerary={setItinerary} />
             ))}
         </div>
-        </>
+        </div>
+        </div>
         )}
         </div>
         
