@@ -10,7 +10,6 @@ import { useDisclosure } from '@mantine/hooks';
 import { useNavigate } from "react-router-dom";
 import SignUpModal from "../pages/Landing/SignUpModal";
 import { useContext, useEffect } from "react";
-import { useAuthenticationUserProp } from "../services/hooks/useAuthentication";
 import { fetchCorrectUserOption } from "../utility/utility";
 import { useMemo } from "react";
 import { AuthenticationContext } from "../context/AuthenicationContext";
