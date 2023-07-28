@@ -69,10 +69,10 @@ export interface AuthenicationProp {
         // update props if authentication was successful
         console.log("renaming user_type to userType");
         setSessionState(() => ({
-          isValidVolunteer: data.user.user_type === "volunteer",
-          isValidOrg: data.user.user_type === "organization",
+          isValidVolunteer: data.user.userType === "volunteer",
+          isValidOrg: data.user.userType === "organization",
           isAuth: true,
-          user : {...data.user, userType: data.user.user_type},
+          user : data.user,
           setToken: setToken,
           removeToken: removeToken,
         }))

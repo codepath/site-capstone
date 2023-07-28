@@ -1,6 +1,7 @@
 import axios from "axios";
 import { API_BASE_URL } from "../../constants"
 import { OrganizationRegisterProp, VolunteerRegisterProp, ProjectRegisterProp } from "../props/register";
+import { QueryProps } from "../components/QueryBar";
 
 interface requestProp {
     method : string,
@@ -84,10 +85,13 @@ class ApiClient {
         return this.request(requestOptions);
     }
 
-    async fetchProjects(userType: "organization" | "volunteer") {
+    async fetchProjects(userType: "organization" | "volunteer", query: QueryProps) {
+        /**
+         * @todo: use query parameters to filter search?
+         */
         const requestOptions = {
             method: "get",
-            subDirectory: `/${userType}/projects/`,
+            subDirectory: `/${userType}/projects`,
         };
         return this.request(requestOptions);
     }
@@ -108,7 +112,7 @@ class ApiClient {
     async fetchAllTags(){
         const requestOptions = {
             method: "get",
-            subDirectory: `/tags`
+            subDirectory: `/project/tags`
         }
         return this.request(requestOptions)   
     }
