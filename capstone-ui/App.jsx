@@ -28,7 +28,7 @@ const theme = createTheme({
 
 function App() {
     const [filterFlights, setFilterFlights] = useState(false)
-    const [filterActivities, setFilterActivities] = useState(false)
+    const [filterActivities, setFilterActivities] = useState(true)
     const [filterHotels, setFilterHotels] = useState(true)
 
     const [destID, setDestID] = useState("")
@@ -42,7 +42,8 @@ function App() {
 
     const [authenticated, setAuthenticated] = useState(false)
 
-    const [itinerary, setItinerary] = useState([])
+    const [itinerary, setItinerary] = useState({'Activities' : [],
+                                                'Hotel' : null})
     const [activities, setActivities] = useState ({})
 
     const [cost, setCost] = useState(0.00)
@@ -90,6 +91,7 @@ function App() {
                                         travelers={travelers}
                                         departureDate={departureDate}
                                         arrivalDate={arrivalDate}
+                                        cost={cost}
                                         destination={destination}
                                         activities = {activities} /> }/>
                         <Route path="/hotels" element={

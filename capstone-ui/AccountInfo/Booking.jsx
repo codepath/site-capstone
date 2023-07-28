@@ -1,28 +1,44 @@
 import '../index.css';
 import React from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
+import ActivityCards from '../BookingPages/ActivityCards'
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import backgroundImage from './Assets/backgroundimage.jpg'
 import HotelCard from '../BookingPages/HotelCard';
 import { useState, useEffect } from 'react'
 
-function Booking({itinerary}) {
+function Booking({ itinerary }) {
     const [the_itinerary, set_the_itinerary] = useState(null);
-
+    const [loading, setLoading] = useState(true)
     useEffect(() => {
         if (itinerary) {
             set_the_itinerary(itinerary);
         }
     }, [itinerary]);
 
+    useEffect(() => {
+        setTimeout(() => {
+            setLoading(false)
+        }, 3000)
+    }, [])
+
     return (
-        <div>
-            <BookingMenu itinerary={the_itinerary}/>
-        </div>
+        <>
+            {loading && (
+                <div>
+                    <div className="text-4xl px-56 mt-4 ml-5 w-screen h-screen">Loading itinerary...  <CircularProgress /></div>
+                </div>
+            )}
+            {!loading && (
+                <div>
+                    <BookingMenu itinerary={the_itinerary}/>
+                </div>
+            )}
+        </>
     );
 }
 
-function BookingMenu({itinerary}) {
+function BookingMenu({ itinerary }) {
     console.log(itinerary)
     return (
         <>
@@ -81,20 +97,20 @@ function BookingMenu({itinerary}) {
                         </div>
                         <div className="border-t border-black-500 border-2 mb-10" />
                         {itinerary ? (
-                            <div className="cursor-pointer flex flex-col rounded-md w-1/2 ml-[200px] shadow-md border border-blue-500">
-                                <div className="overflow-hidden">
-                                    <img className="w-full object-cover h-56 rounded-md" src={itinerary?.Hotel?.photoMainUrl} alt="Hotel" />
-                                </div>
-                                <div className="p-3 overflow-show">
-                                    <div className="font-bold text-2xl h-10 overflow-scroll white-text">{itinerary?.Hotel?.name}</div>
+                            <>
+                            <div className="cursor-pointer flex flex-col rounded-md shadow-md border border-blue-500 overflow-y-scroll h-100">
+                                {itinerary.Hotel != null && (
+                                <>
+                                <div className="p-3 overflow-show bg-white mb-3">
+                                    <div className="font-bold text-2xl h-10 overflow-scroll text-black">{itinerary?.Hotel?.name}</div>
                                     <div className="flex">
                                         <div className="flex flex-col">
                                             <div className="font-bold">${itinerary?.Hotel?.priceBreakdown?.grossPrice?.value?.toFixed(2)}</div>
                                             <div>Rating: {itinerary?.Hotel?.reviewScore}</div>
                                         </div>
                                         <div className="flex flex-col ml-2">
-                                            <div className="text-white">total price</div>
-                                            <div className="text-white">{itinerary?.Hotel?.reviewCount} reviews</div>
+                                            <div className="text-gray-500">total price</div>
+                                            <div className="text-gray-500">{itinerary?.Hotel?.reviewCount} reviews</div>
                                         </div>
                                     </div>
                                     <div className="flex justify-between">
@@ -103,7 +119,7 @@ function BookingMenu({itinerary}) {
                                                 itinerary?.Hotel?.reviewScoreWord === 'Good' ||
                                                 itinerary?.Hotel?.reviewScoreWord === 'Very Good' ||
                                                 itinerary?.Hotel?.reviewScoreWord === 'Excellent'
-                                                ? 'font-bold text-green-200'
+                                                ? 'font-bold text-green-600'
                                                 : ''
                                             }
                                         >
@@ -112,7 +128,17 @@ function BookingMenu({itinerary}) {
                                         </div>
                                     </div>
                                 </div>
+                                </>
+                                )}
+
+                                <div>{itinerary['Activities'].map((item) => {
+                                    return (<div className="mb-3"><ActivityCards activity={item} checkout={true} /></div>)
+                                })}
+                                </div>
                             </div>
+                                
+                            
+                            </>
                         ) : (
                             <CircularProgress />
                         )}
