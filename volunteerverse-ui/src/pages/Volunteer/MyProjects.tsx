@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { useAuthenticationUserProp } from '../../services/hooks/useAuthentication'
 import {
   Paper, Tabs, Title, Text,
   Box, Container, Group, Image,
@@ -16,6 +15,7 @@ import { projectDetailsData } from './Home/data';
 import NoneFound from '../../components/NoneFound';
 import { VolunteerProjectProp } from '../../props/projects';
 import { AuthenticationContext } from '../../context/AuthenicationContext';
+import { ApiResponseProp, apiClient } from '../../services/ApiClient';
 
 function SlimProjectCard(project: VolunteerProjectProp) {
   // use for org projects too
@@ -52,8 +52,9 @@ function SlimProjectCard(project: VolunteerProjectProp) {
 
 
 function MyProjects() {
-  const [myProjects, setMyProjects] = useState<undefined | VolunteerProjectProp[]>(undefined)
+  const [myProjects, setMyProjects] = useState<undefined | VolunteerProjectProp[]>(undefined) // use undefined state to denote loading
   const {isAuth, user} = useContext(AuthenticationContext);
+
   const queryForm = useForm<QueryProps>({
     initialValues: {
       search: "",
@@ -62,13 +63,25 @@ function MyProjects() {
     }
   });
   const searchMyProjects = async () => {
-    console.log("fetching myprojects");
-    setMyProjects([projectDetailsData, projectDetailsData, projectDetailsData]);
+
+    // fetches project using the query form 
+    apiClient.fetchProjects("volunteer", queryForm.values).then(({ data, success, statusCode, error }: ApiResponseProp) => {
+      if (success) {
+        console.log("fetched recommended projects for volunteer successfully: ", data)
+        setMyProjects(data);
+      } else {
+        // display error notification? (stretch)
+        console.log("Unable to fetch volunteer data", `error: ${error} code: ${statusCode}`);
+      }
+    }).catch((error) => {
+      console.log("a very unexpeced error has occured: ", error)
+    });
+    console.log("fetchingProjects");
   }
   useEffect(() => {
     searchMyProjects()
-  }, [])
-  console.log("nothing to see here");
+  }, []);
+
   /**
    * @todo: 
    * use 2? tabs to show projects volunteers is approved for, interested in to show projects a student is interested in
@@ -94,7 +107,7 @@ function MyProjects() {
               <SlimProjectCard key={`${project.createdAt}`} {...project} />
             )
           }) :
-            <NoneFound title='hello' />
+            <NoneFound title='No Projects Found....' />
           }
           </Flex>
         </Skeleton>
