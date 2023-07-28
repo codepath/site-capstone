@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useAuthenticationUserProp } from '../../services/hooks/useAuthentication'
 import {
   Paper, Tabs, Title, Text,
@@ -15,6 +15,7 @@ import NotAuthorized from '../NotAuthorized';
 import { projectDetailsData } from './Home/data';
 import NoneFound from '../../components/NoneFound';
 import { VolunteerProjectProp } from '../../props/projects';
+import { AuthenticationContext } from '../../context/AuthenicationContext';
 
 function SlimProjectCard(project: VolunteerProjectProp) {
   // use for org projects too
@@ -50,9 +51,9 @@ function SlimProjectCard(project: VolunteerProjectProp) {
 }
 
 
-function MyProjects({ isAuth, user }: { isAuth: boolean, user: useAuthenticationUserProp }) {
+function MyProjects() {
   const [myProjects, setMyProjects] = useState<undefined | VolunteerProjectProp[]>(undefined)
-
+  const {isAuth, user} = useContext(AuthenticationContext);
   const queryForm = useForm<QueryProps>({
     initialValues: {
       search: "",
@@ -74,7 +75,7 @@ function MyProjects({ isAuth, user }: { isAuth: boolean, user: useAuthentication
    * use simple card list layout
    * give volunteers option to remove interest from projects
    */
-  return !(isAuth && user.userType === "volunteer") ? <NotAuthorized /> : (
+  return !(isAuth && user?.userType === "volunteer") ? <NotAuthorized /> : (
     <>
       <Title align='left'>My Projects</Title>
         <Paper shadow={"md"} radius={"md"}>
