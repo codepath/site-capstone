@@ -159,7 +159,7 @@ export class Projects {
     const query = `SELECT DISTINCT tag_name FROM project_tags`;
     const result = await db.query(query, []);
     const tags = [];
-    result.rows.forEach((row:any)=>{tags.push(row.tag_name)})
+    result.rows.forEach((row:any)=>{tags.push(row.tag_name)});
     return tags;
   }
 

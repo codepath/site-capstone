@@ -130,11 +130,12 @@ userType: "organization";
     // this is querying the organization table, going through the rows to find the
     // item(that is access it) in the bracket(email in this case)
     const org_result = await db.query(
-      `SELECT 
-        organization_name,
-        organization_description,
-        organization_email,
-        logo_url,
+      `SELECT
+        id,
+        organization_name AS "orgName",
+        organization_description AS "orgDesc",
+        organization_email AS "email",
+        logo_url AS "imageUrl",
         founders
            FROM organizations
            WHERE  organization_email = $1`, // this does to filtering to make sure we are being
@@ -157,14 +158,15 @@ userType: "organization";
       [org_email.toLowerCase()]
     );
 
-    console.log("auth res", auth_result);
+    console.log("auth res", auth_result.rows[0]);
 
-    if (!auth_result) {
+    if (auth_result.rows[0].length === 0) {
       throw new BadRequestError();
     }
 
     if (org_result) {
-      return org_result.rows[0];
+      console.log("returning org user: ", {...org_result.rows[0], userType: "organization"})
+      return {...org_result.rows[0], userType: "organization"};
     }
     return null;
   }
