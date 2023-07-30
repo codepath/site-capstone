@@ -24,19 +24,24 @@ export interface AuthenicationProp {
   // function returns authentication state  (boolean, and user)
   // and user after fetching user from the token
   // stored in local storga
-  console.log("running auth hook")
-  const [tokenValue, setTokenValue] = useState(localStorage.getItem("user_token") || "");
-  const setToken = useCallback((value: string) => {
-    console.log("setting local storage token");
-    localStorage.setItem("user_token", tokenValue);
-    setTokenValue(value);
-  }, [])
+  console.log("running auth hook");
+  const [tokenValue, setToken, removeToken] = useLocalStorage({
+    key: 'user_token',
+    defaultValue: '',
+  });
+  
+  // const [tokenValue, setTokenValue] = useState(localStorage.getItem("user_token") || "tokenValueState");
+  // const setToken = (value: string) => {
+  //   console.log("setting local storage token");
+  //   localStorage.setItem("user_token", tokenValue);
+  //   setTokenValue(value);
+  // }
 
-  const removeToken = useCallback(() => {
-    console.log("removing token")
-    localStorage.removeItem("user_token");
-    setTokenValue("");
-  }, [])
+  // const removeToken = useCallback(() => {
+  //   console.log("removing token")
+  //   localStorage.removeItem("user_token");
+  //   setTokenValue("");
+  // }, [])
 
 
    const [sessionState, setSessionState] = useState<AuthenicationProp>({
