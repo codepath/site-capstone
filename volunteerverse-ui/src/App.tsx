@@ -66,8 +66,8 @@ function App() {
                 {/* projects is  specific to the volunteers */}
                 <Route path="/projects/:projectId" element={
                 !isAuth ? <Landing /> :
-                isValidOrg ? <OrgHome />
-                  : <VolunteerHome />} />
+                isValidOrg ? <OrgProjectDetailsTabs />
+                  : <VolunteerProjectDetails />} />
               {/* projects/projectId is used for both volunteers and organizations */}
               <Route path="/projects/create" element={<CreateProject />} />
               {/* projects/create is specfic to organizations looking to create a new project */}
