@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react"
 import { useAuthenticationUserProp } from "../../services/hooks/useAuthentication";
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { apiClient } from "../../services/ApiClient";
 import {
@@ -151,9 +151,9 @@ function VolunteerProjectDetails() {
             onClick={toggleProjectInterest}>
             {project.interested ? "Remove Interest" : "Express Interest"}</Button>
           <Flex align={"start"} direction={"column"} className={classes.textContent} w={"100%"}>
-            <Text align="center">Posted: {project?.createdAt}</Text>
+            <Text color="dimmed" align="center">Posted: {project?.createdAt}</Text>
             <Title order={1}>{project?.title}</Title>
-            <Title p={isMobile ? "xs" : "sm"} order={4}>by {project?.orgName}</Title>
+            <Title p={isMobile ? "xs" : "sm"} order={4}>by {!project.orgUrl ? `${project?.orgName}` : <Link to={project.orgUrl}>{project?.orgName}</Link>}</Title>
             <Title order={2}>Description:</Title>
             <Text p={isMobile ? "xs" : "sm"}>{project?.description}</Text>
             <Divider />
