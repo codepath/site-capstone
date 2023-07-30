@@ -138,10 +138,8 @@ export default function ProjectCard(props: ProjectCardProps) {
                         <Flex className={classes.detailsBody} direction={"column"}>
                             <Title p={"xs"} className={classes.descTitle} align="start" weight={600} order={3}>Project Description:</Title>
                             <Divider />
-                            <Container p={0} className={classes.description}>
                                 <Text p={"xs"} align="start">{props.description}</Text>
 
-                            </Container>
                         </Flex>
                     </Flex>
                     <Flex direction={"column"} align={"center"} justify={"center"} className={classes.mediaContainer}>

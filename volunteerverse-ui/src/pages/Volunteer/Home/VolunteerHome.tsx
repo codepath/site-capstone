@@ -26,10 +26,11 @@ function VolunteerHome() {
 
   const fetchProjects = async () => {
     // fetches project using the query form 
-    apiClient.fetchProjects("organization", queryForm.values).then(({ data, success, statusCode, error }: ApiResponseProp) => {
+    apiClient.fetchProjects("volunteer", queryForm.values).then(({ data, success, statusCode, error }: ApiResponseProp) => {
       if (success) {
         console.log("fetched recommended projects for volunteer successfully: ", data)
-        setVolunteerProjects(data.orgProjects);
+        // setVolunteerProjects(data);
+        setVolunteerProjects(projectCardData)
       } else {
         setVolunteerProjects([]);
         // display error notification? (stretch)
@@ -70,7 +71,7 @@ function VolunteerHome() {
           breakpoints={[{ maxWidth: 'sm', slideSize: '100%', slideGap: 2 }]}
           slideGap="xl"
           align={"center"}
-          slidesToScroll={isMobile ? 1 : 2}
+          slidesToScroll={1}
           styles={
             {
               root: { maxWidth: 1500, marginLeft: "auto", marginRight: "auto" },
