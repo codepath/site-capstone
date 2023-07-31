@@ -79,7 +79,7 @@ export class Projects {
     const query = `SELECT * FROM projects WHERE id=$1`;
     const result = await db.query(query, [projectId]);
     //destructure to extract important info about project
-    if (result.rows[0]) {
+    if (result.rows[0].length > 0) {
       const {
         id,
         org_id,
