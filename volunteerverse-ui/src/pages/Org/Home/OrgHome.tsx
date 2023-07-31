@@ -80,23 +80,23 @@ function OrgHome() {
     }
   });
   const deleteProject = ({ projectId: deleteProjectId } : {projectId :  number}) => {
-    // apiClient.deleteProject({projectId :  deleteProjectId}).then(({success, data, statusCode, error}) => {
-    //     if (success) {
-    //       console.log("deleting project")
-    //       setPostedProjects((initialProject) => initialProject?.filter((project) =>  project.id === deleteProjectId))
-    //         // change project active state here
-    //     } else{
-    //         console.log("error while toggling project active status : ", error)
-    //         notifications.show({
-    //             autoClose: 3000,
-    //             color: "red",
-    //             title: 'Uh-oh!',
-    //             message: "An error occured. Please try again later ",
-    //         })
-    //     }
-    // }).catch((error) => {
-    //     console.log("a really unexpected error occured while trying to delete a project", error)
-    // })
+    apiClient.deleteProject({projectId :  deleteProjectId}).then(({success, data, statusCode, error}) => {
+        if (success) {
+          setPostedProjects((initialProject) => initialProject?.filter((project) =>  project.id !== deleteProjectId))
+          console.log("deleting project")
+            // change project active state here
+        } else{
+            console.log("error while toggling project active status : ", error)
+            notifications.show({
+                autoClose: 3000,
+                color: "red",
+                title: 'Uh-oh!',
+                message: "An error occured. Please try again later ",
+            })
+        }
+    }).catch((error) => {
+        console.log("a really unexpected error occured while trying to delete a project", error)
+    })
     console.log("deleting projects...");
   }
 
@@ -110,7 +110,7 @@ function OrgHome() {
         } else {
           // maybe set state for an error message
           
-          setPostedProjects(undefined)
+          setPostedProjects([])
           console.log("an error occcured sending a request to fetch all projects", error);
         }
       }).catch((error) => {
