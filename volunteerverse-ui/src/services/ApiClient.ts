@@ -127,7 +127,6 @@ class ApiClient {
             method: "put",
             bodyData: {email: volunteerEmail},
             subDirectory: `/organization/project/status/${projectId}`,
-
         }
         return this.request(requestOptions)   
     }
@@ -135,7 +134,6 @@ class ApiClient {
         const requestOptions = {
             method: "put",
             subDirectory: `/organization/project/${projectId}`,
-
         }
         return this.request(requestOptions) 
     }
@@ -143,7 +141,13 @@ class ApiClient {
         const requestOptions = {
             method: "delete",
             subDirectory: `/organization/project/${projectId}`,
-
+        }
+        return this.request(requestOptions) 
+    }
+    async fecthVolunteersByProject(projectId : number){
+        const requestOptions = {
+            method: "get",
+            subDirectory: `/organization/project/interested/${projectId}`,
         }
         return this.request(requestOptions) 
     }
