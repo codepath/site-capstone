@@ -16,6 +16,7 @@ import NoneFound from '../../components/NoneFound';
 import { VolunteerProjectProp } from '../../props/projects';
 import { AuthenticationContext } from '../../context/AuthenicationContext';
 import { ApiResponseProp, apiClient } from '../../services/ApiClient';
+import { fetchPrettyTime } from '../../utility/utility';
 
 function SlimProjectCard(project: VolunteerProjectProp) {
   // use for org projects too
@@ -42,7 +43,7 @@ function SlimProjectCard(project: VolunteerProjectProp) {
           </Group>
           <Group>
             <Badge color={project.approved ? theme.colors.orange[4] : theme.colors.green[4]}>{project.approved ? "approved" : "pending approval"}</Badge>
-            <Text>Posted: {project.createdAt}</Text>
+            <Text>Posted: {project.createdAt ? fetchPrettyTime(project.createdAt) :  "N/A"}</Text>
           </Group>
         </Flex>
       </Group>
