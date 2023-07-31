@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useAuthenticationUserProp } from '../../services/hooks/useAuthentication'
+// import { useAuthenticationUserProp } from '../../services/hooks/useAuthentication'
 import { useForm } from '@mantine/form';
 import { ProjectFormValues } from '../../props/forms';
 import {
   Button, Container, FileButton,
   Flex, MultiSelect, TextInput,
-  Textarea, Title, Image, createStyles, Paper, Divider, ColorSchemeProvider, useMantineTheme
+  Textarea, Title, Image, createStyles, Paper, Divider, useMantineTheme
 } from '@mantine/core';
 import { apiClient } from '../../services/ApiClient';
 import GoBackButton from '../../components/GoBackButton';
@@ -52,8 +52,8 @@ function CreateProject() {
     validateInputOnChange: ["requestedPeople"],
     validate: (values) => ({
       title: values.title.trim().length > 0 ? null : "Please provide a title",
-      desc: values.desc.trim().length < 500 ? null : "Please provide a shorter description",
-      imageFile: values.imageFile ? null : "Please provide a project photo",
+      desc: (values.desc.trim().length < 500 && values.desc.trim().length > 20) ? null : "Please provide a shorter/longer description",
+      // imageFile: no image validation required
       requestedPeople: values.requestedPeople > 0 ? null : "Requested people must be greater than 0",
       // tags: no validation needed for tags
 
@@ -84,7 +84,7 @@ function CreateProject() {
           console.log("data : ", data)
           navigate("/");
         } else {
-          console.log("failed to create new project. show error notification here")
+          console.log("failed to create new project. Error:", {error :  error, code : statusCode})
           notifications.show({
             autoClose: 3000,
             color: "red",
@@ -102,13 +102,14 @@ function CreateProject() {
   }
 
   useEffect(() => {
-    apiClient.fetchAllTags().then(({ data, success, error }) => {
+    apiClient.fetchAllTags().then(({ data, success, error, statusCode }) => {
       // fecthes all all tags from db then sets state
       if (success) {
+        console.log("setting tags: ", data.tags)
         setTags(data.tags);
       } else {
         setTags([])
-        console.log("unable to retrieve all tags. error: ", error)
+        console.log("unable to retrieve all tags. error: ", {error, statusCode})
       }
     });
   }, [])
