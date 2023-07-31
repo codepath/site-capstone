@@ -1,16 +1,15 @@
-import { Avatar, Badge, Table, Group, Text, Select, ScrollArea, Paper, useMantineTheme, Button, Flex, Container, CloseButton, ActionIcon, Modal, Title } from '@mantine/core';
+import { Avatar, Badge, Table, 
+    Group, Text,ScrollArea, Paper, 
+    useMantineTheme, Button, Flex, CloseButton, 
+    ActionIcon, Modal } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { VolunteerProp } from '../../../props/users';
-import { IconCheck, IconX } from '@tabler/icons-react';
+import { IconCheck } from '@tabler/icons-react';
 import { useState } from 'react';
 import { ApiResponseProp, apiClient } from '../../../services/ApiClient';
 import { useParams } from 'react-router-dom';
 import { notifications } from '@mantine/notifications';
 import VolunteerProfileCard from './VolunteerProfileCard';
-
-interface VolunteerTableProp {
-    data: { avatar: string; firstName: string; email: string; role: string }[];
-}
 
 export function VolunteersTable({ volunteerData }: { volunteerData: VolunteerProp[] }) {
     const { projectId } = useParams();
