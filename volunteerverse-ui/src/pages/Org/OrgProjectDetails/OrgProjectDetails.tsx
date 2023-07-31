@@ -45,7 +45,7 @@ const useStyles = createStyles((theme) => ({
 
 }))
 
-function VolunteerProjectDetails({ isAuth, user }: { isAuth: boolean, user: useAuthenticationUserProp }) {
+function OrgProjectDetails({ isAuth, user }: { isAuth: boolean, user: useAuthenticationUserProp }) {
   const params = useParams();
   const theme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
@@ -166,4 +166,4 @@ function VolunteerProjectDetails({ isAuth, user }: { isAuth: boolean, user: useA
   )
 }
 
-export default VolunteerProjectDetails
+export default OrgProjectDetails
