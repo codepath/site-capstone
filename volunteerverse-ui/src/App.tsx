@@ -6,16 +6,15 @@ import NotFound from './pages/NotFound';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import './App.css';
 import Navbar from './components/Navbar';
-import { AuthenicationProp, useAuthentication } from './services/hooks/useAuthentication';
+import { useAuthentication } from './services/hooks/useAuthentication';
 import MyProjects from './pages/Volunteer/MyProjects';
 import CreateProject from './pages/Org/CreateProject';
 import VolunteerHome from './pages/Volunteer/Home/VolunteerHome';
 import OrgHome from './pages/Org/Home/OrgHome';
 import VolunteerProjectDetails from './pages/Volunteer/VolunteerProjectDetails';
 import OrgProjectDetailsTabs from './pages/Org/OrgProjectDetails/OrgProjectTabs';
-import { createContext } from 'react';
 import { AuthenticationContext } from './context/AuthenicationContext';
-
+import { Notifications } from '@mantine/notifications';
 
 function App() {
   /**
@@ -32,58 +31,59 @@ function App() {
   // Appshell is used to navbar overlay across all pages 
   const authProps = useAuthentication();
   console.log(authProps)
-  const {isValidOrg, isAuth} = authProps;
+  const { isValidOrg, isAuth } = authProps;
   return (
     <>
-        <AuthenticationContext.Provider value={authProps}>
-      <MantineProvider  withGlobalStyles withNormalizeCSS theme={{ 
-        primaryColor: "violet",
-        globalStyles : ((theme) => ({
-          
-        }))
+      <AuthenticationContext.Provider value={authProps}>
+        <MantineProvider withGlobalStyles withNormalizeCSS theme={{
+          primaryColor: "violet",
+          globalStyles: ((theme) => ({
+            /** incase it's needed */
+          }))
         }}>
-        <BrowserRouter>
-          <AppShell pl={0} pr={0}
-            styles={(theme) => ({
-              main: { padding: "initial 0" },
-              root: {
-                height: "100%",
-                backgroundImage: !authProps?.isAuth ? theme.fn.linearGradient(180, theme.colors.violet[5],theme.colors.violet[0], theme.white, theme.colors.violet[2])
-                : theme.fn.linearGradient(180, theme.colors.violet[0],theme.colors.violet[0])
-              }
-            })}
+          <BrowserRouter>
+            <Notifications />
+            <AppShell pl={0} pr={0}
+              styles={(theme) => ({
+                main: { padding: "initial 0"},
+                root: {
+                  height: "100%",
+                  backgroundImage: !authProps?.isAuth ? theme.fn.linearGradient(180, theme.colors.violet[5], theme.colors.violet[0], theme.white, theme.colors.violet[2])
+                    : theme.fn.linearGradient(180, theme.colors.violet[0], theme.colors.violet[0])
+                }
+              })}
               header={<Navbar />}>
               <Routes>
                 <Route path="/" element={
                   !isAuth ? <Landing /> :
                     isValidOrg ? <OrgHome />
                       : <VolunteerHome />
-                      }/>
+                } />
 
                 {/* POST AUTHENTICATION */}
                 {/* Displays project by details page for each user role */}
                 <Route path="/projects" element={<MyProjects />} />
                 {/* projects is  specific to the volunteers */}
                 <Route path="/projects/:projectId" element={
-                !isAuth ? <Landing /> :
-                isValidOrg ? <OrgProjectDetailsTabs />
-                  : <VolunteerProjectDetails />} />
-              {/* projects/projectId is used for both volunteers and organizations */}
-              <Route path="/projects/create" element={<CreateProject />} />
-              {/* projects/create is specfic to organizations looking to create a new project */}
+                  !isAuth ? <Landing /> :
+                    isValidOrg ? <OrgProjectDetailsTabs />
+                      : <VolunteerProjectDetails />} />
+                {/* projects/projectId is used for both volunteers and organizations */}
+                <Route path="/projects/create" element={<CreateProject />} />
+                {/* projects/create is specfic to organizations looking to create a new project */}
 
-              {/* PRE-AUTHENTICATION */}
-              <Route path="/signup/organization" element={<SignUp userType='organization' />} />
-              <Route path="/signup/volunteer" element={<SignUp userType='volunteer' />} />
-              <Route path="/login" element={<Login />} />
-              {/* Home displays the Dashboard page and the student projects feed */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </AppShell>
+                {/* PRE-AUTHENTICATION */}
+                <Route path="/signup/organization" element={<SignUp userType='organization' />} />
+                <Route path="/signup/volunteer" element={<SignUp userType='volunteer' />} />
+                <Route path="/login" element={<Login />} />
+                {/* Home displays the Dashboard page and the student projects feed */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </AppShell>
 
-        </BrowserRouter>
-      </MantineProvider>
-                </AuthenticationContext.Provider>
+          </BrowserRouter>
+        </MantineProvider>
+      </AuthenticationContext.Provider>
 
 
     </>
