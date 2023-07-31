@@ -55,7 +55,6 @@ authRoutes.get("/me", requireAuthenticatedUser, async (request, response, next) 
     // request header should contain auth token
     try {
         const { user } = response.locals;
-        console.log("retrieved: ", user)
         if (user) {
             response.status(200).json({ user: user });
         } else{
