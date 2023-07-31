@@ -8,10 +8,11 @@ export const generateToken = (data: any) => {
   }
 
 
-export const createUserJwt = (user : {id:number, email:string, user_type?:string}) => {
-    validateFields({required:["id", "email"], obj:user, location:"token generation"})
+export const createUserJwt = (user) => {
+    validateFields({required:["id", "email", "userType"], obj:user, location:"token generation"})
 
-    const payload = {id:user.id, email:user.email}
+    const payload = {id:user.id, email:user.email, userType: user.userType}
+    console.log(payload)
 
     return generateToken(payload)
 

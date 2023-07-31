@@ -5,7 +5,12 @@ import { validateFields } from "../utils/validate";
 import bcrypt from "bcrypt";
 import { Projects } from "./projects";
 
+interface VolunteerInterface{
+
+}
+
 export class Volunteer {
+
   // Static method to make a volunteer object
   static async createPublicVolunteer(volunteer: {
     id: number;
@@ -34,6 +39,10 @@ export class Volunteer {
       userType: "volunteer",
     };
   }
+
+
+
+  //interface??? could be useful to define types
 
   /**
    * Register volunteer with their information in the database
@@ -238,13 +247,43 @@ export class Volunteer {
 
 
 
-static async expressedInterest(projectId: number, email:string){
-  const query = `SELECT * FROM interested_volunteers WHERE email=$1 AND project_id=$2`
-  const result = await db.query(query, [email, projectId])
-  if (result){
-    return result.rows[0]
+
+/**
+ * Returns a boolean indicating whether a volunteer has expressed interest in a specific project
+ * @param projectId 
+ * @param email 
+ * @returns boolean
+ */
+static async expressedInterest(projectId:number, email:string){
+  const query = `SELECT * FROM interested_volunteers WHERE email=$1 AND project_id=$2`;
+  const result = await db.query(query, [email, projectId]);
+  if (result.rows[0]){
+    return true;
   }
-  return null;
+  return false;
 }
+
+/**
+ * Returns a boolean indicating whether a volunteer was approved for a specific project
+ * @param projectId 
+ * @param email 
+ * @returns boolean
+ * @throws BadRequestError
+ */
+
+static async checkStatusProject(projectId:number, email:string){
+  const query = `SELECT * FROM interested_volunteers WHERE email=$1 AND project_id=$2`;
+  const result = await db.query(query, [email, projectId]);
+  if (result.rows[0]){
+    return result.rows[0].approved;
+  }
+  throw new BadRequestError(`${email} has not expressed interest in project ${projectId}`);
+
+}
+
+
+
+
+
 
 }

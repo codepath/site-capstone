@@ -3,6 +3,7 @@ import db from "../db";
 import { validateFields } from "../utils/validate";
 import { BadRequestError, NotFoundError } from "../utils/errors";
 import { Organization } from "./organization";
+import { Volunteer } from "./volunteer";
 
 export class Projects {
   /**
@@ -74,58 +75,110 @@ export class Projects {
    * Returns project information given the project id
    * @param id
    */
-
-  static async fetchProjectByProjectId(projectId: number) {
+  static async fetchProjectByProjectId(projectId: number, userType: string, email?:string) {
     const query = `SELECT * FROM projects WHERE id=$1`;
     const result = await db.query(query, [projectId]);
     //destructure to extract important info about project
 
-    if (result){
-    const {id, org_id, project_name, project_description, created_at, image_url, requested_people, approved_people} = result.rows[0]
-    const tags = await this.getProjectTags(id)
-    const {organization_name, founders, website} = await Organization.getOrgById(org_id)
-    return {
-      id: id,
-      orgName: organization_name,
-      founders: founders,
-      website: website,
-      projectName: project_name,
-      projectDesc: project_description,
-      createdAt: created_at,
-      image: image_url,
-      requestedPeople: requested_people,
-      approvedPeople: approved_people,
-      tags: tags
+    if (result) {
+      const {
+        id,
+        org_id,
+        project_name,
+        project_description,
+        created_at,
+        image_url,
+        requested_people,
+        approved_people,
+      } = result.rows[0];
+      const tags = await this.getProjectTags(id);
+      const { organization_name, founders, website } =
+        await Organization.getOrgById(org_id);
+
+      let projectCard = {
+        id: id,
+        orgName: organization_name,
+        founders: founders,
+        website: website,
+        projectName: project_name,
+        projectDesc: project_description,
+        createdAt: created_at,
+        image: image_url,
+        requestedPeople: requested_people,
+        approvedPeople: approved_people,
+        tags: tags,
+      };
+
+      if (userType == "volunteer") {
+        projectCard["expressedInterest"] = await Volunteer.expressedInterest(projectId, email)
+        return projectCard
+      }
+
+      if (userType == "organization") {
+      }
     }
-  }
     return new BadRequestError("Project not found");
   }
 
   static async getProjectsWithTag(tag: string) {
     const query = `SELECT project_id FROM project_tags WHERE tag_name=$1`;
     const result = await db.query(query, [tag]);
-   
+
     if (result.rows.length === 0) {
       // Return an empty array if no projects are found with the given tag
-      return []
-    }else {
-        const projectIds = result.rows.map((row: any) => row.project_id);
-        const projects = await Promise.all(projectIds.map((projectId: number) => this.fetchProjectByProjectId(projectId)));
-        return projects;
-      }
+      return [];
+    } else {
+      const projectIds = result.rows.map((row: any) => row.project_id);
+      const projects = await Promise.all(
+        projectIds.map((projectId: number) =>
+          this.fetchProjectByProjectId(projectId, "volunteer")
+        )
+      );
+      return projects;
+    }
   }
 
   /**
    * Get the tags of a project
-   * @param projectId 
+   * @param projectId
    */
-  static async getProjectTags(projectId:number){
-    const query = `SELECT tag_name FROM project_tags WHERE project_id=$1`
-    const result = await db.query(query, [projectId])
-    const tags = []
-    if (result){
-      result.rows.forEach((row:any) => {tags.push(row.tag_name)})
-      return tags
+  static async getProjectTags(projectId: number) {
+    const query = `SELECT tag_name FROM project_tags WHERE project_id=$1`;
+    const result = await db.query(query, [projectId]);
+    const tags = [];
+    if (result) {
+      result.rows.forEach((row: any) => {
+        tags.push(row.tag_name);
+      });
+      return tags;
+    }
+  }
+
+
+  static async getAllProjectTags(){
+    const query = `SELECT DISTINCT tag_name FROM project_tags`;
+    const result = await db.query(query, []);
+    const tags = [];
+    result.rows.forEach((row:any)=>{tags.push(row.tag_name)})
+    return tags;
+  }
+
+  /**
+   * searches through the projects table - filtering by a search term
+   * @param term 
+   * @returns array of projects results
+   */
+  static async searchProjects(term: string) {
+    const query = `SELECT * FROM projects WHERE project_name ILIKE $1`;
+    const searchTerm = `%${term}%`;
+    const result = await db.query(query, [searchTerm]);
+    console.log(result.rows);
+    const projectResults = [];
+    if (result) {
+      result.rows.forEach((row: any) => {
+        projectResults.push(row);
+      });
+      return projectResults;
     }
   }
 }
