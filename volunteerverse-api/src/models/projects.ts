@@ -79,8 +79,7 @@ export class Projects {
     const query = `SELECT * FROM projects WHERE id=$1`;
     const result = await db.query(query, [projectId]);
     //destructure to extract important info about project
-
-    if (result) {
+    if (result.rows[0]) {
       const {
         id,
         org_id,
@@ -117,7 +116,7 @@ export class Projects {
       if (userType == "organization") {
       }
     }
-    return new BadRequestError("Project not found");
+    throw new BadRequestError("Project not found");
   }
 
   static async getProjectsWithTag(tag: string) {
