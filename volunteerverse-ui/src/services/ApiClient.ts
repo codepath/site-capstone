@@ -126,10 +126,26 @@ class ApiClient {
         const requestOptions = {
             method: "put",
             bodyData: {email: volunteerEmail},
-            subDirectory: `/organization/project/${projectId}`,
+            subDirectory: `/organization/project/status/${projectId}`,
 
         }
         return this.request(requestOptions)   
+    }
+    async toggleProjectStatus({projectId}  : {projectId :  number}){
+        const requestOptions = {
+            method: "put",
+            subDirectory: `/organization/project/${projectId}`,
+
+        }
+        return this.request(requestOptions) 
+    }
+    async deleteProject({projectId}  : {projectId :  number}){
+        const requestOptions = {
+            method: "delete",
+            subDirectory: `/organization/project/${projectId}`,
+
+        }
+        return this.request(requestOptions) 
     }
 }
 
