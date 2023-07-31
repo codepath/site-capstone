@@ -17,8 +17,6 @@ export interface VolunteerProjectProp {
     title: string,
     createdAt: number | undefined,
     description: string,
-    orgName: string,
-    orgUrl: string,
     imageUrl: string,
     orgDesc: string,
     founders: string,
