@@ -2,15 +2,15 @@ import { createStyles, useMantineTheme } from "@mantine/styles";
 import { useAuthenticationUserProp } from "../../../services/hooks/useAuthentication";
 
 import { Tabs, Title } from '@mantine/core';
-import { IconPhoto, IconMessageCircle, IconSettings, IconUsersGroup, IconUsers, IconFaceId, IconUser, IconDashboard, IconFile, IconSubtask, IconActivity, IconHexagon3d, IconAlertCircle, IconCartCheck } from '@tabler/icons-react';
+import { IconUser } from '@tabler/icons-react';
 import { useMediaQuery } from "@mantine/hooks";
 import { VolunteerProp } from "../../../props/users";
 import { useContext, useEffect, useState } from "react";
 import GoBackButton from "../../../components/GoBackButton";
 import VolunteerProjectDetails from "../../Volunteer/VolunteerProjectDetails";
 import { VolunteersTable } from "./VolunteersTable";
-import OrgProjectDetails from "./OrgProjectDetails";
 import { AuthenticationContext } from "../../../context/AuthenicationContext";
+import NotAuthorized from "../../NotAuthorized";
 const userList: VolunteerProp[] = [
   {
     email: 'user1@example.com',
@@ -58,7 +58,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 function OrgProjectDetailsTabs() {
-  // const { isAuth, user } = useContext(AuthenticationContext);
+  const { isValidOrg } = useContext(AuthenticationContext);
   const theme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
   const [projectVolunteers, setProjectVolunteers] = useState<undefined | VolunteerProp[]>(undefined);
@@ -71,10 +71,10 @@ function OrgProjectDetailsTabs() {
   // two tabs, with left tab showing volunteers
   const { classes } = useStyles();
 
-  return (
+  return !isValidOrg ? <NotAuthorized /> : (
 
     <>
-      <GoBackButton />
+    <GoBackButton />
       <Tabs p={"lg"} variant="default" radius="md" defaultValue="volunteers">
         <Tabs.List position="center" >
           <Tabs.Tab value="project" ><Title weight={500} order={isMobile ? 5 : 3}>Project Details</Title></Tabs.Tab>
