@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { apiClient } from '../ApiClient'
 import { useLocalStorage } from '@mantine/hooks';
 import { useCallback } from 'react';
+import { OrgUserProp, VolunteerUserProp } from '../../props/users';
 // import useLoc
 export interface useAuthenticationUserProp {
   password: string,
@@ -17,7 +18,7 @@ export interface AuthenicationProp {
   isAuth?: boolean,
   isValidVolunteer?: boolean,
   isValidOrg?: boolean,
-  user?: useAuthenticationUserProp,
+  user?: VolunteerUserProp | OrgUserProp,
 }
 
  export const useAuthentication = (): AuthenicationProp => {
@@ -30,20 +31,6 @@ export interface AuthenicationProp {
     defaultValue: '',
   });
   
-  // const [tokenValue, setTokenValue] = useState(localStorage.getItem("user_token") || "tokenValueState");
-  // const setToken = (value: string) => {
-  //   console.log("setting local storage token");
-  //   localStorage.setItem("user_token", tokenValue);
-  //   setTokenValue(value);
-  // }
-
-  // const removeToken = useCallback(() => {
-  //   console.log("removing token")
-  //   localStorage.removeItem("user_token");
-  //   setTokenValue("");
-  // }, [])
-
-
    const [sessionState, setSessionState] = useState<AuthenicationProp>({
      isValidVolunteer: undefined,
      isValidOrg: undefined,

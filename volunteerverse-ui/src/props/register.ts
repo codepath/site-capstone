@@ -22,6 +22,7 @@ export interface ProjectRegisterProp{
     title: string;
     desc: string;
     imageUrl?: string;
+    orgName: string,
     requestedPeople: number;
     tags: string[];
     

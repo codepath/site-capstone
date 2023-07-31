@@ -1,17 +1,17 @@
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import {
-  Paper, Tabs, Title, Text,
-  Box, Container, Group, Image,
+  Paper, Title, Text,
+  Container, Group, Image,
   Badge, useMantineTheme, Button,
   Skeleton,
   Flex,
   ActionIcon
 } from '@mantine/core';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { QueryBar, QueryProps } from '../../components/QueryBar';
 import { useForm } from '@mantine/form';
 import NotAuthorized from '../NotAuthorized';
-import { projectDetailsData } from './Home/data';
+// import { projectDetailsData } from './Home/data';
 import NoneFound from '../../components/NoneFound';
 import { VolunteerProjectProp } from '../../props/projects';
 import { AuthenticationContext } from '../../context/AuthenicationContext';
@@ -54,7 +54,7 @@ function SlimProjectCard(project: VolunteerProjectProp) {
 
 function MyProjects() {
   const [myProjects, setMyProjects] = useState<undefined | VolunteerProjectProp[]>(undefined) // use undefined state to denote loading
-  const {isAuth, user} = useContext(AuthenticationContext);
+  const {isValidVolunteer, user} = useContext(AuthenticationContext);
 
   const queryForm = useForm<QueryProps>({
     initialValues: {
@@ -89,7 +89,7 @@ function MyProjects() {
    * use simple card list layout
    * give volunteers option to remove interest from projects
    */
-  return !(isAuth && user?.userType === "volunteer") ? <NotAuthorized /> : (
+  return !isValidVolunteer ? <NotAuthorized /> : (
     <>
       <Title align='left'>My Projects</Title>
         <Paper shadow={"md"} radius={"md"}>

@@ -4,7 +4,7 @@ import { useAuthenticationUserProp } from "../../../services/hooks/useAuthentica
 import { Tabs, Title } from '@mantine/core';
 import { IconUser } from '@tabler/icons-react';
 import { useMediaQuery } from "@mantine/hooks";
-import { VolunteerProp } from "../../../props/users";
+import { VolunteerUserProp } from "../../../props/users";
 import { useContext, useEffect, useState } from "react";
 import GoBackButton from "../../../components/GoBackButton";
 import VolunteerProjectDetails from "../../Volunteer/VolunteerProjectDetails";
@@ -14,7 +14,7 @@ import NotAuthorized from "../../NotAuthorized";
 import OrgProjectDetails from "./OrgProjectDetails";
 import { apiClient } from "../../../services/ApiClient";
 import { useParams } from "react-router";
-const userList: VolunteerProp[] = [
+const userList: VolunteerUserProp[] = [
   {
     email: 'user1@example.com',
     firstName: 'John',
@@ -65,7 +65,7 @@ function OrgProjectDetailsTabs() {
   const { isValidOrg } = useContext(AuthenticationContext);
   const theme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
-  const [projectVolunteers, setProjectVolunteers] = useState<undefined | VolunteerProp[]>(undefined);
+  const [projectVolunteers, setProjectVolunteers] = useState<undefined | VolunteerUserProp[]>(undefined);
   // handle loading states
 
   useEffect(() => {

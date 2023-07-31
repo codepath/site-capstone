@@ -21,9 +21,8 @@ export async function getUserFromToken(request){
         console.log("user token: ", userToken);
         const decodedToken = await validateToken(userToken);
         if (!decodedToken)
-            throw new ExpressError("something went wrong ajnfkanf", 404)
-        const user = await Auth.fetchByEmail(decodedToken.email);
-        return user;
+            throw new ExpressError("something went wrong", 404)
+        return decodedToken;
     } catch (error){
         if (error instanceof UnauthorizedError){
             throw error
