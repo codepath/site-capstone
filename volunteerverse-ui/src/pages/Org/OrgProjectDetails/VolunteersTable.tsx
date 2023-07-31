@@ -3,7 +3,7 @@ import { Avatar, Badge, Table,
     useMantineTheme, Button, Flex, CloseButton, 
     ActionIcon, Modal } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
-import { VolunteerProp } from '../../../props/users';
+import { VolunteerUserProp } from '../../../props/users';
 import { IconCheck } from '@tabler/icons-react';
 import { useState } from 'react';
 import { ApiResponseProp, apiClient } from '../../../services/ApiClient';
@@ -12,12 +12,12 @@ import { notifications } from '@mantine/notifications';
 import VolunteerProfileCard from './VolunteerProfileCard';
 import NoneFound from '../../../components/NoneFound';
 
-export function VolunteersTable({ volunteerData }: { volunteerData: VolunteerProp[] }) {
+export function VolunteersTable({ volunteerData }: { volunteerData: VolunteerUserProp[] }) {
     const { projectId } = useParams();
     const theme = useMantineTheme();
     const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
     const [showProfileModal, { open: openProfileModal, close: closeProfileModal }] = useDisclosure(false);
-    const [activeVolunteerProfile, setActiveVolunteerProfile] = useState<VolunteerProp>({
+    const [activeVolunteerProfile, setActiveVolunteerProfile] = useState<VolunteerUserProp>({
         email: "",
         firstName: "Jane",
         lastName: "Doe",
