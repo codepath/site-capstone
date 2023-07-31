@@ -10,6 +10,7 @@ import { ApiResponseProp, apiClient } from '../../../services/ApiClient';
 import { useParams } from 'react-router-dom';
 import { notifications } from '@mantine/notifications';
 import VolunteerProfileCard from './VolunteerProfileCard';
+import NoneFound from '../../../components/NoneFound';
 
 export function VolunteersTable({ volunteerData }: { volunteerData: VolunteerProp[] }) {
     const { projectId } = useParams();
@@ -128,7 +129,7 @@ export function VolunteersTable({ volunteerData }: { volunteerData: VolunteerPro
         )
     });
 
-    return (
+    return VolunteerTableRows.length === 0 ? <NoneFound /> : (
         <>
             <Modal opened={showProfileModal} onClose={closeProfileModal} radius={"lg"} ta={"center"} centered>
                 <VolunteerProfileCard volunteerProfile={activeVolunteerProfile} closeModal={closeProfileModal} />
