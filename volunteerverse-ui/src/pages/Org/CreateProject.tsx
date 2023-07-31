@@ -15,11 +15,11 @@ import { AuthenticationContext } from '../../context/AuthenicationContext';
 import { notifications } from '@mantine/notifications';
 /**
  * @todo: 
- * - make context for use authenication instead of passing down props?
- * - use context to insert project details page into tab view for org owners
- * - fully connect all of backend to front end starting with an org registertion, then student pages, then all of org pages
- * - then combining the two pages together. Then handle loading states and styling.
- * - and then a student pulling seeing those projects, 
+ * - test org deleting project
+ * - debug project card not showing 
+ * - test showing on students end
+ * - test org approving volunteer
+ * - test org unaproving volunteer
  * - work on sending 
  */
 const useStyles = createStyles((theme) => ({
@@ -27,7 +27,6 @@ const useStyles = createStyles((theme) => ({
   },
   image: {
     display: "flex",
-
   },
   title: {
     color: theme.colors.violet[9],
