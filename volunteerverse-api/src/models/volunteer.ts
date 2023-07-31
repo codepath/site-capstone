@@ -280,10 +280,4 @@ static async checkStatusProject(projectId:number, email:string){
   throw new BadRequestError(`${email} has not expressed interest in project ${projectId}`);
 
 }
-
-
-
-
-
-
 }

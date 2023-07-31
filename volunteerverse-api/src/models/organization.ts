@@ -134,10 +134,10 @@ userType: "organization";
     const org_result = await db.query(
       `SELECT 
          id,
-        organization_name,
-        organization_description,
+        organization_name AS orgName,
+        organization_description as orgDesc,
         organization_email AS "email",
-        logo_url,
+        logo_url AS imageUrl,
         founders
            FROM organizations
            WHERE  organization_email = $1`, // this does to filtering to make sure we are being
