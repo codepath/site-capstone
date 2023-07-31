@@ -20,6 +20,7 @@ volunteerRoutes.put("/interest/:projectId", async function (req, res, next) {
   try {
     const projectId = parseInt(req.params.projectId);
     const {email } = res.locals.user;
+    const {userType} = res.locals.user;
     console.log("EMAIL VALUE IN VOLUNTEER: ", email)
     console.log("res.locals.user hereeee", res.locals.user)
     const result = await Volunteer.expressInterest(projectId, email);

@@ -17,9 +17,17 @@ export class Projects {
     imageUrl?: string;
     requestedPeople: number;
     tags: string[];
+    orgName: string;
   }) {
-    const requiredInfo = ["orgId", "name", "desc", "requestedPeople", "tags"];
-    console.log(projectInfo)
+    const requiredInfo = [
+      "orgId",
+      "name",
+      "desc",
+      "requestedPeople",
+      "tags",
+      "orgName",
+    ];
+    console.log(projectInfo);
     try {
       validateFields({
         required: requiredInfo,
@@ -29,18 +37,28 @@ export class Projects {
     } catch (error) {
       throw error;
     }
-
-    const query = `INSERT into projects(org_id, project_name, project_description, image_url, requested_people, approved_people)
-        VALUES($1,$2,$3,$4,$5,$6)
-        RETURNING *`;
+    const query = `INSERT into projects 
+    (
+      org_id, 
+      project_name, 
+      project_description,
+      image_url,
+      requested_people,
+      org_name, 
+      approved_people
+      )
+    VALUES($1,$2,$3,$4,$5,$6, $7)
+    RETURNING *`;
     const result = await db.query(query, [
       projectInfo.orgId,
       projectInfo.name,
       projectInfo.desc,
       projectInfo.imageUrl || null,
       projectInfo.requestedPeople,
-      0,
+      projectInfo.orgName,
+      0
     ]);
+    console.log("made query in projects");
     const { id } = result.rows[0];
 
     projectInfo.tags.forEach((tag) => {
@@ -76,7 +94,11 @@ export class Projects {
    * Returns project information given the project id
    * @param id
    */
-  static async fetchProjectByProjectId(projectId: number, userType: string, email?:string) {
+  static async fetchProjectByProjectId(
+    projectId: number,
+    userType: string,
+    email?: string
+  ) {
     const query = `SELECT * FROM projects WHERE id=$1`;
     const result = await db.query(query, [projectId]);
     //destructure to extract important info about project
@@ -110,8 +132,11 @@ export class Projects {
       };
 
       if (userType == "volunteer") {
-        projectCard["expressedInterest"] = await Volunteer.expressedInterest(projectId, email)
-        return projectCard
+        projectCard["expressedInterest"] = await Volunteer.expressedInterest(
+          projectId,
+          email
+        );
+        return projectCard;
       }
 
       if (userType == "organization") {
@@ -154,18 +179,19 @@ export class Projects {
     }
   }
 
-
-  static async getAllProjectTags(){
+  static async getAllProjectTags() {
     const query = `SELECT DISTINCT tag_name FROM project_tags`;
     const result = await db.query(query, []);
     const tags = [];
-    result.rows.forEach((row:any)=>{tags.push(row.tag_name)});
+    result.rows.forEach((row: any) => {
+      tags.push(row.tag_name);
+    });
     return tags;
   }
 
   /**
    * searches through the projects table - filtering by a search term
-   * @param term 
+   * @param term
    * @returns array of projects results
    */
   static async searchProjects(term: string) {
