@@ -13,6 +13,9 @@ export const projectRoutes = express.Router();
 projectRoutes.post("/register", requireAuthenticatedUser, async function (req, res, next){
     try{
       const {id} = res.locals.user
+      console.log(id)
+      console.log("req.body", req.body)
+      console.log("getting here")
         const project = await Projects.registerProject({...req.body, orgId: id})
         return res.status(201).json(project)
     } catch (error){

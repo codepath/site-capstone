@@ -15,6 +15,8 @@ CREATE TABLE organizations(
     logo_url TEXT,
     founders TEXT NOT NULL, 
     website TEXT
+    founders TEXT NOT NULL, 
+    website TEXT
 );
 
 CREATE TABLE volunteer_skills(
@@ -33,7 +35,7 @@ CREATE TABLE projects(
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     image_url TEXT,
     requested_people INTEGER NOT NULL,
-    approved_people INTEGER NOT NULL,
+    approved_people INTEGER NOT NULL DEFAULT 0,
     active BOOLEAN DEFAULT TRUE
 );
 
@@ -41,6 +43,7 @@ CREATE TABLE interested_volunteers(
     id SERIAL PRIMARY KEY,
     email TEXT NOT NULL CHECK (position('@' IN email) > 1),
     project_id INTEGER,
+    approved BOOLEAN DEFAULT FALSE
     approved BOOLEAN DEFAULT FALSE
    
 );
