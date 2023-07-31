@@ -18,11 +18,12 @@ export class Auth{
             throw error
         }
 
-        const user = await this.fetchByEmail(creds.email)
-        console.log(user.rows)
-        const {user_type} = user
+        const user = await this.fetchByEmail(creds.email.trim())
+        console.log(user)
+  
 
         if (user){
+            const {user_type} = user
             const isValid = await bcrypt.compare(creds.password, user.password)
             if (isValid===true){
                 if (user_type==="volunteer"){

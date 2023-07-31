@@ -27,7 +27,9 @@ volunteerRoutes.post("/fetch", async function (req, res, next) {
 volunteerRoutes.put("/interest/:projectId", async function (req, res, next) {
   try {
     const projectId = parseInt(req.params.projectId);
-    const { email } = res.locals.user;
+    const {email } = res.locals.user;
+    console.log("EMAIL VALUE IN VOLUNTEER: ", email)
+    console.log("res.locals.user hereeee", res.locals.user)
     const result = await Volunteer.expressInterest(projectId, email);
     res.status(201).json(result);
   } catch (error) {
