@@ -14,16 +14,16 @@ export const authRoutes = express.Router()
 authRoutes.post("/register", async function(req, res, next){
     console.log('eday')
     try {
-        const {userType} = req.body
-        console.log(userType)
-        if (userType=="volunteer"){
+        const {userType: user_type} = req.body
+        console.log(user_type)
+        if (user_type=="volunteer"){
             const volunteer = await Volunteer.register(req.body)
             const token = createUserJwt(volunteer)
             console.log(token)
             console.log('edayy')
             return res.status(201).json({user: volunteer, token: token})
         }
-        else if (userType=="organization"){
+        else if (user_type=="organization"){
             const organization = await Organization.register(req.body)
             const token = createUserJwt(organization)
             return res.status(201).json({user: organization, token: token})
@@ -36,11 +36,12 @@ authRoutes.post("/register", async function(req, res, next){
 authRoutes.post("/login", async function( req, res, next){
     try{
         const {email, password} = req.body
-        const user = await Auth.authenticate({email:email, password:password})
+        let user = await Auth.authenticate({email:email, password:password})
 
         if(user){
-            const token = createUserJwt(user)
-            return res.status(201).json({user, token})
+            console.log(user)
+            const token = createUserJwt(user);
+            return res.status(201).json({user, token});
         }
         
     } catch (error){

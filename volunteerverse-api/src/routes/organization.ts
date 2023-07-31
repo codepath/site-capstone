@@ -49,7 +49,7 @@ organizationRoutes.get("/projects", async function(req,res,next){
  
 // })
 
-organizationRoutes.put("/project/:projectId", async function(req,res,next){
+organizationRoutes.put("/project/:projectId", async function(req, res, next){
   console.log('whyy')
   try{
     const projectId = parseInt(req.params.projectId)

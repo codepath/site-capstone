@@ -1,11 +1,22 @@
 import { Button, Text } from "@mantine/core";
+import { IconArrowLeft } from "@tabler/icons-react";
 import { useNavigate} from "react-router-dom";
 
 export default function GoBackButton(props : any) {
     
     let navigate = useNavigate();
     return (
-        <Button leftIcon={<Text component="span" className="material-symbols-outlined">arrow_back</Text>}
-        {...props} onClick={() => navigate(-1)}>Go Back</Button> 
+        <div style={{textAlign : "left", paddingLeft: "5vw"}}>
+            
+            <Button 
+            variant="light" 
+            styles={{root : { border: 0, transition:  "all 200ms ease-in-out", "&:hover" : {cursor : "pointer"}}}}
+            leftIcon={<IconArrowLeft />}
+            {...props} 
+            ml={"auto"}
+            mr={0}
+            radius={"lg"}
+            onClick={() => navigate(-1)}></Button> 
+        </div>
     );
 };
