@@ -148,12 +148,13 @@ function CreateProject() {
               </Flex>
             </Flex>
             <TextInput
+              maxLength={20}
               size={isMobile ? 'sm' : 'md'}
               radius={"lg"}
               withAsterisk
               label="Project Title"
-              placeholder="Your project title"
-              description="Full stack developer needed for..."
+              placeholder="Full stack developer needed for..."
+              description="Max: 20 Characters"
               {...form.getInputProps('title')}
               mb={"md"} />
             <TextInput
@@ -177,12 +178,13 @@ function CreateProject() {
               mb={"md"}
             />
             <Textarea
+            maxLength={500}
               radius={"lg"}
               size={isMobile ? 'sm' : 'md'}
               withAsterisk
               label="Project Description:"
               placeholder={`Hey there, we're a ${user?.userType} looking to...`}
-              description="Max: 500 words"
+              description="Max: 500 characters"
               minRows={5}
               {...form.getInputProps('desc')}
             />
