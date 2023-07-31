@@ -315,14 +315,12 @@ userType: "organization";
        id,
        org_id AS "orgId", 
        project_name AS "title",
-       project_description AS "description,
+       project_description AS "description",
        image_url as "imageUrl",
        requested_people as "requestedPeople",
        approved_people as "approvedPeople",
-       tags,
        created_at as "createdAt",
-       founders,
-       active,
+       active
        FROM projects
        WHERE  org_id = $1`,
       [org_id]
