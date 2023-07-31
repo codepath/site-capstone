@@ -49,9 +49,10 @@ function CreateProject() {
       requestedPeople: 1,
       tags: []
     },
+    validateInputOnChange: ["requestedPeople"],
     validate: (values) => ({
       title: values.title.trim().length > 0 ? null : "Please provide a title",
-      desc: values.desc.trim().length > 500 ? null : "Please provide a shorter description",
+      desc: values.desc.trim().length < 500 ? null : "Please provide a shorter description",
       imageFile: values.imageFile ? null : "Please provide a project photo",
       requestedPeople: values.requestedPeople > 0 ? null : "Requested people must be greater than 0",
       // tags: no validation needed for tags
@@ -116,14 +117,14 @@ function CreateProject() {
                 withPlaceholder
                 radius={"lg"}
                 mb={"md"} />
-              <Flex
+              <Flex 
                 direction={"column"}
                 justify={"center"}
                 align={"center"}
                 gap={"sm"}
                 mb={"xl"}>
-                <FileButton {...form.getInputProps("imageFile")}>
-                  {(props) => <Button variant="light"
+                <FileButton {...form.getInputProps("imageFile")} accept="image/png,image/jpeg">
+                  {(props) => <Button mb={"xl"} variant="light"
                     radius={"lg"}
                     styles={{
                       root: {
