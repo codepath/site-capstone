@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import {
@@ -18,6 +18,7 @@ import GoBackButton from "../../../components/GoBackButton";
 import NotAuthorized from "../../NotAuthorized";
 import { projectDetailsData } from "../../Volunteer/Home/data";
 import { useAuthenticationUserProp } from "../../../services/hooks/useAuthentication";
+import { AuthenticationContext } from "../../../context/AuthenicationContext";
 
 
 
@@ -45,7 +46,8 @@ const useStyles = createStyles((theme) => ({
 
 }))
 
-function OrgProjectDetails({ isAuth, user }: { isAuth: boolean, user: useAuthenticationUserProp }) {
+function OrgProjectDetails() {
+
   const params = useParams();
   const theme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
@@ -124,10 +126,10 @@ function OrgProjectDetails({ isAuth, user }: { isAuth: boolean, user: useAuthent
     // fetchProjectById();
   }, []);
   console.log(project)
-  return (project === undefined || isAuth === false) ? <NotAuthorized /> : (
+  return (
     <Box p={0} m={0}>
       <GoBackButton mb={"md"} w={"100%"} maw={200} />
-      <Skeleton visible={project.title === ""}>
+      <Skeleton visible={project?.title === ""}>
         <Container className={classes.container} px={isMobile ? 0 : "md"}>
           <Flex gap={isMobile ? "sm" : "md"} direction={"column"} w={"100%"} align={"center"}>
             <Image fit="cover" radius={"xl"} withPlaceholder src={project?.imageUrl} width={isMobile ? "100%" : "100%"} height={isMobile ? 300 : 500} />
@@ -142,12 +144,12 @@ function OrgProjectDetails({ isAuth, user }: { isAuth: boolean, user: useAuthent
           <Button
             w={"100%"} maw={400} radius={"lg"}
             size="xl" compact sx={{
-              backgroundColor: project.interested ? `${theme.colors.green[6]}` : `${theme.colors.violet[7]}`,
+              backgroundColor: project?.interested ? `${theme.colors.green[6]}` : `${theme.colors.violet[7]}`,
               transition: "all 100ms ease-in-out"
             }}
             loading={buttonIsLoading}
             onClick={toggleProjectInterest}>
-            {project.interested ? "Remove Interest" : "Express Interest"}</Button>
+            {project?.interested ? "Remove Interest" : "Express Interest"}</Button>
           <Flex align={"start"} direction={"column"} className={classes.textContent} w={"100%"}>
             <Text align="center">Posted: {project?.createdAt}</Text>
             <Title order={1}>{project?.title}</Title>
@@ -160,7 +162,7 @@ function OrgProjectDetails({ isAuth, user }: { isAuth: boolean, user: useAuthent
           </Flex>
         </Container>
       </Skeleton>
-      <LoadingOverlay visible={project.title === ""} radius={"xl"} overlayBlur={2} overlayOpacity={0.3} loaderProps={{ size: "xl" }} />
+      <LoadingOverlay visible={project?.title === ""} radius={"xl"} overlayBlur={2} overlayOpacity={0.3} loaderProps={{ size: "xl" }} />
     </Box>
 
   )

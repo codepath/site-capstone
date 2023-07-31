@@ -48,7 +48,7 @@ const useStyles = createStyles((theme) => ({
 }))
 
 function VolunteerProjectDetails() {
-  const {isValidOrg} = useContext(AuthenticationContext)
+  const {isValidVolunteer} = useContext(AuthenticationContext)
   const params = useParams();
   const theme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
@@ -133,7 +133,7 @@ function VolunteerProjectDetails() {
     fetchProjectById();
   }, []);
   console.log("project : ", project)
-  return (project === undefined || !isValidOrg ) ? <NotAuthorized /> : (
+  return (project === undefined || !isValidVolunteer ) ? <NotAuthorized /> : (
     <Box p={0} m={0}>
       <GoBackButton mb={"md"} w={"100%"} maw={200} />
         <Container className={classes.container} px={isMobile ? 0 : "md"}>
