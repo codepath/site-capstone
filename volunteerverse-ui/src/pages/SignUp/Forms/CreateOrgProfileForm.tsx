@@ -5,10 +5,10 @@ import {
   Container, Title, Flex, Box, createStyles,
   LoadingOverlay,
   MultiSelect,
+  FileButton,
 } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 import { OrgFormValues } from '../../../props/forms';
-
 
 const useStyles = createStyles((theme) => ({
   container: {
@@ -28,7 +28,6 @@ const useStyles = createStyles((theme) => ({
   }
 }))
 
-
 function CreateOrgProfileForm({ form }: { form: UseFormReturnType<OrgFormValues> }) {
   /**
    * @todo: 
@@ -38,16 +37,6 @@ function CreateOrgProfileForm({ form }: { form: UseFormReturnType<OrgFormValues>
    * - handle image hosting
    */
   const { classes } = useStyles()
-  const inputRef = useRef<HTMLInputElement>(null); 
-  const [imageValue, setImageValue] = useState("")
-  const openFileBrowswer = () => {
-    inputRef.current?.click(); 
-  }
-  const setImageUrl : ChangeEventHandler  = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    console.log(form.values)
-    form.setFieldValue("imageUrl", file?.name || "");
-  }
 // console.log(form.values)
   return (
     <Container mt={"xl"}>
@@ -66,26 +55,18 @@ function CreateOrgProfileForm({ form }: { form: UseFormReturnType<OrgFormValues>
             align={"center"}
             gap={"sm"}
             mb={"xl"}>
+            <FileButton {...form.getInputProps("imageFile")}>
+              { (props) => <Button variant="light"
+                radius={"lg"}
+                styles={{
+                  root: {
+                    maxWidth: "30rem"
+                  }
+                }}
+                {...props}
+                >{form.values.imageFile?.name || "Upload Logo"}</Button>}
 
-            <Button variant="light"
-              {...form.getInputProps("imageUrl")}
-              // value={imageValue}
-              radius={"lg"}
-              styles={{
-                root: {
-                  maxWidth: "30rem"
-                }
-              }}
-              onClick={openFileBrowswer}>{form.values.imageUrl || "Upload Logo"}</Button>
-            <TextInput
-              styles={{
-                input: { display: 'none' }
-              }}
-              onChange={setImageUrl}
-              size='md'
-              ref={inputRef}
-              radius={"xl"}
-              type="file" />
+            </FileButton>
           </Flex>
         </Flex>
         <MultiSelect
@@ -115,6 +96,12 @@ function CreateOrgProfileForm({ form }: { form: UseFormReturnType<OrgFormValues>
           minRows={5}
           {...form.getInputProps('orgDescription')}
         />
+        <TextInput
+          my={"xl"}
+          radius={"xl"}
+          label="Website URL (optional)"
+          placeholder="websiteurl.org"
+          {...form.getInputProps("orgWebsite")}/>
       </Flex>
     </Container>
   )

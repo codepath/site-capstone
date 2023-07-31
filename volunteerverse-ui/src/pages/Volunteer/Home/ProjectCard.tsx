@@ -1,9 +1,12 @@
-import { createStyles, useMantineTheme, 
-    Paper, Flex, Title, Divider, 
-    Container, Group, Badge, 
-    Text, Image } from "@mantine/core";
+import {
+    createStyles, useMantineTheme,
+    Paper, Flex, Title, Divider,
+    Container, Group, Badge,
+    Text, Image, Space
+} from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { Link, useNavigate } from "react-router-dom";
+import { fetchPrettyTime } from "../../../utility/utility";
 
 export interface ProjectCardProps {
     imageUrl: string,
@@ -95,11 +98,11 @@ const useStyles = createStyles((theme) => ({
         textOverflow: "clip",
         maxWidth: 500,
     },
-    tag : {
+    tag: {
         zIndex: 2,
         transform: "scale(0.99)",
         transition: "all 200ms ease-in-out",
-        "&:hover" : {
+        "&:hover": {
             transform: "scale(1)",
             boxShadow: theme.shadows.md
         }
@@ -112,8 +115,9 @@ export default function ProjectCard(props: ProjectCardProps) {
     const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
 
     const goToCardDetails = () => {
+
         console.log("going to card details");
-        navigate("/projects/3");
+        navigate(`/projects/${props.id}`);
         /**
          * @todo: navigate to card details page
          */
@@ -134,7 +138,6 @@ export default function ProjectCard(props: ProjectCardProps) {
                             <Text>By: {<Text to={props.orgUrl} component={Link}>{props.orgName}</Text>}</Text>
                             <Text size={"sm"}> {props.approvedVolunteers} / {props.neededVolunteers} volunteers registered</Text>
                         </Flex>
-                        {/* <Space h={"lg"}/> */}
                         <Flex className={classes.detailsBody} direction={"column"}>
                             <Title p={"xs"} className={classes.descTitle} align="start" weight={600} order={3}>Project Description:</Title>
                             <Divider />
@@ -142,6 +145,7 @@ export default function ProjectCard(props: ProjectCardProps) {
                                 <Text p={"xs"} align="start">{props.description}</Text>
 
                             </Container>
+
                         </Flex>
                     </Flex>
                     <Flex direction={"column"} align={"center"} justify={"center"} className={classes.mediaContainer}>
@@ -154,7 +158,7 @@ export default function ProjectCard(props: ProjectCardProps) {
                     </Flex>
                 </Flex>
                 {/* Use a library to get time ago data */}
-                <Text align="center" size={"sm"}>Posted on: {props.createdAt}</Text>
+                <Text align="center" size={"sm"}>Posted: {props.createdAt ? fetchPrettyTime(props.createdAt) : "N/A"}</Text>
             </Paper>
         </>
     );

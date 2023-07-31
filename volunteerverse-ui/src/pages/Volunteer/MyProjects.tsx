@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import { useAuthenticationUserProp } from '../../services/hooks/useAuthentication'
+import React, { useContext, useEffect, useState } from 'react'
 import {
   Paper, Tabs, Title, Text,
   Box, Container, Group, Image,
@@ -8,14 +7,19 @@ import {
   Flex,
   ActionIcon
 } from '@mantine/core';
-import { ProjectProp } from './VolunteerProjectDetails';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { QueryBar, QueryProps } from '../../components/QueryBar';
 import { useForm } from '@mantine/form';
 import NotAuthorized from '../NotAuthorized';
 import { projectDetailsData } from './Home/data';
+import NoneFound from '../../components/NoneFound';
+import { VolunteerProjectProp } from '../../props/projects';
+import { AuthenticationContext } from '../../context/AuthenicationContext';
+import { ApiResponseProp, apiClient } from '../../services/ApiClient';
+import { fetchPrettyTime } from '../../utility/utility';
 
-function SlimProjectCard(project: ProjectProp) {
+function SlimProjectCard(project: VolunteerProjectProp) {
+  // use for org projects too
   const openMenu = () => {
     console.log("this is where menu opens")
   }
@@ -39,7 +43,7 @@ function SlimProjectCard(project: ProjectProp) {
           </Group>
           <Group>
             <Badge color={project.approved ? theme.colors.orange[4] : theme.colors.green[4]}>{project.approved ? "approved" : "pending approval"}</Badge>
-            <Text>Posted: {project.createdAt}</Text>
+            <Text>Posted: {project.createdAt ? fetchPrettyTime(project.createdAt) :  "N/A"}</Text>
           </Group>
         </Flex>
       </Group>
@@ -48,8 +52,9 @@ function SlimProjectCard(project: ProjectProp) {
 }
 
 
-function MyProjects({ isAuth, user }: { isAuth: boolean, user: useAuthenticationUserProp }) {
-  const [myProjects, setMyProjects] = useState<undefined | ProjectProp[]>(undefined)
+function MyProjects() {
+  const [myProjects, setMyProjects] = useState<undefined | VolunteerProjectProp[]>(undefined) // use undefined state to denote loading
+  const {isAuth, user} = useContext(AuthenticationContext);
 
   const queryForm = useForm<QueryProps>({
     initialValues: {
@@ -59,21 +64,32 @@ function MyProjects({ isAuth, user }: { isAuth: boolean, user: useAuthentication
     }
   });
   const searchMyProjects = async () => {
-    console.log("searching/setting my projects using query form ");
-    setMyProjects([projectDetailsData, projectDetailsData, projectDetailsData]);
+
+    // fetches project using the query form 
+    apiClient.fetchProjects("volunteer", queryForm.values).then(({ data, success, statusCode, error }: ApiResponseProp) => {
+      if (success) {
+        console.log("fetched recommended projects for volunteer successfully: ", data)
+        setMyProjects(data);
+      } else {
+        // display error notification? (stretch)
+        console.log("Unable to fetch volunteer data", `error: ${error} code: ${statusCode}`);
+      }
+    }).catch((error) => {
+      console.log("a very unexpeced error has occured: ", error)
+    });
+    console.log("fetchingProjects");
   }
   useEffect(() => {
-    console.log("fetching myprojects, call searchMyProjects here");
     searchMyProjects()
-  }, [])
-  console.log("nothing to see here");
+  }, []);
+
   /**
    * @todo: 
    * use 2? tabs to show projects volunteers is approved for, interested in to show projects a student is interested in
    * use simple card list layout
    * give volunteers option to remove interest from projects
    */
-  return !(isAuth && user.userType === "volunteer") ? <NotAuthorized /> : (
+  return !(isAuth && user?.userType === "volunteer") ? <NotAuthorized /> : (
     <>
       <Title align='left'>My Projects</Title>
         <Paper shadow={"md"} radius={"md"}>
@@ -87,12 +103,12 @@ function MyProjects({ isAuth, user }: { isAuth: boolean, user: useAuthentication
       <Container ml={"auto"} mr={"auto"}  maw={800}>
         <Skeleton visible={myProjects === undefined}>
           <Flex mt={"xl"} gap={"xl"} direction={"column"}>
-          {myProjects?.length ? myProjects?.map((project: ProjectProp, index: number) => {
+          {myProjects?.length ? myProjects?.map((project: VolunteerProjectProp, index: number) => {
             return (
               <SlimProjectCard key={`${project.createdAt}`} {...project} />
             )
           }) :
-            <NoneFound />
+            <NoneFound title='No Projects Found....' />
           }
           </Flex>
         </Skeleton>
@@ -102,12 +118,6 @@ function MyProjects({ isAuth, user }: { isAuth: boolean, user: useAuthentication
 }
 
 
-function NoneFound() {
-  return (
-    <Title>
-      No Projects Found
-    </Title>
-  )
-}
+
 
 export default MyProjects

@@ -1,4 +1,4 @@
-export interface volunteerRegisterProp {
+export interface VolunteerRegisterProp {
     firstName: string;
     lastName: string;
     skills: string[];
@@ -7,14 +7,22 @@ export interface volunteerRegisterProp {
     bio: string;
     password: string;
     userType: "volunteer";
-
 }
-export interface organizationRegisterProp{
+export interface OrganizationRegisterProp{
     email: string;
     password: string;
     orgName: string;
     founders: string;
     orgDescription: string;
     imageUrl: string;
+    orgWebsite: string;
     userType: "organization";
 }
+export interface ProjectRegisterProp{
+    title: string;
+    desc: string;
+    imageUrl?: string;
+    requestedPeople: number;
+    tags: string[];
+    
+} 

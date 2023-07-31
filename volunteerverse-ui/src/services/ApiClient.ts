@@ -1,11 +1,18 @@
 import axios from "axios";
 import { API_BASE_URL } from "../../constants"
-import { organizationRegisterProp, volunteerRegisterProp } from "../props/register";
+import { OrganizationRegisterProp, VolunteerRegisterProp, ProjectRegisterProp } from "../props/register";
+import { QueryProps } from "../components/QueryBar";
 
 interface requestProp {
     method : string,
     bodyData?: object,
     subDirectory : string
+}
+export interface ApiResponseProp {
+    success: boolean;
+    data?: any;
+    statusCode: number;
+    error?: undefined;
 }
 
 class ApiClient {
@@ -57,12 +64,21 @@ class ApiClient {
         }
         return this.request(requestOptions);
     }
-    async register(formData: volunteerRegisterProp | organizationRegisterProp) {
+    async register(formData: VolunteerRegisterProp | OrganizationRegisterProp) {
         // make request to signup user 
         const requestOptions = {
             method: "post",
             bodyData: formData,
             subDirectory: "/auth/register"
+        }
+        return this.request(requestOptions)
+    }
+    async createProject(formData: ProjectRegisterProp ) {
+        // creates new project for organizations
+        const requestOptions = {
+            method: "post",
+            bodyData: formData,
+            subDirectory: "/project/register"
         }
         return this.request(requestOptions)
     }
@@ -72,6 +88,17 @@ class ApiClient {
             method: "get",
             subDirectory: "/auth/me",
         }
+        return this.request(requestOptions);
+    }
+
+    async fetchProjects(userType: "organization" | "volunteer", query: QueryProps) {
+        /**
+         * @todo: use query parameters to filter search?
+         */
+        const requestOptions = {
+            method: "get",
+            subDirectory: `/${userType}/projects`,
+        };
         return this.request(requestOptions);
     }
     async fetchProjectById(projectId: string){
@@ -88,5 +115,38 @@ class ApiClient {
         }
         return this.request(requestOptions)
     }
+    async fetchAllTags(){
+        const requestOptions = {
+            method: "get",
+            subDirectory: `/project/tags`
+        }
+        return this.request(requestOptions)   
+    }
+    async toggleVolunteerApproval(volunteerEmail : string, projectId: string){
+        const requestOptions = {
+            method: "put",
+            bodyData: {email: volunteerEmail},
+            subDirectory: `/organization/project/status/${projectId}`,
+
+        }
+        return this.request(requestOptions)   
+    }
+    async toggleProjectStatus({projectId}  : {projectId :  number}){
+        const requestOptions = {
+            method: "put",
+            subDirectory: `/organization/project/${projectId}`,
+
+        }
+        return this.request(requestOptions) 
+    }
+    async deleteProject({projectId}  : {projectId :  number}){
+        const requestOptions = {
+            method: "delete",
+            subDirectory: `/organization/project/${projectId}`,
+
+        }
+        return this.request(requestOptions) 
+    }
 }
+
 export const apiClient = new ApiClient(API_BASE_URL);

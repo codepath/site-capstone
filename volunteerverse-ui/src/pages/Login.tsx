@@ -7,6 +7,8 @@ import { useDisclosure } from "@mantine/hooks";
 import { apiClient } from "../services/ApiClient";
 import { useForm } from "@mantine/form";
 import { useNavigate } from "react-router-dom";
+import { AuthenticationContext } from "../context/AuthenicationContext";
+import { useContext } from "react";
 
 
 const useStyles = createStyles((theme) => ({
@@ -33,8 +35,8 @@ const useStyles = createStyles((theme) => ({
 
 }))
 
-
-export default function Login({ setToken } : {setToken : (val: string) => void}) {
+export default function Login() {
+  const { setToken } = useContext(AuthenticationContext)
   const [showButtonLoader, { open: openButtonLoader, close: closeButtonLoader }] = useDisclosure(false)
   const { classes } = useStyles();
   const navigate = useNavigate();
@@ -60,7 +62,9 @@ export default function Login({ setToken } : {setToken : (val: string) => void})
           // if request is successful update user_token
           // and navigate to 
           console.log("successfully logged in user", data);
-          setToken(data.token);
+          // localStorage.setItem("user_token", data.token);
+          setToken?.(data.token);
+          // console.log("set token", data.token)
           navigate("/");
         } else {
           if (statusCode === 401) {

@@ -19,6 +19,7 @@ export class Projects {
     tags: string[];
   }) {
     const requiredInfo = ["orgId", "name", "desc", "requestedPeople", "tags"];
+    console.log(projectInfo)
     try {
       validateFields({
         required: requiredInfo,
@@ -79,8 +80,7 @@ export class Projects {
     const query = `SELECT * FROM projects WHERE id=$1`;
     const result = await db.query(query, [projectId]);
     //destructure to extract important info about project
-
-    if (result) {
+    if (result.rows[0].length > 0) {
       const {
         id,
         org_id,
@@ -101,7 +101,7 @@ export class Projects {
         founders: founders,
         website: website,
         projectName: project_name,
-        projectDesc: project_description,
+        description: project_description,
         createdAt: created_at,
         image: image_url,
         requestedPeople: requested_people,
@@ -117,7 +117,7 @@ export class Projects {
       if (userType == "organization") {
       }
     }
-    return new BadRequestError("Project not found");
+    throw new BadRequestError("Project not found");
   }
 
   static async getProjectsWithTag(tag: string) {
@@ -159,7 +159,7 @@ export class Projects {
     const query = `SELECT DISTINCT tag_name FROM project_tags`;
     const result = await db.query(query, []);
     const tags = [];
-    result.rows.forEach((row:any)=>{tags.push(row.tag_name)})
+    result.rows.forEach((row:any)=>{tags.push(row.tag_name)});
     return tags;
   }
 

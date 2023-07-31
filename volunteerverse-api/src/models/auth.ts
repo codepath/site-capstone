@@ -18,19 +18,18 @@ export class Auth{
             throw error
         }
 
-        const user = await this.fetchByEmail(creds.email.trim())
-        console.log(user)
-  
-
+        const user = await this.fetchByEmail(creds.email)
+        console.log("user: ", user)
+        
         if (user){
-            const {user_type} = user
+            const {userType} = user
             const isValid = await bcrypt.compare(creds.password, user.password)
             if (isValid===true){
-                if (user_type==="volunteer"){
+                if (userType==="volunteer"){
                     const volunteer = await Volunteer.fetchVolunteerByEmail(creds.email)
                     return await Volunteer.createPublicVolunteer(volunteer)
                 }
-                if (user_type==="organization"){
+                if (userType==="organization"){
                     return Organization.fetchOrganizationByEmail(creds.email)
                 }
             }
@@ -46,8 +45,12 @@ export class Auth{
         const user = result.rows[0]
         console.log(user)
         if (user){
-            
-            return user
+            return {
+                id: user.id,
+                email: user.email,
+                password: user.password,
+                userType: user.user_type,
+            }
         }
         return null
     }
