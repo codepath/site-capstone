@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { apiClient } from '../ApiClient'
 import { useLocalStorage } from '@mantine/hooks';
 import { useCallback } from 'react';
+import { OrgUserProp, VolunteerUserProp } from '../../props/users';
 // import useLoc
 export interface useAuthenticationUserProp {
   password: string,
@@ -17,7 +18,7 @@ export interface AuthenicationProp {
   isAuth?: boolean,
   isValidVolunteer?: boolean,
   isValidOrg?: boolean,
-  user?: useAuthenticationUserProp,
+  user?: VolunteerUserProp | OrgUserProp,
 }
 
  export const useAuthentication = (): AuthenicationProp => {

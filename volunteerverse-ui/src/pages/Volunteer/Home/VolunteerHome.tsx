@@ -29,8 +29,8 @@ function VolunteerHome() {
     apiClient.fetchProjects("volunteer", queryForm.values).then(({ data, success, statusCode, error }: ApiResponseProp) => {
       if (success) {
         console.log("fetched recommended projects for volunteer successfully: ", data)
-        // setVolunteerProjects(data);
-        setVolunteerProjects(projectCardData)
+        setVolunteerProjects(data);
+        // setVolunteerProjects(projectCardData)
       } else {
         setVolunteerProjects([]);
         // display error notification? (stretch)
@@ -60,7 +60,7 @@ function VolunteerHome() {
 
   return isValidVolunteer ? (
     <>
-      <Title>{`Welcome Back ${user?.email}`}</Title>
+      <Title>{`Welcome Back ${ user?.userType === "volunteer" ? user.firstName : ""}! `}</Title>
       <QueryBar {...queryForm} />
       <Button size="lg" radius={"md"} compact onClick={fetchProjects}>Search Projects</Button>
       {
