@@ -14,12 +14,34 @@ import { projectDetailsData } from '../../Volunteer/Home/data';
 import { VolunteerProjectProp } from '../../../props/projects';
 import { ApiResponseProp, apiClient } from '../../../services/ApiClient';
 import { AuthenticationContext } from '../../../context/AuthenicationContext';
+import { fetchPrettyTime } from '../../../utility/utility';
+import ProjectOptionsMenu from './ProjectOptionsMenu';
+import { notifications } from '@mantine/notifications';
 
-function SlimProjectCard(project: VolunteerProjectProp) {
+function SlimProjectCard({project, handleDelete}: {project: VolunteerProjectProp, handleDelete: ({ projectId } : {projectId :  number}) => void}) {
   // use for org projects too
-  const openMenu = () => {
-    console.log("this is where menu opens")
-  }
+  const toggleProjectActiveStatus = () => {
+    /**
+     * @description: toggles status state of a project between on and off
+     */
+    // apiClient.toggleProjectStatus({projectId :  project.id}).then(({success, data, statusCode, error}) => {
+    //     if (success) {
+    //         // change project active state here
+    //     } else{
+    //         console.log("error while toggling project active status : ", error)
+    //         notifications.show({
+    //             autoClose: 3000,
+    //             color: "red",
+    //             title: 'Uh-oh!',
+    //             message: "An error occured. Please try again later ",
+    //         })
+    //     }
+    // }).catch((error) => {
+    //     console.log("a really unexpected error occured: ", error)
+    // })
+    console.log("toggling projects status state")
+}
+
   const theme = useMantineTheme();
   return (
     <Paper sx={(theme) => ({
@@ -30,13 +52,10 @@ function SlimProjectCard(project: VolunteerProjectProp) {
       <Group noWrap={true}>
         <Image width={200} fit='cover' withPlaceholder src={project.imageUrl} />
         <Flex direction={"column"} h={"100%"} justify={"space-between"} >
-          <ActionIcon onClick={openMenu} radius={"xl"} sx={(theme) => ({ position: "relative", zIndex: 1000, alignSelf: "flex-end" })}>
-            <Text component='span' className='material-symbols-outlined'>more_vert</Text>
-          </ActionIcon>
-
+          <ProjectOptionsMenu projectId={project.id} handleArchiveToggle={toggleProjectActiveStatus} handleDelete={handleDelete}/>
           <Group position="left">
             <Title> <Text sx={{ transition: "all 200ms ease-in-out" }} to={`/projects/${project.id}`} component={Link}>{project.title}</Text></Title>
-            <Text>Posted: {project.createdAt}</Text>
+            <Text color='dimmed'>Posted: { project.createdAt ? fetchPrettyTime(project.createdAt) : "N/A"}</Text>
             {/* <Text>By: {<Text to={project.orgUrl} component={Link}>{project.orgName}</Text>}</Text> */}
           </Group>
           <Group>
@@ -49,8 +68,9 @@ function SlimProjectCard(project: VolunteerProjectProp) {
 }
 
 function OrgHome() {
+  
   const [postedProjects, setPostedProjects] = useState<VolunteerProjectProp[] | undefined>(undefined);
-  const {isAuth, user, } = useContext(AuthenticationContext);
+  const {isValidOrg, user, } = useContext(AuthenticationContext);
   const navigate = useNavigate();
   const queryForm = useForm<QueryProps>({
     initialValues: {
@@ -59,25 +79,45 @@ function OrgHome() {
       timeRange: "Year"
     }
   });
+  const deleteProject = ({ projectId: deleteProjectId } : {projectId :  number}) => {
+    // apiClient.deleteProject({projectId :  deleteProjectId}).then(({success, data, statusCode, error}) => {
+    //     if (success) {
+    //       console.log("deleting project")
+    //       setPostedProjects((initialProject) => initialProject?.filter((project) =>  project.id === deleteProjectId))
+    //         // change project active state here
+    //     } else{
+    //         console.log("error while toggling project active status : ", error)
+    //         notifications.show({
+    //             autoClose: 3000,
+    //             color: "red",
+    //             title: 'Uh-oh!',
+    //             message: "An error occured. Please try again later ",
+    //         })
+    //     }
+    // }).catch((error) => {
+    //     console.log("a really unexpected error occured while trying to delete a project", error)
+    // })
+    console.log("deleting projects...");
+  }
 
   const searchPostedProjects = () => {
     console.log("gettting org projects here");
     if (user) {
-      apiClient.fetchProjects(user.userType).then(({ success, statusCode, data, error }: ApiResponseProp) => {
+      apiClient.fetchProjects(user.userType, queryForm.values).then(({ success, statusCode, data, error }: ApiResponseProp) => {
         if (success) {
           console.log("successfully receieved posted projects", data);
           setPostedProjects(data.orgProjects)
         } else {
           // maybe set state for an error message
+          
+          setPostedProjects(undefined)
           console.log("an error occcured sending a request to fetch all projects", error);
         }
       }).catch((error) => {
         console.log("something very unexpected has occured while trying to search for project from an organization", error)
       })
-    } else {
-      console.log("user is undefined", user)
-    }
-    // setPostedProjects([projectDetailsData, projectDetailsData, projectDetailsData]);
+    } 
+    // setPostedProjects([projectDetailsData, projectDetailsData, projectDetailsData]); for testing**
   }
   useEffect(() => {
     searchPostedProjects();
@@ -85,7 +125,7 @@ function OrgHome() {
   /**
    * @todo - display dashboard for orgs to view/create/delete projects they've posted
    */
-  return !(isAuth && user?.userType === "organization") ? <NotAuthorized /> : (
+  return !(isValidOrg) ? <NotAuthorized /> : (
     <>
       <Title align='left'>My Projects</Title>
       <Paper shadow={"md"} radius={"md"}>
@@ -102,8 +142,8 @@ function OrgHome() {
           <Flex mt={"xl"} gap={"xl"} direction={"column"}>
             {postedProjects?.length ? postedProjects?.map((project: VolunteerProjectProp, index: number) => {
               return (
-                <SlimProjectCard key={`${project.createdAt}`} {...project} />
-              )
+                <SlimProjectCard project={project} handleDelete={deleteProject} key={`${project.createdAt}`} />
+                )
             }) :
               <NoneFound title='Post a project to see it here!' />
             }
