@@ -11,6 +11,7 @@ import VolunteerProjectDetails from "../../Volunteer/VolunteerProjectDetails";
 import { VolunteersTable } from "./VolunteersTable";
 import { AuthenticationContext } from "../../../context/AuthenicationContext";
 import NotAuthorized from "../../NotAuthorized";
+import OrgProjectDetails from "./OrgProjectDetails";
 const userList: VolunteerProp[] = [
   {
     email: 'user1@example.com',
@@ -82,7 +83,7 @@ function OrgProjectDetailsTabs() {
         </Tabs.List>
 
         <Tabs.Panel pt={"xs"} value="project">
-          <VolunteerProjectDetails />
+          <OrgProjectDetails />
         </Tabs.Panel>
 
         <Tabs.Panel pt={"xs"} value="volunteers">
