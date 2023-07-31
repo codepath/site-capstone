@@ -85,14 +85,14 @@ organizationRoutes.delete("/project/:projectId", async function(req,res,next){
 
 
 
-organizationRoutes.put("/project/interested/:projectId", async function (req, res, next) {
+organizationRoutes.get("/project/interested/:projectId", async function (req, res, next) {
        //req.body is what we put in insomnia when we test which to equate to what we put in the browser
        //that then goes into the function below 
        const projectId = parseInt(req.params.projectId)
   console.log("this is the req.body", req.params.projectId);
 const result = await Organization.fetchInterestedVolunteersByProjectId(projectId);
   if (result) {
-    res.status(201).json({ interested_students: result })
+    res.status(201).json({ interstedVolunteers: result })
   } else {
     res.status(404).json( { error: 'Project not found' } )
   }

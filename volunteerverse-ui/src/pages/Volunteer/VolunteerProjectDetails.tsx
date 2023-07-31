@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from "react"
-import { useAuthenticationUserProp } from "../../services/hooks/useAuthentication";
 import { Link, useParams } from "react-router-dom"
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { apiClient } from "../../services/ApiClient";
@@ -49,7 +48,7 @@ const useStyles = createStyles((theme) => ({
 }))
 
 function VolunteerProjectDetails() {
-  const {isAuth, user} = useContext(AuthenticationContext)
+  const {isValidVolunteer} = useContext(AuthenticationContext)
   const params = useParams();
   const theme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
@@ -131,10 +130,10 @@ function VolunteerProjectDetails() {
      * @todo: connect to backend
      */
     setProject(projectDetailsData);
-    // fetchProjectById();
+    fetchProjectById();
   }, []);
-  console.log(project)
-  return (project === undefined || isAuth === false) ? <NotAuthorized /> : (
+  console.log("project : ", project)
+  return (project === undefined || !isValidVolunteer ) ? <NotAuthorized /> : (
     <Box p={0} m={0}>
       <GoBackButton mb={"md"} w={"100%"} maw={200} />
         <Container className={classes.container} px={isMobile ? 0 : "md"}>

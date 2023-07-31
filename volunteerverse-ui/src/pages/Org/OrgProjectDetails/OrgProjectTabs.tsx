@@ -2,15 +2,18 @@ import { createStyles, useMantineTheme } from "@mantine/styles";
 import { useAuthenticationUserProp } from "../../../services/hooks/useAuthentication";
 
 import { Tabs, Title } from '@mantine/core';
-import { IconPhoto, IconMessageCircle, IconSettings, IconUsersGroup, IconUsers, IconFaceId, IconUser, IconDashboard, IconFile, IconSubtask, IconActivity, IconHexagon3d, IconAlertCircle, IconCartCheck } from '@tabler/icons-react';
+import { IconUser } from '@tabler/icons-react';
 import { useMediaQuery } from "@mantine/hooks";
 import { VolunteerProp } from "../../../props/users";
 import { useContext, useEffect, useState } from "react";
 import GoBackButton from "../../../components/GoBackButton";
 import VolunteerProjectDetails from "../../Volunteer/VolunteerProjectDetails";
 import { VolunteersTable } from "./VolunteersTable";
-import OrgProjectDetails from "./OrgProjectDetails";
 import { AuthenticationContext } from "../../../context/AuthenicationContext";
+import NotAuthorized from "../../NotAuthorized";
+import OrgProjectDetails from "./OrgProjectDetails";
+import { apiClient } from "../../../services/ApiClient";
+import { useParams } from "react-router";
 const userList: VolunteerProp[] = [
   {
     email: 'user1@example.com',
@@ -58,20 +61,32 @@ const useStyles = createStyles((theme) => ({
 }));
 
 function OrgProjectDetailsTabs() {
-  // const { isAuth, user } = useContext(AuthenticationContext);
+  const { projectId } = useParams();
+  const { isValidOrg } = useContext(AuthenticationContext);
   const theme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
   const [projectVolunteers, setProjectVolunteers] = useState<undefined | VolunteerProp[]>(undefined);
+  // handle loading states
 
   useEffect(() => {
-    // get interested volunteers here;
-    // decide whether to approve and reject
+    // makes call to backend api to populate volunteers data
+    console.log("getting volunteers from database")
+    if (!projectId) return; // returns if project id is undefined
+    apiClient.fecthVolunteersByProject(parseInt(projectId)).then(({ success, data, statusCode, error }) => {
+      if (success) {
+        console.log("found volunteers for given project: ", data)
+        setProjectVolunteers(data.interstedVolunteers)
+      } else {
+        console.log("Error occured while trying to find volunteers: ", {error, statusCode})
+      }
+    }).catch((error) => {
+      console.log("a very unexpected error has occured")
+    })
   }, [])
 
-  // two tabs, with left tab showing volunteers
   const { classes } = useStyles();
 
-  return (
+  return !isValidOrg ? <NotAuthorized /> : (
 
     <>
       <GoBackButton />
@@ -82,11 +97,11 @@ function OrgProjectDetailsTabs() {
         </Tabs.List>
 
         <Tabs.Panel pt={"xs"} value="project">
-          <VolunteerProjectDetails />
+          <OrgProjectDetails />
         </Tabs.Panel>
 
         <Tabs.Panel pt={"xs"} value="volunteers">
-          <VolunteersTable volunteerData={userList} />
+          <VolunteersTable volunteerData={userList || []} />
         </Tabs.Panel>
 
       </Tabs>
