@@ -312,12 +312,17 @@ userType: "organization";
     const result = await db.query(
       // make sure this matches spelling in the table too!!
       `SELECT 
-      org_id, 
-      project_name,
-      project_description,
-      image_url,
-      requested_people,
-      approved_people
+       id,
+       org_id AS "orgId", 
+       project_name AS "title",
+       project_description AS "description,
+       image_url as "imageUrl",
+       requested_people as "requestedPeople",
+       approved_people as "approvedPeople",
+       tags,
+       created_at as "createdAt",
+       founders,
+       active,
        FROM projects
        WHERE  org_id = $1`,
       [org_id]

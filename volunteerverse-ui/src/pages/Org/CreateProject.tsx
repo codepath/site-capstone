@@ -12,6 +12,7 @@ import GoBackButton from '../../components/GoBackButton';
 import { useMediaQuery } from '@mantine/hooks';
 import { useNavigate } from 'react-router-dom';
 import { AuthenticationContext } from '../../context/AuthenicationContext';
+import { notifications } from '@mantine/notifications';
 /**
  * @todo: 
  * - make context for use authenication instead of passing down props?
@@ -74,13 +75,23 @@ function CreateProject() {
       const payload = {
         ...form.values,
         name: form.values.title,
+        tags: ["all"],
+        imageUrl: form.values.imageFile?.name || "",
+        // @todo: change imageUrl using image hosting api
       }
-      apiClient.createProject(form.values).then(({ data, success, error, statusCode }) => {
+      apiClient.createProject(payload).then(({ data, success, error, statusCode }) => {
         if (success) {
           console.log("created new project")
+          console.log("data : ", data)
           navigate("/");
         } else {
           console.log("failed to create new project. show error notification here")
+          notifications.show({
+            autoClose: 3000,
+            color: "red",
+            title: 'Uh-oh!',
+            message: "An error occured. Please try again later ",
+          })
         }
       }).catch((error) => {
         console.log("a very unexpected error has occured", error)

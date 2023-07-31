@@ -10,7 +10,7 @@ export const projectRoutes = express.Router();
 
 
 
-projectRoutes.post("/register", async function (req, res, next){
+projectRoutes.post("/register", requireAuthenticatedUser, async function (req, res, next){
     try{
       const {id} = res.locals.user
         const project = await Projects.registerProject({...req.body, orgId: id})

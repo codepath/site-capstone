@@ -8,6 +8,12 @@ interface requestProp {
     bodyData?: object,
     subDirectory : string
 }
+export interface ApiResponseProp {
+    success: boolean;
+    data?: any;
+    statusCode: number;
+    error?: undefined;
+}
 
 class ApiClient {
     private baseUrl: string
@@ -72,7 +78,7 @@ class ApiClient {
         const requestOptions = {
             method: "post",
             bodyData: formData,
-            subDirectory: "/project"
+            subDirectory: "/project/register"
         }
         return this.request(requestOptions)
     }
@@ -126,10 +132,5 @@ class ApiClient {
         return this.request(requestOptions)   
     }
 }
-export interface ApiResponseProp {
-    success: boolean;
-    data?: any;
-    statusCode: number;
-    error?: undefined;
-}
+
 export const apiClient = new ApiClient(API_BASE_URL);

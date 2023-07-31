@@ -19,6 +19,7 @@ export class Projects {
     tags: string[];
   }) {
     const requiredInfo = ["orgId", "name", "desc", "requestedPeople", "tags"];
+    console.log(projectInfo)
     try {
       validateFields({
         required: requiredInfo,
@@ -100,7 +101,7 @@ export class Projects {
         founders: founders,
         website: website,
         projectName: project_name,
-        projectDesc: project_description,
+        description: project_description,
         createdAt: created_at,
         image: image_url,
         requestedPeople: requested_people,
