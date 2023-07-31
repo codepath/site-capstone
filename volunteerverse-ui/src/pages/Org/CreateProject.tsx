@@ -51,7 +51,7 @@ function CreateProject() {
     },
     validateInputOnChange: ["requestedPeople"],
     validate: (values) => ({
-      title: values.title.trim().length > 0  && values.title.trim().length < 20 ? null : "Title cannot be empty of greater than 20 characters",
+      title: values.title.trim().length > 0  && values.title.trim().length <= 80 ? null : "Title cannot be empty of greater than 20 characters",
       desc: (values.desc.trim().length < 500 && values.desc.trim().length > 20) ? null : "Please provide a shorter/longer description",
       // imageFile: no image validation required
       requestedPeople: values.requestedPeople > 0 ? null : "Requested people must be greater than 0",
@@ -73,6 +73,7 @@ function CreateProject() {
       console.log("creating new project with the following form values: ", form.values)
       const payload = {
         ...form.values,
+        orgName: user?.userType === "organization" ? user.orgName : "N/A",
         name: form.values.title,
         tags: ["all"],
         imageUrl: form.values.imageFile?.name || "",
@@ -148,13 +149,13 @@ function CreateProject() {
               </Flex>
             </Flex>
             <TextInput
-              maxLength={20}
+              maxLength={80}
               size={isMobile ? 'sm' : 'md'}
               radius={"lg"}
               withAsterisk
               label="Project Title"
               placeholder="Full stack developer needed for..."
-              description="Max: 20 Characters"
+              description="Max: 80 Characters"
               {...form.getInputProps('title')}
               mb={"md"} />
             <TextInput
@@ -178,7 +179,7 @@ function CreateProject() {
               mb={"md"}
             />
             <Textarea
-            maxLength={500}
+              maxLength={500}
               radius={"lg"}
               size={isMobile ? 'sm' : 'md'}
               withAsterisk
