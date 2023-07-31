@@ -14,20 +14,22 @@ import {
   Flex,
   Box
 } from "@mantine/core";
+import { notifications } from '@mantine/notifications';
 import NotAuthorized from "../NotAuthorized";
 import { projectDetailsData } from "./Home/data";
 import GoBackButton from "../../components/GoBackButton";
 import { VolunteerProjectProp } from "../../props/projects";
 import { AuthenticationContext } from "../../context/AuthenicationContext";
+import { fetchPrettyTime } from "../../utility/utility";
 
 
 
 const useStyles = createStyles((theme) => ({
   container: {
-    display: "flex",
-    flexDirection: "column",
-    gap: `calc(${theme.spacing.xl} * 1.5)`,
-    alignItems: "center",
+    // display: "flex",
+    // flexDirection: "column",
+    // gap: `calc(${theme.spacing.xl} * 1.5)`,
+    // alignItems: "center",
     // height: "100%"
   },
   textContent: {
@@ -76,10 +78,10 @@ function VolunteerProjectDetails() {
     if (projectId) {
       apiClient.updateProjectInterestByUser(projectId).then((response) => {
         const { data, success, statusCode, error } = response;
-        console.log("updating interested from ", project?.interested, " to ", !project?.interested)
         if (success) {
-          console.log("toggling user interest");
-
+          console.log("updating interested from ", project?.interested, " to ", !project?.interested)
+          console.log("toggling user interest", data);
+          // toggles interest for a volunteer user
           setProject((initialData) => {
             if (initialData) {
               return {
@@ -87,12 +89,18 @@ function VolunteerProjectDetails() {
                 interested: !initialData.interested
               }
             }
-            return undefined;
+            return undefined
           });
           hideLoadingButton();
         } else {
           console.log("error status code: ", statusCode);
-          console.log('unable to update users interest.', error)
+          console.log('unable to update users interest.', error);
+          notifications.show({
+            autoClose: 3000,
+            color: "red",
+            title: 'Uh-oh!',
+            message: "An error occured. Please try again later ",
+          })
           hideLoadingButton();
         }
       })
@@ -111,7 +119,7 @@ function VolunteerProjectDetails() {
           console.log("found project", data);
           setProject(data);
         } else if (statusCode === 400) {
-          // set project to undefined if unsuccessful
+          // set project to undefined if unsuccessful (status code is only 400 when project is not found)
           setProject(undefined)
         } else {
           // same as above, but just for error logging
@@ -129,10 +137,9 @@ function VolunteerProjectDetails() {
   return (project === undefined || isAuth === false) ? <NotAuthorized /> : (
     <Box p={0} m={0}>
       <GoBackButton mb={"md"} w={"100%"} maw={200} />
-      <Skeleton visible={project.title === ""}>
         <Container className={classes.container} px={isMobile ? 0 : "md"}>
           <Flex gap={isMobile ? "sm" : "md"} direction={"column"} w={"100%"} align={"center"}>
-            <Image fit="cover" radius={"xl"} withPlaceholder src={project?.imageUrl} width={isMobile ? "100%" : "100%"} height={isMobile ? 300 : 500} />
+            <Image radius={"xl"} withPlaceholder src={project?.imageUrl} width={isMobile ? "100%" : "100%"} height={isMobile ? 300 : 500} />
             <Group variant="filled" >
               {project?.tags.map((tag) => {
                 return (
@@ -142,27 +149,41 @@ function VolunteerProjectDetails() {
             </Group>
           </Flex>
           <Button
-            w={"100%"} maw={400} radius={"lg"}
-            size="xl" compact sx={{
-              backgroundColor: project.interested ? `${theme.colors.green[6]}` : `${theme.colors.violet[7]}`,
+          // styles={{root: { ':active': { backgroundColor: project.interested ? `${theme.colors.green[6]}` : `${theme.colors.violet[7]}` }}}}
+             maw={400} radius={"lg"}
+            size={isMobile ? "lg" : "xl"} compact sx={{
+              // border: "none",
+              color: project.interested ? `${theme.white}` : `${theme.colors.violet[7]}`,
               transition: "all 100ms ease-in-out"
             }}
+            variant={project.interested ? `filled` : `outline`}
             loading={buttonIsLoading}
-            onClick={toggleProjectInterest}>
+            onClick={toggleProjectInterest}
+            my={"xl"}
+            >
             {project.interested ? "Remove Interest" : "Express Interest"}</Button>
-          <Flex align={"start"} direction={"column"} className={classes.textContent} w={"100%"}>
-            <Text color="dimmed" align="center">Posted: {project?.createdAt}</Text>
-            <Title order={1}>{project?.title}</Title>
-            <Title p={isMobile ? "xs" : "sm"} order={4}>by {!project.orgUrl ? `${project?.orgName}` : <Link to={project.orgUrl}>{project?.orgName}</Link>}</Title>
-            <Title order={2}>Description:</Title>
-            <Text p={isMobile ? "xs" : "sm"}>{project?.description}</Text>
-            <Divider />
+
+          {/* <Flex align={"start"} direction={"column"} className={classes.textContent} w={"100%"}> */}
+          <div>
+            <Title mt={"xl"} align="center" order={1}>{project?.title}</Title>
+            <Title align="center" p={isMobile ? "xs" : "sm"} order={4}>by {!project.orgUrl ? `${project?.orgName}` : <Link to={project.orgUrl}>{project?.orgName}</Link>}</Title>
+            <Text mb={"xl"} color="dimmed" align="center">Posted: {project.createdAt ? fetchPrettyTime(project.createdAt) :  "N/A"}</Text>
+          </div>
+           <Divider my={"lg"}/>
+          <div>
+            <Title align="start" order={2}>Description:</Title>
+            <Text align="left" p={isMobile ? "xs" : "sm"}>{project?.description}</Text>
+          </div>
+            <Divider my={"lg"} />
+            <div>
             <Title align="left" order={2}>About {project?.orgName}:</Title>
             <Text align="left" p={isMobile ? "xs" : "sm"}>{project?.orgDesc}</Text>
-          </Flex>
+
+            </div>
+           <Divider my={"lg"} />
+          {/* go back button? */}
         </Container>
-      </Skeleton>
-      <LoadingOverlay visible={project.title === ""} radius={"xl"} overlayBlur={2} overlayOpacity={0.3} loaderProps={{ size: "xl" }} />
+      <LoadingOverlay visible={project?.title === ""} radius={"xl"} overlayBlur={2} overlayOpacity={0.9} loaderProps={{ size: "xl" }} />
     </Box>
 
   )
