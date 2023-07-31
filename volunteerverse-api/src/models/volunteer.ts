@@ -246,5 +246,4 @@ static async expressedInterest(projectId: number, email:string){
   }
   return null;
 }
-
 }
