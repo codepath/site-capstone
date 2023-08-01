@@ -5,11 +5,8 @@ import { FileButton, MultiSelect } from "@mantine/core";
 import { skillsTags } from "../../../../constants";
 import {
     Button, Container, Flex,
-    Image, TextInput, Textarea, Title
+    Image, Textarea, Title
 } from "@mantine/core";
-
-import { useRef } from "react";
-
 const useStyles = createStyles((theme) => ({
     title: {
         color: theme.colors.violet[9],
