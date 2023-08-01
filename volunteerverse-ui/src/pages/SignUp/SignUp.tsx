@@ -175,7 +175,6 @@ export default function SignUp( {  userType } : {userType : "organization" | "vo
     apiClient.register({ ...requestBody }).then(({ success, statusCode, data, error }) => {
       if (success) {
         console.log("new user. data: ", data);
-        // stateApi.setAuth(data.token);
         setToken?.(data.token);
         navigate("/")
       } else if (statusCode === 400) {
