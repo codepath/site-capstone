@@ -64,11 +64,10 @@ function MyProjects() {
     }
   });
   const searchMyProjects = async () => {
-
     // fetches project using the query form 
-    apiClient.fetchProjects("volunteer", queryForm.values).then(({ data, success, statusCode, error }: ApiResponseProp) => {
+    apiClient.fetchAllInterestedProjects().then(({ data, success, statusCode, error }: ApiResponseProp) => {
       if (success) {
-        console.log("fetched recommended projects for volunteer successfully: ", data)
+        console.log("fetched all interseted for volunteer successfully: ", data)
         setMyProjects(data);
       } else {
         // display error notification? (stretch)
@@ -80,8 +79,9 @@ function MyProjects() {
     console.log("fetchingProjects");
   }
   useEffect(() => {
+
     searchMyProjects()
-  }, []);
+  }, [user]);
 
   /**
    * @todo: 
@@ -96,7 +96,7 @@ function MyProjects() {
         <Skeleton visible={myProjects === undefined}>
           <Group>
             <QueryBar {...queryForm} />
-            <Button onClick={ () => {setMyProjects(undefined); searchMyProjects()}} variant='light'>Search Filter</Button>
+            <Button onClick={ () => {setMyProjects(undefined); searchMyProjects();}} variant='light'>Search Filter</Button>
           </Group>
         </Skeleton>
         </Paper>
