@@ -41,7 +41,7 @@ function VolunteerHome() {
     });
     console.log("fetchingProjects");
   }
-  useEffect(() => { fetchProjects() }, []) // fetch projects
+  useEffect(() => { fetchProjects() }, [user]) // fetch projects
   const queryForm = useForm<QueryProps>({
     initialValues: {
       search: "",

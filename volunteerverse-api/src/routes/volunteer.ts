@@ -8,7 +8,7 @@ const volunteerRoutes = express.Router();
 volunteerRoutes.get("/skills", async function (req, res, next) {
   const { email } = res.locals.user;
   try {
-    const result = await Volunteer.fetchAllSkills(email);
+    const result = await Volunteer.fetchAllVolunteerSkills(email);
     res.status(200).json({skills: result});
   } catch (error) {
     next(error);
@@ -37,6 +37,18 @@ volunteerRoutes.get("/projects", async function (req, res, next) {
     const result = await Volunteer.getVolunteersProjectFeed(email);
     res.status(200).json(result)
   } catch (error){
+    console.log("sending error")
+    next (error)
+  }
+});
+/** Route that returns the project feed for a volunteer */
+volunteerRoutes.get("/projects/interested", async function (req, res, next) {
+  const { email } = res.locals.user;
+  try{
+    const result = await Volunteer.getInterestedProjects(email);
+    res.status(200).json(result)
+  } catch (error){
+    console.log("sending error")
     next (error)
   }
 });

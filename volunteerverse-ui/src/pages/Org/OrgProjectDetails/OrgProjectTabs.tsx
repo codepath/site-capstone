@@ -72,7 +72,7 @@ function OrgProjectDetailsTabs() {
     // makes call to backend api to populate volunteers data
     console.log("getting volunteers from database")
     if (!projectId) return; // returns if project id is undefined
-    apiClient.fecthVolunteersByProject(parseInt(projectId)).then(({ success, data, statusCode, error }) => {
+    apiClient.fecthInterestedVolunteersByProjectId(parseInt(projectId)).then(({ success, data, statusCode, error }) => {
       if (success) {
         console.log("found volunteers for given project: ", data)
         setProjectVolunteers(data.interstedVolunteers)

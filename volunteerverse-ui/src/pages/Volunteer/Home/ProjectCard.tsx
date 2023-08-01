@@ -14,10 +14,11 @@ export interface ProjectCardProps {
     tags: string[];
     id: string;
     createdAt: number;
+    orgDescription: string,
     description: string;
     orgName: string, // currently does not exist in backend
     orgUrl: string, // currently does not exist in backend
-    neededVolunteers: number,
+    requestedVolunteers: number,
     approvedVolunteers: number,
 }
 const useStyles = createStyles((theme) => ({
@@ -136,7 +137,7 @@ export default function ProjectCard(props: ProjectCardProps) {
                         <Flex direction={"column"}>
                             <Title align="center" className={classes.title}>{props.title}</Title>
                             <Text>By: {<Text to={props.orgUrl} component={Link}>{props.orgName}</Text>}</Text>
-                            <Text size={"sm"}> {props.approvedVolunteers} / {props.neededVolunteers} volunteers registered</Text>
+                            <Badge> <Text size={"sm"}> {props.approvedVolunteers} / {props.requestedVolunteers} approved</Text></Badge>
                         </Flex>
                         <Flex className={classes.detailsBody} direction={"column"}>
                             <Title p={"xs"} className={classes.descTitle} align="start" weight={600} order={3}>Project Description:</Title>
@@ -149,7 +150,7 @@ export default function ProjectCard(props: ProjectCardProps) {
                         </Flex>
                     </Flex>
                     <Flex direction={"column"} align={"center"} justify={"center"} className={classes.mediaContainer}>
-                        <Image radius={"xl"} src={props.imageUrl} className={classes.image} />
+                        <Image width={200} height={200} withPlaceholder radius={"xl"} src={props.imageUrl} className={classes.image} />
                         <Group className={classes.tagGroup}>
                             {props.tags.map((tag: string) => {
                                 return <Badge key={tag} size={isMobile ? "lg" : "xl"} variant="light" className={classes.tag} component={Text}>{tag}</Badge>

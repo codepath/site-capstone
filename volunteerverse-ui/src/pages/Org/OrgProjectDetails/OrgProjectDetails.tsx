@@ -62,7 +62,7 @@ function OrgProjectDetails() {
     orgName: "",
     orgUrl: "",
     imageUrl: "",
-    orgDesc: "",
+    orgDescription: "",
     founders: "",
     tags: [""],
     interested: false,
@@ -158,7 +158,7 @@ function OrgProjectDetails() {
             <Text p={isMobile ? "xs" : "sm"}>{project?.description}</Text>
             <Divider />
             <Title align="left" order={2}>About {project?.orgName}:</Title>
-            <Text align="left" p={isMobile ? "xs" : "sm"}>{project?.orgDesc}</Text>
+            <Text align="left" p={isMobile ? "xs" : "sm"}>{project?.orgDescription}</Text>
           </Flex>
         </Container>
       </Skeleton>

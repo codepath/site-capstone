@@ -20,10 +20,7 @@ export class Volunteer {
     bio: string;
     image_url: string;
   }) {
-    const skills = await this.fetchAllSkills(volunteer.email);
-    const interestedProjects = await this.getInterestedProjects(
-      volunteer.email
-    );
+    const skills = await this.fetchAllVolunteerSkills(volunteer.email);
     const approvedProjects = await this.getApprovedProjects(volunteer.email);
 
     return {
@@ -34,7 +31,7 @@ export class Volunteer {
       bio: volunteer.bio,
       imageUrl: volunteer.image_url,
       skills: skills,
-      interestedProjects: interestedProjects,
+      // interestedProjects: interestedProjects,
       approvedProjects: approvedProjects,
       userType: "volunteer",
     };
@@ -156,7 +153,7 @@ export class Volunteer {
    * @param email
    */
 
-  static async fetchAllSkills(email: string) {
+  static async fetchAllVolunteerSkills(email: string) {
     const query = `SELECT skill FROM volunteer_skills WHERE email=$1`;
     const result = await db.query(query, [email]);
     const skills = [];
@@ -173,11 +170,9 @@ export class Volunteer {
    */
 
   static async getInterestedProjects(email: string) {
-    const query = `SELECT project_id FROM interested_volunteers WHERE email=$1 and approved=$2`;
-    const result = await db.query(query, [email, false]);
-    if (result) {
-      return result.rows;
-    }
+    const query = `SELECT project_id FROM interested_volunteers WHERE email=$1`;
+    const result = await db.query(query, [email]);
+    return result.rows;
   }
 
   /**
@@ -230,10 +225,16 @@ export class Volunteer {
     return result.rows[0];
   }
 
+  /**
+   * 
+   * @param email 
+   * @returns ranked projects based on a volunteers skills tags
+   */
   static async getVolunteersProjectFeed(email: string) {
+    // needs error catching to avoid server breaking (long-term: needs code refactoring)
     const projects = new Set<any>();
+    const volunteerSkills = await this.fetchAllVolunteerSkills(email);
 
-    const volunteerSkills = await this.fetchAllSkills(email);
     await Promise.all(
       volunteerSkills.map(async (tag: string) => {
         const tagProjects = await Projects.getProjectsWithTag(tag);
@@ -241,7 +242,19 @@ export class Volunteer {
           projects.add(project); // Use add() to add unique project objects to the Set
         });
       })
-    );
+    )
+
+    // add remaing projects to the end 
+    const remainingProjects = await Projects.getAllProjects()
+    console.log("found remaining Projects: ", remainingProjects);
+    remainingProjects.forEach((remainingProject) => {
+      if (!projects.has(remainingProject)){
+        projects.add(remainingProject);
+      }
+    })
+
+    // get all remaining projects and return them 
+
     return Array.from(projects);
   }
 

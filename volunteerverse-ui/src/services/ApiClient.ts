@@ -144,10 +144,17 @@ class ApiClient {
         }
         return this.request(requestOptions) 
     }
-    async fecthVolunteersByProject(projectId : number){
+    async fecthInterestedVolunteersByProjectId(projectId : number){
         const requestOptions = {
             method: "get",
             subDirectory: `/organization/project/interested/${projectId}`,
+        }
+        return this.request(requestOptions) 
+    }
+    async fetchAllInterestedProjects(){
+        const requestOptions = {
+            method: "get",
+            subDirectory: `/volunteer/projects/interested`,
         }
         return this.request(requestOptions) 
     }
