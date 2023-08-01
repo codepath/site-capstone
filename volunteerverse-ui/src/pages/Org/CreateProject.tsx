@@ -13,6 +13,7 @@ import { useMediaQuery } from '@mantine/hooks';
 import { useNavigate } from 'react-router-dom';
 import { AuthenticationContext } from '../../context/AuthenicationContext';
 import { notifications } from '@mantine/notifications';
+import NotAuthorized from '../NotAuthorized';
 /**
  * @todo: 
  * - test org deleting project
@@ -40,7 +41,7 @@ const useStyles = createStyles((theme) => ({
 }))
 
 function CreateProject() {
-  const {isAuth, user} = useContext(AuthenticationContext);
+  const {isValidOrg, user} = useContext(AuthenticationContext);
   const form = useForm<ProjectFormValues>({
     initialValues: {
       title: "",
@@ -114,7 +115,7 @@ function CreateProject() {
       }
     });
   }, [])
-  return (
+  return !isValidOrg ? <NotAuthorized /> : (
     <>
       <GoBackButton mb={"md"}/>
       <Paper maw={900} mx={"auto"} radius={"lg"} p={"xl"}>
