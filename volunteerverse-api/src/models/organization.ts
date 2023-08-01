@@ -153,7 +153,7 @@ userType: "organization";
     const auth_result = await db.query(
       `SELECT 
         
-        user_type
+        user_type as "userType"
         
            FROM  authentication
            WHERE  email = $1`,
