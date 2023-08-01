@@ -161,7 +161,7 @@ userType: "organization";
 
     console.log("auth res", auth_result.rows[0]);
 
-    if (org_result) {
+    if (org_result.rows.length) {
       console.log("returning org user: ", {...org_result.rows[0], userType: "organization"})
       return {...org_result.rows[0], userType: "organization"};
     }
