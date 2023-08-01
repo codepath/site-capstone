@@ -43,7 +43,7 @@ export const projectDetailsData = {
     orgName: "Sample Organization",
     orgUrl: "https://www.redcross.org/?cid=generic&med=cpc&source=google&scode=RSG00000E017&&&gclid=Cj0KCQjwn_OlBhDhARIsAG2y6zMmRZkpZJWh8o0MbaWQ2b5Yxl9J2QOSr7OoBZ5Uo4UcihyCHm1pwToaAl--EALw_wcB&gclsrc=aw.ds",
     imageUrl: 'https://st2.depositphotos.com/1796420/7808/v/450/depositphotos_78080722-stock-illustration-web-development-illustration-computer-display.jpg',
-    orgDesc: "A brief description of the sample organization.",
+    orgDescription: "A brief description of the sample organization.",
     founders: "John Doe, Jane Smith",
     interested: true,
     neededVolunteers: 10,
