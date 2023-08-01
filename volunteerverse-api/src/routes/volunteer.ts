@@ -41,5 +41,16 @@ volunteerRoutes.get("/projects", async function (req, res, next) {
     next (error)
   }
 });
+/** Route that returns the project feed for a volunteer */
+volunteerRoutes.get("/projects/interested", async function (req, res, next) {
+  const { email } = res.locals.user;
+  try{
+    const result = await Volunteer.getInterestedProjects(email);
+    res.status(200).json(result)
+  } catch (error){
+    console.log("sending error")
+    next (error)
+  }
+});
 
 export { volunteerRoutes };
