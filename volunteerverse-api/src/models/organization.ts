@@ -42,7 +42,6 @@ userType: "organization";
     const salt = await bcrypt.genSalt(BCRYPT_WORK_FACTOR);
     const hashedPassword = await bcrypt.hash(creds.password, salt);
     const normalizedOrgEmail = creds.email.toLowerCase().trim();
-
     const orgResult = await db.query(
       `INSERT INTO organizations (
         organization_name,
@@ -148,7 +147,7 @@ userType: "organization";
       // in that table after we find it
     );
 
-    console.log("org res", org_result);
+    console.log("org res", org_result.rows);
 
     const auth_result = await db.query(
       `SELECT 
@@ -161,10 +160,6 @@ userType: "organization";
     );
 
     console.log("auth res", auth_result.rows[0]);
-
-    if (auth_result.rows[0].length === 0) {
-      throw new BadRequestError();
-    }
 
     if (org_result) {
       console.log("returning org user: ", {...org_result.rows[0], userType: "organization"})
