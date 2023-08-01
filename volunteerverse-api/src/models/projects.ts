@@ -4,7 +4,19 @@ import { validateFields } from "../utils/validate";
 import { BadRequestError, NotFoundError } from "../utils/errors";
 import { Organization } from "./organization";
 import { Volunteer } from "./volunteer";
-
+export interface ProjectCardProp {
+  id: number,
+  title: string,
+  orgName: string,
+  founders: string,
+  orgUrl?: string,
+  description: string,
+  createdAt: string | number,
+  imageUrl: string,
+  requestedVolunteers: number,
+  approvedVolunteers: number,
+  tags: string[],
+}
 export class Projects {
   /**
    * Inserts a project and the info into the database
@@ -91,18 +103,38 @@ export class Projects {
   }
 
   /**
+   * Get's all projects from database with info 
+   * (currently only for volunteers ) 
+   * @returns 
+   */
+  static async getAllProjects() : Promise<ProjectCardProp[]>{
+    const allProjects = []
+    const allProjectIds = (await db.query(`SELECT project_id FROM project_tags`)).rows;
+    console.log("project ids found", allProjectIds);
+
+    for await (const {project_id} of allProjectIds) {
+      const project = await this.fetchProjectByProjectId(project_id, "volunteer");
+      console.log("retrieved project: ", project);
+      allProjects.push(project);
+    }
+
+    return allProjects;
+  }
+
+  /**
    * Returns project information given the project id
+   * (using the ProjectCardProp)
    * @param id
    */
   static async fetchProjectByProjectId(
     projectId: number,
     userType: string,
     email?: string
-  ) {
+  ) : Promise<ProjectCardProp> {
     const query = `SELECT * FROM projects WHERE id=$1`;
     const result = await db.query(query, [projectId]);
     //destructure to extract important info about project
-    if (result.rows[0].length > 0) {
+    if (result.rows.length > 0) {
       const {
         id,
         org_id,
@@ -114,33 +146,33 @@ export class Projects {
         approved_people,
       } = result.rows[0];
       const tags = await this.getProjectTags(id);
-      const { organization_name, founders, website } =
+      const { organization_name, founders, website, organization_description, logo_url } =
         await Organization.getOrgById(org_id);
-
       let projectCard = {
         id: id,
         orgName: organization_name,
+        orgDescription: organization_description,
+        orgLogoUrl: logo_url,
         founders: founders,
-        website: website,
-        projectName: project_name,
+        orgUrl: website,
+        title: project_name,
         description: project_description,
         createdAt: created_at,
-        image: image_url,
-        requestedPeople: requested_people,
-        approvedPeople: approved_people,
+        imageUrl: image_url,
+        requestedVolunteers: requested_people,
+        approvedVolunteers: approved_people,
         tags: tags,
       };
 
       if (userType == "volunteer") {
+        // includes expressedInterest field only for volunteers
         projectCard["expressedInterest"] = await Volunteer.expressedInterest(
           projectId,
           email
-        );
-        return projectCard;
+          );
       }
+      return projectCard;
 
-      if (userType == "organization") {
-      }
     }
     throw new BadRequestError("Project not found");
   }
