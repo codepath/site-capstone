@@ -21,9 +21,6 @@ export class Volunteer {
     image_url: string;
   }) {
     const skills = await this.fetchAllVolunteerSkills(volunteer.email);
-    const interestedProjects = await this.getInterestedProjects(
-      volunteer.email
-    );
     const approvedProjects = await this.getApprovedProjects(volunteer.email);
 
     return {
@@ -34,7 +31,7 @@ export class Volunteer {
       bio: volunteer.bio,
       imageUrl: volunteer.image_url,
       skills: skills,
-      interestedProjects: interestedProjects,
+      // interestedProjects: interestedProjects,
       approvedProjects: approvedProjects,
       userType: "volunteer",
     };
@@ -173,11 +170,9 @@ export class Volunteer {
    */
 
   static async getInterestedProjects(email: string) {
-    const query = `SELECT project_id FROM interested_volunteers WHERE email=$1 and approved=$2`;
-    const result = await db.query(query, [email, false]);
-    if (result) {
-      return result.rows;
-    }
+    const query = `SELECT project_id FROM interested_volunteers WHERE email=$1`;
+    const result = await db.query(query, [email]);
+    return result.rows;
   }
 
   /**
