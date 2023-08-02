@@ -217,7 +217,7 @@ export class Organization {
       await db.query(`DELETE FROM "project_tags" WHERE "project_id"=$1`, [project_id]);
       // deletes projects from interested_volunteers table
       await db.query(`DELETE FROM "interested_volunteers" WHERE "project_id"=$1`, [project_id]);
-      
+
       return true;
     } else {
       throw new UnauthorizedError("Organization does not have access, or project not found");
@@ -362,10 +362,14 @@ export class Organization {
     const interestedVolunteers = []
     for await (const volunteerInfo of result.rows) {
       // for each volunteer, we add an additional approved field
-      const volunteer = await Volunteer.getVolunteerByEmail(volunteerInfo.email);
-      console.log("retrieved volunteer: ", volunteer)
-      volunteer["approved"] = volunteerInfo.approved;
-      interestedVolunteers.push(volunteer)
+      try{
+        const volunteer = await Volunteer.getVolunteerByEmail(volunteerInfo.email);
+        console.log("retrieved volunteer: ", volunteer)
+        volunteer["approved"] = volunteerInfo.approved;
+        interestedVolunteers.push(volunteer)
+      } catch(error){
+        throw error;
+      }
     }
     return interestedVolunteers;
   }

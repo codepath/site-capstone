@@ -1,6 +1,6 @@
 import { BCRYPT_WORK_FACTOR } from "../config";
 import db from "../db";
-import { ExpressError, BadRequestError } from "../utils/errors";
+import { ExpressError, BadRequestError, UnauthorizedError } from "../utils/errors";
 import { validateFields } from "../utils/validate";
 import bcrypt from "bcrypt";
 import { Projects } from "./projects";
@@ -225,9 +225,16 @@ export class Volunteer {
    */
   static async expressInterest(projectId: number, email: string) {
     const volunteerCheck = await this.expressedInterest(projectId, email);
+    // checks if interest is already expressed
     if (volunteerCheck) {
       throw new BadRequestError("Already expressed interest")
     }
+    const volunteerCheck2 = await db.query(`SELECT * FROM volunteers WHERE email=$1`, [email]);
+    // checks if volunteer does not exists
+    if (volunteerCheck2.rows.length === 0) {
+      throw new UnauthorizedError;
+    } 
+
     const query = ` INSERT into interested_volunteers(email, project_id, approved) 
                     VALUES ($1,$2,$3) 
                     RETURNING 
