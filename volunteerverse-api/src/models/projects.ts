@@ -112,7 +112,8 @@ export class Projects {
     const allProjectIds = (await db.query(`SELECT project_id FROM project_tags`)).rows;
     console.log("project ids found", allProjectIds);
 
-    for await (const {project_id} of allProjectIds) {
+    for await (const { project_id } of allProjectIds) {
+      console.log("fetching project by id: ", project_id)
       const project = await this.fetchProjectByProjectId(project_id, "volunteer");
       console.log("retrieved project: ", project);
       allProjects.push(project);
@@ -173,7 +174,7 @@ export class Projects {
       }
       return projectCard;
     }
-    throw new BadRequestError("Project not found");
+    throw new BadRequestError(`Project with id ${projectId} does not exist`);
   }
 
   static async getProjectsWithTag(tag: string) {
