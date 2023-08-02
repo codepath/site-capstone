@@ -170,8 +170,8 @@ export class Volunteer {
 
   static async getInterestedProjects(email: string) {
     // retrieve all project ids for a given user
-    const query = `SELECT project_id FROM interested_volunteers WHERE email=$1 and approved=$2`;
-    const result = await db.query(query, [email, false]);
+    const query = `SELECT project_id FROM interested_volunteers WHERE email=$1`;
+    const result = await db.query(query, [email]);
     // getting all interested projects
     const interestedProjects = [];
     
@@ -180,7 +180,7 @@ export class Volunteer {
       const project = await Projects.fetchProjectByProjectId(project_id, "volunteer");
       interestedProjects.push(project);
     }
-
+    console.log("returning interseted projects: ", interestedProjects);
     return interestedProjects;
   }
 
