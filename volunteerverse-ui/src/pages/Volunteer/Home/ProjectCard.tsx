@@ -110,24 +110,13 @@ const useStyles = createStyles((theme) => ({
     }
 }));
 export default function ProjectCard(props: ProjectCardProps) {
-    const navigate = useNavigate();
     const { classes } = useStyles();
     const theme = useMantineTheme();
     const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
 
-    const goToCardDetails = () => {
-
-        console.log("going to card details");
-        navigate(`/projects/${props.id}`);
-        /**
-         * @todo: navigate to card details page
-         */
-    }
     return (
         <>
             <Paper
-                onClick={goToCardDetails}
-                sx={{ "&:hover": { cursor: "pointer" } }}
                 shadow="md"
                 p="xl"
                 radius="lg"
@@ -135,7 +124,7 @@ export default function ProjectCard(props: ProjectCardProps) {
                 <Flex className={classes.cardContent}>
                     <Flex justify={"space-around"} align={"center"} direction="column" className={classes.detailsContainer}>
                         <Flex direction={"column"}>
-                            <Title align="center" className={classes.title}>{props.title}</Title>
+                            <Text align="center" component={Link} to={`/projects/${props.id}`} className={classes.title}>{props.title}</Text>
                             <Text>By: {<Text to={props.orgUrl} component={Link}>{props.orgName}</Text>}</Text>
                             <Badge> <Text size={"sm"}> {props.approvedVolunteers} / {props.requestedVolunteers} approved</Text></Badge>
                         </Flex>
@@ -144,7 +133,6 @@ export default function ProjectCard(props: ProjectCardProps) {
                             <Divider />
                             <Container p={0} className={classes.description}>
                                 <Text p={"xs"} align="start">{props.description}</Text>
-
                             </Container>
 
                         </Flex>
@@ -152,6 +140,7 @@ export default function ProjectCard(props: ProjectCardProps) {
                     <Flex direction={"column"} align={"center"} justify={"center"} className={classes.mediaContainer}>
                         <Image width={200} height={200} withPlaceholder radius={"xl"} src={props.imageUrl} className={classes.image} />
                         <Group className={classes.tagGroup}>
+                            <Text color="dimmed" fw={"bolder"}>Tags: </Text>
                             {props.tags.map((tag: string) => {
                                 return <Badge key={tag} size={isMobile ? "lg" : "xl"} variant="light" className={classes.tag} component={Text}>{tag}</Badge>
                             })}

@@ -48,7 +48,7 @@ const useStyles = createStyles((theme) => ({
 }))
 
 function VolunteerProjectDetails() {
-  const {isValidVolunteer} = useContext(AuthenticationContext)
+  const { isValidVolunteer } = useContext(AuthenticationContext)
   const params = useParams();
   const theme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
@@ -69,7 +69,9 @@ function VolunteerProjectDetails() {
     interested: false,
     approved: false,
     id: -1,
-    active: false
+    active: false,
+    orgPhoneNumber: "",
+    orgPublicEmail: "",
   } : undefined);
   const toggleProjectInterest = () => {
     // updates intersted_volunteers database table with 
@@ -126,56 +128,66 @@ function VolunteerProjectDetails() {
     fetchProjectById();
   }, []);
   console.log("project : ", project)
-  return (project === undefined || !isValidVolunteer ) ? <NotAuthorized /> : (
+  return (project === undefined || !isValidVolunteer) ? <NotAuthorized /> : (
     <Box p={0} m={0}>
       <GoBackButton mb={"md"} w={"100%"} maw={200} />
-        <Container className={classes.container} px={isMobile ? 0 : "md"}>
-          <Flex gap={isMobile ? "sm" : "md"} direction={"column"} w={"100%"} align={"center"}>
-            <Image radius={"xl"} withPlaceholder src={project?.imageUrl} width={isMobile ? "100%" : "100%"} height={isMobile ? 300 : 500} />
-            <Group variant="filled" >
-            <Text size="lg" color="dimmed"  fw={700}>Tags: </Text>
-              {project?.tags.map((tag) => {
-                return (
-                  <Badge className={classes.tag} key={tag} variant="light" size={isMobile ? "lg" : "xl"} >{tag}</Badge>
-                )
-              })}
-            </Group>
-          </Flex>
-          <Button
+      <Container className={classes.container} px={isMobile ? 0 : "md"}>
+        <Flex gap={isMobile ? "sm" : "md"} direction={"column"} w={"100%"} align={"center"}>
+          <Image radius={"xl"} withPlaceholder src={project?.imageUrl} width={isMobile ? "100%" : "100%"} height={isMobile ? 300 : 500} />
+          <Group variant="filled" >
+            <Text size="lg" color="dimmed" fw={700}>Tags: </Text>
+            {project?.tags.map((tag) => {
+              return (
+                <Badge className={classes.tag} key={tag} variant="light" size={isMobile ? "lg" : "xl"} >{tag}</Badge>
+              )
+            })}
+          </Group>
+        </Flex>
+        <Button
           // styles={{root: { ':active': { backgroundColor: project.interested ? `${theme.colors.green[6]}` : `${theme.colors.violet[7]}` }}}}
-             maw={400} radius={"lg"}
-            size={isMobile ? "lg" : "xl"} compact sx={{
-              // border: "none",
-              color: project.interested ? `${theme.white}` : `${theme.colors.violet[7]}`,
-              transition: "all 100ms ease-in-out"
-            }}
-            variant={project.interested ? `filled` : `outline`}
-            loading={buttonIsLoading}
-            onClick={toggleProjectInterest}
-            my={"xl"}
-            >
-            {project?.interested ? "Remove Interest" : "Express Interest"}</Button>
+          maw={400} radius={"lg"}
+          size={isMobile ? "lg" : "xl"} compact sx={{
+            // border: "none",
+            color: project.interested ? `${theme.white}` : `${theme.colors.violet[7]}`,
+            transition: "all 100ms ease-in-out"
+          }}
+          variant={project.interested ? `filled` : `outline`}
+          loading={buttonIsLoading}
+          onClick={toggleProjectInterest}
+          my={"xl"}
+        >
+          {project?.interested ? "Remove Interest" : "Express Interest"}</Button>
 
-          {/* <Flex align={"start"} direction={"column"} className={classes.textContent} w={"100%"}> */}
-          <div>
-            <Title mt={"xl"} align="center" order={1}>{project?.title}</Title>
-            <Title align="center" p={isMobile ? "xs" : "sm"} order={4}>by {project.orgUrl === "" ? `${project?.orgName}` : <Link to={project.orgUrl}>{project?.orgName}</Link>}</Title>
-            <Text mb={"xl"} color="dimmed" align="center">Posted: {project.createdAt ? fetchPrettyTime(project.createdAt) :  "N/A"}</Text>
-          </div>
-           <Divider my={"lg"}/>
-          <div>
-            <Title align="start" order={2}>Description:</Title>
-            <Text align="left" p={isMobile ? "xs" : "sm"}>{project?.description}</Text>
-          </div>
-            <Divider my={"lg"} />
-            <div>
-            <Title align="left" order={2}>About {project?.orgName}:</Title>
-            <Text align="left" p={isMobile ? "xs" : "sm"}>{project?.orgDescription}</Text>
+        {/* <Flex align={"start"} direction={"column"} className={classes.textContent} w={"100%"}> */}
+        <div>
+          <Title mt={"xl"} align="center" order={1}>{project?.title}</Title>
+          <Title align="center" p={isMobile ? "xs" : "sm"} order={4}>by {project.orgUrl === "" ? `${project?.orgName}` : <Link to={project.orgUrl}>{project?.orgName}</Link>}</Title>
+          <Text mb={"xl"} color="dimmed" align="center">Posted: {project.createdAt ? fetchPrettyTime(project.createdAt) : "N/A"}</Text>
+        </div>
+        <Divider my={"lg"} />
+        <div>
+          <Title align="start" order={2}>Description:</Title>
+          <Text align="left" p={isMobile ? "xs" : "sm"}>{project?.description}</Text>
+        </div>
+        <Divider my={"lg"} />
+        <div>
+          <Title align="left" order={2}>About {project?.orgName}:</Title>
+          <Text align="left" p={isMobile ? "xs" : "sm"}>{project?.orgDescription}</Text>
+        </div>
+        <div>
+          <Title my={"sm"} align="left" fw={500} order={3}>Contact:</Title>
 
-            </div>
-           <Divider my={"lg"} />
-          {/* go back button? */}
-        </Container>
+          {<Text ml={"sm"} p={isMobile ? "xs" : "sm"} align="left">Email: <Link to={`mailto:${project.orgPublicEmail}`}> </Link></Text>}
+          <Text ml={"sm"} p={isMobile ? "xs" : "sm"} align="left">Phone: <Link to={`tel:+${project.orgPhoneNumber}`}></Link></Text>
+          <Divider my={"lg"} />
+        </div>
+        <Button 
+      variant="light"
+      radius={"lg"}
+      size={isMobile ? "md" :  "lg"}
+        component={Link} 
+        to="/">Return Home</Button>
+      </Container>
       <LoadingOverlay visible={project?.title === ""} radius={"xl"} overlayBlur={2} overlayOpacity={0.9} loaderProps={{ size: "xl" }} />
     </Box>
 
