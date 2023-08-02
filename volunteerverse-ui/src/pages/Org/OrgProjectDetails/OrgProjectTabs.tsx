@@ -22,6 +22,9 @@ const userList: VolunteerUserProp[] = [
     imageUrl: 'https://example.com/user1.jpg',
     bio: 'A software engineer with a passion for coding.',
     approved: undefined,
+    id : 2, 
+    skills : [], 
+    userType: "volunteer",
   },
   {
     email: 'user2@example.com',
@@ -30,6 +33,9 @@ const userList: VolunteerUserProp[] = [
     imageUrl: 'https://example.com/user2.jpg',
     bio: 'Designer and artist exploring creativity.',
     approved: undefined,
+    id : 2, 
+    skills : [], 
+    userType: "volunteer",
   },
   {
     email: 'user3@example.com',
@@ -38,6 +44,9 @@ const userList: VolunteerUserProp[] = [
     imageUrl: 'https://example.com/user3.jpg',
     bio: 'Aspiring entrepreneur and business enthusiast.',
     approved: undefined,
+    id : 2, 
+    skills : [], 
+    userType: "volunteer",
   },
   {
     email: 'user4@example.com',
@@ -46,6 +55,9 @@ const userList: VolunteerUserProp[] = [
     imageUrl: 'https://example.com/user4.jpg',
     bio: 'Nature lover and outdoor enthusiast.',
     approved: undefined,
+    id : 2, 
+    skills : [], 
+    userType: "volunteer",
   },
   {
     email: 'user5@example.com',
@@ -54,6 +66,9 @@ const userList: VolunteerUserProp[] = [
     imageUrl: 'https://example.com/user5.jpg',
     bio: 'Passionate about technology and innovation.',
     approved: undefined,
+    id : 2, 
+    skills : [], 
+    userType: "volunteer",
   },
 ];
 const useStyles = createStyles((theme) => ({
@@ -61,8 +76,9 @@ const useStyles = createStyles((theme) => ({
 }));
 
 function OrgProjectDetailsTabs() {
+
   const { projectId } = useParams();
-  const { isValidOrg } = useContext(AuthenticationContext);
+  const { isValidOrg, user } = useContext(AuthenticationContext);
   const theme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
   const [projectVolunteers, setProjectVolunteers] = useState<undefined | VolunteerUserProp[]>(undefined);
@@ -72,18 +88,19 @@ function OrgProjectDetailsTabs() {
     // makes call to backend api to populate volunteers data
     console.log("getting volunteers from database")
     if (!projectId) return; // returns if project id is undefined
-    apiClient.fecthInterestedVolunteersByProjectId(parseInt(projectId)).then(({ success, data, statusCode, error }) => {
+    apiClient.fetchInterestedVolunteersByProjectId(parseInt(projectId)).then(({ success, data, statusCode, error }) => {
       if (success) {
         console.log("found volunteers for given project: ", data)
-        setProjectVolunteers(data.interstedVolunteers)
+        setProjectVolunteers(data.interestedVolunteers)
       } else {
         console.log("Error occured while trying to find volunteers: ", {error, statusCode})
       }
     }).catch((error) => {
       console.log("a very unexpected error has occured")
     })
-  }, [])
-
+  }, [user])
+  console.log(userList);
+  
   const { classes } = useStyles();
 
   return !isValidOrg ? <NotAuthorized /> : (
@@ -101,7 +118,7 @@ function OrgProjectDetailsTabs() {
         </Tabs.Panel>
 
         <Tabs.Panel pt={"xs"} value="volunteers">
-          <VolunteersTable volunteerData={userList || []} />
+          <VolunteersTable volunteerData={projectVolunteers || []} />
         </Tabs.Panel>
 
       </Tabs>
