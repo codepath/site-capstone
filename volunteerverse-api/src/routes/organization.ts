@@ -53,7 +53,6 @@ organizationRoutes.put("/project/status/:projectId", async function(req,res,next
   try{
     const { id } = res.locals.user
     const projectId = parseInt(req.params.projectId)
-    //const {active} = req.body
     const result = await Organization.toggleStateOfOrgProject(projectId, id)
     res.json({projectState : result})
   }catch (error) {
@@ -65,10 +64,10 @@ organizationRoutes.put("/project/:projectId", async function(req,res,next){
   try{
     const projectId = parseInt(req.params.projectId)
     const { id } = res.locals.user
-    const { email } = req.body
-  const result = await Organization.incrementAndDecrementApprovedVolunteers(email, projectId, id)
+    const { email, initial } = req.body
+  const result = await Organization.incrementAndDecrementApprovedVolunteers(email, projectId, id, initial)
   console.log("updateApproved" ,result)
-  res.json({approvedVolunteer: result})
+  res.json({approve: result})
   }catch (error) {
     next(error);
   }
@@ -94,7 +93,7 @@ organizationRoutes.get("/project/interested/:projectId", async function (req, re
   console.log("this is the req.body", req.params.projectId);
 const result = await Organization.fetchInterestedVolunteersByProjectId(projectId);
   if (result) {
-    res.status(201).json({ interstedVolunteers: result })
+    res.status(201).json({ interestedVolunteers: result })
   } else {
     res.status(404).json( { error: 'Project not found' } )
   }

@@ -165,14 +165,13 @@ export class Projects {
       };
 
       if (userType == "volunteer") {
-        // includes expressedInterest field only for volunteers
-        projectCard["expressedInterest"] = await Volunteer.expressedInterest(
+        // includes interested field only for volunteers
+        projectCard["interested"] = await Volunteer.expressedInterest(
           projectId,
           email
           );
       }
       return projectCard;
-
     }
     throw new BadRequestError("Project not found");
   }

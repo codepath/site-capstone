@@ -75,7 +75,8 @@ function VolunteerProjectDetails() {
     // the volunteer's interest
     showLoadingButton();
     if (projectId) {
-      apiClient.updateProjectInterestByUser(projectId).then((response) => {
+      console.log("toggling volunteer interest to mode: ", project?.interested ? "remove" : "add");
+      apiClient.toggleProjectInterestByUser(projectId, project?.interested ? "remove" : "add").then((response) => {
         const { data, success, statusCode, error } = response;
         if (success) {
           console.log("updating interested from ", project?.interested, " to ", !project?.interested)
@@ -161,7 +162,7 @@ function VolunteerProjectDetails() {
             onClick={toggleProjectInterest}
             my={"xl"}
             >
-            {project.interested ? "Remove Interest" : "Express Interest"}</Button>
+            {project?.interested ? "Remove Interest" : "Express Interest"}</Button>
 
           {/* <Flex align={"start"} direction={"column"} className={classes.textContent} w={"100%"}> */}
           <div>

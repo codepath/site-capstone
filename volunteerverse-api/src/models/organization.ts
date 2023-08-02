@@ -7,6 +7,7 @@ import {
 } from "../utils/errors";
 
 import { BCRYPT_WORK_FACTOR } from "../config";
+import { Volunteer } from "./volunteer";
 /**
  * @todo: change get org by email function or refactor
  */
@@ -110,21 +111,15 @@ export class Organization {
     };
   }
   static async fetchInterestedVolunteersByEmail(email) {
+    // returns volunteer info based on email
     const interestedVolunteersInfo = await db.query(
-      `SELECT 
-      id,
-      email,
-      project_id,
-      approved
+      `SELECT *
          FROM interested_volunteers
          WHERE  email = $1`,
       [email.toLowerCase()]
     );
 
-    if (interestedVolunteersInfo) {
-      return interestedVolunteersInfo.rows;
-    }
-    return null;
+   return interestedVolunteersInfo.rows[0]
   }
 
   static async fetchOrganizationByEmail(org_email: string) {
@@ -225,10 +220,10 @@ export class Organization {
     }
   }
 
-  static async updateApprovedVolunteers(approved, email, project_id, org_id) {
+  static async updateApprovedVolunteers(approved, email, project_id, org_id, initial_approval_state) {
     // to check if the volunteer exist(if this does interestedVoluteersInfo will be populated)
     const interestedVolunteersInfo =
-      await Organization.fetchInterestedVolunteersByEmail(email);
+      await this.fetchInterestedVolunteersByEmail(email);
 
     // to check if the project and( / for the )org exists if it does orgResult will be populated
     const orgResult = await db.query(
@@ -245,11 +240,13 @@ export class Organization {
 
       // to check if the project and( / for the )org exists 
       if (orgResult.rows.length !== 0) {
+        // handles setting initial approval state and toggling given approval state
+        const approvalState = approved === null ? initial_approval_state : !approved
         const result = await db.query(
           `UPDATE "interested_volunteers" SET "approved" = $1 
                      WHERE "email" = $2 AND "project_id" = $3
                      RETURNING *`,
-          [!approved, email, project_id]
+          [approvalState, email, project_id]
 
         );
         console.log("updating approved works!", result.rows)
@@ -265,7 +262,7 @@ export class Organization {
 
   }
 
-  static async incrementAndDecrementApprovedVolunteers(email, projectId, orgId) {
+  static async incrementAndDecrementApprovedVolunteers(email, projectId, orgId, initialApprovalState) {
     const approvedResult = await db.query(`SELECT approved FROM interested_volunteers 
                               WHERE project_id = $1 AND email = $2`,
       [projectId, email])
@@ -277,8 +274,8 @@ export class Organization {
 
     console.log("approvedResult", approvedResult.rows[0])
     console.log("approvedPeopleResult", approvedPeopleResult.rows[0])
-
-    const approvedVolunteerState = await Organization.updateApprovedVolunteers(approvedResult.rows[0].approved, email, projectId, orgId)
+    
+    const approvedVolunteerState = await this.updateApprovedVolunteers(approvedResult.rows[0].approved, email, projectId, orgId, initialApprovalState )
 
     console.log("bringing volunteer state into incre/decre works!", approvedVolunteerState.approved)
 
@@ -294,9 +291,13 @@ export class Organization {
 
       );
       console.log(" the if in incre/decre works!", approvedVolunteerState.approved)
-      return result.rows;
+      return approvedVolunteerState.approved;
 
     } else if (approvedVolunteerState.approved === false) {
+      // reset number of approved back to 0 if number becomes negative
+      let numberOfApproved = approvedPeopleResult.rows[0].approved_people;
+      numberOfApproved = numberOfApproved < 0 ? 0 : numberOfApproved;
+
       console.log("approved is false", typeof approvedPeopleResult.rows[0].approved_people)
       const result = await db.query(
         `UPDATE "projects" SET "approved_people" = $1 
@@ -305,10 +306,10 @@ export class Organization {
         [approvedPeopleResult.rows[0].approved_people - 1, orgId, projectId]
 
       );
-      return result.rows;
+      return approvedVolunteerState.approved;
 
     } else {
-      throw new UnauthorizedError("Volunteer increment/decrement failed");
+      throw new BadRequestError("Volunteer increment/decrement failed");
     }
   }
 
@@ -344,9 +345,8 @@ export class Organization {
       // if this was insert, we would have assigned the data from insomnia
       //to it but since it is select, we would be taking the data under the rows from
       //the table we said
-      `SELECT  
-      email,
-      project_id
+      `SELECT
+      email, approved
        FROM interested_volunteers
        WHERE  project_id = $1`,
       [projectId]
@@ -355,10 +355,15 @@ export class Organization {
       //which we then assign to result back in the route and then convert to json.
     );
 
-    if (!result) {
-      throw new BadRequestError();
+    const interestedVolunteers = []
+    for await (const volunteerInfo of result.rows) {
+      // for each volunteer, we add an additional approved field
+      const volunteer = await Volunteer.getVolunteerByEmail(volunteerInfo.email);
+      console.log("retrieved volunteer: ", volunteer)
+      volunteer["approved"] = volunteerInfo.approved;
+      interestedVolunteers.push(volunteer)
     }
-    return result.rows;
+    return interestedVolunteers;
   }
 
   static async getOrgById(orgId: number) {

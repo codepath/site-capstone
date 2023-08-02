@@ -41,8 +41,7 @@ CREATE TABLE interested_volunteers(
     id SERIAL PRIMARY KEY,
     email TEXT NOT NULL CHECK (position('@' IN email) > 1),
     project_id INTEGER,
-    approved BOOLEAN DEFAULT FALSE
-   
+    approved BOOLEAN DEFAULT NULL
 );
 
 CREATE TABLE project_tags(

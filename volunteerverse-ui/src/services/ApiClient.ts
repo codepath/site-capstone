@@ -108,10 +108,11 @@ class ApiClient {
         }
         return this.request(requestOptions)
     }
-    async updateProjectInterestByUser(projectId : string){
+    async toggleProjectInterestByUser(projectId : string, mode : "add" | "remove"){
         const requestOptions = {
-            method: "get",
-            subDirectory: `/project/${projectId}`,
+            method: "put",
+            bodyData: {mode :  mode},
+            subDirectory: `/volunteer/interest/${projectId}`,
         }
         return this.request(requestOptions)
     }
@@ -122,18 +123,18 @@ class ApiClient {
         }
         return this.request(requestOptions)   
     }
-    async toggleVolunteerApproval(volunteerEmail : string, projectId: string){
+    async toggleVolunteerApproval(volunteerEmail : string, projectId: string, mode: "approve" | "reject"){
         const requestOptions = {
             method: "put",
-            bodyData: {email: volunteerEmail},
-            subDirectory: `/organization/project/status/${projectId}`,
+            bodyData: {email: volunteerEmail, initial : mode ===  "approve" ? true : false},
+            subDirectory: `/organization/project/${projectId}`,
         }
         return this.request(requestOptions)   
     }
     async toggleProjectStatus({projectId}  : {projectId :  number}){
         const requestOptions = {
             method: "put",
-            subDirectory: `/organization/project/${projectId}`,
+            subDirectory: `/organization/project/status/${projectId}`,
         }
         return this.request(requestOptions) 
     }
@@ -144,7 +145,7 @@ class ApiClient {
         }
         return this.request(requestOptions) 
     }
-    async fecthInterestedVolunteersByProjectId(projectId : number){
+    async fetchInterestedVolunteersByProjectId(projectId : number){
         const requestOptions = {
             method: "get",
             subDirectory: `/organization/project/interested/${projectId}`,
