@@ -93,7 +93,7 @@ export function VolunteersTable({ volunteerData }: { volunteerData: VolunteerUse
                                 {volunteer.firstName} {volunteer.lastName}
                             </Text>
 
-                            <Group>
+                            <Group noWrap={true}>
                                 <Button
                                     onClick={() => { setActiveVolunteerProfile(volunteer); openProfileModal() }}
                                     mt={"sm"}

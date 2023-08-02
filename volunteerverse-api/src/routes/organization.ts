@@ -54,7 +54,7 @@ organizationRoutes.put("/project/status/:projectId", async function(req,res,next
     const { id } = res.locals.user
     const projectId = parseInt(req.params.projectId)
     const result = await Organization.toggleStateOfOrgProject(projectId, id)
-    res.json({projectState : result})
+    res.json({active : result})
   }catch (error) {
     next(error);
   }

@@ -199,7 +199,7 @@ export class Organization {
                    RETURNING *`,
         [!activeResult.rows[0].active, projectId, orgId]
       );
-      return result.rows;
+      return result.rows[0].active;
     } else {
       throw new UnauthorizedError("Organization/Project not found");
     }
