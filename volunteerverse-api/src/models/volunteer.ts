@@ -125,7 +125,16 @@ export class Volunteer {
     volunteerInfo.skills.forEach((skill) => {
       this.insertSkill(volunteerInfo.email, skill);
     });
-
+    console.log({
+      id: id,
+      email: email,
+      firstName: firstName,
+      lastName: lastName,
+      imageUrl: imageUrl,
+      bio: bio,
+      skills: volunteerInfo.skills,
+      userType: userType,
+    })
     return {
       id: id,
       email: email,

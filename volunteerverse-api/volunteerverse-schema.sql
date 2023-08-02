@@ -32,10 +32,9 @@ CREATE TABLE projects(
     project_description TEXT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     image_url TEXT,
-    requested_people INTEGER NOT NULL,
-    approved_people INTEGER NOT NULL DEFAULT 0,
-    active BOOLEAN DEFAULT TRUE,
-    external BOOLEAN DEFAULT FALSE
+    requested_people INTEGER,
+    approved_people INTEGER DEFAULT 0,
+    active BOOLEAN DEFAULT TRUE
 );
 
 CREATE TABLE interested_volunteers(

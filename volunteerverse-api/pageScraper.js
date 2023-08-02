@@ -1,9 +1,21 @@
+
+const db = require("../volunteerverse-api/dist/src/db");
+
+
 const scraperObject = {
   url: "https://www.democracylab.org/projects",
   async scraper(browser) {
     let page = await browser.newPage();
     console.log(`Navigating to ${this.url}...`);
     await page.goto(this.url);
+
+    for (let i = 0; i <= 5; i++) {
+      console.log(i);
+      await page.click(
+        "#MainController > div.SectionBody > div.FindProjectsController-root.container > div > div.ProjectCardContainer.col > div:nth-child(4) > div > button"
+      );
+      await page.waitForTimeout(2000);
+    }
 
     let urls = await page.$$eval(
       ".ProjectCardContainer.col .ProjectCard-root > a",
@@ -39,9 +51,12 @@ const scraperObject = {
           }
         );
 
-        dataObj["action"] = descriptionText
+        dataObj["action"] = descriptionText;
 
-        // dataObj["founder"] = await scrapeDataWithSelector(newPage, "div.AboutProject-staff.AboutProject-secondary-section > div > div > div ")
+        dataObj["founder"] = await scrapeDataWithSelector(
+          newPage,
+          "div.AboutProject-staff.AboutProject-secondary-section > div > div > div > a:nth-child(2)"
+        );
 
         let technologies = await newPage.$$eval(
           "div.AboutProject-technologies > span",
@@ -51,6 +66,7 @@ const scraperObject = {
           }
         );
 
+
         dataObj["technologies"] = technologies;
 
         dataObj["website"] = await scrapeDataWithSelector(
@@ -58,13 +74,31 @@ const scraperObject = {
           ".AboutProject-url-text > a"
         );
 
+        try {
+          dataObj["image"] = await newPage.$eval(
+            "div.container.Profile-root > div > div > div > div.Profile-top-logo > img",
+            (el) => el.src
+          );
+        } catch (error) {
+          dataObj["image"] = null;
+        }
+
         resolve(dataObj);
+
+        const insertQuery = `INSERT INTO projects (org_name, org_website, project_name, project_description, image_url) VALUES ($1, $2, $3, $4, $5)`
+        const values = [dataObj.projectTitle, dataObj.website, dataObj.projectTitle, dataObj.action, dataObj.image]
+
+        try {
+          await db.query(insertQuery, values);
+          console.log('Data inserted successfully.');
+        } catch (error) {
+          console.error('Error inserting data:', error);
+        }
+
+
 
         await newPage.close();
       });
-
-      dataObj["image"] = await newPage.$eval("div.container.Profile-root > div > div > div > div.Profile-top-logo > img", (el) => el.src.getProperty("src"));
-  
 
     for (link in urls) {
       let currentPageData = await pagePromise(urls[link]);
