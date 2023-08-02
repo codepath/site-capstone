@@ -52,7 +52,7 @@ class ThingsToDo {
             // rating
             // distance
 
-            limit: '10'
+            limit: 12
             // The number of results to return, up to 50. Defaults to 10.
             //(If you want more results feel free to change this number)
         },
