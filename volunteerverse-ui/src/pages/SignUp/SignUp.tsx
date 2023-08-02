@@ -1,6 +1,13 @@
 import {
   Button, Group, Paper, Stepper,
   createStyles, Checkbox, LoadingOverlay,
+  Text,
+  Modal,
+  Title,
+  Container,
+  Flex,
+  ScrollArea,
+  Divider
 } from "@mantine/core";
 import { useContext, useState } from "react";
 import { useForm, UseFormReturnType } from "@mantine/form";
@@ -14,6 +21,7 @@ import { useNavigate } from "react-router";
 import { apiClient } from "../../services/ApiClient";
 import { OrganizationRegisterProp, VolunteerRegisterProp } from "../../props/register";
 import { AuthenticationContext } from "../../context/AuthenicationContext";
+import { TOS } from "../../assets/TOS";
 
 const useStyles = createStyles((theme) => ({
   // this object includes all styling for this component
@@ -41,6 +49,7 @@ const useStyles = createStyles((theme) => ({
 export default function SignUp( {  userType } : {userType : "organization" | "volunteer"}) {
   
   const { setToken } = useContext(AuthenticationContext);
+  
   /**
    * @todo: 
    * - test organization registration
@@ -63,6 +72,7 @@ export default function SignUp( {  userType } : {userType : "organization" | "vo
         email: "",
         bio: "",
         termsOfService: false,
+        imageUrl: "",
         userType: "volunteer" // need to define userType to make calling backend easier
       },
       validateInputOnChange: ["confirmPassword", "password", "email"],
@@ -82,7 +92,8 @@ export default function SignUp( {  userType } : {userType : "organization" | "vo
           // has reached step 1 (0-based indexing)
           return {
             termsOfService: values.termsOfService === false ? "You must agree to VolunteerVerse's terms of service" : null,
-            bio: values.bio.length > 500 ? 'Please shorten your biography to less than 500 character' : null,
+            skills: values.skills.length >= 2 ? null :  "Please select at least two skills",
+            bio: values.bio.trim().length >= 20 && values.bio.trim().length <= 500 ? null : 'Your biography must be between 20 - 500 characters long',
           }
         }
         return {}
@@ -99,9 +110,12 @@ export default function SignUp( {  userType } : {userType : "organization" | "vo
       founders: [],
       orgDescription: "",
       imageFile:  null,
+      imageUrl:  "",
       orgWebsite: "",
       termsOfService: false,
-      userType: "organization"
+      publicEmail:  "", 
+      phoneNumber: "",
+      userType: "organization",
     },
     validateInputOnChange: ["confirmPassword", "password", "email", "imageFile", "termsOfService"],
     
@@ -117,12 +131,14 @@ export default function SignUp( {  userType } : {userType : "organization" | "vo
       } else if (activeStep === 1) {
         return {
           founders: values.founders.length < 1 ? "Please include at least one founder" : null,
-          orgDescription: values.orgDescription.length < 2 ? "Please include more details in your description." : null,
+          orgDescription: values.orgDescription.trim().length <= 500 && values.orgDescription.trim().length >= 20 ? null : "Please include more details in your description.",
           orgName: values.orgName.length < 1 ? "Please include your organization name" : null,
           termsOfService: values.termsOfService === false ? "You must agree to VolunteerVerse's terms of servcie" : null,
           imageFile: values.imageFile ?  null : "A logo must be provided.",
+          phoneNumber:  /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im.test(values.phoneNumber) ? null : "Please enter a valid phone number",
+          publicEmail:  /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(values.publicEmail) ? null : 'Please provide a valid email address',
+
           // orgWebsite:  ^(http(s):\/\/.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$.test(values.orgWebsite) || values.orgWebsite === "" ? null : "Please provide a valid website link",
-          
         }
       }
       return {}
@@ -140,10 +156,12 @@ export default function SignUp( {  userType } : {userType : "organization" | "vo
   const { classes } = useStyles();
   const [activeStep, setActiveStep] = useState(0);
   const prevStep = () => setActiveStep((current) => (current > 0 ? current - 1 : current));
-  const [visible, { open: openLoader, close: closeLoader }] = useDisclosure(false);
+  const [showLoader, { open: openLoader, close: closeLoader }] = useDisclosure(false);
   const navigate = useNavigate();
-  const nextStep = (form: UseFormReturnType<VolunteerFormValues> | UseFormReturnType<OrgFormValues>) => setActiveStep((current) => {
+  const [ showTOSModal, {open : openTOSmodal, close: closeTOSModal,}] = useDisclosure(false);
 
+  const nextStep = (form: UseFormReturnType<VolunteerFormValues> | UseFormReturnType<OrgFormValues>) => setActiveStep((current) => {
+  
     if (form.validate().hasErrors) {
       // prevents stepper progression
       // if form is invalid
@@ -189,6 +207,7 @@ export default function SignUp( {  userType } : {userType : "organization" | "vo
       console.log("a really strange error as occured", error)
     })
   };
+
   return (
     <Paper className={classes.container} shadow="xl" radius="xl" pos={"relative"}>
       <Stepper styles={(theme) => ({
@@ -226,7 +245,7 @@ export default function SignUp( {  userType } : {userType : "organization" | "vo
 
           <Checkbox
             mt={"sm"}
-            label="I accept VolunteerVerse's terms and conditions"
+            label={ <Text>I agree to VolunteerVerse's<Text c="violet" underline component="a" onClick={openTOSmodal}> terms and conditions</Text></Text>}
             ml={"md"}
             {...getTOSInputProps()} />
 
@@ -252,7 +271,33 @@ export default function SignUp( {  userType } : {userType : "organization" | "vo
             )
         }
       </Group>
-      <LoadingOverlay visible={visible} radius={"xl"} overlayBlur={2} loaderProps={{ size: "xl" }} />
+      <Modal
+        styles={{ inner: { paddingLeft: "2rem" }, close : {marginRight : "2rem"}, root : {overflow: "hidden"} }}
+        title={<Title m={"xl"} variant="gradient" gradient={{from : "violet", to:"violet"}} align="center">VolunteerVerse Terms of Serivce</Title>}
+        closeButtonProps={{ 'aria-label': 'Close modal' }}
+        opened={showTOSModal && showTOSModal !== showLoader}
+        radius={"xl"}
+        onClose={closeTOSModal}
+        size="auto"
+        centered
+        zIndex={1000001}>
+        <TOSMOdalContent />
+      </Modal>
+      <LoadingOverlay visible={showLoader} radius={"xl"} overlayBlur={2} loaderProps={{ size: "xl" }} />
     </Paper>
   );
+}
+
+function TOSMOdalContent() {
+  return (
+    <Container>
+      <ScrollArea px={"5rem"}>
+      <Title pt="xl"  align="center" mb={"xl"}>Terms and Conditions</Title>
+      <Divider my={"xl"} />
+      <Text>
+        {TOS}
+      </Text>
+      </ScrollArea>
+    </Container>
+  )
 }
