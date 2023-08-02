@@ -19,7 +19,7 @@ import { projectDetailsData } from "./Home/data";
 import GoBackButton from "../../components/GoBackButton";
 import { VolunteerProjectProp } from "../../props/projects";
 import { AuthenticationContext } from "../../context/AuthenicationContext";
-import { fetchPrettyTime } from "../../utility/utility";
+import { fetchPrettyTime, notify } from "../../utility/utility";
 
 
 
@@ -65,10 +65,11 @@ function VolunteerProjectDetails() {
     imageUrl: "",
     orgDescription: "",
     founders: "",
-    tags: [""],
+    tags: [],
     interested: false,
     approved: false,
-    id: -1
+    id: -1,
+    active: false
   } : undefined);
   const toggleProjectInterest = () => {
     // updates intersted_volunteers database table with 
@@ -95,12 +96,7 @@ function VolunteerProjectDetails() {
         } else {
           console.log("error status code: ", statusCode);
           console.log('unable to update users interest.', error);
-          notifications.show({
-            autoClose: 3000,
-            color: "red",
-            title: 'Uh-oh!',
-            message: "An error occured. Please try again later ",
-          })
+          notify.error(); // shows notification error
           hideLoadingButton();
         }
       })
@@ -127,10 +123,6 @@ function VolunteerProjectDetails() {
         }
       }
     }
-    /**
-     * @todo: connect to backend
-     */
-    setProject(projectDetailsData);
     fetchProjectById();
   }, []);
   console.log("project : ", project)
