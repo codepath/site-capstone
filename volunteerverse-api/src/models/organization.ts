@@ -8,6 +8,7 @@ import {
 
 import { BCRYPT_WORK_FACTOR } from "../config";
 import { Volunteer } from "./volunteer";
+import { validateFields } from "../utils/validate";
 /**
  * @todo: change get org by email function or refactor
  */
@@ -30,10 +31,31 @@ export class Organization {
     orgDescription: string;
     logoUrl?: string;
     orgWebsite: string;
-    userType: "organization";
+    userType: string;
 
 
-  }) {
+  })
+  {
+    const requiredInfo = [
+      "orgName",
+      "orgDescription",
+      "email",
+      "logoUrl",
+      "userType",
+     "password",
+     "founders",
+    "orgWebsite",
+    ];
+    try {
+      validateFields({
+        required: requiredInfo,
+        obj: creds,
+        location: "org registration",
+      });
+    } catch (error) {
+      throw error;
+    }
+
     const existingOrganizationWithEmail =
       await Organization.fetchOrganizationByEmail(creds.email);
     if (existingOrganizationWithEmail) {
@@ -70,7 +92,7 @@ export class Organization {
         creds.orgWebsite,
       ]
     );
-
+    
     const {
       id,
       organization_email,
@@ -80,7 +102,8 @@ export class Organization {
       organization_description,
       website,
     } = orgResult.rows[0];
-
+    console.log(orgResult.rows[0], organization_name)
+    
     const authResult = await db.query(
       `INSERT INTO authentication (
         email,

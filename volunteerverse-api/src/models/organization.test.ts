@@ -22,7 +22,7 @@ describe("Testing fetchOrgByEmail function", async () => {
       {
     organization_name: "JelloWorld",
     organization_description: "a compnau duh",
-    organization_email: "hii@gaffamawfwfil.com ",
+    organization_email: "hii@gaffamawfwfil.com",
     logo_url: "xgxhhsb",
     userType: "organization",
     password: "1234",
@@ -40,7 +40,7 @@ describe("Testing fetchOrgByEmail function", async () => {
     expect(result).toStrictEqual({
       organization_name: "JelloWorld",
       organization_description: "a compnau duh",
-      organization_email: "hii@gaffamawfwfil.com ",
+      organization_email: "hii@gaffamawfwfil.com",
       logo_url: "xgxhhsb",
       userType: "organization",
       password: "1234",
@@ -51,7 +51,7 @@ describe("Testing fetchOrgByEmail function", async () => {
 
   test("it should return undefined" , async function ()  {
     Organization.fetchOrganizationByEmail = jest.fn().mockReturnValue(undefined)
-    const invaildEmail = "iamstudentgmail.com "
+    const invaildEmail = "forhelpgmail.com"
     const result = await Organization.fetchOrganizationByEmail(invaildEmail)
     expect (result).toBeUndefined();
   })
@@ -64,94 +64,97 @@ describe("organization registration", () => {
   });
 
   test("should return an error if input does not contain all required fields", async () => {
+   
     const organizationInfo = {
-      orgName : " Helping Hands ",
+      orgName : "Helping Hands",
       orgDescription: "",
       email: "",
       logoUrl : "",
       userType : "",
      password :"",
-     founders : "",
-    orgWebsite: ""
+    orgWebsite: "",
+    founders : "",
     };
-    await expect(Organization.register(organizationInfo)).rejects.toThrow(
+     expect(Organization.register(organizationInfo)).rejects.toThrow(
       UnprocessableEntityError
     );
   });
 
   test("can not register a duplicate email", async () => {
     const organizationInfo = {
-      email: "melyssa@gmail.com",
-      password: "123",
-      firstName: "Melyssa",
-      lastName: "Cristino",
-      imageUrl: "image.url",
-      bio: "Interested in getting design experience",
-      skills: ["UI/UX design", "HTML", "CSS", "React"],
-      userType: "volunteer",
-    };
+	 orgName : "Helping Hands",
+   orgDescription: "a compnau duh",
+   email: "forhelp1@gmail.com",
+   logoUrl : "https://helpme",
+   userType : "organization",
+  password :"1234",
+  founders : "people",
+ orgWebsite: "https://towebsite"
+}
+    
 
-    const existingVolunteer = {
-      volunteer: {
+    const existingOrganization = {
+      organization: {
         id: 1,
-        email: "melyssa@gmail.com",
-        first_name: "Melyssa",
-        last_name: "Cristino",
-        bio: "Interested in getting design experience",
-        image_url: "image.url",
+        organization_name : "Helping Hands",
+        organization_description : "a compnau duh",
+        organization_email: "forhelp1@gmail.com",
+        logo_url  : "https://helpme",
+       founders : "people",
+      website: "https://towebsite",
       },
     };
 
-    // Mock the behavior of fetchVolunteerByEmail to simulate an existing volunteer
-    Volunteer.fetchVolunteerByEmail = jest
+    // Mock the behavior of fetchOrganizationByEmail to simulate an existing organization 
+    Organization.fetchOrganizationByEmail = jest
       .fn()
-      .mockReturnValue(existingVolunteer);
+      .mockReturnValue(existingOrganization);
 
-    await expect(Volunteer.register(volunteerInfo)).rejects.toThrow(
-      new BadRequestError(`Duplicate email: melyssa@gmail.com`)
+    await expect(Organization.register(organizationInfo)).rejects.toThrow(
+      new BadRequestError(`Duplicate email: forhelp1@gmail.com`)
     );
   });
 
-  test("registers a new volunteer successfully", async () => {
-    const volunteerInfo = {
-      email: "kenneth@gmail.com",
-      password: "123",
-      firstName: "Kenneth",
-      lastName: "Cristino",
-      bio: "Looking to help out",
-      skills: ["Machine Learning"],
-      userType: "volunteer",
+  test("registers a new organization successfully", async () => {
+    const organizationInfo = {
+   orgName : "Helping Hands",
+   orgDescription: "a compnau duh",
+   email: "forhelpnew@gmail.com ",
+   logoUrl : "https://helpme",
+   userType : "organization",
+  password :"1234",
+  founders : "people",
+  orgWebsite: "https://towebsite"
     };
 
     const mockResult = {
       rows: [
         {
-          email: "kenneth@gmail.com",
-          firstName: "Kenneth",
-          lastName: "Cristino",
-          imageUrl: null,
-          bio: "Looking to help out",
-          skills: ["Machine Learning"],
-          userType: "volunteer",
+   orgName : "Helping Hands",
+   orgDescription: "a compnau duh",
+   email: "forhelpnew@gmail.com ",
+   logoUrl : null,
+   userType : "organization",
+  founders : "people",
+ orgWebsite: "https://towebsite"
         },
       ],
     };
 
-    // Mock the fetchVolunteerByEmail method to return null, indicating no duplicate email exists
-    Volunteer.fetchVolunteerByEmail = jest.fn().mockResolvedValue(null);
+    // Mock the fetchOrganizationByEmail method to return null, indicating no duplicate email exists
+    Organization.fetchOrganizationByEmail = jest.fn().mockResolvedValue(undefined);
 
     // Create a mock for bcrypt.hash to spy on its usage
     const mockHash = jest.spyOn(bcrypt, "hash");
 
     db.query = jest.fn().mockReturnValue(mockResult);
-    const volunteer = await Volunteer.register(volunteerInfo);
-    expect(volunteer).toEqual(mockResult.rows[0]);
+    const organization = await Organization.register(organizationInfo);
+    console.log('organizatopm', organization)
+    
+    const { id }  = organization
+    expect(organization).toEqual(mockResult.rows[0]);
     expect(db.query).toHaveBeenCalledTimes(3); //3 query calls made during the register function if done successfully
-
-    expect(mockHash).toHaveBeenCalledWith(
-      volunteerInfo.password,
-      BCRYPT_WORK_FACTOR
-    );
+     expect(mockHash).toHaveBeenCalledWith( organizationInfo.password, BCRYPT_WORK_FACTOR);
   });
 });
 // describe("Testing fetchAllOrgProjects function", async () => {
