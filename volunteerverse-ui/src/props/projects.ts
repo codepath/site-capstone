@@ -6,7 +6,7 @@ export interface VolunteerProjectProp {
     orgName: string,
     orgUrl: string,
     imageUrl: string,
-    orgDesc: string,
+    orgDescription: string,
     founders: string,
     interested: boolean,
     tags: string[],
@@ -18,7 +18,7 @@ export interface VolunteerProjectProp {
     createdAt: number | undefined,
     description: string,
     imageUrl: string,
-    orgDesc: string,
+    orgDescription: string,
     founders: string,
     tags: string[],
   }

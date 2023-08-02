@@ -15,10 +15,7 @@ import {
 import { VolunteerProjectProp } from "../../../props/projects";
 import { ApiResponseProp, apiClient } from "../../../services/ApiClient";
 import GoBackButton from "../../../components/GoBackButton";
-import NotAuthorized from "../../NotAuthorized";
 import { projectDetailsData } from "../../Volunteer/Home/data";
-import { useAuthenticationUserProp } from "../../../services/hooks/useAuthentication";
-import { AuthenticationContext } from "../../../context/AuthenicationContext";
 
 
 
@@ -62,7 +59,7 @@ function OrgProjectDetails() {
     orgName: "",
     orgUrl: "",
     imageUrl: "",
-    orgDesc: "",
+    orgDescription: "",
     founders: "",
     tags: [""],
     interested: false,
@@ -74,7 +71,8 @@ function OrgProjectDetails() {
     // the volunteer's interest
     showLoadingButton();
     if (projectId) {
-      apiClient.updateProjectInterestByUser(projectId).then((response : ApiResponseProp) => {
+      // CHANGE THIS
+      apiClient.toggleProjectInterestByUser(projectId, "add").then((response : ApiResponseProp) => {
         const { data, success, statusCode, error } = response;
         console.log("updating interested from ", project?.interested, " to ", !project?.interested)
         if (success) {
@@ -123,9 +121,8 @@ function OrgProjectDetails() {
      * @todo: connect to backend
      */
     setProject(projectDetailsData);
-    // fetchProjectById();
+    fetchProjectById();
   }, []);
-  console.log(project)
   return (
     <Box p={0} m={0}>
       <GoBackButton mb={"md"} w={"100%"} maw={200} />
@@ -158,7 +155,7 @@ function OrgProjectDetails() {
             <Text p={isMobile ? "xs" : "sm"}>{project?.description}</Text>
             <Divider />
             <Title align="left" order={2}>About {project?.orgName}:</Title>
-            <Text align="left" p={isMobile ? "xs" : "sm"}>{project?.orgDesc}</Text>
+            <Text align="left" p={isMobile ? "xs" : "sm"}>{project?.orgDescription}</Text>
           </Flex>
         </Container>
       </Skeleton>

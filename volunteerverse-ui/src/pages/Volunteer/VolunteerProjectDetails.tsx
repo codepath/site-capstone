@@ -63,7 +63,7 @@ function VolunteerProjectDetails() {
     orgName: "",
     orgUrl: "",
     imageUrl: "",
-    orgDesc: "",
+    orgDescription: "",
     founders: "",
     tags: [""],
     interested: false,
@@ -75,7 +75,8 @@ function VolunteerProjectDetails() {
     // the volunteer's interest
     showLoadingButton();
     if (projectId) {
-      apiClient.updateProjectInterestByUser(projectId).then((response) => {
+      console.log("toggling volunteer interest to mode: ", project?.interested ? "remove" : "add");
+      apiClient.toggleProjectInterestByUser(projectId, project?.interested ? "remove" : "add").then((response) => {
         const { data, success, statusCode, error } = response;
         if (success) {
           console.log("updating interested from ", project?.interested, " to ", !project?.interested)
@@ -140,6 +141,7 @@ function VolunteerProjectDetails() {
           <Flex gap={isMobile ? "sm" : "md"} direction={"column"} w={"100%"} align={"center"}>
             <Image radius={"xl"} withPlaceholder src={project?.imageUrl} width={isMobile ? "100%" : "100%"} height={isMobile ? 300 : 500} />
             <Group variant="filled" >
+            <Text size="lg" color="dimmed"  fw={700}>Tags: </Text>
               {project?.tags.map((tag) => {
                 return (
                   <Badge className={classes.tag} key={tag} variant="light" size={isMobile ? "lg" : "xl"} >{tag}</Badge>
@@ -160,12 +162,12 @@ function VolunteerProjectDetails() {
             onClick={toggleProjectInterest}
             my={"xl"}
             >
-            {project.interested ? "Remove Interest" : "Express Interest"}</Button>
+            {project?.interested ? "Remove Interest" : "Express Interest"}</Button>
 
           {/* <Flex align={"start"} direction={"column"} className={classes.textContent} w={"100%"}> */}
           <div>
             <Title mt={"xl"} align="center" order={1}>{project?.title}</Title>
-            <Title align="center" p={isMobile ? "xs" : "sm"} order={4}>by {!project.orgUrl ? `${project?.orgName}` : <Link to={project.orgUrl}>{project?.orgName}</Link>}</Title>
+            <Title align="center" p={isMobile ? "xs" : "sm"} order={4}>by {project.orgUrl === "" ? `${project?.orgName}` : <Link to={project.orgUrl}>{project?.orgName}</Link>}</Title>
             <Text mb={"xl"} color="dimmed" align="center">Posted: {project.createdAt ? fetchPrettyTime(project.createdAt) :  "N/A"}</Text>
           </div>
            <Divider my={"lg"}/>
@@ -176,7 +178,7 @@ function VolunteerProjectDetails() {
             <Divider my={"lg"} />
             <div>
             <Title align="left" order={2}>About {project?.orgName}:</Title>
-            <Text align="left" p={isMobile ? "xs" : "sm"}>{project?.orgDesc}</Text>
+            <Text align="left" p={isMobile ? "xs" : "sm"}>{project?.orgDescription}</Text>
 
             </div>
            <Divider my={"lg"} />

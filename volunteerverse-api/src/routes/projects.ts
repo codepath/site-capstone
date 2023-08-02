@@ -72,12 +72,12 @@ projectRoutes.get(
       requireAuthenticatedUser,
       async function (req, res, next) {
         const projectId = parseInt(req.params.projectId);
-        const { user_type, email } = res.locals.user;
-        console.log("USERTYPE", user_type);
+        const { userType, email } = res.locals.user;
+        console.log("USERTYPE", userType);
         try {
           const project = await Projects.fetchProjectByProjectId(
             projectId,
-            user_type,
+            userType,
             email
           );
           res.status(201).json(project);
