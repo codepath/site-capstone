@@ -1,6 +1,7 @@
 import { useDisclosure } from '@mantine/hooks';
 import { Modal, Group, Button, Paper, Avatar, Text } from '@mantine/core';
 import { VolunteerUserProp } from '../../../props/users';
+import { useNavigate } from 'react-router';
 
 export default function VolunteerProfileCard({volunteerProfile, closeModal} : {volunteerProfile: VolunteerUserProp, closeModal: () => void}) {
 const { firstName, lastName, imageUrl, bio } = volunteerProfile;
@@ -17,7 +18,16 @@ const { firstName, lastName, imageUrl, bio } = volunteerProfile;
             </Text>
             <Text mt={"xl"} ta="center" fz="sm">Bio:</Text>
             <Text ta="center" c="dimmed" fz="sm">{bio}</Text>
-            <Button onClick={closeModal} variant='light' mt={"lg"} radius={"xl"}>Close</Button>
+            <Group mt={"lg"} spacing={"sm"} position='center'>
+                <Button onClick={closeModal} variant='light' radius={"xl"}>Close</Button>
+                {
+                    volunteerProfile.approved &&
+                    <Button
+                        onClick={() => { window.location.href = `mailto:${volunteerProfile.email}` }}
+                        radius={"xl"}
+                        variant='outline'>Contact {volunteerProfile.firstName}</Button>
+                }
+            </Group>
         </Paper>
     );
 }

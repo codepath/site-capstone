@@ -1,10 +1,12 @@
-import { Avatar, Badge, Table, 
-    Group, Text,ScrollArea, Paper, 
-    useMantineTheme, Button, Flex, CloseButton, 
-    ActionIcon, Modal } from '@mantine/core';
+import {
+    Avatar, Badge, Table,
+    Group, Text, ScrollArea, Paper,
+    useMantineTheme, Button, Flex, CloseButton,
+    ActionIcon, Modal, Container
+} from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { VolunteerUserProp } from '../../../props/users';
-import { IconCheck } from '@tabler/icons-react';
+import { IconCheck, IconCircleLetterG } from '@tabler/icons-react';
 import { useState } from 'react';
 import { ApiResponseProp, apiClient } from '../../../services/ApiClient';
 import { useParams } from 'react-router-dom';
@@ -26,29 +28,31 @@ export function VolunteersTable({ volunteerData }: { volunteerData: VolunteerUse
         approved: undefined,
         id: -1,
         userType: "volunteer",
-        skills:  ["Being Purple"],
-        
+        skills: ["Being Purple"],
+
     })
-    
-    const VolunteerRow = (volunteer : VolunteerUserProp) => {
+
+    const VolunteerRow = (volunteer: VolunteerUserProp) => {
         /**
          * @todo: connect approval and unapproval to backend
          */
         const [showApprovedLoader, { open: openApprovedButtonLoader, close: closeApprovedButtonLoader }] = useDisclosure(false);
         const [showRejectedLoader, { open: openRejectedButtonLoader, close: closeRejectedButtonLoader }] = useDisclosure(false);
         const [isApproved, setIsApproved] = useState<boolean | undefined>(volunteer.approved)
-        const toggleVolunteerApproval = (volunteerEmail: string) => {
-            apiClient.toggleVolunteerApproval(volunteerEmail, projectId || "").then(({ success, data, statusCode, error }: ApiResponseProp) => {
+        const toggleVolunteerApproval = (volunteerEmail: string, mode: "approve" | "reject") => {
+            apiClient.toggleVolunteerApproval(volunteerEmail, projectId || "", mode).then(({ success, data, statusCode, error }: ApiResponseProp) => {
                 if (success) {
                     /**
                      * set the new card state
                     */
+                    console.log("data while updating volunteer approrval: ", data)
+                    volunteer.approved = data.approve;
                     setIsApproved(data.approve);
                     notifications.show({
                         autoClose: 3000,
                         color: "green",
                         title: 'Success!',
-                        message: `Volunteer has been ${volunteer.approved ?  "approved" :  "rejected"}.`,
+                        message: `Volunteer has been ${isApproved ? "rejected" : "approved"}.`,
                     })
                 } else {
                     console.log("unable to toggle volunteer approval: ", error);
@@ -75,8 +79,8 @@ export function VolunteersTable({ volunteerData }: { volunteerData: VolunteerUse
                 return rejectedOption;
             } else if (isApproved === true) {
                 return approvedOption;
-            }else{
-                console.log("ERRORR: unabel to determienr correct status option")
+            } else {
+                console.log("ERRORR: unabel to determienr correct status option with : ", isApproved)
             }
         }
         return (
@@ -84,22 +88,29 @@ export function VolunteersTable({ volunteerData }: { volunteerData: VolunteerUse
                 <td>
                     <Flex ml={"xl"} mr={"xl"} maw={20} gap={"md"} direction={"row"} >
                         <Avatar size={isMobile ? 60 : 100} src={volunteer.imageUrl} radius={"xl"} />
-                        <Flex align={"start"} direction={"column"}>
+                        <Container>
                             <Text ml={"xs"} align='left' fz={isMobile ? "md" : "xl"} fw={500}>
                                 {volunteer.firstName} {volunteer.lastName}
                             </Text>
-                            <Text ml={"xs"} align='left' fz={isMobile ? "sm" : "xl"} c="dimmed">
-                                {volunteer.email}
-                            </Text>
+
                             <Group>
-                                <Button 
-                                 onClick={() => {setActiveVolunteerProfile(volunteer); openProfileModal()}}
-                                 mt={"sm"} 
-                                 size={isMobile ? "xs" : "sm"} 
-                                 radius={"xl"} 
-                                 variant='light'>View Profile</Button>
+                                <Button
+                                    onClick={() => { setActiveVolunteerProfile(volunteer); openProfileModal() }}
+                                    mt={"sm"}
+                                    size={isMobile ? "xs" : "sm"}
+                                    radius={"xl"}
+                                    variant='light'>View Profile</Button>
+                                {
+                                    isApproved &&
+                                    <Button
+                                        onClick={() => { window.location.href = `mailto:${volunteer.email}` }}
+
+                                        size={isMobile ? "xs" : "sm"}
+                                        radius={"xl"}
+                                        variant='outline'>Contact {volunteer.firstName}</Button>
+                                }
                             </Group>
-                        </Flex>
+                        </Container>
                     </Flex>
                 </td>
                 <td>
@@ -112,10 +123,12 @@ export function VolunteersTable({ volunteerData }: { volunteerData: VolunteerUse
                             variant='light'>{fetchCorrectStatusOption("Pending Approval", "Rejected", "Approved")}</Badge>
                         <Group spacing={10}>
                             {
-                                (volunteer.approved == null || volunteer.approved === false) && (
-                                    <ActionIcon disabled={showRejectedLoader}
+                                (isApproved == null || isApproved === false) && (
+                                    <ActionIcon
+                                        title={`approve ${volunteer.firstName}?`}
+                                        disabled={showRejectedLoader}
                                         loading={showApprovedLoader}
-                                        onClick={() => { openApprovedButtonLoader(); toggleVolunteerApproval(volunteer.email) }}
+                                        onClick={() => { openApprovedButtonLoader(); toggleVolunteerApproval(volunteer.email, "approve") }}
                                         color='green' variant='outline' size={isMobile ? "md" : 'xl'}
                                         radius={"xl"}>
                                         <IconCheck />
@@ -123,15 +136,18 @@ export function VolunteersTable({ volunteerData }: { volunteerData: VolunteerUse
                                 )
                             }
                             {
-                                (volunteer.approved == null || volunteer.approved === true) && (
+                                (isApproved == null || isApproved === true) && (
                                     <CloseButton disabled={showApprovedLoader} loading={showRejectedLoader}
-                                        onClick={() => { openRejectedButtonLoader(); toggleVolunteerApproval(volunteer.email) }} color='red'
+                                        title={`reject ${volunteer.firstName}?`}
+
+                                        onClick={() => { openRejectedButtonLoader(); toggleVolunteerApproval(volunteer.email, "reject") }} color='red'
                                         size={isMobile ? "md" : 'xl'} radius={"xl"}
                                         variant='outline' aria-label="Close modal" />
                                 )
 
                             }
                         </Group>
+
                     </Group>
                 </td>
             </tr>

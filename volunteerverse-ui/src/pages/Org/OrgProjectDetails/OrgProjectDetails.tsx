@@ -15,10 +15,7 @@ import {
 import { VolunteerProjectProp } from "../../../props/projects";
 import { ApiResponseProp, apiClient } from "../../../services/ApiClient";
 import GoBackButton from "../../../components/GoBackButton";
-import NotAuthorized from "../../NotAuthorized";
 import { projectDetailsData } from "../../Volunteer/Home/data";
-import { useAuthenticationUserProp } from "../../../services/hooks/useAuthentication";
-import { AuthenticationContext } from "../../../context/AuthenicationContext";
 
 
 
