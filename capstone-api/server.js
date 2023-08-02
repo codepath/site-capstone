@@ -26,6 +26,8 @@ console.log("entered server")
 
 app.use('/api', hotelsRouter);
 app.use('/api', thingstodoRouter);
+app.use('/api', userRouter);
+
 
 app.use('/', favoritesRouter);
 app.use('/', activitiesRouter);
