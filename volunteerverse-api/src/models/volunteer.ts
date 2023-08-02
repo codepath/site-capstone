@@ -288,9 +288,10 @@ export class Volunteer {
       }
     })
 
-    // get all remaining projects and return them 
-
-    return Array.from(projects);
+    // filter projects by active status and return them
+     console.log("projects retrieved: ", Array.from(projects))
+    const activeOnlyProjects = Array.from(projects).filter((project) => project.active === true)
+    return activeOnlyProjects;
   }
 
 

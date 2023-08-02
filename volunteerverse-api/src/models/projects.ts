@@ -145,6 +145,8 @@ export class Projects {
         image_url,
         requested_people,
         approved_people,
+        active,
+        external,
       } = result.rows[0];
       const tags = await this.getProjectTags(id);
       const { organization_name, founders, website, organization_description, logo_url } =
@@ -163,6 +165,8 @@ export class Projects {
         requestedVolunteers: requested_people,
         approvedVolunteers: approved_people,
         tags: tags,
+        active: active,
+        external: external
       };
 
       if (userType == "volunteer") {

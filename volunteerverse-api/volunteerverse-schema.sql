@@ -34,7 +34,8 @@ CREATE TABLE projects(
     image_url TEXT,
     requested_people INTEGER NOT NULL,
     approved_people INTEGER NOT NULL DEFAULT 0,
-    active BOOLEAN DEFAULT TRUE
+    active BOOLEAN DEFAULT TRUE,
+    external BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE interested_volunteers(
