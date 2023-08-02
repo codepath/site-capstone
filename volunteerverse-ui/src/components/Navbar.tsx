@@ -10,8 +10,6 @@ import { useDisclosure } from '@mantine/hooks';
 import { useNavigate } from "react-router-dom";
 import SignUpModal from "../pages/Landing/SignUpModal";
 import { useContext, useEffect } from "react";
-import { fetchCorrectUserOption } from "../utility/fetchCorrectUserOption";
-import { useMemo } from "react";
 import { AuthenticationContext } from "../context/AuthenicationContext";
 
 const useStyles = createStyles((theme) => ({
