@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 const { BadRequestError } = require("../utils/errors");
-
+const db = require('../db')
 const rapidapikey = '6e3eaf92c2msh051dfb6b48d6e1ap117a81jsnd49091eeccff'
 const rapidapihost = process.env.rapidapihost
 const axios = require('axios');
@@ -215,59 +215,59 @@ class Hotels {
       throw new BadRequestError("No id provided");
     }
     const query = `SELECT * FROM hotels WHERE id = $1`;
-    const result = await db.query(query, id);
-    const user = result.rows[0];
-    return user;
+    const result = await db.query(query, [id]);
+    const hotel = result.rows[0];
+    return hotel;
   }
 
   static async addHotel(credentials) {
+    const requiredFields = ["name", "city", "price", "check_in", "check_out"];
+    requiredFields.forEach((field) => {
+      if (!credentials.hasOwnProperty(field)) {
+        throw new BadRequestError(`Missing ${field} in request body.`);
+      }
+    });
 
-  const requiredFields = ["id", "email", "name", "country", "city", "price"];
-  requiredFields.forEach((field) => {
-    if (!credentials.hasOwnProperty(field)) {
-      throw new BadRequestError(`Missing ${field} in request body.`);
-    }
-  });
+    const query = `
+      INSERT INTO hotels (name, city, price, check_in, check_out)
+      VALUES ($1, $2, $3, $4, $5)
+      RETURNING *
+    `;
+    const values = [
+      credentials.name,
+      credentials.city,
+      credentials.price,
+      credentials.check_in,
+      credentials.check_out,
+    ];
 
-  // const exisitingHotel = await Hotels.getHotel(credentials.user_email);
-  
-  // const lowercasedEmail = credentials.user_email.toLowerCase();
-
-  const query = `
-    INSERT INTO hotels (id, email, name, country, city)
-    VALUES ($1, $2, $3, $4, $5)
-  `;
-  const result = await db.query(query, [
-    credentials.id,
-    credentials.email,
-    credentials.name,
-    credentials.country,
-    credentials.city
-  ]);
-  return;
-
+    const result = await db.query(query, values);
+    return result.rows[0];
   }
 
   static async updateHotel(id, updates) {
     const query = `
       UPDATE hotels
-      SET name = $1, country = $2, city = $3, price = $4
-      WHERE id = $5
+      SET name = $1, city = $2, price = $3, check_in = $4, check_out = $5
+      WHERE id = $6
+      RETURNING *
     `;
-    const { name, country, city, price } = updates;
-    const result = await db.query(query, [name, country, city, price, id]);
-    return;
+    const { name, city, price, check_in, check_out } = updates;
+    const values = [name, city, price, check_in, check_out, id];
+
+    const result = await db.query(query, values);
+    return result.rows[0];
   }
 
   static async deleteHotel(id) {
     const query = `
       DELETE FROM hotels
       WHERE id = $1
+      RETURNING *
     `;
     const result = await db.query(query, [id]);
-    return;
+    return result.rows[0];
   }
-
 
 
   
