@@ -22,6 +22,7 @@ export default function Activities({
                                     cost
 }) {
     const [searchValue, setSearchValue] = useState("")
+    const [inputValue, setInputValue] = useState("")
     const [priceValue, setPriceValue] = useState(1)
     const [sortValue , setSortValue] = useState("relevance")
     const [activities, setActivities] = useState([]) // Initialize as an empty array
@@ -36,31 +37,32 @@ export default function Activities({
             min_price: "1",
             max_price: priceValue,
             near: destination,
-            sort: sortValue,
+            sort: sortValue
         })
         .then((response) => {
             // Update the activities state with the fetched data
+            console.log(response.data.results)
             setActivities(response.data.results)
             setLoading(false)
         })
         .catch((error) => {
             console.error(error)
         })
-    }, [searchValue, priceValue, destination,sortValue]) // Add searchValue and destination to the dependencies array
-
-    const handleOnSearch = (event) => {
-        setSearchValue(event.target.value)
-    }
+    }, [priceValue, destination, sortValue, searchValue]) // Add searchValue and destination to the dependencies array
 
     const handlePriceSelect = (event) =>{
-        console.log("price is changed")
+        event.preventDefault()
         setPriceValue(event.target.value)
     }
+    const handleOnSearch = (event) => {
+        event.preventDefault()
+        console.log(inputValue)
+        setSearchValue(inputValue)
+    }   
 
     const handleSortSelect = (event) => {
-        console.log("sort is changed")
+        event.preventDefault()
         setSortValue(event.target.value)
-        console.log(sortValue)
     }
     
   return (
@@ -104,8 +106,11 @@ export default function Activities({
                 </div>
             </div>
             </div>
-            <div className="mt-8 mb-8 flex justify-between">
-                <input type="text" placeholder="Search" value={searchValue} onChange={handleOnSearch} />
+            <div className="mt-8 mb-8 flex justify-between h-10">
+                <form onSubmit={handleOnSearch}>
+                    <input className="h-10 rounded-md" type="text" placeholder="Search" value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
+                    <button className="h-10 ml-3" onClick={handleOnSearch}><i className='bx bx-search' ></i></button>
+                </form>
             <div className="flex">
             <div>
                 <label htmlFor="price-range" className="mr-2">Price:</label> 
@@ -119,19 +124,26 @@ export default function Activities({
                 <div className="ml-2">
                     <label htmlFor="sort" className="mr-2">Sort By: </label> 
                         <select name="sort" id="sort" value={sortValue} onChange={handleSortSelect}> 
-                            <option value= "relevance" > relevance </option> 
-                            <option value= "rating" > rating </option> 
-                            <option value= "distance" > distance</option> 
+                            <option className="px-3" value= "relevance" > Relevance </option> 
+                            <option value= "rating" > Rating </option> 
+                            <option value= "distance" > Distance</option> 
                         </select>
                 </div>
             </div>
             </div>
         <div className="grid grid-cols-3 gap-6 mt-3">
-            {activities?.map((activity) => (
-                <ActivityCards activity={activity} key={activity.id} 
-                               itinerary={itinerary}
-                               setItinerary={setItinerary} />
-            ))}
+        {
+            activities.length === 0 ? "No results found." :
+                activities.map((activity) => (
+                    <ActivityCards
+                    activity={activity}
+                    key={activity.id}
+                    itinerary={itinerary}
+                    setItinerary={setItinerary}
+                    />
+                ))
+                
+            }
         </div>
         </div>
         </div>

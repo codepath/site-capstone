@@ -130,9 +130,8 @@ function BookingMenu({ itinerary }) {
                                 </div>
                                 </>
                                 )}
-
-                                <div>{itinerary['Activities'].map((item) => {
-                                    return (<div className="mb-3"><ActivityCards activity={item} checkout={true} /></div>)
+                                <div>{itinerary['Activities'].map((item, index) => {
+                                    return (<div className="mb-3"><ActivityCards activity={item} checkout={true} key={index} /></div>)
                                 })}
                                 </div>
                             </div>
