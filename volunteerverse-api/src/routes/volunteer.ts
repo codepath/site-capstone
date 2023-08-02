@@ -1,6 +1,7 @@
 /** Routes for authentication. */
 import express from "express";
 import { Volunteer } from "../models/volunteer";
+import { BadRequestError } from "../utils/errors";
 
 const volunteerRoutes = express.Router();
 
@@ -19,12 +20,21 @@ volunteerRoutes.get("/skills", async function (req, res, next) {
 volunteerRoutes.put("/interest/:projectId", async function (req, res, next) {
   try {
     const projectId = parseInt(req.params.projectId);
-    const {email } = res.locals.user;
-    const {userType} = res.locals.user;
-    console.log("EMAIL VALUE IN VOLUNTEER: ", email)
-    console.log("res.locals.user hereeee", res.locals.user)
-    const result = await Volunteer.expressInterest(projectId, email);
-    res.status(200).json(result);
+    const {email, userType } = res.locals.user;
+    const { mode } = req.body;
+    if (mode === undefined) throw new BadRequestError("No mode found in request body")
+    console.log("EMAIL VALUE IN VOLUNTEER: ", email);
+    console.log("request body: ", req.body)
+    if (mode === "add"){
+      console.log("adding interest")
+      const result = await Volunteer.expressInterest(projectId, email);
+      res.status(200).json(result);
+      
+    }else if (mode === "remove"){
+      console.log("removing interest")
+      const result = await Volunteer.expressUninterest(projectId, email);
+      res.status(200).json(result);
+    }
   } catch (error) {
     next(error);
   }
