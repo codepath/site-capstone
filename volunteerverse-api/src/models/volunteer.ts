@@ -31,7 +31,6 @@ export class Volunteer {
       bio: volunteer.bio,
       imageUrl: volunteer.image_url,
       skills: skills,
-      // interestedProjects: interestedProjects,
       approvedProjects: approvedProjects,
       userType: "volunteer",
     };
@@ -170,9 +169,19 @@ export class Volunteer {
    */
 
   static async getInterestedProjects(email: string) {
-    const query = `SELECT project_id FROM interested_volunteers WHERE email=$1`;
-    const result = await db.query(query, [email]);
-    return result.rows;
+    // retrieve all project ids for a given user
+    const query = `SELECT project_id FROM interested_volunteers WHERE email=$1 and approved=$2`;
+    const result = await db.query(query, [email, false]);
+    // getting all interested projects
+    const interestedProjects = [];
+    
+    for await (const {project_id} of result.rows) {
+      // for each project id, retrieve the project object for a volunteer
+      const project = await Projects.fetchProjectByProjectId(project_id, "volunteer");
+      interestedProjects.push(project);
+    }
+
+    return interestedProjects;
   }
 
   /**
@@ -215,14 +224,33 @@ export class Volunteer {
    * @param email
    */
   static async expressInterest(projectId: number, email: string) {
-    const volunteerCheck = await this.expressedInterest(projectId, email)
-    if (volunteerCheck){
+    const volunteerCheck = await this.expressedInterest(projectId, email);
+    if (volunteerCheck) {
       throw new BadRequestError("Already expressed interest")
     }
-    
-    const query = `INSERT into interested_volunteers(email, project_id, approved) VALUES ($1,$2,$3) RETURNING email,project_id as "projectId",approved`;
-    const result = await db.query(query, [email, projectId, false]);
-    return result.rows[0];
+    const query = ` INSERT into interested_volunteers(email, project_id, approved) 
+                    VALUES ($1,$2,$3) 
+                    RETURNING 
+                          email,
+                          project_id as "projectId", 
+                          approved`;
+    const result = await db.query(query, [email, projectId, null]);
+    return true ;
+  }
+  static async expressUninterest(projectId: number, email: string) {
+    // first check if user hasn't already expressed interest
+    const existingInterestedVolunteer = await db.query(
+      `SELECT * FROM interested_volunteers WHERE email=$1`, [email]
+    )
+    if (existingInterestedVolunteer.rows > 0) {
+      throw new BadRequestError("User is already not interested")
+    }
+    // then remove volunteer from table
+    const query = ` DELETE FROM interested_volunteers
+                    WHERE project_id=$1 AND email=$2`;
+
+    const result = await db.query(query, [projectId, email]);
+    return true;
   }
 
   /**
@@ -291,6 +319,32 @@ static async checkStatusProject(projectId:number, email:string){
     return result.rows[0].approved;
   }
   throw new BadRequestError(`${email} has not expressed interest in project ${projectId}`);
+}
+
+/**
+ * returns volunteer info from the volunteers table 
+ * @param email email of the volunteer
+ * @returns all columns from the volunteer table
+ */
+static async getVolunteerByEmail(email : string){
+  const query = `SELECT 
+  id,
+  bio,
+  email,
+  first_name as "firstName",
+  last_name as "lastName",
+  image_url as "imageUrl"
+
+  FROM volunteers 
+  WHERE email=$1`;
+  const result = await db.query(query, [email]);
+
+  console.log("fetching volunteer by email: ", result.rows)
+  if (result.rows.length > 0){
+    return result.rows[0];
+  }
+  throw new BadRequestError(`no volunteer exists with the following email: ${email}`);
 
 }
+
 }
