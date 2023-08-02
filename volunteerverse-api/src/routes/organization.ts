@@ -94,7 +94,7 @@ organizationRoutes.get("/project/interested/:projectId", async function (req, re
   console.log("this is the req.body", req.params.projectId);
 const result = await Organization.fetchInterestedVolunteersByProjectId(projectId);
   if (result) {
-    res.status(201).json({ interstedVolunteers: result })
+    res.status(201).json({ interestedVolunteers: result })
   } else {
     res.status(404).json( { error: 'Project not found' } )
   }
