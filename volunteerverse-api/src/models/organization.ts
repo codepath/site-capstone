@@ -7,6 +7,7 @@ import {
 } from "../utils/errors";
 
 import { BCRYPT_WORK_FACTOR } from "../config";
+import { Volunteer } from "./volunteer";
 /**
  * @todo: change get org by email function or refactor
  */
@@ -110,21 +111,15 @@ export class Organization {
     };
   }
   static async fetchInterestedVolunteersByEmail(email) {
+    // returns volunteer info based on email
     const interestedVolunteersInfo = await db.query(
-      `SELECT 
-      id,
-      email,
-      project_id,
-      approved
+      `SELECT *
          FROM interested_volunteers
          WHERE  email = $1`,
       [email.toLowerCase()]
     );
 
-    if (interestedVolunteersInfo) {
-      return interestedVolunteersInfo.rows;
-    }
-    return null;
+   return interestedVolunteersInfo.rows[0]
   }
 
   static async fetchOrganizationByEmail(org_email: string) {
@@ -344,9 +339,8 @@ export class Organization {
       // if this was insert, we would have assigned the data from insomnia
       //to it but since it is select, we would be taking the data under the rows from
       //the table we said
-      `SELECT  
-      email,
-      project_id
+      `SELECT
+      email, approved
        FROM interested_volunteers
        WHERE  project_id = $1`,
       [projectId]
@@ -355,10 +349,15 @@ export class Organization {
       //which we then assign to result back in the route and then convert to json.
     );
 
-    if (!result) {
-      throw new BadRequestError();
+    const interestedVolunteers = []
+    for await (const volunteerInfo of result.rows) {
+      // for each volunteer, we add an additional approved field
+      const volunteer = await Volunteer.getVolunteerByEmail(volunteerInfo.email);
+      console.log("retrieved volunteer: ", volunteer)
+      volunteer["approved"] = volunteerInfo.approved;
+      interestedVolunteers.push(volunteer)
     }
-    return result.rows;
+    return interestedVolunteers;
   }
 
   static async getOrgById(orgId: number) {
