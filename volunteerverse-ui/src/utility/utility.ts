@@ -1,3 +1,4 @@
+import { notifications } from "@mantine/notifications";
 import { useAuthenticationUserProp } from "../services/hooks/useAuthentication";
 import moment from "moment";
 
@@ -24,4 +25,19 @@ export const fetchPrettyTime = (timestamp :  number) => {
      */
     console.log(timestamp)
     return moment(timestamp).fromNow();
+}
+export const notify = {
+    error : (message :string = "An error occured. Please try again later") => notifications.show({
+        autoClose: 3000,
+        color: "red",
+        title: 'Uh-oh!',
+        message: message,
+    }),
+    success : (message : string  = "") => notifications.show({
+        autoClose: 3000,
+        color: "green",
+        title: 'Success!',
+        message: message,
+
+    }),
 }
