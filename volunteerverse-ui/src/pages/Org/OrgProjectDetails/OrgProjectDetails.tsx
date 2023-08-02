@@ -74,7 +74,8 @@ function OrgProjectDetails() {
     // the volunteer's interest
     showLoadingButton();
     if (projectId) {
-      apiClient.updateProjectInterestByUser(projectId).then((response : ApiResponseProp) => {
+      // CHANGE THIS
+      apiClient.toggleProjectInterestByUser(projectId, "add").then((response : ApiResponseProp) => {
         const { data, success, statusCode, error } = response;
         console.log("updating interested from ", project?.interested, " to ", !project?.interested)
         if (success) {
@@ -123,9 +124,8 @@ function OrgProjectDetails() {
      * @todo: connect to backend
      */
     setProject(projectDetailsData);
-    // fetchProjectById();
+    fetchProjectById();
   }, []);
-  console.log(project)
   return (
     <Box p={0} m={0}>
       <GoBackButton mb={"md"} w={"100%"} maw={200} />

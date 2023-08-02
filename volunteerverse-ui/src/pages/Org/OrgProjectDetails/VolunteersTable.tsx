@@ -19,14 +19,21 @@ export function VolunteersTable({ volunteerData }: { volunteerData: VolunteerUse
     const [showProfileModal, { open: openProfileModal, close: closeProfileModal }] = useDisclosure(false);
     const [activeVolunteerProfile, setActiveVolunteerProfile] = useState<VolunteerUserProp>({
         email: "",
-        firstName: "Jane",
-        lastName: "Doe",
+        firstName: "Helper",
+        lastName: "Hand",
         imageUrl: "",
-        bio: "Hey there! My name is HelperHand, the VolunteerVerse mascot! It seems like you've discovered a secret place. Don't tell anyone!",
-        approved: undefined
+        bio: "Hey there! My name is Helper Hand, the VolunteerVerse mascot! It seems like you've discovered a secret place. Don't tell anyone!",
+        approved: undefined,
+        id: -1,
+        userType: "volunteer",
+        skills:  ["Being Purple"],
+        
     })
-
-    const VolunteerTableRows = volunteerData.map((volunteer) => {
+    
+    const VolunteerRow = (volunteer : VolunteerUserProp) => {
+        /**
+         * @todo: connect approval and unapproval to backend
+         */
         const [showApprovedLoader, { open: openApprovedButtonLoader, close: closeApprovedButtonLoader }] = useDisclosure(false);
         const [showRejectedLoader, { open: openRejectedButtonLoader, close: closeRejectedButtonLoader }] = useDisclosure(false);
         const [isApproved, setIsApproved] = useState<boolean | undefined>(volunteer.approved)
@@ -62,12 +69,14 @@ export function VolunteersTable({ volunteerData }: { volunteerData: VolunteerUse
         }
         const fetchCorrectStatusOption = (pendingOption: any, rejectedOption: any, approvedOption: any) => {
             // handles conditional rendering for differing approval states
-            if (isApproved === undefined) {
+            if (isApproved === null) {
                 return pendingOption;
             } else if (isApproved === false) {
                 return rejectedOption;
             } else if (isApproved === true) {
                 return approvedOption;
+            }else{
+                console.log("ERRORR: unabel to determienr correct status option")
             }
         }
         return (
@@ -103,7 +112,7 @@ export function VolunteersTable({ volunteerData }: { volunteerData: VolunteerUse
                             variant='light'>{fetchCorrectStatusOption("Pending Approval", "Rejected", "Approved")}</Badge>
                         <Group spacing={10}>
                             {
-                                (volunteer.approved == undefined || volunteer.approved === false) && (
+                                (volunteer.approved == null || volunteer.approved === false) && (
                                     <ActionIcon disabled={showRejectedLoader}
                                         loading={showApprovedLoader}
                                         onClick={() => { openApprovedButtonLoader(); toggleVolunteerApproval(volunteer.email) }}
@@ -114,7 +123,7 @@ export function VolunteersTable({ volunteerData }: { volunteerData: VolunteerUse
                                 )
                             }
                             {
-                                (volunteer.approved == undefined || volunteer.approved === true) && (
+                                (volunteer.approved == null || volunteer.approved === true) && (
                                     <CloseButton disabled={showApprovedLoader} loading={showRejectedLoader}
                                         onClick={() => { openRejectedButtonLoader(); toggleVolunteerApproval(volunteer.email) }} color='red'
                                         size={isMobile ? "md" : 'xl'} radius={"xl"}
@@ -127,8 +136,9 @@ export function VolunteersTable({ volunteerData }: { volunteerData: VolunteerUse
                 </td>
             </tr>
         )
-    });
-
+    }
+    const VolunteerTableRows = volunteerData.map((volunteer) => <VolunteerRow {...volunteer} />);
+    console.log("rendering volunteer data: ", volunteerData)
     return VolunteerTableRows.length === 0 ? <NoneFound /> : (
         <>
             <Modal opened={showProfileModal} onClose={closeProfileModal} radius={"lg"} ta={"center"} centered>

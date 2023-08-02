@@ -108,10 +108,11 @@ class ApiClient {
         }
         return this.request(requestOptions)
     }
-    async updateProjectInterestByUser(projectId : string){
+    async toggleProjectInterestByUser(projectId : string, mode : "add" | "remove"){
         const requestOptions = {
-            method: "get",
-            subDirectory: `/project/${projectId}`,
+            method: "put",
+            bodyData: {mode :  mode},
+            subDirectory: `/volunteer/interest/${projectId}`,
         }
         return this.request(requestOptions)
     }
@@ -144,7 +145,7 @@ class ApiClient {
         }
         return this.request(requestOptions) 
     }
-    async fecthInterestedVolunteersByProjectId(projectId : number){
+    async fetchInterestedVolunteersByProjectId(projectId : number){
         const requestOptions = {
             method: "get",
             subDirectory: `/organization/project/interested/${projectId}`,

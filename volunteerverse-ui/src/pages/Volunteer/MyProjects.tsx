@@ -21,8 +21,10 @@ import { fetchPrettyTime } from '../../utility/utility';
 function SlimProjectCard(project: VolunteerProjectProp) {
   // use for org projects too
   const openMenu = () => {
-    console.log("this is where menu opens")
+    console.log("this is where menu opens");
+    // console.log("rendering project: ", project)
   }
+  
   const theme = useMantineTheme();
   return (
     <Paper sx={ (theme) =>({ 
@@ -42,7 +44,7 @@ function SlimProjectCard(project: VolunteerProjectProp) {
             <Text>By: {<Text to={project.orgUrl} component={Link}>{project.orgName}</Text>}</Text>
           </Group>
           <Group>
-            <Badge color={project.approved ? theme.colors.orange[4] : theme.colors.green[4]}>{project.approved ? "approved" : "pending approval"}</Badge>
+            <Badge color={project.approved ? theme.colors.orange[4] : theme.colors.green[4]}>{project.approved === true ? "approved" : project.approved === false ? "rejected" : "pending approval"}</Badge>
             <Text>Posted: {project.createdAt ? fetchPrettyTime(project.createdAt) :  "N/A"}</Text>
           </Group>
         </Flex>
@@ -79,7 +81,6 @@ function MyProjects() {
     console.log("fetchingProjects");
   }
   useEffect(() => {
-
     searchMyProjects()
   }, [user]);
 
@@ -104,6 +105,7 @@ function MyProjects() {
         <Skeleton visible={myProjects === undefined}>
           <Flex mt={"xl"} gap={"xl"} direction={"column"}>
           {myProjects?.length ? myProjects?.map((project: VolunteerProjectProp, index: number) => {
+            console.log("maping projects: ", project)
             return (
               <SlimProjectCard key={`${project.createdAt}`} {...project} />
             )
