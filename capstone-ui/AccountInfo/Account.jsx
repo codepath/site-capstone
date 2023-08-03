@@ -3,7 +3,7 @@ import React from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import Itinerary from './Itinerary';
-import backgroundImage from './Assets/backgroundImage.jpg'
+import backgroundImage from './Assets/backgroundimage.jpg'
 
 function Account() {
   return (
