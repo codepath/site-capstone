@@ -8,6 +8,7 @@ import {
 
 import { BCRYPT_WORK_FACTOR } from "../config";
 import { Volunteer } from "./volunteer";
+import { validateFields } from "../utils/validate";
 /**
  * @todo: change get org by email function or refactor
  */
@@ -30,10 +31,31 @@ export class Organization {
     orgDescription: string;
     logoUrl?: string;
     orgWebsite: string;
-    userType: "organization";
+    userType: string;
 
 
-  }) {
+  })
+  {
+    const requiredInfo = [
+      "orgName",
+      "orgDescription",
+      "email",
+      "logoUrl",
+      "userType",
+     "password",
+     "founders",
+    "orgWebsite",
+    ];
+    try {
+      validateFields({
+        required: requiredInfo,
+        obj: creds,
+        location: "org registration",
+      });
+    } catch (error) {
+      throw error;
+    }
+
     const existingOrganizationWithEmail =
       await Organization.fetchOrganizationByEmail(creds.email);
     if (existingOrganizationWithEmail) {
@@ -70,7 +92,7 @@ export class Organization {
         creds.orgWebsite,
       ]
     );
-
+    
     const {
       id,
       organization_email,
@@ -80,7 +102,8 @@ export class Organization {
       organization_description,
       website,
     } = orgResult.rows[0];
-
+    console.log(orgResult.rows[0], organization_name)
+    
     const authResult = await db.query(
       `INSERT INTO authentication (
         email,
@@ -119,7 +142,7 @@ export class Organization {
       [email.toLowerCase()]
     );
 
-   return interestedVolunteersInfo.rows[0]
+    return interestedVolunteersInfo.rows[0]
   }
 
   static async fetchOrganizationByEmail(org_email: string) {
@@ -147,7 +170,7 @@ export class Organization {
     const auth_result = await db.query(
       `SELECT 
         
-        user_type
+        user_type as "userType"
         
            FROM  authentication
            WHERE  email = $1`,
@@ -199,7 +222,7 @@ export class Organization {
                    RETURNING *`,
         [!activeResult.rows[0].active, projectId, orgId]
       );
-      return result.rows;
+      return result.rows[0].active;
     } else {
       throw new UnauthorizedError("Organization/Project not found");
     }
@@ -211,12 +234,16 @@ export class Organization {
       [orgId, project_id]
     );
     if (orgResult.rows.length !== 0) {
-      const result = await db.query(
-        `DELETE FROM "projects" WHERE "id" = $1`,
-        [project_id]);
+      // deletes project from table
+      await db.query(`DELETE FROM "projects" WHERE "id" = $1`, [project_id]);
+      // deletes project from project_tags
+      await db.query(`DELETE FROM "project_tags" WHERE "project_id"=$1`, [project_id]);
+      // deletes projects from interested_volunteers table
+      await db.query(`DELETE FROM "interested_volunteers" WHERE "project_id"=$1`, [project_id]);
+
       return true;
     } else {
-      throw new UnauthorizedError("Organization/Project not found");
+      throw new UnauthorizedError("Organization does not have access, or project not found");
     }
   }
 
@@ -274,8 +301,8 @@ export class Organization {
 
     console.log("approvedResult", approvedResult.rows[0])
     console.log("approvedPeopleResult", approvedPeopleResult.rows[0])
-    
-    const approvedVolunteerState = await this.updateApprovedVolunteers(approvedResult.rows[0].approved, email, projectId, orgId, initialApprovalState )
+
+    const approvedVolunteerState = await this.updateApprovedVolunteers(approvedResult.rows[0].approved, email, projectId, orgId, initialApprovalState)
 
     console.log("bringing volunteer state into incre/decre works!", approvedVolunteerState.approved)
 
@@ -358,10 +385,14 @@ export class Organization {
     const interestedVolunteers = []
     for await (const volunteerInfo of result.rows) {
       // for each volunteer, we add an additional approved field
-      const volunteer = await Volunteer.getVolunteerByEmail(volunteerInfo.email);
-      console.log("retrieved volunteer: ", volunteer)
-      volunteer["approved"] = volunteerInfo.approved;
-      interestedVolunteers.push(volunteer)
+      try{
+        const volunteer = await Volunteer.getVolunteerByEmail(volunteerInfo.email);
+        console.log("retrieved volunteer: ", volunteer)
+        volunteer["approved"] = volunteerInfo.approved;
+        interestedVolunteers.push(volunteer)
+      } catch(error){
+        throw error;
+      }
     }
     return interestedVolunteers;
   }

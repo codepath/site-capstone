@@ -11,6 +11,9 @@ export interface VolunteerProjectProp {
     interested: boolean,
     tags: string[],
     approved: boolean,
+    orgPublicEmail: string,
+    orgPhoneNumber: string,
+    active : boolean
   }
   export interface OrgProjectProp{
     id: number
