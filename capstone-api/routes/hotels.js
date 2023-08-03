@@ -75,7 +75,19 @@ router.post('/hotels-detail', (req, res) => { //works on insomnia
   
   router.delete('/hotels/:id', async (req, res) => {
     // Logic to delete a hotel by ID
-    
+    const { id } = req.params;
+  
+    try {
+      const deletedHotel = await Hotels.deleteHotel(id);
+      if (!deletedHotel) {
+        res.status(404).json({ error: 'Hotel not found.' });
+      } else {
+        res.json({ message: 'Hotel deleted successfully' });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Failed to delete hotel.' });
+    }
   });
   
   
