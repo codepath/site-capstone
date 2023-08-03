@@ -66,44 +66,44 @@ export default function Homepage({ filterFlights, setFilterFlights,
     }, [travelers, arrivalDate, departureDate, destination])
     
     const homepage_america = {
-        "Toronto":"./Assets/toronto.jpg",
-        "New York City":"./Assets/nyc.jpg",
-        "Los Angeles":"./Assets/losangeles.jpg",
-        "Mexico City":"./Assets/mexicocity.jpg"
+        "Toronto":"./assets/toronto.jpg",
+        "New York City":"./assets/nyc.jpg",
+        "Los Angeles":"./assets/losangeles.jpg",
+        "Mexico City":"./assets/mexicocity.jpg"
     }
     const homepage_asia = {
-        "Bali":"./Assets/bali.jpg",
-        "Bangkok":"./Assets/bangkok.jpg",
-        "Seoul":"./Assets/Seoul.jpg",
-        "Tokyo":"./Assets/Tokyo.jpg"
+        "Bali":"./assets/bali.jpg",
+        "Bangkok":"./assets/bangkok.jpg",
+        "Seoul":"./assets/Seoul.jpg",
+        "Tokyo":"./assets/Tokyo.jpg"
     }
 
     const homepage_europe = {
-        "Paris":"./Assets/paris.jpg",
-        "Rome":"./Assets/rome.jpg",
-        "Barcelona":"./Assets/barcelona.jpg",
-        "London":"./Assets/london.jpg"
+        "Paris":"./assets/paris.jpg",
+        "Rome":"./assets/rome.jpg",
+        "Barcelona":"./assets/barcelona.jpg",
+        "London":"./assets/london.jpg"
     }
 
     const homepage_latin = {
-        "Rio":"./Assets/rio.jpg",
-        "Machu Pichu":"./Assets/machupichu.jpg",
-        "Buenos Aires":"./Assets/buenosaires.jpg",
-        "Cartagena":"./Assets/cartagena.jpg"
+        "Rio":"./assets/rio.jpg",
+        "Machu Pichu":"./assets/machupichu.jpg",
+        "Buenos Aires":"./assets/buenosaires.jpg",
+        "Cartagena":"./assets/cartagena.jpg"
     }
 
     const homepage_africa = {
-        "Zanzibar":"./Assets/zanzibar.jpg",
-        "Casablanca":"./Assets/casablanca.jpg",
-        "Cape Town":"./Assets/capetown.jpg",
-        "Giza":"./Assets/giza.jpg",
+        "Zanzibar":"./assets/zanzibar.jpg",
+        "Casablanca":"./assets/casablanca.jpg",
+        "Cape Town":"./assets/capetown.jpg",
+        "Giza":"./assets/giza.jpg",
     }
 
     const homepage_oceania = {
-        "Bora Bora":"./Assets/borabora.jpg",
-        "Sydney":"./Assets/sydney.jpg",
-        "Auckland":"./Assets/auckland.jpg",
-        "Oahu":"./Assets/oahu.jpg"
+        "Bora Bora":"./assets/borabora.jpg",
+        "Sydney":"./assets/sydney.jpg",
+        "Auckland":"./assets/auckland.jpg",
+        "Oahu":"./assets/oahu.jpg"
     }
 
     return (

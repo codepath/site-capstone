@@ -6,6 +6,7 @@ import backgroundImage from './Assets/backgroundimage.jpg'
 import { useState, useEffect } from "react"
 import data from './mockdata-hotels'
 import HotelCard from '../BookingPages/HotelCard'
+import mockItineraries from '../AccountInfo/mockitinerarydata'
 
 
 
@@ -29,6 +30,7 @@ function Itinerary({ arrivalDate, departureDate,
 }
 
 function ItineraryMenu({searchResults}) {
+ 
   return (
     <>
     <div className="flex w-screen h-screen px-64"
@@ -78,13 +80,19 @@ function ItineraryMenu({searchResults}) {
 
             <div className="border-t border-black-500 border-2"/>
             <div className="flex flex-col min-h-screen">
-            {/* {(searchResults.length !== 0) && (
-              <div className="flex-grow grid grid-cols-1 gap-4 px-4 py-6 md:grid-cols-2 lg:grid-cols-3">
-                {searchResults.map((item, index) => (
-                  <HotelCard key={index} hotel={item} />
-                ))}
-              </div>
-            )} */}
+
+              <div className="grid grid-cols-3 gap-6 mt-3">
+               { mockItineraries.length === 0 ? "No results found." :
+                      mockItineraries.map((mockItinerary) => (
+                          <ItineraryCards
+                          mockItinerary={mockItinerary}
+                          key={mockItinerary.id}
+                          />
+                      ))
+                      
+                  }
+             </div>
+          
           </div>
           
 
@@ -97,4 +105,21 @@ function ItineraryMenu({searchResults}) {
   );
 }
 
+function ItineraryCards({mockItinerary}){
+  console.log("mock", mockItinerary)
+  return(
+    <div>
+      <div>
+        <h1>Itinerary {mockItinerary.id} </h1>
+      </div>
+      <div>
+        <h3>Hotel: {mockItinerary.Hotel.name}</h3>
+      </div>
+    </div>
+
+  );
+
+}
+
 export default Itinerary;
+
