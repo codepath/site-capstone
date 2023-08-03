@@ -58,7 +58,7 @@ export default function Homepage({ filterFlights, setFilterFlights,
 
     async function handleSubmit() {
         if (submit && validDates !== false && validDates !== null) {
-            const response = await axios.post('http://localhost:3002/api/hotels-location', {
+            const response = await axios.post('https://nomadia.onrender.com/api/hotels-location', {
                 location_name: destination,
             })
 
