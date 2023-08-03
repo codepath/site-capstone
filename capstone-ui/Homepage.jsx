@@ -7,6 +7,31 @@ import { Link, useNavigate } from "react-router-dom"
 import { useState, useEffect } from 'react'
 import ImageCarousel from './ImageCarousel'
 import axios from 'axios'
+import toronto from "../public/assets/toronto.jpg"
+import nyc from "../public/assets/nyc.jpg"
+import la from "../public/assets/losangeles.jpg"
+import mex from "../public/assets/mexicocity.jpg"
+import bali from "../public/assets/bali.jpg"
+import bk from "../public/assets/bangkok.jpg"
+import seoul from "../public/assets/Seoul.jpg"
+import tokyo from "../public/assets/Tokyo.jpg"
+import paris from "../public/assets/paris.jpg"
+import rome from "../public/assets/rome.jpg"
+import bc from "../public/assets/barcelona.jpg"
+import london from "../public/assets/london.jpg"
+import rio from "../public/assets/rio.jpg"
+import machu from "../public/assets/machupichu.jpg"
+import aires from "../public/assets/buenosaires.jpg"
+import cart from "../public/assets/cartagena.jpg"
+import zan from "../public/assets/zanzibar.jpg"
+import casa from "../public/assets/casablanca.jpg"
+import cape from "../public/assets/capetown.jpg"
+import giza from "../public/assets/giza.jpg"
+import bora from "../public/assets/borabora.jpg"
+import syd from "../public/assets/sydney.jpg"
+import auck from "../public/assets/auckland.jpg"
+import oahu from "../public/assets/oahu.jpg"
+import banner from "../public/assets//homepage-banner.jpg"
 
 
 
@@ -66,50 +91,50 @@ export default function Homepage({ filterFlights, setFilterFlights,
     }, [travelers, arrivalDate, departureDate, destination])
     
     const homepage_america = {
-        "Toronto":"./assets/toronto.jpg",
-        "New York City":"./assets/nyc.jpg",
-        "Los Angeles":"./assets/losangeles.jpg",
-        "Mexico City":"./assets/mexicocity.jpg"
+        "Toronto":`${toronto}`,
+        "New York City":`${nyc}`,
+        "Los Angeles":`${la}`,
+        "Mexico City":`${mex}`
     }
     const homepage_asia = {
-        "Bali":"./assets/bali.jpg",
-        "Bangkok":"./assets/bangkok.jpg",
-        "Seoul":"./assets/Seoul.jpg",
-        "Tokyo":"./assets/Tokyo.jpg"
+        "Bali":`${bali}`,
+        "Bangkok":`${bk}`,
+        "Seoul":`${seoul}`,
+        "Tokyo":`${tokyo}`
     }
 
     const homepage_europe = {
-        "Paris":"./assets/paris.jpg",
-        "Rome":"./assets/rome.jpg",
-        "Barcelona":"./assets/barcelona.jpg",
-        "London":"./assets/london.jpg"
+        "Paris":`${paris}`,
+        "Rome":`${rome}`,
+        "Barcelona":`${bc}`,
+        "London":`${london}`
     }
 
     const homepage_latin = {
-        "Rio":"./assets/rio.jpg",
-        "Machu Pichu":"./assets/machupichu.jpg",
-        "Buenos Aires":"./assets/buenosaires.jpg",
-        "Cartagena":"./assets/cartagena.jpg"
+        "Rio":`${rio}`,
+        "Machu Pichu":`${machu}`,
+        "Buenos Aires":`${aires}`,
+        "Cartagena":`${cart}`
     }
 
     const homepage_africa = {
-        "Zanzibar":"./assets/zanzibar.jpg",
-        "Casablanca":"./assets/casablanca.jpg",
-        "Cape Town":"./assets/capetown.jpg",
-        "Giza":"./assets/giza.jpg",
+        "Zanzibar":`${zan}`,
+        "Casablanca":`${casa}`,
+        "Cape Town":`${cape}`,
+        "Giza":`${giza}`,
     }
 
     const homepage_oceania = {
-        "Bora Bora":"./assets/borabora.jpg",
-        "Sydney":"./assets/sydney.jpg",
-        "Auckland":"./assets/auckland.jpg",
-        "Oahu":"./assets/oahu.jpg"
+        "Bora Bora":`${bora}`,
+        "Sydney":`${syd}`,
+        "Auckland":`${auck}`,
+        "Oahu":`${oahu}`
     }
 
     return (
         <div className="relative">
             <div className="absolute z-[-1] left-0 right-0 overflow-hidden h-72 shadow-md">
-                <img src="./Assets/homepage-banner.jpg" className="w-full h-full object-cover object-bottom"/>
+                <img src={banner} className="w-full h-full object-cover object-bottom"/>
             </div>
             <div>
             
