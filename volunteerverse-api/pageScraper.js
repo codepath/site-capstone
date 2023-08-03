@@ -1,7 +1,6 @@
 
 const db = require("../volunteerverse-api/dist/src/db");
 
-
 const scraperObject = {
   url: "https://www.democracylab.org/projects",
   async scraper(browser) {
