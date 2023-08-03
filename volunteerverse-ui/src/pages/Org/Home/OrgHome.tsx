@@ -12,7 +12,7 @@ import NoneFound from '../../../components/NoneFound';
 import { VolunteerProjectProp } from '../../../props/projects';
 import { ApiResponseProp, apiClient } from '../../../services/ApiClient';
 import { AuthenticationContext } from '../../../context/AuthenicationContext';
-import { fetchPrettyTime } from '../../../utility/utility';
+import { fetchPrettyTime, notify } from '../../../utility/utility';
 import ProjectOptionsMenu from './ProjectOptionsMenu';
 import { notifications } from '@mantine/notifications';
 
@@ -30,12 +30,7 @@ function SlimProjectCard({project, handleDelete}: {project: VolunteerProjectProp
             // change project active state here
         } else{
             console.log("error while toggling project active status : ", error)
-            notifications.show({
-                autoClose: 3000,
-                color: "red",
-                title: 'Uh-oh!',
-                message: "An error occured. Please try again later ",
-            })
+            notify.error(); // shows error notification
         }
     }).catch((error) => {
         console.log("a really unexpected error occured: ", error)
@@ -87,12 +82,7 @@ function OrgHome() {
             // change project active state here
         } else{
             console.log("error while toggling project active status : ", error)
-            notifications.show({
-                autoClose: 3000,
-                color: "red",
-                title: 'Uh-oh!',
-                message: "An error occured. Please try again later ",
-            })
+            notify.error(); // shows error notification
         }
     }).catch((error) => {
         console.log("a really unexpected error occured while trying to delete a project", error)

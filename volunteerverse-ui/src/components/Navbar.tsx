@@ -10,8 +10,6 @@ import { useDisclosure } from '@mantine/hooks';
 import { useNavigate } from "react-router-dom";
 import SignUpModal from "../pages/Landing/SignUpModal";
 import { useContext, useEffect } from "react";
-import { fetchCorrectUserOption } from "../utility/utility";
-import { useMemo } from "react";
 import { AuthenticationContext } from "../context/AuthenicationContext";
 
 const useStyles = createStyles((theme) => ({
@@ -82,7 +80,7 @@ export default function Navbar() {
   /**
    * @todo use navigation route to change navbar conditionallty
    */
-  const { isAuth, user, removeToken} = useContext(AuthenticationContext)
+  const { isAuth, isValidOrg, user, removeToken} = useContext(AuthenticationContext)
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const [showModal, { open: openModal, close: closeModal }] = useDisclosure(false);
   const navigate = useNavigate();
@@ -123,32 +121,17 @@ export default function Navbar() {
     closeDrawer();
 
   }, [urlLocation])
-  const fetchCorrectUserLinks = useMemo(() => {
-    // using usememo here is more performant
-    
-    return fetchCorrectUserOption(
-      mapLinksToElements(unAuthLinks),
-      mapLinksToElements(volunteerLinks),
-      mapLinksToElements(orgLinks),
-      { isAuth: isAuth || false, user: user }
-    )
-  }, [user, isAuth]);
-  const fetchCorrectUserLinksMobile = useMemo(() => {
-    // using usememo here is more performant
-    return fetchCorrectUserOption(
-      mapLinksToElements(unAuthLinks, true),
-      mapLinksToElements(volunteerLinks, true),
-      mapLinksToElements(orgLinks, true),
-      { isAuth: isAuth || false, user: user }
-    )
-  }, [user, isAuth]);
   return (
     <Box >
       <Header height={60} px="md">
         <Group position="apart" sx={{ height: '100%' }}>
-          <Text component={Link} to={"/"} size={"xl"} fw={600} variant="gradient" gradient={{from: "violet", to : "violet.2", deg:45}}>VolunteerVerse</Text>
+          <Text component={Link} to={"/"} size={"xl"} fw={600} variant="gradient" gradient={{ from: "violet", to: "violet.2", deg: 45 }}>VolunteerVerse</Text>
           <Group sx={{ height: '100%' }} spacing={0} className={classes.hiddenMobile}>
-            {fetchCorrectUserLinks}
+            {
+              !isAuth ? mapLinksToElements(unAuthLinks) :
+                isValidOrg ? mapLinksToElements(volunteerLinks)
+                  : mapLinksToElements(orgLinks)
+            }
           </Group>
           <Group className={classes.hiddenMobile}>
             {
@@ -174,10 +157,12 @@ export default function Navbar() {
         zIndex={1000000}
       >
         <ScrollArea h={`calc(100vh - ${rem(60)})`} mx="-md">
-
-          {fetchCorrectUserLinksMobile}
-
-
+          {
+            !isAuth ?
+              mapLinksToElements(unAuthLinks, true) :
+              isValidOrg ? mapLinksToElements(volunteerLinks, true)
+                : mapLinksToElements(orgLinks, true)
+          }
           <Group position="center" grow mt={"md"} py="xl" px="md">
           {
               isAuth ? <Button onClick={removeToken} radius={"lg"} variant="outline">Log Out</Button> :

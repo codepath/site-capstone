@@ -13,6 +13,7 @@ import { useParams } from 'react-router-dom';
 import { notifications } from '@mantine/notifications';
 import VolunteerProfileCard from './VolunteerProfileCard';
 import NoneFound from '../../../components/NoneFound';
+import { notify } from '../../../utility/utility';
 
 export function VolunteersTable({ volunteerData }: { volunteerData: VolunteerUserProp[] }) {
     const { projectId } = useParams();
@@ -46,27 +47,17 @@ export function VolunteersTable({ volunteerData }: { volunteerData: VolunteerUse
                      * set the new card state
                     */
                     console.log("data while updating volunteer approrval: ", data)
-                    volunteer.approved = data.approve;
                     setIsApproved(data.approve);
-                    notifications.show({
-                        autoClose: 3000,
-                        color: "green",
-                        title: 'Success!',
-                        message: `Volunteer has been ${isApproved ? "rejected" : "approved"}.`,
-                    })
+                    // show success notification
+                    notify.success(`Volunteer has been ${isApproved ? "rejected" : "approved"}.`)
                 } else {
+                    // show error notification
+                    notify.error();
                     console.log("unable to toggle volunteer approval: ", error);
-                    notifications.show({
-                        autoClose: 3000,
-                        color: "red",
-                        title: 'Uh-oh!',
-                        message: "An error occured. Please try again later ",
-                    })
                 }
                 closeApprovedButtonLoader();
                 closeRejectedButtonLoader();
             }).catch((error) => {
-
                 console.log("an unexpected error occured while trying to approve volunteer: ", error)
                 closeApprovedButtonLoader();
             });
@@ -93,10 +84,9 @@ export function VolunteersTable({ volunteerData }: { volunteerData: VolunteerUse
                                 {volunteer.firstName} {volunteer.lastName}
                             </Text>
 
-                            <Group noWrap={true}>
+                            <Group noWrap={!isMobile} position='center' mt={"sm"}>
                                 <Button
                                     onClick={() => { setActiveVolunteerProfile(volunteer); openProfileModal() }}
-                                    mt={"sm"}
                                     size={isMobile ? "xs" : "sm"}
                                     radius={"xl"}
                                     variant='light'>View Profile</Button>

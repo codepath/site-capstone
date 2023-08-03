@@ -1,11 +1,11 @@
-import React, { ChangeEvent, ChangeEventHandler, useRef, useState } from 'react';
 import {
   TextInput,
-  Image, Textarea, Checkbox, Button, Group,
-  Container, Title, Flex, Box, createStyles,
-  LoadingOverlay,
+  Image, Textarea, Text, Button,
+  Container, Title, Flex,createStyles,
   MultiSelect,
   FileButton,
+  Divider,
+  Avatar,
 } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 import { OrgFormValues } from '../../../props/forms';
@@ -40,15 +40,10 @@ function CreateOrgProfileForm({ form }: { form: UseFormReturnType<OrgFormValues>
 // console.log(form.values)
   return (
     <Container mt={"xl"}>
-      <Title className={classes.title} mb={"xl"} >Create Your Profile</Title>
+      <Title className={classes.title} mb={"xl"}>Create Your Profile</Title>
       <Flex direction={"column"}>
         <Flex direction={"column"} gap={"md"} align={"center"}>
-          <Image
-            width={200}
-            height={200}
-            withPlaceholder
-            mb={"md"}
-            radius={"50%"} />
+          <Avatar src={form.values.imageUrl || ""} mb={"md"} radius={"50%"} size={"15rem"}/>
             <Flex 
             direction={"column"} 
             justify={"center"} 
@@ -92,16 +87,34 @@ function CreateOrgProfileForm({ form }: { form: UseFormReturnType<OrgFormValues>
           withAsterisk
           label="Brief Description:"
           placeholder="Brief Description"
-          description="Max: 300 words"
+          description="Max: 500 characters"
           minRows={5}
+          mb={"md"}
           {...form.getInputProps('orgDescription')}
         />
+        <Divider />
+        <Title mt={"md"} ta={"left"} order={4}>Additional Contact Information</Title>
+        <Text ta={"left"} color="dimmed">To be reached by volunteers</Text>
         <TextInput
-          my={"xl"}
-          radius={"xl"}
+          withAsterisk
+          my={"md"}
+          radius={"lg"}
+          label="Organization Email"
+          placeholder={`"${form.values.email}" or a different email`}
+          {...form.getInputProps("publicEmail")}/>
+        <TextInput
+          radius={"lg"}
           label="Website URL (optional)"
-          placeholder="websiteurl.org"
+          placeholder="e.g. https://www.helpingtheworld.org/"
           {...form.getInputProps("orgWebsite")}/>
+        <TextInput
+          my={"md"}
+          radius={"lg"}
+          type="tel"
+          label="Phone Number (optional)"
+          pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+          placeholder="Format: 123-456-7890"
+          {...form.getInputProps("phoneNumber")}/>
       </Flex>
     </Container>
   )
