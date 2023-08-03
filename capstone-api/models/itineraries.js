@@ -1,11 +1,11 @@
-const { UnauthorizedError, BadRequestError } = require('../utils/errors');
+// const { UnauthorizedError, BadRequestError } = require('../utils/errors');
 
-class Itinerary {
+// class Itinerary {
 
-    static async fetchIteneraryById() {
+//     static async fetchIteneraryById() {
         
-    }
+//     }
 
-}
+// }
 
-module.exports = Itinerary;
+// module.exports = Itinerary;
