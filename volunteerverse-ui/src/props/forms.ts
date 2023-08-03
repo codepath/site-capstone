@@ -1,13 +1,16 @@
 export interface OrgFormValues {
   email: string,
+  publicEmail : string,
   password: string,
   confirmPassword: string,
   orgName: string,
   founders: string[],
   imageFile: File | null,
+  imageUrl: string,
   orgDescription: string,
   orgWebsite: string,
   termsOfService: boolean,
+  phoneNumber:  string,
   userType: "organization"
 }
 export interface VolunteerFormValues {
@@ -15,6 +18,7 @@ export interface VolunteerFormValues {
   lastName: string,
   skills: string[],
   imageFile: File | null,
+  imageUrl: string,
   email: string,
   bio: string,
   password: string,

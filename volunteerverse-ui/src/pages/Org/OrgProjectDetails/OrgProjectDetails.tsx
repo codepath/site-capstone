@@ -64,7 +64,8 @@ function OrgProjectDetails() {
     tags: [""],
     interested: false,
     approved: false,
-    id: -1
+    id: -1,
+    active: false,
   } : undefined);
   const toggleProjectInterest = () => {
     // updates intersted_volunteers database table with 
@@ -120,7 +121,7 @@ function OrgProjectDetails() {
     /**
      * @todo: connect to backend
      */
-    setProject(projectDetailsData);
+    // setProject(projectDetailsData);
     fetchProjectById();
   }, []);
   return (

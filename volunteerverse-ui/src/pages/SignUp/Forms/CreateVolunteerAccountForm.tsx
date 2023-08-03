@@ -1,7 +1,8 @@
 import { Container, Flex, PasswordInput, TextInput, Title } from "@mantine/core";
-import { createStyles } from "@mantine/styles";
+import { createStyles, useMantineTheme } from "@mantine/styles";
 import { VolunteerFormValues } from "../../../props/forms";
 import { UseFormReturnType } from "@mantine/form";
+import { useMediaQuery } from "@mantine/hooks";
 
 const useStyles = createStyles((theme) => ({
     container: {
@@ -28,7 +29,9 @@ const useStyles = createStyles((theme) => ({
 
 function CreateVolunteerAccountForm({ form }: { form: UseFormReturnType<VolunteerFormValues> }) {
     const { classes } = useStyles();
-
+    const theme = useMantineTheme();
+    const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
+    
     return (
 
         <Flex className={classes.container} direction={"column"} gap={"lg"}>
@@ -39,7 +42,7 @@ function CreateVolunteerAccountForm({ form }: { form: UseFormReturnType<Voluntee
                 gap={"xl"}>
                 <TextInput
                     radius={"lg"}
-                    size={"md"}
+                    size={isMobile ? "sm" : "md"}
                     withAsterisk
                     label="First Name"
                     placeholder="First Name"
@@ -47,7 +50,7 @@ function CreateVolunteerAccountForm({ form }: { form: UseFormReturnType<Voluntee
                     {...form.getInputProps('firstName')} />
                 <TextInput
                     radius={"lg"}
-                    size="md"
+                    size={isMobile ? "sm" : "md"}
                     withAsterisk
                     label="Last Name"
                     placeholder="Last Name"
@@ -57,20 +60,21 @@ function CreateVolunteerAccountForm({ form }: { form: UseFormReturnType<Voluntee
             <TextInput
             styles={{ label : { marginLeft : "50"}}}
                 radius={"lg"}
-                size="md"
+                size={isMobile ? "sm" : "md"}
                 withAsterisk
                 label="Email"
-                placeholder="Email"
+                description="You will be contacted by organizations with this email"
+                placeholder=""
                 {...form.getInputProps('email')} />
             <PasswordInput
-                size="md"
+                size={isMobile ? "sm" : "md"}
                 radius={"lg"}
                 withAsterisk
                 label="Password"
                 placeholder="Password"
                 {...form.getInputProps('password')} />
             <PasswordInput
-                size="md"
+                size={isMobile ? "sm" : "md"}
                 radius={"lg"}
                 withAsterisk
                 label="Confirm Password"
