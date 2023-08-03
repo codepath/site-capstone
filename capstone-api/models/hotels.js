@@ -205,7 +205,7 @@ class Hotels {
         return response.data;
       } catch (error) {
         console.error(error);
-        throw new BadRequestError("Failed to fetch Hotel Detail");
+        // throw new BadRequestError("Failed to fetch Hotel Detail");
       }
   }
   
