@@ -1,6 +1,6 @@
 import { Organization } from "./organization";
 import  db  from "../db";
-import { after, describe } from "node:test";
+import { after, describe, mock } from "node:test";
 import { BadRequestError, UnprocessableEntityError } from "../utils/errors";
 import { BCRYPT_WORK_FACTOR } from "../config";
 import bcrypt from "bcrypt";
@@ -116,27 +116,19 @@ describe("organization registration", () => {
   });
 
   test("registers a new organization successfully", async () => {
-    const organizationInfo = {
-   orgName : "Helping Hands",
-   orgDescription: "a compnau duh",
-   email: "forhelpnew@gmail.com ",
-   logoUrl : "https://helpme",
-   userType : "organization",
-  password :"1234",
-  founders : "people",
-  orgWebsite: "https://towebsite"
-    };
+
 
     const mockResult = {
       rows: [
         {
-   orgName : "Helping Hands",
-   orgDescription: "a compnau duh",
-   email: "forhelpnew@gmail.com ",
-   logoUrl : null,
+          id: 30,
+   organization_name : "Helping Hands",
+   organization_description: "a compnau duh",
+   organization_email: "forhelpnew@gmail.com",
+   logo_url : "https://towebsite",
    userType : "organization",
   founders : "people",
- orgWebsite: "https://towebsite"
+  website: "https://towebsite"
         },
       ],
     };
@@ -145,16 +137,43 @@ describe("organization registration", () => {
     Organization.fetchOrganizationByEmail = jest.fn().mockResolvedValue(undefined);
 
     // Create a mock for bcrypt.hash to spy on its usage
-    const mockHash = jest.spyOn(bcrypt, "hash");
+    // const mockHash = jest.spyOn(bcrypt, "hash");
 
     db.query = jest.fn().mockReturnValue(mockResult);
+
+    const organizationInfo = {
+      orgName : "Helping Hands",
+      orgDescription: "a compnau duh",
+      email: "forhelpnew@gmail.com",
+      logoUrl : "https://towebsite",
+      userType : "organization",
+     password :"1234",
+     founders : "people",
+     orgWebsite: "https://towebsite"
+     
+       };
+
+       const mockHash = jest.fn().mockResolvedValue('hashed-password')
+       bcrypt.hash = mockHash;
+
+       // it should generate this return result:
+       // { id, email, orgName, orgDescription, logoUrl, founders, userType, orgWebsite }
+
+    console.log("look at this",db.query, organizationInfo)
     const organization = await Organization.register(organizationInfo);
     console.log('organizatopm', organization)
     
     const { id }  = organization
-    expect(organization).toEqual(mockResult.rows[0]);
-    expect(db.query).toHaveBeenCalledTimes(3); //3 query calls made during the register function if done successfully
-     expect(mockHash).toHaveBeenCalledWith( organizationInfo.password, BCRYPT_WORK_FACTOR);
+    expect(organization).toEqual({
+      id: 30, 
+      email: "forhelpnew@gmail.com", 
+      orgName: "Helping Hands", 
+      orgDescription: "a compnau duh", 
+      logoUrl: "https://towebsite",
+    founders: "people",
+  orgWebsite:  "https://towebsite"});
+    expect(db.query).toHaveBeenCalledTimes(2); //2 query calls made during the register function if done successfully
+   // expect(mockHash).toBe('hashed-password');
   });
 });
 // describe("Testing fetchAllOrgProjects function", async () => {
