@@ -2,6 +2,7 @@
 const mockItineraries = [
     
     {
+        id: 1,
         Activities: [
             {
                 name: 'City Bus Tour',
@@ -40,6 +41,7 @@ const mockItineraries = [
     },
         
     {
+        id: 2,
         Activities: [
             {
                 name: ' Tour',
@@ -78,6 +80,7 @@ const mockItineraries = [
     },
 
     {
+        id: 3,
         Activities: [
             {
                 name: 'Activity',
