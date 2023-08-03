@@ -12,6 +12,8 @@ CREATE TABLE organizations(
     organization_name VARCHAR(255),
     organization_description TEXT,
     organization_email TEXT NOT NULL UNIQUE CHECK (position('@' IN organization_email) > 1),
+    public_email TEXT NOT NULL UNIQUE CHECK (position('@' IN organization_email) > 1),
+    phone_number TEXT DEFAULT NULL,
     logo_url TEXT,
     founders TEXT NOT NULL, 
     website TEXT

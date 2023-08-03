@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import { AuthenticationContext } from '../../context/AuthenicationContext';
 import { notifications } from '@mantine/notifications';
 import NotAuthorized from '../NotAuthorized';
+import { notify } from '../../utility/utility';
 /**
  * @todo: 
  * - test org deleting project
@@ -87,12 +88,7 @@ function CreateProject() {
           navigate("/");
         } else {
           console.log("failed to create new project. Error:", {error :  error, code : statusCode})
-          notifications.show({
-            autoClose: 3000,
-            color: "red",
-            title: 'Uh-oh!',
-            message: "An error occured. Please try again later ",
-          })
+          notify.error();
         }
       }).catch((error) => {
         console.log("a very unexpected error has occured", error)

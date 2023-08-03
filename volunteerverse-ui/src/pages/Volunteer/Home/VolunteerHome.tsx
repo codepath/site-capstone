@@ -60,7 +60,7 @@ function VolunteerHome() {
 
   return isValidVolunteer ? (
     <>
-      <Title>{`Welcome Back ${ user?.userType === "volunteer" ? user.firstName : ""}! `}</Title>
+      <Title>{`Welcome ${ user?.userType === "volunteer" ? user.firstName : ""}! `}</Title>
       <QueryBar {...queryForm} />
       <Button size="lg" radius={"md"} compact onClick={fetchProjects}>Search Projects</Button>
       {

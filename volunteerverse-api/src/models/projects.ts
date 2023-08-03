@@ -112,7 +112,8 @@ export class Projects {
     const allProjectIds = (await db.query(`SELECT project_id FROM project_tags`)).rows;
     console.log("project ids found", allProjectIds);
 
-    for await (const {project_id} of allProjectIds) {
+    for await (const { project_id } of allProjectIds) {
+      console.log("fetching project by id: ", project_id)
       const project = await this.fetchProjectByProjectId(project_id, "volunteer");
       console.log("retrieved project: ", project);
       allProjects.push(project);
@@ -144,6 +145,8 @@ export class Projects {
         image_url,
         requested_people,
         approved_people,
+        active,
+        external,
       } = result.rows[0];
       const tags = await this.getProjectTags(id);
       const { organization_name, founders, website, organization_description, logo_url } =
@@ -162,6 +165,8 @@ export class Projects {
         requestedVolunteers: requested_people,
         approvedVolunteers: approved_people,
         tags: tags,
+        active: active,
+        external: external
       };
 
       if (userType == "volunteer") {
@@ -173,7 +178,7 @@ export class Projects {
       }
       return projectCard;
     }
-    throw new BadRequestError("Project not found");
+    throw new BadRequestError(`Project with id ${projectId} does not exist`);
   }
 
   static async getProjectsWithTag(tag: string) {
