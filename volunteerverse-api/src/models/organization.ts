@@ -142,7 +142,7 @@ export class Organization {
       [email.toLowerCase()]
     );
 
-   return interestedVolunteersInfo.rows[0]
+    return interestedVolunteersInfo.rows[0]
   }
 
   static async fetchOrganizationByEmail(org_email: string) {
@@ -222,7 +222,7 @@ export class Organization {
                    RETURNING *`,
         [!activeResult.rows[0].active, projectId, orgId]
       );
-      return result.rows;
+      return result.rows[0].active;
     } else {
       throw new UnauthorizedError("Organization/Project not found");
     }
@@ -234,12 +234,16 @@ export class Organization {
       [orgId, project_id]
     );
     if (orgResult.rows.length !== 0) {
-      const result = await db.query(
-        `DELETE FROM "projects" WHERE "id" = $1`,
-        [project_id]);
+      // deletes project from table
+      await db.query(`DELETE FROM "projects" WHERE "id" = $1`, [project_id]);
+      // deletes project from project_tags
+      await db.query(`DELETE FROM "project_tags" WHERE "project_id"=$1`, [project_id]);
+      // deletes projects from interested_volunteers table
+      await db.query(`DELETE FROM "interested_volunteers" WHERE "project_id"=$1`, [project_id]);
+
       return true;
     } else {
-      throw new UnauthorizedError("Organization/Project not found");
+      throw new UnauthorizedError("Organization does not have access, or project not found");
     }
   }
 
@@ -297,8 +301,8 @@ export class Organization {
 
     console.log("approvedResult", approvedResult.rows[0])
     console.log("approvedPeopleResult", approvedPeopleResult.rows[0])
-    
-    const approvedVolunteerState = await this.updateApprovedVolunteers(approvedResult.rows[0].approved, email, projectId, orgId, initialApprovalState )
+
+    const approvedVolunteerState = await this.updateApprovedVolunteers(approvedResult.rows[0].approved, email, projectId, orgId, initialApprovalState)
 
     console.log("bringing volunteer state into incre/decre works!", approvedVolunteerState.approved)
 
@@ -381,10 +385,14 @@ export class Organization {
     const interestedVolunteers = []
     for await (const volunteerInfo of result.rows) {
       // for each volunteer, we add an additional approved field
-      const volunteer = await Volunteer.getVolunteerByEmail(volunteerInfo.email);
-      console.log("retrieved volunteer: ", volunteer)
-      volunteer["approved"] = volunteerInfo.approved;
-      interestedVolunteers.push(volunteer)
+      try{
+        const volunteer = await Volunteer.getVolunteerByEmail(volunteerInfo.email);
+        console.log("retrieved volunteer: ", volunteer)
+        volunteer["approved"] = volunteerInfo.approved;
+        interestedVolunteers.push(volunteer)
+      } catch(error){
+        throw error;
+      }
     }
     return interestedVolunteers;
   }
