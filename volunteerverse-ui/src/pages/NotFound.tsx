@@ -22,7 +22,7 @@ const useStyles = createStyles((theme) => ({
     fontSize: rem(220),
     lineHeight: 1,
     marginBottom: `calc(${theme.spacing.xl} * 1.5)`,
-    color: theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[2],
+    color: theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[7],
 
     [theme.fn.smallerThan('sm')]: {
       fontSize: rem(120),
@@ -43,7 +43,7 @@ const useStyles = createStyles((theme) => ({
 
   description: {
     fontWeight: 800,
-    color: theme.white,
+    color:  theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[6],
     maxWidth: rem(500),
     margin: 'auto',
     marginTop: theme.spacing.xl,
@@ -62,7 +62,7 @@ export default function NotFound() {
     <Paper shadow='xl' radius={"md"} className={classes.content}>
       <div className={classes.label}>404</div>
       <Title className={classes.title}>You have found a secret place.</Title>
-      <Text color="dimmed" size="lg" align="center" className={classes.description}>
+      <Text size="lg" align="center" className={classes.description}>
         Unfortunately, this is only a 404 page. You may have mistyped the address, or the page has
         been moved to another URL.
       </Text>
