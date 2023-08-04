@@ -12,7 +12,7 @@ export default function HotelsPage({ arrivalDate, departureDate, travelers, dest
   const [modalOpen, setModalOpen] = useState(false);
 
   async function searchHotels() {
-    const hotelSearch = {
+    let hotelSearch = {
       order_by: 'review_score',
       adults_number: travelers.toString(),
       checkin_date: arrivalDate,
@@ -20,9 +20,31 @@ export default function HotelsPage({ arrivalDate, departureDate, travelers, dest
       room_number: '1',
       dest_Id: destID
     };
+    console.log(hotelSearch);
+    console.log(localStorage.getItem("searchHotels"));
+    if (hotelSearch.checkin_date.length == 0) {
+      hotelSearch = {
+          order_by: 'review_score',
+          adults_number: localStorage.getItem("adults_number"),
+          checkin_date: localStorage.getItem("checkin_date"),
+          checkout_date: localStorage.getItem("checkout_date"),
+          room_number: '1',
+          dest_Id: localStorage.getItem("dest_id")
+      } 
+      console.log("set hotel search?", hotelSearch);
+    } 
+    
     setLoading(true);
     await new Promise(resolve => setTimeout(resolve, 2000));
     const response = await axios.post('https://nomadia.onrender.com/api/hotels-search', hotelSearch);
+    localStorage.setItem("checkin_date", hotelSearch.checkin_date);
+    localStorage.setItem("checkout_date", hotelSearch.checkout_date);
+    localStorage.setItem("dest_id", hotelSearch.dest_Id);
+    localStorage.setItem("room_number", hotelSearch.room_number);
+    localStorage.setItem("adults_number", hotelSearch.adults_number);
+
+
+
     setSearchResults(response.data.results);
     setLoading(false);
   }

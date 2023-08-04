@@ -39,7 +39,6 @@ class Hotels {
       } catch (error) {
         console.error(error);
         //console.error("Desination ID:", Hotels.destId)
-        throw new BadRequestError("Failed to fetch Search Locations");
       }
 
   }
@@ -169,7 +168,6 @@ class Hotels {
       return response.data;
     } catch (error) {
       console.error(error);
-      throw new BadRequestError("Failed to fetch Hotels Data");
     }
   }
 

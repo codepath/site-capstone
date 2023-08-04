@@ -10,9 +10,12 @@ import { useState, useEffect } from 'react'
 function Booking({ itinerary }) {
     const [the_itinerary, set_the_itinerary] = useState(null);
     const [loading, setLoading] = useState(true)
+    const [itineraryPresent, setItineraryPresent] = useState(false)
+
     useEffect(() => {
         if (itinerary) {
             set_the_itinerary(itinerary);
+            setItineraryPresent(true)
         }
     }, [itinerary]);
 
@@ -21,6 +24,8 @@ function Booking({ itinerary }) {
             setLoading(false)
         }, 3000)
     }, [])
+
+
 
     return (
         <>
@@ -31,14 +36,16 @@ function Booking({ itinerary }) {
             )}
             {!loading && (
                 <div>
-                    <BookingMenu itinerary={the_itinerary}/>
+                    <BookingMenu itinerary={the_itinerary} itineraryPresent={itineraryPresent}/>
                 </div>
             )}
         </>
     );
 }
 
-function BookingMenu({ itinerary }) {
+
+
+function BookingMenu({ itinerary, itineraryPresent }) {
     console.log(itinerary)
     
     return (
@@ -97,7 +104,7 @@ function BookingMenu({ itinerary }) {
 
                         </div>
                         <div className="border-t border-black-500 border-2 mb-10" />
-                        {itinerary ? (
+                        {itineraryPresent ? (
                             <>
                             <div className="cursor-pointer flex flex-col rounded-md shadow-md border border-blue-500 overflow-y-scroll h-100">
                                 {itinerary.Hotel != null && (
@@ -140,9 +147,11 @@ function BookingMenu({ itinerary }) {
                             
                             </>
                         ) : (
-                            <CircularProgress />
+                            <div className="flex justify-center items-center h-screen">
+                                <Link to="/" className="text-blue-500 text-2xl">Go to homepage to start booking</Link>
+                            </div>
                         )}
-                          {itinerary && 
+                          {itineraryPresent && 
                 <div>
                     <h2 className='font-bold text-4xl text-white mr-2 mt-[50px]' style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.6)' }}>Total: ${itinerary?.Hotel?.priceBreakdown?.grossPrice?.value?.toFixed(2)}</h2>
                     <hr className="mt-4 w-64 border-2 border-white" />
