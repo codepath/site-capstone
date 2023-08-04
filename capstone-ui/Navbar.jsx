@@ -46,6 +46,13 @@ export default function Navbar({ authenticated, setAuthenticated }) {
 
                 </div>
             </Link>
+            <Link to="/Account" className="flex">
+                <div className="flex mr-[900px]">
+                    {/*TODO: fix nav bar home button.*/}
+                    <Button disabled={true}>Account</Button>
+
+                </div>
+            </Link>
             <div className="flex">
                 <Button>FAQ</Button>
                 <Button onClick={() => setRegisterOpen(true)}>Sign up</Button>

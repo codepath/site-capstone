@@ -4,7 +4,7 @@ const { getFlights } = require("../models/flights");
 
 
 // Get Flights for a destination 
-router.get('/flights', async (req, res) => {
+router.post('/flights', async (req, res) => {
     const credentials = req.body;
     try {
         const flights = await getFlights(credentials);
