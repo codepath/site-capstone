@@ -13,8 +13,8 @@ CREATE TABLE organizations(
     organization_description TEXT,
     organization_email TEXT NOT NULL UNIQUE CHECK (position('@' IN organization_email) > 1),
     public_email TEXT NOT NULL UNIQUE CHECK (position('@' IN organization_email) > 1),
-    phone_number TEXT DEFAULT NULL,
-    logo_url TEXT,
+    public_number TEXT DEFAULT NULL,
+    logo_url TEXT NOT NULL,
     founders TEXT NOT NULL, 
     website TEXT
 );
@@ -35,8 +35,12 @@ CREATE TABLE projects(
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     image_url TEXT,
     requested_people INTEGER,
-    approved_people INTEGER DEFAULT 0,
-    active BOOLEAN DEFAULT TRUE
+    approved_people INTEGER DEFAULT 0 (CHECK approved_people >= 0),
+    active BOOLEAN DEFAULT TRUE,
+    external BOOLEAN DEFAULT FALSE,
+    public_email TEXT NOT NULL,
+    public_number TEXT,
+    external_link TEXT
 );
 
 CREATE TABLE interested_volunteers(
