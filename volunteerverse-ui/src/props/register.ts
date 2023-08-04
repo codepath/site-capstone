@@ -14,7 +14,9 @@ export interface OrganizationRegisterProp{
     orgName: string;
     founders: string;
     orgDescription: string;
-    imageUrl: string;
+    logoUrl: string;
+    publicNumber?: string;
+    publicEmail: string,
     orgWebsite: string;
     userType: "organization";
 }
@@ -22,8 +24,10 @@ export interface ProjectRegisterProp{
     title: string;
     desc: string;
     imageUrl?: string;
-    orgName: string,
+    orgName: string;
     requestedPeople: number;
     tags: string[];
+    orgPublicEmail: string,
+    orgPublicNumber?: string;
     
 } 

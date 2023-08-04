@@ -1,6 +1,7 @@
-
 const db = require("../volunteerverse-api/dist/src/db");
+const fs = require("fs");
 
+//const { validateFields } = require("../volunteerverse-api/src/utils/validate");
 
 const scraperObject = {
   url: "https://www.democracylab.org/projects",
@@ -9,6 +10,7 @@ const scraperObject = {
     console.log(`Navigating to ${this.url}...`);
     await page.goto(this.url);
 
+    // load the page
     for (let i = 0; i <= 5; i++) {
       console.log(i);
       await page.click(
@@ -17,6 +19,7 @@ const scraperObject = {
       await page.waitForTimeout(2000);
     }
 
+    // list of the urls of each of the project cards
     let urls = await page.$$eval(
       ".ProjectCardContainer.col .ProjectCard-root > a",
       (links) => {
@@ -24,12 +27,13 @@ const scraperObject = {
         return links;
       }
     );
+
     console.log(urls);
 
     // Loop through each of those links, open a new page instance and get the relevant data from them
     let pagePromise = (link) =>
       new Promise(async (resolve, reject) => {
-        let dataObj = {};
+        let dataObj = {}; // object that will hold the information about a single project
         let newPage = await browser.newPage();
         await newPage.goto(link);
 
@@ -66,7 +70,6 @@ const scraperObject = {
           }
         );
 
-
         dataObj["technologies"] = technologies;
 
         dataObj["website"] = await scrapeDataWithSelector(
@@ -83,28 +86,63 @@ const scraperObject = {
           dataObj["image"] = null;
         }
 
-        resolve(dataObj);
-
-        const insertQuery = `INSERT INTO projects (org_name, org_website, project_name, project_description, image_url) VALUES ($1, $2, $3, $4, $5)`
-        const values = [dataObj.projectTitle, dataObj.website, dataObj.projectTitle, dataObj.action, dataObj.image]
-
         try {
-          await db.query(insertQuery, values);
-          console.log('Data inserted successfully.');
+          // Wait for the element with class "IconLink-root" to appear on the page
+          await newPage.waitForSelector(".IconLink-root");
+
+          // Extract contact information using $$eval
+          const contactInformation = await newPage.$$eval(
+            ".IconLink-root",
+            (elements) =>
+              elements.map((e) => ({
+                platform: e.querySelector(
+                  ".IconLink-right > p.IconLink-topText"
+                ).textContent,
+                link: e.querySelector("a").href,
+              }))
+          );
+
+          // Store the results in the dataObj
+          dataObj["contactInfo"] = contactInformation;
         } catch (error) {
-          console.error('Error inserting data:', error);
+          console.error("Error occurred while scraping:", error);
+          dataObj["contactInfo"] = null;
         }
 
+        resolve(dataObj);
 
+        // const insertQuery = `INSERT INTO projects (org_name, org_website, project_name, project_description, image_url) VALUES ($1, $2, $3, $4, $5)`;
+        // const values = [
+        //   dataObj.projectTitle,
+        //   dataObj.website,
+        //   dataObj.projectTitle,
+        //   dataObj.action,
+        //   dataObj.image,
+        // ];
+
+        // try {
+        //   await db.query(insertQuery, values);
+        //   console.log("Data inserted successfully.");
+        // } catch (error) {
+        //   console.error("Error inserting data:", error);
+        // }
 
         await newPage.close();
       });
 
+    projects = [];
     for (link in urls) {
       let currentPageData = await pagePromise(urls[link]);
       // scrapedData.push(currentPageData);
       console.log(currentPageData);
+      projects.push(currentPageData);
     }
+
+    // saves the array of projects as a JSON
+    fs.writeFile("projects.json", JSON.stringify(projects), (err) => {
+      if (err) throw err;
+      console.log("file saved");
+    });
   },
 };
 

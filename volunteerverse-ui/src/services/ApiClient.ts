@@ -159,6 +159,13 @@ class ApiClient {
         }
         return this.request(requestOptions) 
     }
+    async fetchProjectVolunteersCountById(projectId:  number){
+        const requestOptions = {
+            method: "get",
+            subDirectory: `/organization/project/interested/count/${projectId}`,
+        }
+        return this.request(requestOptions) 
+    }
 }
 
 export const apiClient = new ApiClient(API_BASE_URL);

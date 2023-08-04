@@ -43,25 +43,30 @@ function CreateOrgProfileForm({ form }: { form: UseFormReturnType<OrgFormValues>
       <Title className={classes.title} mb={"xl"}>Create Your Profile</Title>
       <Flex direction={"column"}>
         <Flex direction={"column"} gap={"md"} align={"center"}>
-          <Avatar src={form.values.imageUrl || ""} mb={"md"} radius={"50%"} size={"15rem"}/>
+          <Avatar src={form.values.logoUrl || ""} mb={"md"} radius={"50%"} size={"15rem"} />
             <Flex 
             direction={"column"} 
-            justify={"center"} 
+            justify={"center"}
             align={"center"}
             gap={"sm"}
             mb={"xl"}>
             <FileButton {...form.getInputProps("imageFile")}>
-              { (props) => <Button variant="light"
+              {(props) => 
+                
+              <Button
+                rightIcon={!form.values.imageFile && <span className="mantine-103svbs mantine-InputWrapper-required mantine-MultiSelect-required" aria-hidden="true"> *</span>} variant="light"
+                {...props}
                 radius={"lg"}
                 styles={{
                   root: {
                     maxWidth: "30rem"
                   }
-                }}
-                {...props}
-                >{form.values.imageFile?.name || "Upload Logo"}</Button>}
-
+                }}>
+              {form.values.imageFile?.name || "Upload Logo"}
+              </Button>
+              }
             </FileButton>
+            {form.errors.imageFile && <Text color='red dimmed'>Please provide a Logo</Text>}
           </Flex>
         </Flex>
         <MultiSelect
@@ -87,14 +92,14 @@ function CreateOrgProfileForm({ form }: { form: UseFormReturnType<OrgFormValues>
           withAsterisk
           label="Brief Description:"
           placeholder="Brief Description"
-          description="Max: 500 characters"
+          description="100-500 characters"
           minRows={5}
           mb={"md"}
           {...form.getInputProps('orgDescription')}
         />
         <Divider />
         <Title mt={"md"} ta={"left"} order={4}>Additional Contact Information</Title>
-        <Text ta={"left"} color="dimmed">To be reached by volunteers</Text>
+        <Text ta={"left"} color="dimmed">So volunteers can reach {form.values.orgName}</Text>
         <TextInput
           withAsterisk
           my={"md"}
@@ -112,9 +117,8 @@ function CreateOrgProfileForm({ form }: { form: UseFormReturnType<OrgFormValues>
           radius={"lg"}
           type="tel"
           label="Phone Number (optional)"
-          pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
           placeholder="Format: 123-456-7890"
-          {...form.getInputProps("phoneNumber")}/>
+          {...form.getInputProps("publicNumber")}/>
       </Flex>
     </Container>
   )
