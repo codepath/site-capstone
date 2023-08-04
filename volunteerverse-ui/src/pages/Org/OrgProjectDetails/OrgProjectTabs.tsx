@@ -14,63 +14,7 @@ import NotAuthorized from "../../NotAuthorized";
 import OrgProjectDetails from "./OrgProjectDetails";
 import { apiClient } from "../../../services/ApiClient";
 import { useParams } from "react-router";
-const userList: VolunteerUserProp[] = [
-  {
-    email: 'user1@example.com',
-    firstName: 'John',
-    lastName: 'Doe',
-    imageUrl: 'https://example.com/user1.jpg',
-    bio: 'A software engineer with a passion for coding.',
-    approved: undefined,
-    id : 2, 
-    skills : [], 
-    userType: "volunteer",
-  },
-  {
-    email: 'user2@example.com',
-    firstName: 'Alice',
-    lastName: 'Smith',
-    imageUrl: 'https://example.com/user2.jpg',
-    bio: 'Designer and artist exploring creativity.',
-    approved: undefined,
-    id : 2, 
-    skills : [], 
-    userType: "volunteer",
-  },
-  {
-    email: 'user3@example.com',
-    firstName: 'Mike',
-    lastName: 'Johnson',
-    imageUrl: 'https://example.com/user3.jpg',
-    bio: 'Aspiring entrepreneur and business enthusiast.',
-    approved: undefined,
-    id : 2, 
-    skills : [], 
-    userType: "volunteer",
-  },
-  {
-    email: 'user4@example.com',
-    firstName: 'Sarah',
-    lastName: 'Brown',
-    imageUrl: 'https://example.com/user4.jpg',
-    bio: 'Nature lover and outdoor enthusiast.',
-    approved: undefined,
-    id : 2, 
-    skills : [], 
-    userType: "volunteer",
-  },
-  {
-    email: 'user5@example.com',
-    firstName: 'Alex',
-    lastName: 'Lee',
-    imageUrl: 'https://example.com/user5.jpg',
-    bio: 'Passionate about technology and innovation.',
-    approved: undefined,
-    id : 2, 
-    skills : [], 
-    userType: "volunteer",
-  },
-];
+
 const useStyles = createStyles((theme) => ({
 
 }));
@@ -81,25 +25,24 @@ function OrgProjectDetailsTabs() {
   const { isValidOrg, user } = useContext(AuthenticationContext);
   const theme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
-  const [projectVolunteers, setProjectVolunteers] = useState<undefined | VolunteerUserProp[]>(undefined);
-  // handle loading states
-
+  const [projetVolunteersCount, setProjectVolunteersCount] = useState<undefined | number>(undefined);
   useEffect(() => {
     // makes call to backend api to populate volunteers data
     console.log("getting volunteers from database")
     if (!projectId) return; // returns if project id is undefined
-    apiClient.fetchInterestedVolunteersByProjectId(parseInt(projectId)).then(({ success, data, statusCode, error }) => {
+    apiClient.fetchProjectVolunteersCountById(parseInt(projectId)).then(({ success, data, statusCode, error }) => {
       if (success) {
-        console.log("found volunteers for given project: ", data)
-        setProjectVolunteers(data.interestedVolunteers)
+        console.log("found interested volunteers count: ", data)
+        setProjectVolunteersCount(data.count)
       } else {
-        console.log("Error occured while trying to find volunteers: ", {error, statusCode})
+        console.log("Error occured while trying to find volunteers count: ", {error, statusCode})
       }
     }).catch((error) => {
-      console.log("a very unexpected error has occured")
+      console.log("a very unexpected error has occured while trying to find volunteers count")
     })
   }, [user])
-  console.log(userList);
+
+
   
   const { classes } = useStyles();
 
@@ -110,7 +53,7 @@ function OrgProjectDetailsTabs() {
       <Tabs p={"lg"} variant="default" radius="md" defaultValue="volunteers">
         <Tabs.List position="center" >
           <Tabs.Tab value="project" ><Title weight={500} order={isMobile ? 5 : 3}>Project Details</Title></Tabs.Tab>
-          <Tabs.Tab value="volunteers" icon={<IconUser size={isMobile ? "1rem" : "2rem"} />}><Title weight={500} order={isMobile ? 5 : 3}>{`${projectVolunteers?.length || ""} Volunteers`}</Title></Tabs.Tab>
+          <Tabs.Tab value="volunteers" icon={<IconUser size={isMobile ? "20px" : "40px"} />}><Title weight={500} order={isMobile ? 5 : 3}>{`${projetVolunteersCount || "0"}  Volunteer(s)`}</Title></Tabs.Tab>
         </Tabs.List>
 
         <Tabs.Panel pt={"xs"} value="project">
@@ -118,7 +61,7 @@ function OrgProjectDetailsTabs() {
         </Tabs.Panel>
 
         <Tabs.Panel pt={"xs"} value="volunteers">
-          <VolunteersTable volunteerData={projectVolunteers || []} />
+          <VolunteersTable />
         </Tabs.Panel>
 
       </Tabs>

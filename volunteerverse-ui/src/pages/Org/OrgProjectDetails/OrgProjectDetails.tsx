@@ -65,6 +65,9 @@ function OrgProjectDetails() {
     interested: false,
     approved: false,
     id: -1,
+    orgPublicEmail: "",
+    orgPublicNumber: "",
+    orgLogoUrl: "",
     active: false,
   } : undefined);
   const toggleProjectInterest = () => {

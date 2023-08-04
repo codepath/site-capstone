@@ -6,11 +6,11 @@ export interface OrgFormValues {
   orgName: string,
   founders: string[],
   imageFile: File | null,
-  imageUrl: string,
+  logoUrl: string,
   orgDescription: string,
   orgWebsite: string,
   termsOfService: boolean,
-  phoneNumber:  string,
+  publicNumber:  string,
   userType: "organization"
 }
 export interface VolunteerFormValues {
@@ -30,6 +30,8 @@ export interface ProjectFormValues {
   title: string;
   desc: string;
   imageFile: File | null,
-  requestedPeople: number;
+  requestedPeople: string;
   tags: string[];
+  publicEmail: string;
+  publicNumber:  string;
 }

@@ -7,12 +7,13 @@ export interface VolunteerProjectProp {
     orgUrl: string,
     imageUrl: string,
     orgDescription: string,
+    orgLogoUrl: string,
     founders: string,
     interested: boolean,
     tags: string[],
     approved: boolean,
     orgPublicEmail: string,
-    orgPhoneNumber: string,
+    orgPublicNumber: string,
     active : boolean
   }
   export interface OrgProjectProp{
