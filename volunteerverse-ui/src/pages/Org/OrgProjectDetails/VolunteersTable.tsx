@@ -6,8 +6,8 @@ import {
 } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { VolunteerUserProp } from '../../../props/users';
-import { IconCheck, IconCircleLetterG } from '@tabler/icons-react';
-import { useState } from 'react';
+import { IconCheck, IconCircleLetterG, IconMail, IconMoodNeutralFilled } from '@tabler/icons-react';
+import { useEffect, useState } from 'react';
 import { ApiResponseProp, apiClient } from '../../../services/ApiClient';
 import { useParams } from 'react-router-dom';
 import { notifications } from '@mantine/notifications';
@@ -15,41 +15,55 @@ import VolunteerProfileCard from './VolunteerProfileCard';
 import NoneFound from '../../../components/NoneFound';
 import { notify } from '../../../utility/utility';
 
-export function VolunteersTable({ volunteerData }: { volunteerData: VolunteerUserProp[] }) {
+export function VolunteersTable() {
     const { projectId } = useParams();
     const theme = useMantineTheme();
     const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
     const [showProfileModal, { open: openProfileModal, close: closeProfileModal }] = useDisclosure(false);
+    const [projectVolunteers, setProjectVolunteers] = useState<VolunteerUserProp[]>([]);
     const [activeVolunteerProfile, setActiveVolunteerProfile] = useState<VolunteerUserProp>({
         email: "",
         firstName: "Helper",
         lastName: "Hand",
         imageUrl: "",
         bio: "Hey there! My name is Helper Hand, the VolunteerVerse mascot! It seems like you've discovered a secret place. Don't tell anyone!",
-        approved: undefined,
+        approved: null,
         id: -1,
         userType: "volunteer",
         skills: ["Being Purple"],
 
     })
+    useEffect(() => {
+        // makes call to backend api to populate volunteers data
+        console.log("getting volunteers from database")
+        if (!projectId) return; // returns if project id is undefined
+        apiClient.fetchInterestedVolunteersByProjectId(parseInt(projectId)).then(({ success, data, statusCode, error }) => {
+          if (success) {
+            console.log("found volunteers for given project: ", data)
+            setProjectVolunteers(data.interestedVolunteers)
+          } else {
+            console.log("Error occured while trying to find volunteers: ", {error, statusCode})
+          }
+        }).catch((error) => {
+          console.log("a very unexpected error has occured")
+        })
+      }, [])
 
     const VolunteerRow = (volunteer: VolunteerUserProp) => {
         /**
          * @todo: connect approval and unapproval to backend
          */
+        const [isApproved, setIsApproved] = useState<boolean | null>(volunteer.approved)
         const [showApprovedLoader, { open: openApprovedButtonLoader, close: closeApprovedButtonLoader }] = useDisclosure(false);
         const [showRejectedLoader, { open: openRejectedButtonLoader, close: closeRejectedButtonLoader }] = useDisclosure(false);
-        const [isApproved, setIsApproved] = useState<boolean | undefined>(volunteer.approved)
+
         const toggleVolunteerApproval = (volunteerEmail: string, mode: "approve" | "reject") => {
             apiClient.toggleVolunteerApproval(volunteerEmail, projectId || "", mode).then(({ success, data, statusCode, error }: ApiResponseProp) => {
                 if (success) {
-                    /**
-                     * set the new card state
-                    */
                     console.log("data while updating volunteer approrval: ", data)
-                    setIsApproved(data.approve);
-                    // show success notification
                     notify.success(`Volunteer has been ${isApproved ? "rejected" : "approved"}.`)
+                    setIsApproved(data.approved);
+                    // show success notification
                 } else {
                     // show error notification
                     notify.error();
@@ -75,10 +89,12 @@ export function VolunteersTable({ volunteerData }: { volunteerData: VolunteerUse
             }
         }
         return (
-            <tr key={volunteer.firstName}>
+            <tr>
                 <td>
                     <Flex ml={"xl"} mr={"xl"} maw={20} gap={"md"} direction={"row"} >
-                        <Avatar size={isMobile ? 60 : 100} src={volunteer.imageUrl} radius={"xl"} />
+                        <Avatar color='violet' size={isMobile ? 60 : 100} src={volunteer.imageUrl} radius={"50%"}>
+                        {volunteer.firstName[0]}{volunteer.lastName[0]}
+                        </Avatar>
                         <Container>
                             <Text ml={"xs"} align='left' fz={isMobile ? "md" : "xl"} fw={500}>
                                 {volunteer.firstName} {volunteer.lastName}
@@ -86,7 +102,7 @@ export function VolunteersTable({ volunteerData }: { volunteerData: VolunteerUse
 
                             <Group noWrap={!isMobile} position='center' mt={"sm"}>
                                 <Button
-                                    onClick={() => { setActiveVolunteerProfile(volunteer); openProfileModal() }}
+                                    onClick={() => { setActiveVolunteerProfile({...volunteer, approved: isApproved}); openProfileModal() }}
                                     size={isMobile ? "xs" : "sm"}
                                     radius={"xl"}
                                     variant='light'>View Profile</Button>
@@ -94,10 +110,10 @@ export function VolunteersTable({ volunteerData }: { volunteerData: VolunteerUse
                                     isApproved &&
                                     <Button
                                         onClick={() => { window.location.href = `mailto:${volunteer.email}` }}
-
+                                        rightIcon={<IconMail />}
                                         size={isMobile ? "xs" : "sm"}
                                         radius={"xl"}
-                                        variant='outline'>Contact {volunteer.firstName}</Button>
+                                        variant='outline'>Email {volunteer.firstName}</Button>
                                 }
                             </Group>
                         </Container>
@@ -143,8 +159,8 @@ export function VolunteersTable({ volunteerData }: { volunteerData: VolunteerUse
             </tr>
         )
     }
-    const VolunteerTableRows = volunteerData.map((volunteer) => <VolunteerRow {...volunteer} />);
-    console.log("rendering volunteer data: ", volunteerData)
+    const VolunteerTableRows = projectVolunteers?.map((volunteer) => <VolunteerRow key={volunteer.id} {...volunteer} />);
+    console.log("rendering volunteer data: ", projectVolunteers)
     return VolunteerTableRows.length === 0 ? <NoneFound /> : (
         <>
             <Modal opened={showProfileModal} onClose={closeProfileModal} radius={"lg"} ta={"center"} centered>

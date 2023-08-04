@@ -5,7 +5,7 @@ import {
   Badge, useMantineTheme, Button,
   Skeleton,
   Flex,
-  ActionIcon
+  Space,
 } from '@mantine/core';
 import { Link } from 'react-router-dom';
 import { QueryBar, QueryProps } from '../../components/QueryBar';
@@ -17,38 +17,56 @@ import { VolunteerProjectProp } from '../../props/projects';
 import { AuthenticationContext } from '../../context/AuthenicationContext';
 import { ApiResponseProp, apiClient } from '../../services/ApiClient';
 import { fetchPrettyTime } from '../../utility/utility';
+import { useMediaQuery } from '@mantine/hooks';
+import { IconHelp, IconHelpCircle, IconHelpOctagon, IconHelpSmall } from '@tabler/icons-react';
 
 function SlimProjectCard(project: VolunteerProjectProp) {
-  // use for org projects too
-  const openMenu = () => {
-    console.log("this is where menu opens");
-    // console.log("rendering project: ", project)
-  }
-  
   const theme = useMantineTheme();
+  const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
+  const fetchCorrectStatusOption = (pendingOption: any, rejectedOption: any, approvedOption: any) => {
+    // handles conditional rendering for differing approval states
+    if (project.approved === null) {
+      return pendingOption;
+    } else if (project.approved === false) {
+      return rejectedOption;
+    } else if (project.approved === true) {
+      return approvedOption;
+    } else {
+      console.log("ERRORR: unabel to determienr correct status option with : ", project.approved)
+    }
+  }
+
   return (
-    <Paper sx={ (theme) =>({ 
-      "&:hover" : {"transform" : "scale(1)", boxShadow: `${theme.shadows.xl}`},
+    <Paper
+    w={"100%"}
+    sx={(theme) => ({
+      "&:hover": { "transform": "scale(1)", boxShadow: `${theme.shadows.xl}` },
       transform: "scale(0.99)",
       transition: "all 300ms ease-in-out"
-      })} p={"md"} shadow='md' radius={"xl"} h={200}>
-      <Group noWrap={true}>
-        <Image width={200} fit='cover' withPlaceholder src={project.imageUrl} />
-        <Flex direction={"column"} h={"100%"} justify={"space-between"} >
-        <ActionIcon onClick={openMenu} radius={"xl"} sx={ (theme) => ({ position:"relative", zIndex: 1000, alignSelf: "flex-end" })}>
-          <Text component='span' className='material-symbols-outlined'>more_vert</Text>
-        </ActionIcon>
-
-          <Group position="left">
-            <Title> <Text sx={{transition : "all 200ms ease-in-out"}} to={`/projects/${project.id}`} component={Link}>{project.title}</Text></Title>
-            <Text>By: {<Text to={project.orgUrl} component={Link}>{project.orgName}</Text>}</Text>
+    })} m={ isMobile ? 0 : "md"} p={isMobile ? 0 :"lg"} shadow='md' radius={"xl"} h={ isMobile ? 500 : 300}>
+      <Flex p={isMobile ? 0 : ""} w={"100%" } h={"100%"} direction={isMobile ? "column" : "row"} gap={"lg"}>
+        <Image radius={"md"} w={300} height={230} fit='cover' withPlaceholder src={project.imageUrl || project.orgLogoUrl} />
+        <Flex w={"100%"} h={"100%"} direction={"column"} align={"center"}>
+          <Group mb={"sm"} w={"100%"} position='center'>
+          <Badge
+            maw={isMobile ? 100 : 150}
+            variant='light'
+            size={isMobile ? "md" : 'lg'}
+            color={fetchCorrectStatusOption("orange", "red", "green")}>
+            {fetchCorrectStatusOption("Pending Approval", "Rejected", "Approved")}
+          </Badge>
+          <IconHelp to={"/"} color='gray'/>
           </Group>
-          <Group>
-            <Badge color={project.approved ? theme.colors.orange[4] : theme.colors.green[4]}>{project.approved === true ? "approved" : project.approved === false ? "rejected" : "pending approval"}</Badge>
-            <Text>Posted: {project.createdAt ? fetchPrettyTime(project.createdAt) :  "N/A"}</Text>
-          </Group>
+          <Title order={2}> <Text sx={{ transition: "all 200ms ease-in-out" }} to={`/projects/${project.id}`} component={Link}>{project.title}</Text></Title>
+          <Text mt={ isMobile ? 0 : "xs"}>By: {<Text to={project.orgUrl} component={Link}>{project.orgName}</Text>}</Text>
+          <Text 
+          sx={(theme) => ({justifySelf : "end"})}
+          size={"sm"}
+          mt={"auto"}
+          color='dimmed'>Posted: {project.createdAt ? fetchPrettyTime(project.createdAt) : "N/A"}</Text>
         </Flex>
-      </Group>
+        {/* </Flex> */}
+      </Flex>
     </Paper>
   )
 }
@@ -56,8 +74,9 @@ function SlimProjectCard(project: VolunteerProjectProp) {
 
 function MyProjects() {
   const [myProjects, setMyProjects] = useState<undefined | VolunteerProjectProp[]>(undefined) // use undefined state to denote loading
-  const {isValidVolunteer, user} = useContext(AuthenticationContext);
-
+  const { isValidVolunteer, user } = useContext(AuthenticationContext);
+  const theme = useMantineTheme();
+  const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
   const queryForm = useForm<QueryProps>({
     initialValues: {
       search: "",
@@ -93,17 +112,13 @@ function MyProjects() {
   return !isValidVolunteer ? <NotAuthorized /> : (
     <>
       <Title align='left'>My Projects</Title>
-        <Paper shadow={"md"} radius={"md"}>
-        <Skeleton visible={myProjects === undefined}>
-          <Group>
-            <QueryBar {...queryForm} />
-            <Button onClick={ () => {setMyProjects(undefined); searchMyProjects();}} variant='light'>Search Filter</Button>
-          </Group>
-        </Skeleton>
-        </Paper>
-      <Container ml={"auto"} mr={"auto"}  maw={800}>
-        <Skeleton visible={myProjects === undefined}>
-          <Flex mt={"xl"} gap={"xl"} direction={"column"}>
+      <Paper shadow={"md"} radius={"md"}>
+        <Group>
+          <QueryBar {...queryForm} />
+          <Button onClick={() => { setMyProjects(undefined); searchMyProjects(); }} variant='light'>Search Filter</Button>
+        </Group>
+      </Paper>
+      <Container px={isMobile ? 0 : "md"} mt={"xl"} ml={"auto"} mr={"auto"} maw={ isMobile ? "100vw" :  "60vw"}>
           {myProjects?.length ? myProjects?.map((project: VolunteerProjectProp, index: number) => {
             console.log("maping projects: ", project)
             return (
@@ -112,8 +127,6 @@ function MyProjects() {
           }) :
             <NoneFound title='No Projects Found....' />
           }
-          </Flex>
-        </Skeleton>
       </Container>
     </>
   );

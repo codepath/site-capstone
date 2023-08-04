@@ -70,8 +70,10 @@ function VolunteerProjectDetails() {
     approved: false,
     id: -1,
     active: false,
-    orgPhoneNumber: "",
+    orgPublicNumber: "",
     orgPublicEmail: "",
+    orgLogoUrl: "",
+
   } : undefined);
   const toggleProjectInterest = () => {
     // updates intersted_volunteers database table with 
@@ -166,19 +168,21 @@ function VolunteerProjectDetails() {
         </div>
         <Divider my={"lg"} />
         <div>
-          <Title align="start" order={2}>Description:</Title>
+          <Title align="start" order={2}>Project Description:</Title>
           <Text align="left" p={isMobile ? "xs" : "sm"}>{project?.description}</Text>
         </div>
         <Divider my={"lg"} />
         <div>
           <Title align="left" order={2}>About {project?.orgName}:</Title>
-          <Text align="left" p={isMobile ? "xs" : "sm"}>{project?.orgDescription}</Text>
+          <Title mt="xs" fw={450} pl={ isMobile ? "md" : "xs"} ta={"left"} order={5}>Founder(s): {project.founders.replace(",", ", ")}</Title>
+          <Title mt="md" fw={450} pl={isMobile ? "md" : "xs"} ta={"left"} order={5}>Description:</Title>
+          <Text align="left" p={isMobile ? "xs" : "lg"}>{project?.orgDescription}</Text>
         </div>
         <div>
           <Title my={"sm"} align="left" fw={500} order={3}>Contact:</Title>
 
-          {<Text ml={"sm"} p={isMobile ? "xs" : "sm"} align="left">Email: <Link to={`mailto:${project.orgPublicEmail}`}> </Link></Text>}
-          <Text ml={"sm"} p={isMobile ? "xs" : "sm"} align="left">Phone: <Link to={`tel:+${project.orgPhoneNumber}`}></Link></Text>
+          {project.orgPublicEmail && <Text ml={"sm"} p={isMobile ? "xs" : "sm"} align="left">Email: <Link to={`mailto:${project.orgPublicEmail}`}>{project.orgPublicEmail}</Link></Text>}
+          {project.orgPublicNumber && <Text ml={"sm"} p={isMobile ? "xs" : "sm"} align="left">Phone: <Link to={`tel:+${project.orgPublicNumber}`}>{project.orgPublicNumber}</Link></Text>}
           <Divider my={"lg"} />
         </div>
         <Button 

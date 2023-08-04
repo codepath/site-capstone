@@ -30,12 +30,13 @@ export class Projects {
     requestedPeople: number;
     tags: string[];
     orgName: string;
+    orgPublicEmail: string;
+    orgPublicNumber: string;
   }) {
     const requiredInfo = [
       "orgId",
       "name",
       "desc",
-      "requestedPeople",
       "tags",
       "orgName",
     ];
@@ -57,9 +58,10 @@ export class Projects {
       image_url,
       requested_people,
       org_name, 
-      approved_people
+      public_email,
+      public_number
       )
-    VALUES($1,$2,$3,$4,$5,$6, $7)
+    VALUES($1,$2,$3,$4,$5,$6, $7, $8)
     RETURNING *`;
     const result = await db.query(query, [
       projectInfo.orgId,
@@ -68,7 +70,8 @@ export class Projects {
       projectInfo.imageUrl || null,
       projectInfo.requestedPeople,
       projectInfo.orgName,
-      0
+      projectInfo.orgPublicEmail,
+      projectInfo.orgPublicNumber
     ]);
     console.log("made query in projects");
     const { id } = result.rows[0];
@@ -147,6 +150,9 @@ export class Projects {
         approved_people,
         active,
         external,
+        external_link,
+        public_email,
+        public_number,
       } = result.rows[0];
       const tags = await this.getProjectTags(id);
       const { organization_name, founders, website, organization_description, logo_url } =
@@ -166,22 +172,25 @@ export class Projects {
         approvedVolunteers: approved_people,
         tags: tags,
         active: active,
-        external: external
       };
-
+      
       if (userType == "volunteer") {
-        // includes interested field only for volunteers
+        // include fields only relevant to a volutneer
         projectCard["interested"] = await Volunteer.expressedInterest(
           projectId,
           email
           );
+          projectCard["approved"] = await Volunteer.fetchProjectApproval(projectId, email)
+          projectCard["external"] = external
+          projectCard["orgPublicEmail"] = public_email
+          projectCard["orgPublicNumber"] = public_number
       }
       return projectCard;
     }
     throw new BadRequestError(`Project with id ${projectId} does not exist`);
   }
 
-  static async getProjectsWithTag(tag: string) {
+  static async getProjectsWithTag(tag: string, email: string) {
     const query = `SELECT project_id FROM project_tags WHERE tag_name=$1`;
     const result = await db.query(query, [tag]);
 
@@ -192,7 +201,7 @@ export class Projects {
       const projectIds = result.rows.map((row: any) => row.project_id);
       const projects = await Promise.all(
         projectIds.map((projectId: number) =>
-          this.fetchProjectByProjectId(projectId, "volunteer")
+          this.fetchProjectByProjectId(projectId, "volunteer", email)
         )
       );
       return projects;
@@ -243,4 +252,5 @@ export class Projects {
       return projectResults;
     }
   }
+
 }

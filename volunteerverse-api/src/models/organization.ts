@@ -29,11 +29,11 @@ export class Organization {
     orgName: string;
     founders: string;
     orgDescription: string;
-    logoUrl?: string;
+    logoUrl: string;
     orgWebsite: string;
+    publicNumber: string;
+    publicEmail: string;
     userType: string;
-
-
   })
   {
     const requiredInfo = [
@@ -44,7 +44,7 @@ export class Organization {
       "userType",
      "password",
      "founders",
-    "orgWebsite",
+    "publicEmail",
     ];
     try {
       validateFields({
@@ -72,16 +72,20 @@ export class Organization {
         organization_email,
        logo_url,
        founders,
-       website
+       website,
+       public_number, 
+       public_email
       )
-      VALUES ($1, $2, $3, $4, $5, $6)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
       RETURNING id,
       organization_name,
                 organization_description,
                 organization_email,
                logo_url,
                founders,
-               website
+               website,
+               public_number,
+               public_email
                `,
       [
         creds.orgName,
@@ -90,6 +94,8 @@ export class Organization {
         creds.logoUrl,
         creds.founders,
         creds.orgWebsite,
+        creds.publicNumber,
+        creds.publicEmail,
       ]
     );
     
@@ -101,6 +107,8 @@ export class Organization {
       founders,
       organization_description,
       website,
+      public_email,
+      public_number,
     } = orgResult.rows[0];
     console.log(orgResult.rows[0], organization_name)
     
@@ -131,6 +139,8 @@ export class Organization {
       founders: founders,
       userType: user_type,
       orgWebsite: website,
+      publicEmail: public_email,
+      publciNUmber: public_number,
     };
   }
   static async fetchInterestedVolunteersByEmail(email) {
@@ -155,9 +165,12 @@ export class Organization {
         organization_description AS "orgDesc",
         organization_email AS "email",
         logo_url AS "imageUrl",
-        founders
-           FROM organizations
-           WHERE  organization_email = $1`, // this does to filtering to make sure we are being
+        founders,
+        public_email AS "publicName",
+        public_number AS "publicNumber"
+        FROM organizations
+        WHERE  organization_email = $1`, 
+        // this does to filtering to make sure we are being
       // specific to the item in the bracket we are looking for
       // by checking if the item we passed in is equal to the row info already
       // in the table
@@ -330,7 +343,7 @@ export class Organization {
         `UPDATE "projects" SET "approved_people" = $1 
             WHERE "org_id" = $2 AND "id" = $3
             RETURNING *`,
-        [approvedPeopleResult.rows[0].approved_people - 1, orgId, projectId]
+        [numberOfApproved, orgId, projectId]
 
       );
       return approvedVolunteerState.approved;

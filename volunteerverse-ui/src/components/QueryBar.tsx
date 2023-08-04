@@ -4,18 +4,19 @@ import {
     Text, Group, MultiSelect, Select, Button
 } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
-import { skillsTags } from '../../constants';
 import { useEffect, useState } from 'react';
+import { useSkills } from '../services/hooks/useSkills';
 
 export interface QueryProps {
     search: string,
     tags: string[],
     timeRange: "Day" | "Week" | "Month" | "Year"
   }
-
+  
 export function QueryBar(form: UseFormReturnType<QueryProps>) {
     const theme = useMantineTheme();
     const [showSearchButton, setShowSearchButton] = useState(false);
+    const skillsTags = useSkills();
 
     useEffect(() => {
         const { search, tags } = form.values;
@@ -38,11 +39,7 @@ export function QueryBar(form: UseFormReturnType<QueryProps>) {
                 icon={<Text component='span' className='material-symbols-outlined'>psychology</Text>}
                 searchable
                 clearable
-                data={skillsTags.map((tag) => ({
-                    value: tag.toLocaleLowerCase(),
-                    label: tag
-                }))
-                }
+                data={skillsTags}
                 label="Tag Filters"
                 nothingFound="Nothing found"
                 placeholder="Search projects by tags"

@@ -5,7 +5,6 @@ import {
   Modal,
   Title,
   Container,
-  Flex,
   ScrollArea,
   Divider
 } from "@mantine/core";
@@ -22,6 +21,7 @@ import { apiClient } from "../../services/ApiClient";
 import { OrganizationRegisterProp, VolunteerRegisterProp } from "../../props/register";
 import { AuthenticationContext } from "../../context/AuthenicationContext";
 import { TOS } from "../../assets/TOS";
+import { notify } from "../../utility/utility";
 
 const useStyles = createStyles((theme) => ({
   // this object includes all styling for this component
@@ -81,9 +81,9 @@ export default function SignUp( {  userType } : {userType : "organization" | "vo
         // for volunteer forms
         if (activeStep === 0) {
           return {
-            firstName: values.firstName.trim().length < 2 ? 'First must be longer than 2 characters' : null,
-            lastName: values.lastName.trim().length < 2 ? 'Last must be longer than 2 characters' : null,
-            password: values.password.length < 2 ? 'Please use a stronger password' : null,
+            firstName: values.firstName.trim().length < 1 ? 'First must be longer than 1 character' : null,
+            lastName: values.lastName.trim().length < 1 ? 'Last must be longer than 1 character' : null,
+            password: values.password.trim().length < 2 ? 'Please use a stronger password' : null,
             confirmPassword: values.confirmPassword !== values.password ? "Password's do not match" : null,
             email: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(values.email) ? null : 'Please provide a valid email address',
           }
@@ -93,7 +93,7 @@ export default function SignUp( {  userType } : {userType : "organization" | "vo
           return {
             termsOfService: values.termsOfService === false ? "You must agree to VolunteerVerse's terms of service" : null,
             skills: values.skills.length >= 2 ? null :  "Please select at least two skills",
-            bio: values.bio.trim().length >= 20 && values.bio.trim().length <= 500 ? null : 'Your biography must be between 20 - 500 characters long',
+            bio: values.bio.trim().length >= 50 && values.bio.trim().length <= 300 ? null : 'Your biography must be between 20 - 300 characters long',
           }
         }
         return {}
@@ -110,14 +110,24 @@ export default function SignUp( {  userType } : {userType : "organization" | "vo
       founders: [],
       orgDescription: "",
       imageFile:  null,
-      imageUrl:  "",
+      logoUrl:  "",
       orgWebsite: "",
       termsOfService: false,
       publicEmail:  "", 
-      phoneNumber: "",
+      publicNumber: "",
       userType: "organization",
     },
-    validateInputOnChange: ["confirmPassword", "password", "email", "imageFile", "termsOfService"],
+    validateInputOnChange: ["confirmPassword",
+      "password",
+      "email",
+      "imageFile",
+      "termsOfService",
+      "publicNumber",
+      "publicEmail",
+      "orgDescription",
+      "imageFile",
+
+    ],
     
     validate: (values) => {
       if (activeStep === 0) {
@@ -131,11 +141,11 @@ export default function SignUp( {  userType } : {userType : "organization" | "vo
       } else if (activeStep === 1) {
         return {
           founders: values.founders.length < 1 ? "Please include at least one founder" : null,
-          orgDescription: values.orgDescription.trim().length <= 500 && values.orgDescription.trim().length >= 20 ? null : "Please include more details in your description.",
+          orgDescription: values.orgDescription.trim().length <= 500 && values.orgDescription.trim().length >= 100 ? null : "Description must be between 100-500 characters.",
           orgName: values.orgName.length < 1 ? "Please include your organization name" : null,
           termsOfService: values.termsOfService === false ? "You must agree to VolunteerVerse's terms of servcie" : null,
-          imageFile: values.imageFile ?  null : "A logo must be provided.", 
-          phoneNumber:  /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im.test(values.phoneNumber) ? null : "Please enter a valid phone number",
+          imageFile: values.imageFile ?  null : "A logo must be provided.",
+          publicNumber:  /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/.test(values.publicNumber) || values.publicNumber === "" ? null : "Please enter a valid phone number. E.g. 123-456-7890",
           publicEmail:  /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(values.publicEmail) ? null : 'Please provide a valid email address',
 
           // orgWebsite:  ^(http(s):\/\/.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$.test(values.orgWebsite) || values.orgWebsite === "" ? null : "Please provide a valid website link",
@@ -175,7 +185,7 @@ export default function SignUp( {  userType } : {userType : "organization" | "vo
   const registerOrg = async (form: UseFormReturnType<OrgFormValues>) => {
     if (form.validate().hasErrors === false) {
       let { confirmPassword, termsOfService, imageFile, ...rest } = form.values;
-      await sendRegisterRequest({ ...rest, founders: rest.founders.toString(), imageUrl: imageFile?.name || "" })
+      await sendRegisterRequest({ ...rest, founders: rest.founders.toString(), logoUrl: imageFile?.name || "" })
     } else{
       console.log("form has errors", form.errors, form.values)
     }
@@ -196,9 +206,11 @@ export default function SignUp( {  userType } : {userType : "organization" | "vo
         setToken?.(data.token);
         navigate("/")
       } else if (statusCode === 400) {
+        notify.error("Unable to create account. Check your inputs carefully!"); // shows error notification
         closeLoader();
         // statusCode 400 means an invalid input was entered
       } else {
+        notify.error() // shows default error notifcication
         console.log("error status code: ", statusCode)
         console.log("error trying to register user", error)
         closeLoader();
@@ -252,14 +264,14 @@ export default function SignUp( {  userType } : {userType : "organization" | "vo
         </Stepper.Step>
       </Stepper>
 
-      <Group position="center" mt="xl">
+    <Group position="center" mt="xl">
         {
           activeStep === 1 ?
             (
               <>
                 <Button variant="default" onClick={prevStep}>Back</Button>
                 <Button
-                  // disabled={userType === "organization" ? orgForm.isValid() === false : volunteerForm.isValid() === false}
+                  disabled={userType === "organization" ? orgForm.isValid() === false : volunteerForm.isValid() === false}
                   onClick={() => userType == "organization" ? registerOrg(orgForm) : registerVolunteer(volunteerForm)}>Create Account</Button>
               </>
             )
