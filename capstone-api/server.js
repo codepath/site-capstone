@@ -16,6 +16,10 @@ const hotelsRouter = require('./routes/hotels');
 const activitiesRouter = require('./routes/activities');
 const userRouter = require('./routes/user');
 const thingstodoRouter = require('./routes/things-to-do');
+const flightsRouter = require('./routes/flights');
+
+
+
 
 
 
@@ -24,10 +28,11 @@ console.log("entered server")
 app.use('/api', hotelsRouter);
 app.use('/api', thingstodoRouter);
 app.use('/api', userRouter);
+app.use('/api', flightsRouter);
 
 
 app.use('/', activitiesRouter);
-app.use('/', userRouter);
+
 
 
 

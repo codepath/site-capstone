@@ -60,11 +60,14 @@ router.delete('/users/:id', async (req, res) => {
 router.post('/users/:id/favorites', async (req, res) => {
   try {
     const userId = req.params.id;
-    const { hotelData, activities } = req.body;
+    const { hotelData, activities, flightData } = req.body;
+
+    const credentials = {userId, hotelData, activities, flightData};
+
     console.log(req.body.hotelData, " ", userId);
 
     // Call the addHotelWithActivitiesToFavorites function in the User model
-    const result = await User.addHotelWithActivitiesToFavorites(req.body.hotelData, req.body.activities, userId);
+    const result = await User.addHotelWithActivitiesToFavorites(credentials);
 
     res.status(201).json({
       message: "Hotel and activities added successfully to favorites",
@@ -80,10 +83,12 @@ router.post('/users/:id/favorites', async (req, res) => {
 router.post('/users/:id/itineraries', async (req, res) => {
   try {
     const userId = req.params.id;
-    const { hotelData, activities } = req.body;
+    const { hotelData, activities, flightData } = req.body;
+
+    const credentials = {userId, hotelData, activities, flightData};
 
     // Call the addHotelWithActivitiesToItinerary function in the User model
-    const result = await User.addHotelWithActivitiesToItinerary(hotelData, activities, userId);
+    const result = await User.addHotelWithActivitiesToItinerary(credentials);
 
     res.status(201).json({
       message: "Hotel and activities added successfully to itineraries",
@@ -97,6 +102,7 @@ router.post('/users/:id/itineraries', async (req, res) => {
 
 // Delete a user's favorite by favorite ID
 router.delete('/users/:id/favorites/:favoriteId', async (req, res) => {
+
   try {
     const userId = req.params.id;
     const favoriteId = req.params.favoriteId;
