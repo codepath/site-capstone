@@ -12,7 +12,6 @@ CREATE TABLE organizations(
     organization_name VARCHAR(255),
     organization_description TEXT,
     organization_email TEXT NOT NULL UNIQUE CHECK (position('@' IN organization_email) > 1),
-    public_email TEXT NOT NULL UNIQUE CHECK (position('@' IN organization_email) > 1),
     phone_number TEXT DEFAULT NULL,
     logo_url TEXT,
     founders TEXT NOT NULL, 
@@ -28,7 +27,7 @@ CREATE TABLE volunteer_skills(
 
 CREATE TABLE projects(
     id SERIAL PRIMARY KEY,
-    org_id INTEGER NOT NULL,
+    org_id INTEGER,
     org_name TEXT NOT NULL,
     project_name TEXT NOT NULL UNIQUE,
     project_description TEXT NOT NULL,
@@ -36,7 +35,9 @@ CREATE TABLE projects(
     image_url TEXT,
     requested_people INTEGER,
     approved_people INTEGER DEFAULT 0,
-    active BOOLEAN DEFAULT TRUE
+    active BOOLEAN DEFAULT TRUE,
+    contact_info TEXT, 
+    website TEXT
 );
 
 CREATE TABLE interested_volunteers(
@@ -49,6 +50,7 @@ CREATE TABLE interested_volunteers(
 CREATE TABLE project_tags(
     id SERIAL PRIMARY KEY,
     project_id INTEGER,
+    project_name TEXT,
     tag_name TEXT NOT NULL
     
 );
