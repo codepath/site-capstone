@@ -29,7 +29,9 @@ projectRoutes.post("/register", requireAuthenticatedUser, async function (req, r
 /** route that gets all the project tags in database */
 projectRoutes.get("/tags", async function (req, res, next) {
   try {
-    const tags = await Projects.getAllProjectTags();
+    let tags = await Projects.getAllProjectTags();
+    tags = tags.length > 0 ? tags : ["HTML", "CSS", "Frontend", "Backend", "Python",]
+    console.log("sending tags: ", tags)
     res.status(201).json({ tags: tags });
   } catch (error) {
     next(error);
@@ -43,7 +45,7 @@ projectRoutes.get(
   async function (req, res, next) {
     const tag = req.params.tag_name;
     const { user_type, email } = res.locals.user;
-    const projects = await Projects.getProjectsWithTag(tag);
+    const projects = await Projects.getProjectsWithTag(tag, email);
     if (projects) {
       res.status(201).json({ projects: projects });
     } else {
