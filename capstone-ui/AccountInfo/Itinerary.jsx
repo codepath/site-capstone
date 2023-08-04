@@ -82,7 +82,7 @@ function ItineraryMenu({searchResults}) {
             <div className="flex flex-col min-h-screen">
 
               <div className="grid grid-cols-3 gap-6 mt-3">
-               { mockItineraries.length === 0 ? "No results found." :
+               {/* { mockItineraries.length === 0 ? "No results found." :
                       mockItineraries.map((mockItinerary) => (
                           <ItineraryCards
                           mockItinerary={mockItinerary}
@@ -90,7 +90,7 @@ function ItineraryMenu({searchResults}) {
                           />
                       ))
                       
-                  }
+                  } */}
              </div>
           
           </div>
