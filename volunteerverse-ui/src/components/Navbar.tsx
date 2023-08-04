@@ -2,8 +2,8 @@ import { Button, Header, Group, Text, Container, Image, createStyles, Title, Mod
 import { Link, useLocation } from "react-router-dom";
 import Logo from "../assets/Logo.png";
 import {
-  Anchor, Divider, Center,
-  Box, Burger, Drawer, Collapse,
+  Divider,
+  Box, Burger, Drawer,
   ScrollArea, rem,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
@@ -129,8 +129,9 @@ export default function Navbar() {
           <Group sx={{ height: '100%' }} spacing={0} className={classes.hiddenMobile}>
             {
               !isAuth ? mapLinksToElements(unAuthLinks) :
-                isValidOrg ? mapLinksToElements(volunteerLinks)
-                  : mapLinksToElements(orgLinks)
+                isValidOrg ? mapLinksToElements(orgLinks) :
+                mapLinksToElements(volunteerLinks)
+                  
             }
           </Group>
           <Group className={classes.hiddenMobile}>
