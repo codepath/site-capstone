@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const { User } = require("../models/user.js");
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken'); // Add this line
+
 
 // Users
 
@@ -153,6 +156,51 @@ router.get('/users/:id/favorites', async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
+router.post('/register', async (req, res) => {
+  const { name, email, password, phone_number } = req.body;
+  
+  // Encrypt the password
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  try {
+    // Save the user to the database
+    const newUser = await User.registerUser(name, email, hashedPassword, phone_number);
+    
+    res.status(201).json(newUser);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to register user." });
+  }
+});
+
+// Login Route
+router.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    // Check if user exists
+    const user = await User.getUserByEmail(email);
+    if (!user) {
+      return res.status(400).json({ error: "User not found." });
+    }
+
+    // Check if password is correct
+    const isValid = await bcrypt.compare(password, user.password);
+    if (!isValid) {
+      return res.status(400).json({ error: "Invalid password." });
+    }
+
+    // If both email and password are correct, send a successful response
+    res.json({ message: "Login successful.", user });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to login." });
+  }
+});
+
+
+
 
 module.exports = router;
 

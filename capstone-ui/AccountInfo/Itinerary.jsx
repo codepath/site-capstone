@@ -51,7 +51,7 @@ function ItineraryMenu({searchResults}) {
             <div className="w-full h-full ml-9">
 
               <p className="mt-8 font-black">
-                Email: 
+                Email: user@mail.com
               </p>
               <Link to='/Account' className='text-black'>
                 <span className="w-3/5 h-10 bg-blue-500 flex flex-row justify-center text-2xl font-black pb-2 rounded-lg mt-10 border border-black border-2 shadow-md">
@@ -82,7 +82,7 @@ function ItineraryMenu({searchResults}) {
             <div className="flex flex-col min-h-screen">
 
               <div className="grid grid-cols-3 gap-6 mt-3">
-               { mockItineraries.length === 0 ? "No results found." :
+               {/* { mockItineraries.length === 0 ? "No results found." :
                       mockItineraries.map((mockItinerary) => (
                           <ItineraryCards
                           mockItinerary={mockItinerary}
@@ -90,7 +90,7 @@ function ItineraryMenu({searchResults}) {
                           />
                       ))
                       
-                  }
+                  } */}
              </div>
           
           </div>
