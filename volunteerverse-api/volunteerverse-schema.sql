@@ -28,7 +28,7 @@ CREATE TABLE volunteer_skills(
 
 CREATE TABLE projects(
     id SERIAL PRIMARY KEY,
-    org_id INTEGER NOT NULL,
+    org_id INTEGER,
     org_name TEXT NOT NULL,
     project_name TEXT NOT NULL UNIQUE,
     project_description TEXT NOT NULL,
@@ -39,8 +39,8 @@ CREATE TABLE projects(
     active BOOLEAN DEFAULT TRUE,
     external BOOLEAN DEFAULT FALSE,
     public_email TEXT NOT NULL,
-    public_number TEXT,
-    external_link TEXT
+    contact_info TEXT,
+    public_number TEXT
 );
 
 CREATE TABLE interested_volunteers(
@@ -53,6 +53,7 @@ CREATE TABLE interested_volunteers(
 CREATE TABLE project_tags(
     id SERIAL PRIMARY KEY,
     project_id INTEGER,
+    project_name TEXT,
     tag_name TEXT NOT NULL
     
 );
