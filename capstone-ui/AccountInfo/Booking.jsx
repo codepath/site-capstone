@@ -156,7 +156,6 @@ function BookingMenu({ itinerary, itineraryPresent }) {
                     <h2 className='font-bold text-4xl text-white mr-2 mt-[50px]' style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.6)' }}>Total: ${itinerary?.Hotel?.priceBreakdown?.grossPrice?.value?.toFixed(2)}</h2>
                     <hr className="mt-4 w-64 border-2 border-white" />
                     <div className="flex items-center mt-[100px] ml-[210px]">
-                        <h2>create itinerary</h2>
                         <h2 className='text-[25px] font-bold text-white mr-4'>Ready to checkout?</h2>
                         <Link to='/Checkout'>
                             <h2 className="text-green-400 font-bold text-[25px] hover:text-green-200">Checkout</h2>
