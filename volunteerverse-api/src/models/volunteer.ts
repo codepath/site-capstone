@@ -5,8 +5,25 @@ import { validateFields } from "../utils/validate";
 import bcrypt from "bcrypt";
 import { Projects } from "./projects";
 
-interface VolunteerInterface{
-
+interface VolunteerProjectProp{
+  id: number,
+  orgName: string,
+  orgDescription: string,
+  orgLogoUrl: string,
+  founders: string,
+  orgUrl: string,
+  title: string,
+  description: string,
+  createdAt: Date,
+  imageUrl?: string,
+  requestedVolunteers?: number,
+  approvedVolunteers: number,
+  tags: string[],
+  active: boolean,
+  interested: boolean,
+  external: boolean,
+  orgPublicEmail: string,
+  orgPublicNumber?: string,
 }
 
 export class Volunteer {
@@ -186,7 +203,7 @@ export class Volunteer {
     
     for await (const {project_id} of result.rows) {
       // for each project id, retrieve the project object for a volunteer
-      const project = await Projects.fetchProjectByProjectId(project_id, "volunteer");
+      const project = await Projects.fetchProjectByProjectId(project_id, "volunteer", email);
       interestedProjects.push(project);
     }
     console.log("returning interseted projects: ", interestedProjects);
@@ -275,15 +292,16 @@ export class Volunteer {
    * @returns ranked projects based on a volunteers skills tags
    */
   static async getVolunteersProjectFeed(email: string) {
-    // needs error catching to avoid server breaking (long-term: needs code refactoring)
-    const projects = new Set<any>();
-    const volunteerSkills = await this.fetchAllVolunteerSkills(email);
 
+    // needs error catching to avoid server breaking (long-term: needs code refactoring)
+    const projects = {}; // projects is an with id : {project} pairs to avoid duplicates
+    const volunteerSkills = await this.fetchAllVolunteerSkills(email);
+    console.log("getting skills for each project")
     await Promise.all(
       volunteerSkills.map(async (tag: string) => {
-        const tagProjects = await Projects.getProjectsWithTag(tag);
+        const tagProjects = await Projects.getProjectsWithTag(tag, email);
         tagProjects.forEach((project) => {
-          projects.add(project); // Use add() to add unique project objects to the Set
+          projects[project.id] = project; // updating object with new unqiue project
         });
       })
     )
@@ -292,14 +310,14 @@ export class Volunteer {
     const remainingProjects = await Projects.getAllProjects()
     console.log("found remaining Projects: ", remainingProjects);
     remainingProjects.forEach((remainingProject) => {
-      if (!projects.has(remainingProject)){
-        projects.add(remainingProject);
+      if (!(remainingProject.id in projects)){
+        projects[remainingProject.id] = remainingProject;
       }
     })
 
-    // filter projects by active status and return them
-     console.log("projects retrieved: ", Array.from(projects))
-    const activeOnlyProjects = Array.from(projects).filter((project) => project.active === true)
+    // converts object into array and filters projects by active status ONLY
+     console.log("projects retrieved: ", Array.from(Object.values(projects)))
+    const activeOnlyProjects = Array.from(Object.values(projects)).filter((project : VolunteerProjectProp) => project.active === true)
     return activeOnlyProjects;
   }
 
@@ -320,7 +338,15 @@ static async expressedInterest(projectId:number, email:string){
   }
   return false;
 }
-
+static async fetchProjectApproval(projectId : number, email: string){
+  const query = `SELECT approved FROM interested_volunteers WHERE email=$1 AND project_id=$2`;
+  const result = await db.query(query, [email, projectId]);
+  if (result.rows.length > 0){
+    return result.rows[0].approved
+  } else{
+    return false
+  }
+}
 /**
  * Returns a boolean indicating whether a volunteer was approved for a specific project
  * @param projectId 
