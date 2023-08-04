@@ -134,7 +134,7 @@ export default function SignUp( {  userType } : {userType : "organization" | "vo
           orgDescription: values.orgDescription.trim().length <= 500 && values.orgDescription.trim().length >= 20 ? null : "Please include more details in your description.",
           orgName: values.orgName.length < 1 ? "Please include your organization name" : null,
           termsOfService: values.termsOfService === false ? "You must agree to VolunteerVerse's terms of servcie" : null,
-          imageFile: values.imageFile ?  null : "A logo must be provided.",
+          imageFile: values.imageFile ?  null : "A logo must be provided.", 
           phoneNumber:  /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im.test(values.phoneNumber) ? null : "Please enter a valid phone number",
           publicEmail:  /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(values.publicEmail) ? null : 'Please provide a valid email address',
 
