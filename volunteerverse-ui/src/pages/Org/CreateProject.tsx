@@ -1,20 +1,19 @@
 import React, { useContext, useEffect, useState } from 'react';
-// import { useAuthenticationUserProp } from '../../services/hooks/useAuthentication'
 import { useForm } from '@mantine/form';
 import { ProjectFormValues } from '../../props/forms';
 import {
   Button, Container, FileButton,
   Flex, MultiSelect, TextInput,
-  Textarea, Title, Image, createStyles, Paper, Divider, useMantineTheme
+  Textarea, Title, Image, createStyles, Paper, Divider, useMantineTheme, NumberInput
 } from '@mantine/core';
 import { apiClient } from '../../services/ApiClient';
 import GoBackButton from '../../components/GoBackButton';
 import { useMediaQuery } from '@mantine/hooks';
 import { useNavigate } from 'react-router-dom';
 import { AuthenticationContext } from '../../context/AuthenicationContext';
-import { notifications } from '@mantine/notifications';
 import NotAuthorized from '../NotAuthorized';
 import { notify } from '../../utility/utility';
+import { useSkills } from '../../services/hooks/useSkills';
 /**
  * @todo: 
  * - test org deleting project
@@ -48,23 +47,26 @@ function CreateProject() {
       title: "",
       desc: "",
       imageFile: null,
-      requestedPeople: 1,
-      tags: []
+      requestedPeople: "",
+      tags: [],
+      publicEmail: "",
+      publicNumber: "",
     },
-    validateInputOnChange: ["requestedPeople"],
+    validateInputOnChange: ["requestedPeople", "desc", "title"],
     validate: (values) => ({
-      title: values.title.trim().length > 0  && values.title.trim().length <= 80 ? null : "Title cannot be empty of greater than 20 characters",
-      desc: (values.desc.trim().length < 500 && values.desc.trim().length > 20) ? null : "Please provide a shorter/longer description",
+      title: values.title.trim().length > 0  && values.title.trim().length <= 50 ? null : "Title cannot be empty of greater than 50 characters",
+      desc: (values.desc.trim().length <= 400 && values.desc.trim().length > 50) ? null : "Descriptoin must be between 50-400 characters long",
       // imageFile: no image validation required
-      requestedPeople: values.requestedPeople > 0 ? null : "Requested people must be greater than 0",
+      // no requestedPeople validation required,
+      // requestedPeople: values.requestedPeople > 0 ? null : "Requested people must be greater than 0",
       // tags: no validation needed for tags
 
     })
   });
   const { classes } = useStyles();
-  const [tags, setTags] = useState<string[]>([]);
   const theme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
+  const skillsTags = useSkills();
   const navigate = useNavigate();
 
   const createNewProject = () => {
@@ -75,10 +77,14 @@ function CreateProject() {
       console.log("creating new project with the following form values: ", form.values)
       const payload = {
         ...form.values,
-        orgName: user?.userType === "organization" ? user.orgName : "N/A",
+        orgName: user?.userType === "organization" ? user.orgName : "",
         name: form.values.title,
-        tags: ["all"],
+        tags: form.values.tags,
+        orgPublicEmail: user?.userType === "organization" ? user.publicEmail : "",
+        orgPublicNumber: user?.userType === "organization" ? user.publicNumber : undefined,
         imageUrl: form.values.imageFile?.name || "",
+        requestedPeople: parseInt(form.values.requestedPeople),
+
         // @todo: change imageUrl using image hosting api
       }
       apiClient.createProject(payload).then(({ data, success, error, statusCode }) => {
@@ -99,18 +105,6 @@ function CreateProject() {
     // close loader here
   }
 
-  useEffect(() => {
-    apiClient.fetchAllTags().then(({ data, success, error, statusCode }) => {
-      // fecthes all all tags from db then sets state
-      if (success) {
-        console.log("setting tags: ", data.tags)
-        setTags(data.tags);
-      } else {
-        setTags([])
-        console.log("unable to retrieve all tags. error: ", {error, statusCode})
-      }
-    });
-  }, [])
   return !isValidOrg ? <NotAuthorized /> : (
     <>
       <GoBackButton mb={"md"}/>
@@ -121,6 +115,7 @@ function CreateProject() {
           <Flex direction={"column"}>
             <Flex direction={"column"} gap={"md"} align={"center"}>
               <Image
+              src={user?.userType === "organization" ? user.logoUrl : ""}
                 width={"100%"}
                 height={300}
                 withPlaceholder
@@ -146,18 +141,17 @@ function CreateProject() {
               </Flex>
             </Flex>
             <TextInput
-              maxLength={80}
+              maxLength={50}
               size={isMobile ? 'sm' : 'md'}
               radius={"lg"}
               withAsterisk
               label="Project Title"
               placeholder="Full stack developer needed for..."
-              description="Max: 80 Characters"
+              description="Max: 50 Characters"
               {...form.getInputProps('title')}
               mb={"md"} />
-            <TextInput
-              type='number'
-              min={1}
+            <NumberInput
+              min={0}
               size={isMobile ? 'sm' : 'md'}
               radius={"lg"}
               label="Volunteer Capacity (optional)"
@@ -166,23 +160,25 @@ function CreateProject() {
               {...form.getInputProps('requestedPeople')}
               mb={"md"} />
             <MultiSelect
-              {...form.getInputProps("tags")}
+              withAsterisk
               size={isMobile ? 'sm' : 'md'}
               radius={"lg"}
               searchable
-              data={tags}
+              data={skillsTags}
               label="Project Tags"
-              placeholder="Select tags relevant to this project"
+              description="Please select at least two"
+              placeholder="Select tags relevant to this project (at least two)"
               mb={"md"}
+              {...form.getInputProps("tags")}
             />
             <Textarea
-              maxLength={500}
+              maxLength={400}
               radius={"lg"}
               size={isMobile ? 'sm' : 'md'}
               withAsterisk
               label="Project Description:"
-              placeholder={`Hey there, we're a ${user?.userType} looking to...`}
-              description="Max: 500 characters"
+              placeholder={`${user?.userType === "organization" ? user.orgName : ""} is committed to making a positive impact in the world by...`}
+              description=" 50-400 characters long"
               minRows={5}
               {...form.getInputProps('desc')}
             />
