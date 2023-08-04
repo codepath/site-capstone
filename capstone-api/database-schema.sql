@@ -31,9 +31,12 @@ CREATE TABLE activities (
 
 CREATE TABLE flights (
     id SERIAL PRIMARY KEY,
-    name TEXT NOT NULL,
-    price INTEGER,
-    city TEXT NOT NULL,
-    arrival_date TEXT NOT NULL,
-    departure_date TEXT NOT NULL
+    origin TEXT NOT NULL,
+    destination TEXT NOT NULL,
+    departing_at TIMESTAMP NOT NULL,
+    arriving_at TIMESTAMP NOT NULL,
+    carrier_name TEXT NOT NULL,
+    carrier_logo_url TEXT,
+    carrier_website TEXT
 );
+

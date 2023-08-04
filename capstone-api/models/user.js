@@ -3,6 +3,7 @@ const pool = require('../db');
 const { addHotel, deleteHotel } = require('./hotels');
 const { addActivity, deleteActivity } = require('./activities');
 const { v4: uuidv4 } = require('uuid');
+const { addFlight } = require("./flights")
 
 class User {
   //User Functions
@@ -38,19 +39,27 @@ class User {
 
   //Itinerary Array
 
-  static async addHotelWithActivitiesToItinerary(hotelData, activities, userId) {
+  static async addHotelWithActivitiesToItinerary(credentials) {
+      const {userId, hotelData, activities, flightData} = credentials;
+      console.log(credentials);
+
       if (!hotelData || !hotelData.name || !hotelData.city || !hotelData.price || !hotelData.check_in || !hotelData.check_out) {
         throw new BadRequestError("Hotel data is missing or invalid.");
       }
-
-      console.log(activities)
 
       if (!activities) {
         throw new BadRequestError("Activities is invalid");
       }
 
+      if (!flightData ) {
+        throw new BadRequestError("Flight data is missing or invalid.");
+      }
+
       
-      // Step 1: Add the hotel and get its primary key (id)
+      // Step 1: Add the hotel and get its primary key (id) and add flights 
+      const flight = await addFlight(flightData);
+      const flightId = flight.id;
+
       const hotel = await addHotel(hotelData);
       const hotelId = hotel.id;
 
@@ -66,6 +75,7 @@ class User {
         itineraryId, // Add the generated itineraryId to the itinerary object
         hotel: hotelId,
         activities: activityIds,
+        flight: flightId,
       };
   
       // Step 4: Add the itinerary to the user's itineraries array
@@ -80,6 +90,7 @@ class User {
   }
 
   static async getUserItineraries(userId) {
+
     const query = `SELECT itineraries FROM users WHERE id = $1`;
     const result = await pool.query(query, [userId]);
     const user = result.rows[0];
@@ -95,6 +106,10 @@ class User {
       const hotelQuery = `SELECT * FROM hotels WHERE id = $1`;
       const hotelResult = await pool.query(hotelQuery, [itinerary.hotel]);
       const hotel = hotelResult.rows[0];
+
+      const flightQuery = `SELECT * FROM flights WHERE id = $1`;
+      const flightResult = await pool.query(flightQuery, [itinerary.flight]);
+      const flight = flightResult.rows[0];
   
       // Fetch activity details from the 'activities' table using activity primary keys (ids)
       const activityIds = itinerary.activities || [];
@@ -114,6 +129,7 @@ class User {
           itineraryId: itinerary.itineraryId,
           hotel,
           activities,
+          flight
         };
         itinerariesWithDetails.push(itineraryWithDetails);
       }
@@ -159,16 +175,28 @@ class User {
   // Favorites Array
 
 
-  static async addHotelWithActivitiesToFavorites(hotelData, activities, userId) {
+  static async addHotelWithActivitiesToFavorites(credentials) {
+
+    const {userId, hotelData, activities, flightData} = credentials;
+    console.log(credentials)
+
+    if (!flightData) {
+      throw new BadRequestError("Flight data is missing or invalid.");
+    }
+
+
     if (!hotelData || !hotelData.name || !hotelData.city || !hotelData.price || !hotelData.check_in || !hotelData.check_out) {
       throw new BadRequestError("Hotel data is missing or invalid.");
     }
 
-    if (!activities || !Array.isArray(activities)) {
-      throw new BadRequestError("At least one activity must be provided.");
+    if (!activities) {
+      throw new BadRequestError("Invalid Activity");
     }
 
-    // Step 1: Add the hotel and get its primary key (id)
+    // Step 1: Add the hotel and get its primary key (id) and Flight
+    const flight = await addFlight(flightData);
+    const flightId = flight.id;
+
     const hotel = await addHotel(hotelData);
     const hotelId = hotel.id; 
 
@@ -184,6 +212,7 @@ class User {
       favoriteId, // Add the generated favoriteId to the favorite object
       hotel: hotelId,
       activities: activityIds,
+      flight: flightId
     };
 
     // Step 4: Add the favorite to the user's favorites array
@@ -239,6 +268,10 @@ class User {
       const hotelResult = await pool.query(hotelQuery, [favorite.hotel]);
       const hotel = hotelResult.rows[0];
   
+      const flightQuery = `SELECT * FROM flights WHERE id = $1`;
+      const flightResult = await pool.query(flightQuery, [favorite.flight]);
+      const flight = flightResult.rows[0];
+  
       // Fetch activity details from the 'activities' table using activity primary keys (ids)
       const activityIds = favorite.activities || [];
       const activities = [];
@@ -257,6 +290,7 @@ class User {
           favoriteId: favorite.favoriteId,
           hotel,
           activities,
+          flight
         };
         favoritesWithDetails.push(favoriteWithDetails);
       }

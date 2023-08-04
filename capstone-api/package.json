@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@duffel/api": "^2.3.4",
     "axios": "^1.4.0",
     "colors": "^1.4.0",
     "cors": "^2.8.5",
