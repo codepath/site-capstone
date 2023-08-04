@@ -70,7 +70,7 @@ function App() {
             <div className="font-sans">
                 
                 <Router>
-                    <Navbar />
+                    <Navbar setAuthenticated={setAuthenticated} authenticated={authenticated}/>
                     <Routes>
                         <Route path="/" element={
                             <Homepage filterFlights={filterFlights} setFilterFlights={setFilterFlights}

@@ -21,6 +21,22 @@ class User {
     return user;
   }
 
+  static async registerUser(name, email, hashedPassword, phone_number) {
+    const query = `
+      INSERT INTO users (name, email, password, phone_number)
+      VALUES ($1, $2, $3, $4)
+      RETURNING id, name, email, phone_number;
+    `;
+    const result = await pool.query(query, [name, email, hashedPassword, phone_number]);
+    return result.rows[0];
+  }
+
+  static async getUserByEmail(email) {
+    const query = `SELECT * FROM users WHERE email = $1`;
+    const result = await pool.query(query, [email]);
+    return result.rows[0];
+  }
+
   static async updateUser(id, updates) {
     const { email, password, phone_number } = updates;
     const query = `

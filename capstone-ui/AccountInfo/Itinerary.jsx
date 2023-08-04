@@ -51,7 +51,7 @@ function ItineraryMenu({searchResults}) {
             <div className="w-full h-full ml-9">
 
               <p className="mt-8 font-black">
-                Email: 
+                Email: user@mail.com
               </p>
               <Link to='/Account' className='text-black'>
                 <span className="w-3/5 h-10 bg-blue-500 flex flex-row justify-center text-2xl font-black pb-2 rounded-lg mt-10 border border-black border-2 shadow-md">
