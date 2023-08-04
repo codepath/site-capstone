@@ -8,7 +8,7 @@ export interface VolunteerUserProp {
     lastName: string,
     imageUrl: string,
     bio: string,
-    approved: boolean | undefined,
+    approved: boolean | null,
     skills: string[],
     userType: "volunteer",
     
@@ -23,4 +23,6 @@ export interface OrgUserProp {
     founders: string,
     userType: "organization",
     orgWebsite: string,
+    publicEmail: string,
+    publicNumber?: string,
 }
