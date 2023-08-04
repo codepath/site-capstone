@@ -1,4 +1,4 @@
-import { Container, Flex, Image, Text, Title, createStyles } from '@mantine/core'
+import { Container, Flex, Image, Text, Title, createStyles, Button} from '@mantine/core'
 import OrgImage from "../../assets/team.png";
 import StudentImage from "../../assets/floatingStudent.png";
 import React from 'react'
@@ -52,13 +52,15 @@ function WhatWeDo() {
 
                     <Flex align={"center"} direction={"column"} className={classes.bodyLeft}>
                         <Title className={classes.bodyTitle}>Students:</Title>
-                        <Image src={StudentImage}/>
-                        <Text className={classes.bodyDescription}>Search for opportunties</Text>
+                        <Image onClick={() => window.location.href = "/signup/volunteer"} src={StudentImage}/>
+                        <Button radius={"lg"} onClick={() => window.location.href = ("/signup/volunteer")} variant="default">Search for opportunties</Button>
+                        {/* <Text className={classes.bodyDescription}>Search for opportunties</Text> */}
                     </Flex>
                     <Flex align={"center"} direction={"column"} className={classes.bodyRight}>
                         <Title className={classes.bodyTitle}>Non-Profits:</Title>
-                        <Image src={OrgImage} />
-                        <Text className={classes.bodyDescription} >Improve your org</Text>
+                        <Image onClick={() => window.location.href = "/signup/organization"} src={OrgImage} />
+                        <Button radius={"lg"} onClick={() => window.location.href = ("/signup/organization") }>Improve your org</Button>
+                        {/* <Text className={classes.bodyDescription} >Improve your org</Text> */}
                     </Flex>
                 </Flex>
             </Container>
