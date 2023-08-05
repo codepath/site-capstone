@@ -169,7 +169,7 @@ export default function Landing() {
                 <Button variant="outline" className={classes.button} size="xl" radius={"xl"} component={Link} to={"/login"}>Login</Button>
               </Group>
             </Container>
-            <Image alt="VolunteerVerse Logo. A purple hand with a smiley face" className={classes.image} fit={"contain"} src={Logo} />
+            <Image /* styles={{image : {filter : }}} */ title="High Five!" alt="VolunteerVerse Logo. A purple hand with a smiley face" className={classes.image} fit={"contain"} src={Logo} />
           </Container>
         </Flex>
         <WhatWeDo  />

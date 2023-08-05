@@ -1,11 +1,16 @@
 import {
-  TextInput,
-  Image, Textarea, Text, Button,
-  Container, Title, Flex,createStyles,
-  MultiSelect,
-  FileButton,
-  Divider,
   Avatar,
+  Button,
+  Container,
+  Divider,
+  FileButton,
+  Flex,
+  MultiSelect,
+  Text,
+  TextInput,
+  Textarea,
+  Title,
+  createStyles
 } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 import { OrgFormValues } from '../../../props/forms';

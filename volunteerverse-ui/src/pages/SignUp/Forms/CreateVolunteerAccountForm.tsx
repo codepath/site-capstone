@@ -1,8 +1,8 @@
-import { Container, Flex, PasswordInput, TextInput, Title } from "@mantine/core";
-import { createStyles, useMantineTheme } from "@mantine/styles";
-import { VolunteerFormValues } from "../../../props/forms";
+import { Flex, PasswordInput, TextInput, Title } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
 import { useMediaQuery } from "@mantine/hooks";
+import { createStyles, useMantineTheme } from "@mantine/styles";
+import { VolunteerFormValues } from "../../../props/forms";
 
 const useStyles = createStyles((theme) => ({
     container: {

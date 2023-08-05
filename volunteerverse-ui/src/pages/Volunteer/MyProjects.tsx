@@ -1,24 +1,27 @@
-import { useContext, useEffect, useState } from 'react'
 import {
-  Paper, Title, Text,
-  Container, Group, Image,
-  Badge, useMantineTheme, Button,
-  Skeleton,
+  Badge,
+  Button,
+  Container,
   Flex,
-  Space,
+  Group, Image,
+  Paper,
+  Text,
+  Title,
+  useMantineTheme
 } from '@mantine/core';
+import { useForm } from '@mantine/form';
+import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { QueryBar, QueryProps } from '../../components/QueryBar';
-import { useForm } from '@mantine/form';
 import NotAuthorized from '../NotAuthorized';
 // import { projectDetailsData } from './Home/data';
+import { useMediaQuery } from '@mantine/hooks';
+import { IconHelp } from '@tabler/icons-react';
 import NoneFound from '../../components/NoneFound';
-import { VolunteerProjectProp } from '../../props/projects';
 import { AuthenticationContext } from '../../context/AuthenicationContext';
+import { VolunteerProjectProp } from '../../props/projects';
 import { ApiResponseProp, apiClient } from '../../services/ApiClient';
 import { fetchPrettyTime } from '../../utility/utility';
-import { useMediaQuery } from '@mantine/hooks';
-import { IconHelp, IconHelpCircle, IconHelpOctagon, IconHelpSmall } from '@tabler/icons-react';
 
 function SlimProjectCard(project: VolunteerProjectProp) {
   const theme = useMantineTheme();
@@ -60,7 +63,7 @@ function SlimProjectCard(project: VolunteerProjectProp) {
           <Title order={2}> <Text sx={{ transition: "all 200ms ease-in-out" }} to={`/projects/${project.id}`} component={Link}>{project.title}</Text></Title>
           <Text mt={ isMobile ? 0 : "xs"}>By: {<Text to={project.orgUrl} component={Link}>{project.orgName}</Text>}</Text>
           <Text 
-          sx={(theme) => ({justifySelf : "end"})}
+          sx={() => ({justifySelf : "end"})}
           size={"sm"}
           mt={"auto"}
           color='dimmed'>Posted: {project.createdAt ? fetchPrettyTime(project.createdAt) : "N/A"}</Text>

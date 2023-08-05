@@ -1,23 +1,16 @@
 import { createStyles, useMantineTheme } from "@mantine/styles";
-import { useAuthenticationUserProp } from "../../../services/hooks/useAuthentication";
 
 import { Tabs, Title } from '@mantine/core';
-import { IconUser } from '@tabler/icons-react';
 import { useMediaQuery } from "@mantine/hooks";
-import { VolunteerUserProp } from "../../../props/users";
+import { IconUser } from '@tabler/icons-react';
 import { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router";
 import GoBackButton from "../../../components/GoBackButton";
-import VolunteerProjectDetails from "../../Volunteer/VolunteerProjectDetails";
-import { VolunteersTable } from "./VolunteersTable";
 import { AuthenticationContext } from "../../../context/AuthenicationContext";
+import { apiClient } from "../../../services/ApiClient";
 import NotAuthorized from "../../NotAuthorized";
 import OrgProjectDetails from "./OrgProjectDetails";
-import { apiClient } from "../../../services/ApiClient";
-import { useParams } from "react-router";
-
-const useStyles = createStyles((theme) => ({
-
-}));
+import { VolunteersTable } from "./VolunteersTable";
 
 function OrgProjectDetailsTabs() {
 
@@ -41,10 +34,6 @@ function OrgProjectDetailsTabs() {
       console.log("a very unexpected error has occured while trying to find volunteers count")
     })
   }, [user])
-
-
-  
-  const { classes } = useStyles();
 
   return !isValidOrg ? <NotAuthorized /> : (
 

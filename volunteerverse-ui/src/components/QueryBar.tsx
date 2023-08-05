@@ -1,7 +1,7 @@
 import {
-    TextInput, TextInputProps,
-    ActionIcon, useMantineTheme,
-    Text, Group, MultiSelect, Select, Button
+    Group, MultiSelect, Select,
+    Text,
+    TextInput
 } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 import { useEffect, useState } from 'react';
@@ -14,11 +14,12 @@ export interface QueryProps {
   }
   
 export function QueryBar(form: UseFormReturnType<QueryProps>) {
-    const theme = useMantineTheme();
-    const [showSearchButton, setShowSearchButton] = useState(false);
+    // const theme = useMantineTheme();
     const skillsTags = useSkills();
+    const [showSearchButton, setShowSearchButton] = useState(false);
 
     useEffect(() => {
+        console.log(showSearchButton)
         const { search, tags } = form.values;
         if (search.trim().length > 0 || tags.length > 0) {
             setShowSearchButton(true);

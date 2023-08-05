@@ -1,11 +1,17 @@
 import {
-    createStyles, useMantineTheme,
-    Paper, Flex, Title, Divider,
-    Container, Group, Badge,
-    Text, Image, Space
+    Badge,
+    Container,
+    Divider,
+    Flex,
+    Group,
+    Image,
+    Paper,
+    Text,
+    Title,
+    createStyles, useMantineTheme
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { fetchPrettyTime } from "../../../utility/utility";
 
 export interface ProjectCardProps {

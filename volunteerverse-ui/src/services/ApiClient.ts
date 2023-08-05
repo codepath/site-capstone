@@ -1,7 +1,7 @@
 import axios from "axios";
-import { API_BASE_URL } from "../../constants"
-import { OrganizationRegisterProp, VolunteerRegisterProp, ProjectRegisterProp } from "../props/register";
+import { API_BASE_URL } from "../../constants";
 import { QueryProps } from "../components/QueryBar";
+import { OrganizationRegisterProp, ProjectRegisterProp, VolunteerRegisterProp } from "../props/register";
 
 interface requestProp {
     method : string,
@@ -91,7 +91,7 @@ class ApiClient {
         return this.request(requestOptions);
     }
 
-    async fetchProjects(userType: "organization" | "volunteer", query: QueryProps) {
+    async fetchProjects(userType: "organization" | "volunteer") {
         /**
          * @todo: use query parameters to filter search?
          */

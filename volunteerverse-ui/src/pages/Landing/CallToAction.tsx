@@ -1,7 +1,4 @@
-import { Button, Container, Group, Title, createStyles } from '@mantine/core'
-import React from 'react'
-import { Link } from 'react-router-dom';
-import SignUpModal from './SignUpModal';
+import { Button, Container, Group, Title, createStyles } from '@mantine/core';
 
 const useStyles = createStyles((theme) => ({
     container: {

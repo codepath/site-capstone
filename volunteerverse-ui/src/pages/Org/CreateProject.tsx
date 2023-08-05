@@ -1,19 +1,28 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { useForm } from '@mantine/form';
-import { ProjectFormValues } from '../../props/forms';
 import {
-  Button, Container, FileButton,
-  Flex, MultiSelect, TextInput,
-  Textarea, Title, Image, createStyles, Paper, Divider, useMantineTheme, NumberInput
+  Button, Container,
+  Divider,
+  FileButton,
+  Flex,
+  Image,
+  MultiSelect,
+  NumberInput,
+  Paper,
+  TextInput,
+  Textarea, Title,
+  createStyles,
+  useMantineTheme
 } from '@mantine/core';
-import { apiClient } from '../../services/ApiClient';
-import GoBackButton from '../../components/GoBackButton';
+import { useForm } from '@mantine/form';
 import { useMediaQuery } from '@mantine/hooks';
+import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import GoBackButton from '../../components/GoBackButton';
 import { AuthenticationContext } from '../../context/AuthenicationContext';
-import NotAuthorized from '../NotAuthorized';
-import { notify } from '../../utility/utility';
+import { ProjectFormValues } from '../../props/forms';
+import { apiClient } from '../../services/ApiClient';
 import { useSkills } from '../../services/hooks/useSkills';
+import { notify } from '../../utility/utility';
+import NotAuthorized from '../NotAuthorized';
 /**
  * @todo: 
  * - test org deleting project

@@ -1,25 +1,25 @@
-import { useContext, useEffect, useState } from "react"
-import { Link, useParams } from "react-router-dom"
-import { useDisclosure, useMediaQuery } from "@mantine/hooks";
-import { apiClient } from "../../services/ApiClient";
 import {
-  Badge, Container, Divider,
-  Group, Image, Title, Text,
-  useMantineTheme,
-  createStyles,
-  LoadingOverlay,
-  Skeleton,
+  Badge,
+  Box,
   Button,
+  Container, Divider,
   Flex,
-  Box
+  Group, Image,
+  LoadingOverlay,
+  Text,
+  Title,
+  createStyles,
+  useMantineTheme
 } from "@mantine/core";
-import { notifications } from '@mantine/notifications';
-import NotAuthorized from "../NotAuthorized";
-import { projectDetailsData } from "./Home/data";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
+import { useContext, useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import GoBackButton from "../../components/GoBackButton";
-import { VolunteerProjectProp } from "../../props/projects";
 import { AuthenticationContext } from "../../context/AuthenicationContext";
+import { VolunteerProjectProp } from "../../props/projects";
+import { apiClient } from "../../services/ApiClient";
 import { fetchPrettyTime, notify } from "../../utility/utility";
+import NotAuthorized from "../NotAuthorized";
 
 
 

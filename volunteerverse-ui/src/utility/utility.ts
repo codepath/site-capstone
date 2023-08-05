@@ -1,5 +1,4 @@
 import { notifications } from "@mantine/notifications";
-import { useAuthenticationUserProp } from "../services/hooks/useAuthentication";
 import moment from "moment";
 
 // export const fetchCorrectUserOption =  (

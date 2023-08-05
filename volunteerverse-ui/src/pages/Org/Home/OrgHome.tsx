@@ -1,20 +1,22 @@
-import { useContext, useEffect, useState } from 'react'
 import {
   Badge, Button,
-  Container, Flex, Group, Paper, Skeleton,
-  Title, useMantineTheme, Text, Image
-} from '@mantine/core'
-import { QueryBar, QueryProps } from '../../../components/QueryBar';
+  Container, Flex, Group,
+  Image,
+  Paper, Skeleton,
+  Text,
+  Title, useMantineTheme
+} from '@mantine/core';
 import { useForm } from '@mantine/form';
-import NotAuthorized from '../../NotAuthorized';
+import { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import NoneFound from '../../../components/NoneFound';
+import { QueryBar, QueryProps } from '../../../components/QueryBar';
+import { AuthenticationContext } from '../../../context/AuthenicationContext';
 import { VolunteerProjectProp } from '../../../props/projects';
 import { ApiResponseProp, apiClient } from '../../../services/ApiClient';
-import { AuthenticationContext } from '../../../context/AuthenicationContext';
 import { fetchPrettyTime, notify } from '../../../utility/utility';
+import NotAuthorized from '../../NotAuthorized';
 import ProjectOptionsMenu from './ProjectOptionsMenu';
-import { notifications } from '@mantine/notifications';
 
 function SlimProjectCard({project, handleDelete}: {project: VolunteerProjectProp, handleDelete: ({ projectId } : {projectId :  number}) => void}) {
   // use for org projects too
@@ -29,7 +31,7 @@ function SlimProjectCard({project, handleDelete}: {project: VolunteerProjectProp
           project.active = data.active;
             // change project active state here
         } else{
-            console.log("error while toggling project active status : ", error)
+            console.log("error while toggling project active status : ", statusCode, error)
             notify.error(); // shows error notification
         }
     }).catch((error) => {
