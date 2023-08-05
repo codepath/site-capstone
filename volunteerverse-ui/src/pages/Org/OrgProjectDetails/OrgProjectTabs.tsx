@@ -1,4 +1,4 @@
-import { createStyles, useMantineTheme } from "@mantine/styles";
+import { useMantineTheme } from "@mantine/styles";
 
 import { Tabs, Title } from '@mantine/core';
 import { useMediaQuery } from "@mantine/hooks";
@@ -31,7 +31,7 @@ function OrgProjectDetailsTabs() {
         console.log("Error occured while trying to find volunteers count: ", {error, statusCode})
       }
     }).catch((error) => {
-      console.log("a very unexpected error has occured while trying to find volunteers count")
+      console.log("a very unexpected error has occured while trying to find volunteers count", error)
     })
   }, [user])
 

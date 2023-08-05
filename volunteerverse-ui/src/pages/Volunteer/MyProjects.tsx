@@ -122,7 +122,7 @@ function MyProjects() {
         </Group>
       </Paper>
       <Container px={isMobile ? 0 : "md"} mt={"xl"} ml={"auto"} mr={"auto"} maw={ isMobile ? "100vw" :  "60vw"}>
-          {myProjects?.length ? myProjects?.map((project: VolunteerProjectProp, index: number) => {
+          {myProjects?.length ? myProjects?.map((project: VolunteerProjectProp) => {
             console.log("maping projects: ", project)
             return (
               <SlimProjectCard key={`${project.createdAt}`} {...project} />

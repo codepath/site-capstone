@@ -4,7 +4,7 @@ import {
   Image,
   Paper, Skeleton,
   Text,
-  Title, useMantineTheme
+  Title
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useContext, useEffect, useState } from 'react';
@@ -40,7 +40,6 @@ function SlimProjectCard({project, handleDelete}: {project: VolunteerProjectProp
     console.log("toggling projects status state")
 }
 
-  const theme = useMantineTheme();
   return (
     <Paper sx={(theme) => ({
       "&:hover": { "transform": "scale(1)", boxShadow: `${theme.shadows.xl}` },
@@ -77,13 +76,13 @@ function OrgHome() {
     }
   });
   const deleteProject = ({ projectId: deleteProjectId } : {projectId :  number}) => {
-    apiClient.deleteProject({projectId :  deleteProjectId}).then(({success, data, statusCode, error}) => {
+    apiClient.deleteProject({projectId :  deleteProjectId}).then(({success, statusCode, error}) => {
         if (success) {
           setPostedProjects((initialProject) => initialProject?.filter((project) =>  project.id !== deleteProjectId))
           console.log("deleting project")
             // change project active state here
         } else{
-            console.log("error while toggling project active status : ", error)
+            console.log("error while toggling project active status : ",statusCode, error)
             notify.error(); // shows error notification
         }
     }).catch((error) => {
@@ -95,7 +94,7 @@ function OrgHome() {
   const searchPostedProjects = () => {
     console.log("gettting org projects here");
     if (user) {
-      apiClient.fetchProjects(user.userType, queryForm.values).then(({ success, statusCode, data, error }: ApiResponseProp) => {
+      apiClient.fetchProjects(user.userType).then(({ success, statusCode, data, error }: ApiResponseProp) => {
         if (success) {
           console.log("successfully receieved posted projects", data);
           setPostedProjects(data.orgProjects)
@@ -103,7 +102,7 @@ function OrgHome() {
           // maybe set state for an error message
           
           setPostedProjects([])
-          console.log("an error occcured sending a request to fetch all projects", error);
+          console.log("an error occcured sending a request to fetch all projects", statusCode, error);
         }
       }).catch((error) => {
         console.log("something very unexpected has occured while trying to search for project from an organization", error)
@@ -128,9 +127,9 @@ function OrgHome() {
       <Container ml={"auto"} mr={"auto"} maw={1000}>
         <Skeleton visible={postedProjects === undefined}>
           <Flex mt={"xl"} gap={"xl"} direction={"column"}>
-            {postedProjects?.length ? postedProjects?.map((project: VolunteerProjectProp, index: number) => {
+            {postedProjects?.length ? postedProjects?.map((project: VolunteerProjectProp) => {
               return (
-                <SlimProjectCard project={project} handleDelete={deleteProject} key={`${project.createdAt}`} />
+                <SlimProjectCard project={project} handleDelete={deleteProject} key={`${project.id}`} />
                 )
             }) :
               <NoneFound title='Post a project to see it here!' />
