@@ -24,7 +24,7 @@ function VolunteerHome() {
 
   const fetchProjects = async () => {
     // fetches project using the query form 
-    apiClient.fetchProjects("volunteer", queryForm.values).then(({ data, success, statusCode, error }: ApiResponseProp) => {
+    apiClient.fetchProjects("volunteer").then(({ data, success, statusCode, error }: ApiResponseProp) => {
       if (success) {
         console.log("fetched recommended projects for volunteer successfully: ", data)
         setVolunteerProjects(data);
