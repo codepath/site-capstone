@@ -4,7 +4,8 @@ import {
   Image,
   Paper, Skeleton,
   Text,
-  Title
+  Title,
+  useMantineTheme
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useContext, useEffect, useState } from 'react';
@@ -17,28 +18,91 @@ import { ApiResponseProp, apiClient } from '../../../services/ApiClient';
 import { fetchPrettyTime, notify } from '../../../utility/utility';
 import NotAuthorized from '../../NotAuthorized';
 import ProjectOptionsMenu from './ProjectOptionsMenu';
+import { useMediaQuery } from '@mantine/hooks';
+import { IconHelp } from '@tabler/icons-react';
 
-function SlimProjectCard({project, handleDelete}: {project: VolunteerProjectProp, handleDelete: ({ projectId } : {projectId :  number}) => void}) {
+function SlimProjectCard({ project, handleDelete }: { project: VolunteerProjectProp, handleDelete: ({ projectId }: { projectId: number }) => void }) {
+  const theme = useMantineTheme();
+  const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
+  const [projectStatus, setProjectStatus] = useState(project.active)
+  const toggleProjectActiveStatus = () => {
+    /**
+     * @description: toggles status state of a project between on and off
+     */
+    apiClient.toggleProjectStatus({ projectId: project.id }).then(({ success, data, statusCode, error }) => {
+      if (success) {
+        setProjectStatus(data.active)
+        project.active = data.active;
+        // change project active state here
+      } else {
+        console.log("error while toggling project active status : ", statusCode, error)
+        notify.error(); // shows error notification
+      }
+    }).catch((error) => {
+      console.log("a really unexpected error occured: ", error)
+    })
+    console.log("toggling projects status state")
+  }
+
+  return (
+    
+    <Paper
+    w={"100%"}
+    sx={(theme) => ({
+      "&:hover": { "transform": "scale(1)", boxShadow: `${theme.shadows.xl}` },
+      transform: "scale(0.99)",
+      transition: "all 300ms ease-in-out"
+    })} m={ isMobile ? 0 : "md"} p={isMobile ? 0 :"lg"} shadow='md' radius={"xl"} h={ isMobile ? 500 : 300}>
+      <Flex p={isMobile ? 0 : ""} w={"100%" } h={"100%"} direction={isMobile ? "column" : "row"} gap={"lg"}>
+
+        <Image radius={"md"} w={300} height={230} fit='cover' withPlaceholder src={project.imageUrl || project.orgLogoUrl} />
+        <Flex w={"100%"} h={"100%"} direction={"column"} align={"center"}>
+          <Group mb={"sm"} w={"100%"} position='center'>
+            <ProjectOptionsMenu isActive={projectStatus} projectId={project.id} handleArchiveToggle={toggleProjectActiveStatus} handleDelete={handleDelete} />
+          </Group>
+          <Title order={2}> <Text sx={{ transition: "all 200ms ease-in-out" }} to={`/projects/${project.id}`} component={Link}>{project.title}</Text></Title>
+         <Group mt={isMobile ? "sm" : "xs"}>
+          <Badge
+              variant='light'
+              size={isMobile ? "md" : 'lg'}
+              color={!project.active ? `orange.6` : `green.6`}>
+              {project.active ? "active" : "archived"}
+            </Badge>
+          <IconHelp to={"/"} color='gray'/>
+         </Group>
+          <Text 
+          sx={() => ({justifySelf : "end"})}
+          size={"sm"}
+          mt={"auto"}
+          color='dimmed'>Posted: {project.createdAt ? fetchPrettyTime(project.createdAt) : "N/A"}</Text>
+        </Flex>
+        {/* </Flex> */}
+      </Flex>
+    </Paper>
+  )
+}
+
+function SlimProjectCard2({ project, handleDelete }: { project: VolunteerProjectProp, handleDelete: ({ projectId }: { projectId: number }) => void }) {
   // use for org projects too
   const [projectStatus, setProjectStatus] = useState(project.active)
   const toggleProjectActiveStatus = () => {
     /**
      * @description: toggles status state of a project between on and off
      */
-    apiClient.toggleProjectStatus({projectId :  project.id}).then(({success, data, statusCode, error}) => {
-        if (success) {
-          setProjectStatus(data.active)
-          project.active = data.active;
-            // change project active state here
-        } else{
-            console.log("error while toggling project active status : ", statusCode, error)
-            notify.error(); // shows error notification
-        }
+    apiClient.toggleProjectStatus({ projectId: project.id }).then(({ success, data, statusCode, error }) => {
+      if (success) {
+        setProjectStatus(data.active)
+        project.active = data.active;
+        // change project active state here
+      } else {
+        console.log("error while toggling project active status : ", statusCode, error)
+        notify.error(); // shows error notification
+      }
     }).catch((error) => {
-        console.log("a really unexpected error occured: ", error)
+      console.log("a really unexpected error occured: ", error)
     })
     console.log("toggling projects status state")
-}
+  }
 
   return (
     <Paper sx={(theme) => ({
@@ -123,10 +187,10 @@ function OrgHome() {
           </Group>
         </Skeleton>
       </Paper>
-      <Button onClick={() => navigate("/projects/create")} variant='filled' radius={"xl"} size={"xl"}>Create Project</Button>
+      <Button my={"xl"} onClick={() => navigate("/projects/create")} variant='outline' radius={"xl"} size={"xl"}>Create Project</Button>
       <Container ml={"auto"} mr={"auto"} maw={1000}>
         <Skeleton visible={postedProjects === undefined}>
-          <Flex mt={"xl"} gap={"xl"} direction={"column"}>
+          <Flex gap={"xl"} direction={"column"}>
             {postedProjects?.length ? postedProjects?.map((project: VolunteerProjectProp) => {
               return (
                 <SlimProjectCard project={project} handleDelete={deleteProject} key={`${project.id}`} />

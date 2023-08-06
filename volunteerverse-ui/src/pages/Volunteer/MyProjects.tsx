@@ -47,23 +47,22 @@ function SlimProjectCard(project: VolunteerProjectProp) {
       transform: "scale(0.99)",
       transition: "all 300ms ease-in-out"
     })} m={ isMobile ? 0 : "md"} p={isMobile ? 0 :"lg"} shadow='md' radius={"xl"} h={ isMobile ? 500 : 300}>
-      <Flex p={isMobile ? 0 : ""} w={"100%" } h={"100%"} direction={isMobile ? "column" : "row"} gap={"lg"}>
+      <Flex p={isMobile ? 0 : ""} w={"100%"} h={"100%"} direction={isMobile ? "column" : "row"} gap={"lg"}>
         <Image radius={"md"} w={300} height={230} fit='cover' withPlaceholder src={project.imageUrl || project.orgLogoUrl} />
         <Flex w={"100%"} h={"100%"} direction={"column"} align={"center"}>
           <Group mb={"sm"} w={"100%"} position='center'>
-          <Badge
-            maw={isMobile ? 100 : 150}
-            variant='light'
-            size={isMobile ? "md" : 'lg'}
-            color={fetchCorrectStatusOption("orange", "red", "green")}>
-            {fetchCorrectStatusOption("Pending Approval", "Rejected", "Approved")}
-          </Badge>
-          <IconHelp to={"/"} color='gray'/>
+            <Badge
+              variant='light'
+              size={isMobile ? "md" : 'lg'}
+              color={fetchCorrectStatusOption("orange", "red", "green")}>
+              {fetchCorrectStatusOption("Pending Approval", "Rejected", "Approved")}
+            </Badge>
+            <IconHelp to={"/"} color='gray' />
           </Group>
           <Title order={2}> <Text sx={{ transition: "all 200ms ease-in-out" }} to={`/projects/${project.id}`} component={Link}>{project.title}</Text></Title>
-          <Text mt={ isMobile ? 0 : "xs"}>By: {<Text to={project.orgUrl} component={Link}>{project.orgName}</Text>}</Text>
-          <Text 
-          sx={() => ({justifySelf : "end"})}
+          <Text mt={isMobile ? 0 : "xs"}>By: {project.orgUrl ? <Text to={project.orgUrl} component={Link}>{project.orgName}</Text> : `${project.orgName}`}</Text>
+          <Text
+            sx={() => ({justifySelf : "end"})}
           size={"sm"}
           mt={"auto"}
           color='dimmed'>Posted: {project.createdAt ? fetchPrettyTime(project.createdAt) : "N/A"}</Text>
@@ -134,8 +133,5 @@ function MyProjects() {
     </>
   );
 }
-
-
-
 
 export default MyProjects

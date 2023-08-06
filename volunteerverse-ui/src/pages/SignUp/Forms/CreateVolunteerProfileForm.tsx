@@ -73,7 +73,7 @@ function CreateVolunteerProfileForm({ form }: { form: UseFormReturnType<Voluntee
                 size={isMobile ? "sm" : "md"}
                 label="Short Bio"
                 placeholder={`Hi my name is ${firstName} ${lastName} and...`}
-                description="50-300 characters. This is be shown to organizations" />
+                description={ <><Text>50-300 characters</Text><Text>Count: {form.values.bio.length}</Text></>}/>
         </Container>
     )
 }
