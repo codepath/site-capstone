@@ -10,7 +10,8 @@ import {
   TextInput,
   Textarea, Title,
   createStyles,
-  useMantineTheme
+  useMantineTheme,
+  Text,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useMediaQuery } from '@mantine/hooks';
@@ -156,7 +157,7 @@ function CreateProject() {
               withAsterisk
               label="Project Title"
               placeholder="Full stack developer needed for..."
-              description="Max: 50 Characters"
+              description={<><Text>Max: 50 Characters</Text> <Text color='black'>Count: {form.values.title.length}</Text></>}
               {...form.getInputProps('title')}
               mb={"md"} />
             <NumberInput
@@ -187,7 +188,7 @@ function CreateProject() {
               withAsterisk
               label="Project Description:"
               placeholder={`${user?.userType === "organization" ? user.orgName : ""} is committed to making a positive impact in the world by...`}
-              description=" 50-400 characters long"
+              description={<><Text>50-400 characters long</Text> <Text color='black'>Count: {form.values.desc.length}</Text></>}
               minRows={5}
               {...form.getInputProps('desc')}
             />

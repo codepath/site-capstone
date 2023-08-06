@@ -97,7 +97,7 @@ function CreateOrgProfileForm({ form }: { form: UseFormReturnType<OrgFormValues>
           withAsterisk
           label="Brief Description:"
           placeholder="Brief Description"
-          description={ <><Text>100-300 characters</Text><Text>Count: {form.values.orgDescription.length}</Text></>}
+          description={ <><Text>100-300 characters</Text><Text color='black'>Count: {form.values.orgDescription.length}</Text></>}
           minRows={5}
           mb={"md"}
           {...form.getInputProps('orgDescription')}
