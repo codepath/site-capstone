@@ -4,7 +4,6 @@ const { addHotel, deleteHotel } = require('./hotels');
 const { addActivity, deleteActivity } = require('./activities');
 const { v4: uuidv4 } = require('uuid');
 const { addFlight } = require("./flights")
-const jwt = require('jsonwebtoken'); // Add this line
 
 class User {
   //User Functions
