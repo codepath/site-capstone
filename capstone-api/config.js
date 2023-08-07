@@ -11,6 +11,7 @@ function getDatabaseUri() {
     const dbName = process.env.DATABASE_NAME || "nomadia";
 
     return process.env.DATABASE_URL || `postgresql://${dbUser}:${dbPass}@${dbHost}:${dbPort}/${dbName}`;
+
 //     `postgresql://${dbUser}:${dbPass}@${dbHost}:${dbPort}/${dbName}`
 }
 const BCRYPT_WORK_FACTOR = 13
