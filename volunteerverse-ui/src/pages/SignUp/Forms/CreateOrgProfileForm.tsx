@@ -1,11 +1,16 @@
 import {
-  TextInput,
-  Image, Textarea, Text, Button,
-  Container, Title, Flex,createStyles,
-  MultiSelect,
-  FileButton,
-  Divider,
   Avatar,
+  Button,
+  Container,
+  Divider,
+  FileButton,
+  Flex,
+  MultiSelect,
+  Text,
+  TextInput,
+  Textarea,
+  Title,
+  createStyles
 } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 import { OrgFormValues } from '../../../props/forms';
@@ -92,7 +97,7 @@ function CreateOrgProfileForm({ form }: { form: UseFormReturnType<OrgFormValues>
           withAsterisk
           label="Brief Description:"
           placeholder="Brief Description"
-          description="100-500 characters"
+          description={ <><Text>100-300 characters</Text><Text color='black'>Count: {form.values.orgDescription.length}</Text></>}
           minRows={5}
           mb={"md"}
           {...form.getInputProps('orgDescription')}

@@ -1,7 +1,10 @@
-import { Container, Flex, Image, Text, Title, createStyles, Button} from '@mantine/core'
-import OrgImage from "../../assets/team.png";
+import {
+    Button,
+    Container, Flex, Image,
+    Title, createStyles
+} from '@mantine/core';
 import StudentImage from "../../assets/floatingStudent.png";
-import React from 'react'
+import OrgImage from "../../assets/team.png";
 
 const useStyles = createStyles((theme) => ({ 
     container : {

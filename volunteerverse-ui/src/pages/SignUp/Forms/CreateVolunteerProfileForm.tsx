@@ -1,14 +1,8 @@
+import { Avatar, Button, Container, FileButton, Flex, MultiSelect, Text, Textarea, Title } from "@mantine/core";
+import { UseFormReturnType } from "@mantine/form";
+import { useMediaQuery } from "@mantine/hooks";
 import { createStyles, useMantineTheme } from "@mantine/styles";
 import { VolunteerFormValues } from "../../../props/forms";
-import { UseFormReturnType } from "@mantine/form";
-import { Avatar, FileButton, MultiSelect, Text } from "@mantine/core";
-import {
-    Button, Container, Flex,
-    Image, Textarea, Title
-} from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
-import { useEffect, useState } from "react";
-import { apiClient } from "../../../services/ApiClient";
 import { useSkills } from "../../../services/hooks/useSkills";
 const useStyles = createStyles((theme) => ({
     title: {
@@ -79,7 +73,7 @@ function CreateVolunteerProfileForm({ form }: { form: UseFormReturnType<Voluntee
                 size={isMobile ? "sm" : "md"}
                 label="Short Bio"
                 placeholder={`Hi my name is ${firstName} ${lastName} and...`}
-                description="50-300 characters. This is be shown to organizations" />
+                description={ <><Text>50-300 characters</Text><Text color="black">Count: {form.values.bio.length}</Text></>}/>
         </Container>
     )
 }

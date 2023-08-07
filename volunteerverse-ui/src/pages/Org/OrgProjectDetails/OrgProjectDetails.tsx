@@ -1,21 +1,23 @@
-import { useContext, useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
-import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import {
-  Badge, Container, Divider,
-  Group, Image, Title, Text,
-  useMantineTheme,
-  createStyles,
+  Badge,
+  Box,
+  Button,
+  Container, Divider,
+  Flex,
+  Group, Image,
   LoadingOverlay,
   Skeleton,
-  Button,
-  Flex,
-  Box
+  Text,
+  Title,
+  createStyles,
+  useMantineTheme
 } from "@mantine/core";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import GoBackButton from "../../../components/GoBackButton";
 import { VolunteerProjectProp } from "../../../props/projects";
 import { ApiResponseProp, apiClient } from "../../../services/ApiClient";
-import GoBackButton from "../../../components/GoBackButton";
-import { projectDetailsData } from "../../Volunteer/Home/data";
 
 
 
@@ -77,7 +79,7 @@ function OrgProjectDetails() {
     if (projectId) {
       // CHANGE THIS
       apiClient.toggleProjectInterestByUser(projectId, "add").then((response : ApiResponseProp) => {
-        const { data, success, statusCode, error } = response;
+        const {success, statusCode, error } = response;
         console.log("updating interested from ", project?.interested, " to ", !project?.interested)
         if (success) {
           console.log("toggling user interest");

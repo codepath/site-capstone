@@ -1,7 +1,8 @@
-import { 
-    Container, Flex, PasswordInput, 
-    TextInput, Title, createStyles 
-} from '@mantine/core'
+import {
+    Container,
+    PasswordInput,
+    TextInput, Title, createStyles
+} from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 import { OrgFormValues } from '../../../props/forms';
 

@@ -1,19 +1,27 @@
 import {
-    Avatar, Badge, Table,
-    Group, Text, ScrollArea, Paper,
-    useMantineTheme, Button, Flex, CloseButton,
-    ActionIcon, Modal, Container
+    ActionIcon,
+    Avatar, Badge,
+    Button,
+    CloseButton,
+    Container,
+    Flex,
+    Group,
+    Modal,
+    Paper,
+    ScrollArea,
+    Table,
+    Text,
+    useMantineTheme
 } from '@mantine/core';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
-import { VolunteerUserProp } from '../../../props/users';
-import { IconCheck, IconCircleLetterG, IconMail, IconMoodNeutralFilled } from '@tabler/icons-react';
+import { IconCheck, IconMail } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
-import { ApiResponseProp, apiClient } from '../../../services/ApiClient';
 import { useParams } from 'react-router-dom';
-import { notifications } from '@mantine/notifications';
-import VolunteerProfileCard from './VolunteerProfileCard';
 import NoneFound from '../../../components/NoneFound';
+import { VolunteerUserProp } from '../../../props/users';
+import { ApiResponseProp, apiClient } from '../../../services/ApiClient';
 import { notify } from '../../../utility/utility';
+import VolunteerProfileCard from './VolunteerProfileCard';
 
 export function VolunteersTable() {
     const { projectId } = useParams();
@@ -45,7 +53,7 @@ export function VolunteersTable() {
             console.log("Error occured while trying to find volunteers: ", {error, statusCode})
           }
         }).catch((error) => {
-          console.log("a very unexpected error has occured")
+          console.log("a very unexpected error has occured", error)
         })
       }, [])
 
@@ -67,7 +75,7 @@ export function VolunteersTable() {
                 } else {
                     // show error notification
                     notify.error();
-                    console.log("unable to toggle volunteer approval: ", error);
+                    console.log("unable to toggle volunteer approval: ", statusCode, error);
                 }
                 closeApprovedButtonLoader();
                 closeRejectedButtonLoader();
