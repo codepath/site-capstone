@@ -82,7 +82,7 @@ class Hotels {
         filter_by_currency: 'USD',
         //Keeping it at USD
 
-        dest_id: 20088325, //'-553173'
+        dest_id: '20088325', //'-553173'
         //Once the user searches the hotel by location
         //the dest_id field can be updated 
 
@@ -132,7 +132,7 @@ class Hotels {
       return response.data;
     } catch (error) {
       //console.error(error);
-      console.log("destination ID is:", credentials.dest_Id)
+      // console.log("destination ID is:", credentials.dest_Id)
       throw new BadRequestError("Failed to fetch Search Hotels");
     }
 
