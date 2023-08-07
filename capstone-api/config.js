@@ -10,7 +10,8 @@ function getDatabaseUri() {
     const dbPort = process.env.DATABASE_PORT || 5432;
     const dbName = process.env.DATABASE_NAME || "nomadia";
 
-    return  `postgresql://${dbUser}:${dbPass}@${dbHost}:${dbPort}/${dbName}`;
+    return process.env.DATABASE_URL || `postgresql://${dbUser}:${dbPass}@${dbHost}:${dbPort}/${dbName}`;
+
 //     `postgresql://${dbUser}:${dbPass}@${dbHost}:${dbPort}/${dbName}`
 }
 const BCRYPT_WORK_FACTOR = 13

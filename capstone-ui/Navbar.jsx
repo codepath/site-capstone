@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:3002/api';
+const BASE_URL = 'https://nomadia.onrender.com/api';
 
 export default function Navbar({ authenticated, setAuthenticated }) {
   const [registerOpen, setRegisterOpen] = useState(false);
