@@ -10,7 +10,7 @@ function getDatabaseUri() {
     const dbPort = process.env.DATABASE_PORT || 5432;
     const dbName = process.env.DATABASE_NAME || "nomadia";
 
-    return process.env.DATABASE_URL || postgres://codepath_capstone_user:M6rSN9xkOR3v5dazS7k4JiQT0bGDMgnG@dpg-cislcdtph6et1s8irid0-a/codepath_capstone?ssl=true;
+    return process.env.DATABASE_URL || "postgres://codepath_capstone_user:M6rSN9xkOR3v5dazS7k4JiQT0bGDMgnG@dpg-cislcdtph6et1s8irid0-a/codepath_capstone?ssl=true";
 
 //     `postgresql://${dbUser}:${dbPass}@${dbHost}:${dbPort}/${dbName}`
 }
