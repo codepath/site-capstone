@@ -55,8 +55,6 @@ export class Volunteer {
 
 
 
-  //interface??? could be useful to define types
-
   /**
    * Register volunteer with their information in the database
    * @param volunteerInfo

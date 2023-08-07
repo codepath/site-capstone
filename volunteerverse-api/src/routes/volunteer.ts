@@ -43,6 +43,7 @@ volunteerRoutes.put("/interest/:projectId", async function (req, res, next) {
 /** Route that returns the project feed for a volunteer */
 volunteerRoutes.get("/projects", async function (req, res, next) {
   const { email } = res.locals.user;
+  console.log('LOOK AT THIS',res.locals.user)
   try{
     const result = await Volunteer.getVolunteersProjectFeed(email);
     res.status(200).json(result)

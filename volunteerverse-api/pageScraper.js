@@ -111,22 +111,6 @@ const scraperObject = {
 
         resolve(dataObj);
 
-        // const insertQuery = `INSERT INTO projects (org_name, org_website, project_name, project_description, image_url) VALUES ($1, $2, $3, $4, $5)`;
-        // const values = [
-        //   dataObj.projectTitle,
-        //   dataObj.website,
-        //   dataObj.projectTitle,
-        //   dataObj.action,
-        //   dataObj.image,
-        // ];
-
-        // try {
-        //   await db.query(insertQuery, values);
-        //   console.log("Data inserted successfully.");
-        // } catch (error) {
-        //   console.error("Error inserting data:", error);
-        // }
-
         await newPage.close();
       });
 
