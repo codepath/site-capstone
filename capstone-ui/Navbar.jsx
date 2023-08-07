@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import axios from 'axios';
 
-const BASE_URL = 'https://nomadia.onrender.com/api';
+const BASE_URL = 'https://nomadiabe.onrender.com/api';
 
 export default function Navbar({ authenticated, setAuthenticated }) {
   const [registerOpen, setRegisterOpen] = useState(false);
@@ -35,7 +35,7 @@ export default function Navbar({ authenticated, setAuthenticated }) {
       phone_number: "1111111"
     };
     try {
-      const response = await axios.post(`${BASE_URL}/register`, userData);
+      const response = await axios.post('https://nomadiabe.onrender.com/api/register', userData);
       // Assuming the response contains a user object upon successful registration
       const user = response.data;
 
