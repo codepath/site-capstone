@@ -58,7 +58,7 @@ class Flights {
           if (offers.length > 0 || Date.now() - startTime > 30000) {
             break;
           }
-          await new Promise(r => setTimeout(r, 1000));
+          await new Promise(r => setTimeout(r, 2000));
         }
         offers = offers.filter(offer => offer.slices.every(slice => slice.segments.length === 1));
 

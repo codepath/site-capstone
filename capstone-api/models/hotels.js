@@ -26,7 +26,7 @@ class Hotels {
         locale: 'en-us'
     },
     headers: {
-        'X-RapidAPI-Key': rapidapikey,
+        'X-RapidAPI-Key': "54ba29470amsh05ef8fbb5770f93p1e350djsnc7c4dbf60598",
         'X-RapidAPI-Host': rapidapihost
     }
     };
@@ -82,7 +82,7 @@ class Hotels {
         filter_by_currency: 'USD',
         //Keeping it at USD
 
-        dest_id: credentials.dest_Id, //'-553173'
+        dest_id: 20088325, //'-553173'
         //Once the user searches the hotel by location
         //the dest_id field can be updated 
 
@@ -121,7 +121,7 @@ class Hotels {
         // Default: 0
       },
       headers: {
-        'X-RapidAPI-Key': rapidapikey,
+        'X-RapidAPI-Key': "54ba29470amsh05ef8fbb5770f93p1e350djsnc7c4dbf60598",
         'X-RapidAPI-Host': rapidapihost
       }
     };
@@ -157,7 +157,7 @@ class Hotels {
         locale: 'en-us'
       },
       headers: {
-        'X-RapidAPI-Key': rapidapikey,
+        'X-RapidAPI-Key': "54ba29470amsh05ef8fbb5770f93p1e350djsnc7c4dbf60598",
         'X-RapidAPI-Host': rapidapihost
       }
     };

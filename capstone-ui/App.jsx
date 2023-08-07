@@ -14,6 +14,7 @@ import Itinerary from './AccountInfo/Itinerary'
 import Favorites from './AccountInfo/Favorites'
 import Booking from './AccountInfo/Booking'
 import Checkout from './AccountInfo/Checkout'
+import FlightsPage from './BookingPages/FlightsPage';
 
 
 const theme = createTheme({
@@ -43,7 +44,8 @@ function App() {
     const [authenticated, setAuthenticated] = useState(false)
 
     const [itinerary, setItinerary] = useState({'Activities' : [],
-                                                'Hotel' : null})
+                                                'Hotel' : null,
+                                            'flight': null})
     const [activities, setActivities] = useState ({})
 
     const [cost, setCost] = useState(0.00)
@@ -119,6 +121,10 @@ function App() {
                                     cost={cost} setCost={setCost}
                             />} 
 
+                        />
+                          <Route path="/Flights" element={
+                            <FlightsPage itinerary={itinerary} setItinerary={setItinerary} destination={destination} arrivalDate={arrivalDate} departureDate={departureDate} 
+                            travelers={travelers}/>} 
                         />
                          <Route path="/favorites" element={
                             <Favorites/>} 

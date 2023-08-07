@@ -56,39 +56,43 @@ export default function Homepage({ filterFlights, setFilterFlights,
         return number.toString().padStart(2, "0")
       }
 
-    async function handleSubmit() {
+      async function handleSubmit() {
         if (submit && validDates !== false && validDates !== null) {
+            console.log("searching?")
             const response = await axios.post('https://nomadia.onrender.com/api/hotels-location', {
                 location_name: destination,
-            })
-
-            setDestID(response.data)
-          
-            if (filterHotels) navigate('/hotels')
-            else if (filterActivities) navigate('/activities')
-            else navigate('/flights')
+            });
+            console.log("finsihed searching")
+    
+            setDestID(response.data);
+    
+            if (filterHotels) navigate('/hotels');
+            else if (filterActivities) navigate('/activities');
         }
     }
 
     useEffect(() => {
-        console.log(validateArrival.arrive)
-        console.log(validateDeparture.depart)
         if (validateArrival.arrive >= validateDeparture.depart) {
-            setValidDates(false)
+            setValidDates(false);
+        } else {
+            setValidDates(true);
         }
-        else setValidDates(true)
-    }, [validateArrival, validateDeparture])
-
-        
+    }, [validateArrival, validateDeparture]);
+    
     useEffect(() => {
         if (
-            (travelers === null || travelers === "")
-            || (arrivalDate === null || arrivalDate === "") 
-            || (departureDate === null || departureDate === "") 
-            || (destination === null || destination === "") ||
-            validateArrival.arrive >= validateDeparture.depart) setSubmit(false)
-        else setSubmit(true) 
-    }, [travelers, arrivalDate, departureDate, destination])
+            (travelers === null || travelers === "") ||
+            (arrivalDate === null || arrivalDate === "") ||
+            (departureDate === null || departureDate === "") ||
+            (destination === null || destination === "") ||
+            validateArrival.arrive >= validateDeparture.depart
+        ) {
+            setSubmit(false);
+        } else {
+            setSubmit(true);
+        }
+    }, [travelers, arrivalDate, departureDate, destination, validateArrival, validateDeparture, destID]);
+    
     
     const homepage_america = {
         "Toronto":`${toronto}`,
