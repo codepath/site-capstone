@@ -61,7 +61,7 @@ async function insertData() {
 async function insertProjectTags(name, project_id, tag) {
   try {
     const query = `INSERT into project_tags(project_name, tag_name, project_id) VALUES ($1, $2, $3) RETURNING *`;
-    await db.query(query, [name, tag, project_id]);
+    await db.query(query, [name, tag.toLowerCase(), project_id]);
   } catch (error) {}
 }
 

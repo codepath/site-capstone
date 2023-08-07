@@ -84,7 +84,7 @@ export class Projects {
    */
   static async insertTag(id: number, tag: string) {
     const query = `INSERT into project_tags(project_id, tag_name) VALUES ($1,$2) RETURNING *`;
-    await db.query(query, [id, tag]);
+    await db.query(query, [id, tag.toLowerCase()]);
   }
 
   /**
@@ -179,11 +179,13 @@ export class Projects {
             id,
             email
           );
-          projectCard["external"] = external;
           projectCard["orgPublicEmail"] = public_email;
           projectCard["orgPublicNumber"] = public_number;
         }
         return projectCard;
+      }
+      else if (external){
+        return result.rows[0]
       }
     }
     throw new BadRequestError(
