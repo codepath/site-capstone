@@ -298,11 +298,16 @@ export class Volunteer {
     await Promise.all(
       volunteerSkills.map(async (tag: string) => {
         const tagProjects = await Projects.getProjectsWithTag(tag, email);
+        console.log(tagProjects)
         tagProjects.forEach((project) => {
           projects[project.id] = project; // updating object with new unqiue project
         });
       })
     )
+
+    console.log(volunteerSkills)
+    console.log(await Projects.getProjectsWithTag('html', "melyssa@gmail.com"))
+    
 
     // add remaing projects to the end 
     const remainingProjects = await Projects.getAllProjects()

@@ -13,10 +13,11 @@ const scraperObject = {
     // load the page
     for (let i = 0; i <= 5; i++) {
       console.log(i);
+      await page.waitForSelector("#MainController > div.SectionBody > div.FindProjectsController-root.container > div > div.ProjectCardContainer.col > div:nth-child(4) > div > button");
       await page.click(
         "#MainController > div.SectionBody > div.FindProjectsController-root.container > div > div.ProjectCardContainer.col > div:nth-child(4) > div > button"
       );
-      await page.waitForTimeout(2000);
+      await page.waitForTimeout(5000);
     }
 
     // list of the urls of each of the project cards
@@ -36,6 +37,8 @@ const scraperObject = {
         let dataObj = {}; // object that will hold the information about a single project
         let newPage = await browser.newPage();
         await newPage.goto(link);
+
+        dataObj["externalLink"] = link;
 
         dataObj["projectTitle"] = await scrapeDataWithSelector(
           newPage,
