@@ -4,6 +4,7 @@ const { addHotel, deleteHotel } = require('./hotels');
 const { addActivity, deleteActivity } = require('./activities');
 const { v4: uuidv4 } = require('uuid');
 const { addFlight } = require("./flights")
+const jwt = require('jsonwebtoken'); // Add this line
 
 class User {
   //User Functions
@@ -19,6 +20,22 @@ class User {
     const result = await pool.query(query, [id]);
     const user = result.rows[0];
     return user;
+  }
+
+  static async registerUser(name, email, hashedPassword, phone_number) {
+    const query = `
+      INSERT INTO users (name, email, password, phone_number)
+      VALUES ($1, $2, $3, $4)
+      RETURNING id, name, email, phone_number;
+    `;
+    const result = await pool.query(query, [name, email, hashedPassword, phone_number]);
+    return result.rows[0];
+  }
+
+  static async getUserByEmail(email) {
+    const query = `SELECT * FROM users WHERE email = $1`;
+    const result = await pool.query(query, [email]);
+    return result.rows[0];
   }
 
   static async updateUser(id, updates) {
