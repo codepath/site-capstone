@@ -4,15 +4,14 @@ const secretKey = `${process.env.SECRET_KEY}`;
 const PORT = process.env.PORT ? Number(process.env.PORT) : 3002;
 
 function getDatabaseUri() {
-    const dbUser = process.env.DATABASE_USER || "leeab"; //change this to ur name when you run psql 
+    const dbUser = process.env.DATABASE_USER || "codepath_capstone_user"; //change this to ur name when you run psql 
     const dbPass = process.env.DATABASE_PASS ? encodeURIComponent(process.env.DATABASE_PASS) : "";
-    const dbHost = process.env.DATABASE_HOST || "localhost";
+    const dbHost = process.env.DATABASE_HOST || "dpg-cislcdtph6et1s8irid0-a.oregon-postgres.render.com";
     const dbPort = process.env.DATABASE_PORT || 5432;
-    const dbName = process.env.DATABASE_NAME || "nomadia";
+    const dbName = process.env.DATABASE_NAME || "codepath_capstone";
 
-    return process.env.DATABASE_URL || "postgres://codepath_capstone_user:M6rSN9xkOR3v5dazS7k4JiQT0bGDMgnG@dpg-cislcdtph6et1s8irid0-a/codepath_capstone?ssl=true";
-
-//     `postgresql://${dbUser}:${dbPass}@${dbHost}:${dbPort}/${dbName}`
+    return process.env.DATABASE_URL || `postgresql://${dbUser}:${dbPass}@${dbHost}:${dbPort}/${dbName}?ssl=true`;
+    //     `postgresql://${dbUser}:${dbPass}@${dbHost}:${dbPort}/${dbName}`
 }
 const BCRYPT_WORK_FACTOR = 13
 // console.log("process.env", Object.keys(process.env));
