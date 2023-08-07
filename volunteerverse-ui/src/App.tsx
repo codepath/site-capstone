@@ -1,20 +1,20 @@
 import { AppShell, MantineProvider } from '@mantine/core';
-import Landing from './pages/Landing/Landing';
-import SignUp from './pages/SignUp/SignUp';
-import Login from './pages/Login';
-import NotFound from './pages/NotFound';
+import { Notifications } from '@mantine/notifications';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import './App.css';
 import Navbar from './components/Navbar';
-import { useAuthentication } from './services/hooks/useAuthentication';
-import MyProjects from './pages/Volunteer/MyProjects';
-import CreateProject from './pages/Org/CreateProject';
-import VolunteerHome from './pages/Volunteer/Home/VolunteerHome';
-import OrgHome from './pages/Org/Home/OrgHome';
-import VolunteerProjectDetails from './pages/Volunteer/VolunteerProjectDetails';
-import OrgProjectDetailsTabs from './pages/Org/OrgProjectDetails/OrgProjectTabs';
 import { AuthenticationContext } from './context/AuthenicationContext';
-import { Notifications } from '@mantine/notifications';
+import Landing from './pages/Landing/Landing';
+import Login from './pages/Login';
+import NotFound from './pages/NotFound';
+import CreateProject from './pages/Org/CreateProject';
+import OrgHome from './pages/Org/Home/OrgHome';
+import OrgProjectDetailsTabs from './pages/Org/OrgProjectDetails/OrgProjectTabs';
+import SignUp from './pages/SignUp/SignUp';
+import VolunteerHome from './pages/Volunteer/Home/VolunteerHome';
+import MyProjects from './pages/Volunteer/MyProjects';
+import VolunteerProjectDetails from './pages/Volunteer/VolunteerProjectDetails';
+import { useAuthentication } from './services/hooks/useAuthentication';
 
 function App() {
   /**
@@ -37,7 +37,7 @@ function App() {
       <AuthenticationContext.Provider value={authProps}>
         <MantineProvider withGlobalStyles withNormalizeCSS theme={{
           primaryColor: "violet",
-          globalStyles: ((theme) => ({
+          globalStyles: (() => ({
             /** incase it's needed */
           }))
         }}>

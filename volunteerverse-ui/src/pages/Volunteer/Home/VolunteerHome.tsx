@@ -1,20 +1,18 @@
 import { Carousel } from "@mantine/carousel";
 import {
-  useMantineTheme,
-  Title, Button
+  Button,
+  Title,
+  useMantineTheme
 } from "@mantine/core";
-import { useDisclosure, useMediaQuery } from "@mantine/hooks";
-import { createStyles } from "@mantine/styles";
-import { projectCardData } from "./data";
-import { useAuthenticationUserProp } from "../../../services/hooks/useAuthentication";
-import ProjectCard, { ProjectCardProps } from "./ProjectCard";
-import { QueryBar, QueryProps } from "../../../components/QueryBar";
 import { useForm } from "@mantine/form";
+import { useMediaQuery } from "@mantine/hooks";
 import { useContext, useEffect, useState } from "react";
-import NotAuthorized from "../../NotAuthorized";
+import NoneFound from "../../../components/NoneFound";
+import { QueryBar, QueryProps } from "../../../components/QueryBar";
 import { AuthenticationContext } from "../../../context/AuthenicationContext";
 import { ApiResponseProp, apiClient } from "../../../services/ApiClient";
-import NoneFound from "../../../components/NoneFound";
+import NotAuthorized from "../../NotAuthorized";
+import ProjectCard, { ProjectCardProps } from "./ProjectCard";
 
 
 function VolunteerHome() {
@@ -26,7 +24,7 @@ function VolunteerHome() {
 
   const fetchProjects = async () => {
     // fetches project using the query form 
-    apiClient.fetchProjects("volunteer", queryForm.values).then(({ data, success, statusCode, error }: ApiResponseProp) => {
+    apiClient.fetchProjects("volunteer").then(({ data, success, statusCode, error }: ApiResponseProp) => {
       if (success) {
         console.log("fetched recommended projects for volunteer successfully: ", data)
         setVolunteerProjects(data);

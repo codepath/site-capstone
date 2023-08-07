@@ -1,8 +1,6 @@
-import { useDisclosure } from '@mantine/hooks';
-import { Modal, Group, Button, Paper, Avatar, Text } from '@mantine/core';
-import { VolunteerUserProp } from '../../../props/users';
-import { useNavigate } from 'react-router';
+import { Avatar, Button, Group, Paper, Text } from '@mantine/core';
 import { IconMail } from '@tabler/icons-react';
+import { VolunteerUserProp } from '../../../props/users';
 
 export default function VolunteerProfileCard({volunteerProfile, closeModal} : {volunteerProfile: VolunteerUserProp, closeModal: () => void}) {
 const { firstName, lastName, imageUrl, bio, approved } = volunteerProfile;
