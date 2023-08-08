@@ -3,10 +3,7 @@ import {
   Button,
   Divider,
   Title,
-
-
   Space,
-
   createStyles,
   useMantineTheme,
   Text,
@@ -102,9 +99,24 @@ function VolunteerHome() {
       console.log("Error in API calls: ", error);
     });
   }
-
-
+  if (query.trim().length > 0 && tags.length > 0){
+    apiClient.filterProjectsSearchFilter(tags,query).then(({ data, success, statusCode, error }: ApiResponseProp) => {
+      if (success) {
+        console.log("fetched filtered projects for volunteer successfully: ", data)
+        setVolunteerProjects(data);
+        // setVolunteerProjects(projectCardData)
+      } else {
+        setVolunteerProjects([]);
+        // display error notification? (stretch)
+        console.log("Unable to fetch volunteer data", `error: ${error} code: ${statusCode}`);
+      }
+    }).catch((error) => {
+      console.log("a very unexpected error has occured: ", error)
+    });
   }
+
+  
+}
 
   
   useEffect(() => {fetchFilteredProjects(queryForm.values.search, queryForm.values.tags)}, [user]) // fetch projects

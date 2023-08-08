@@ -7,7 +7,8 @@
     "start": "ts-node-dev src/app.ts",
     "build": "tsc",
     "lint": "eslint . --ext .ts",
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "populate": "node insertProjectData.js"
   },
   "keywords": [],
   "author": "",
