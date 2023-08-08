@@ -27,8 +27,6 @@ app.use("/volunteer", requireAuthenticatedUser, volunteerRoutes)
 app.use("/organization", requireAuthenticatedUser, organizationRoutes)
 app.use("/project", projectRoutes)
 
-
-
 app.get('/', (req, res) => {
   res.send('Hi World Test!');
 });
