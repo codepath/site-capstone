@@ -275,7 +275,6 @@ export class Projects {
         })
       );
 
-      console.log("projects retrieved: ", Array.from(Object.values(projectResults)))
 
       const activeOnlyProjects = Array.from(
         Object.values(projectResults)

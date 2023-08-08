@@ -42,8 +42,11 @@ function VolunteerHome() {
   }
   useEffect(() => { fetchProjects() }, [user]) // fetch projects
 
-  const fetchFilteredProjects = async (query: string) => {
-  
+  const fetchFilteredProjects = async (query: string, tags: string[]) => {
+    if (query.trim().length == 0 && tags.length == 0){
+      fetchProjects()
+    }
+    if (query.trim().length > 0 && tags.length == 0){
     apiClient.searchProjectsByTitle(query).then(({ data, success, statusCode, error }: ApiResponseProp) => {
       if (success) {
         console.log("fetched filtered projects for volunteer successfully: ", data)
@@ -57,9 +60,43 @@ function VolunteerHome() {
     }).catch((error) => {
       console.log("a very unexpected error has occured: ", error)
     });
-    console.log("fetchingProjects");
   }
-  useEffect(() => {fetchFilteredProjects(queryForm.values.search)}, [user]) // fetch projects
+
+  if (query.trim().length == 0 && tags.length > 0){
+    let projects: ProjectCardProps[] = []
+    const apiCalls = tags.map((tag: string) => {
+      return apiClient.filterProjectsByTag(tag)
+        .then(({ data, success, statusCode, error }: ApiResponseProp) => {
+          if (success) {
+            console.log("Fetched filtered projects for volunteer successfully: ", data);
+            projects.push(...data); // Use spread operator to push array elements
+          } else {
+            // Display error notification? (stretch)
+            console.log("Unable to fetch volunteer data", `error: ${error} code: ${statusCode}`);
+          }
+        })
+        .catch((error) => {
+          console.log("A very unexpected error has occurred: ", error);
+        });
+    });
+    
+    Promise.all(apiCalls)
+    .then(() => {
+      const result = new Set(projects);
+      const uniqueProjects = Array.from(result);
+      console.log("Unique projects: ", uniqueProjects);
+      setVolunteerProjects(uniqueProjects);
+    })
+    .catch((error) => {
+      console.log("Error in API calls: ", error);
+    });
+  }
+
+
+  }
+
+  
+  useEffect(() => {fetchFilteredProjects(queryForm.values.search, queryForm.values.tags)}, [user]) // fetch projects
   
 
 
@@ -88,7 +125,7 @@ function VolunteerHome() {
       <Space h="md" />
       <QueryBar {...queryForm} />
       <Space h="md" />
-      <Button size="lg" radius={"md"} compact onClick={() => fetchFilteredProjects(queryForm.values.search)}>Search Projects</Button>
+      <Button size="lg" radius={"md"} compact onClick={() => fetchFilteredProjects(queryForm.values.search, queryForm.values.tags)}>Search Projects</Button>
       <Space h="md" />
       {
         volunteerProjects && volunteerProjects?.length > 0 ? <Carousel

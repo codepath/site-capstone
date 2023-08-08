@@ -47,7 +47,7 @@ projectRoutes.get(
     const { user_type, email } = res.locals.user;
     const projects = await Projects.getProjectsWithTag(tag, email);
     if (projects) {
-      res.status(201).json({ projects: projects });
+      res.status(201).json(projects);
     } else {
       res.status(404).json({ error: "Projects with given tag not found" });
     }

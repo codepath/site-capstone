@@ -172,7 +172,14 @@ class ApiClient {
             method: "get",
             subDirectory: `/project/search/${query}`,
         }
-        console.log('MADE A REQUEST')
+        return this.request(requestOptions)
+    }
+
+    async filterProjectsByTag(tag:string){
+        const requestOptions = {
+            method: "get",
+            subDirectory: `/project/tag/${tag}`
+        }
         return this.request(requestOptions)
     }
 }
