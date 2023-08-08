@@ -23,37 +23,37 @@ export default function Activities({
     const [sortValue , setSortValue] = useState("relevance")
     const [activities, setActivities] = useState([]) // Initialize as an empty array
     const [loading, setLoading] = useState(false)
-    const [itinerariesSaved, setItinerariesSaved] = useState(0)
-    const [savedItinerary, setSavedItinerary] = useState({
-        userId: 1,
-        hotelData:{
-            name: "",
-            city:"",
-            price:0,
-            check_in:"",
-            check_out:""
-        },
-        activities:[
-            {
-            name: "",
-            city:"",
-            price:0,
-            check_in:"",
-            check_out:""
-         },
-    ],
-        flightData:{
-            origin: "new york",
-            destination: "california",
-            departing_at:"2023-09-02T00:46:00",
-            arriving_at: "2023-09-02T01:56:00",
-            carrier:{
-                name:"carrierName"
-            }
+    // const [itinerariesSaved, setItinerariesSaved] = useState(0)
+    // const [savedItinerary, setSavedItinerary] = useState({
+    //     userId: 1,
+    //     hotelData:{
+    //         name: "",
+    //         city:"",
+    //         price:0,
+    //         check_in:"",
+    //         check_out:""
+    //     },
+    //     activities:[
+    //         {
+    //         name: "",
+    //         city:"",
+    //         price:0,
+    //         check_in:"",
+    //         check_out:""
+    //      },
+    // ],
+    //     flightData:{
+    //         origin: "new york",
+    //         destination: "california",
+    //         departing_at:"2023-09-02T00:46:00",
+    //         arriving_at: "2023-09-02T01:56:00",
+    //         carrier:{
+    //             name:"carrierName"
+    //         }
 
 
-    }
-    })
+    // }
+    // })
     const navigate = useNavigate();
     useEffect(() => {
         // Fetch activities data from the server
@@ -89,64 +89,64 @@ export default function Activities({
         event.preventDefault()
         setSortValue(event.target.value)
     }
-    const handleOnSubmit = async (e) => {
-        e.preventDefault();
-       // if (itinerary['Activities'].length !== 0 && itinerary.Hotel !== null && itinerary.flight !== null){
+    // const handleOnSubmit = async (e) => {
+    //     e.preventDefault();
+    //    // if (itinerary['Activities'].length !== 0 && itinerary.Hotel !== null && itinerary.flight !== null){
 
         
-        // Update the state using the setSavedItinerary function
-        setSavedItinerary({
-            hotelData: {
-                name: itinerary.Hotel.name,
-                city: itinerary.Hotel.wishlistName,
-                price: itinerary.Hotel.priceBreakdown.grossPrice.value.toFixed(2),
-                check_in: itinerary.Hotel.checkinDate,
-                check_out: itinerary.Hotel.checkoutDate,
-            },
-            activities:itinerary.Activities.map(activity => ({ 
-                //itinerary.Activities[0].name
-                //itinerary.Activities[0].location.locality
-                    name: activity.name,
-                    city: activity.location.locality,
-                    price: 0,
-                    check_in: itinerary.Hotel.checkinDate,
-                    check_out: itinerary.Hotel.checkoutDate,
-                })),
+    //     // Update the state using the setSavedItinerary function
+    //     setSavedItinerary({
+    //         hotelData: {
+    //             name: itinerary.Hotel.name,
+    //             city: itinerary.Hotel.wishlistName,
+    //             price: itinerary.Hotel.priceBreakdown.grossPrice.value.toFixed(2),
+    //             check_in: itinerary.Hotel.checkinDate,
+    //             check_out: itinerary.Hotel.checkoutDate,
+    //         },
+    //         activities:itinerary.Activities.map(activity => ({ 
+    //             //itinerary.Activities[0].name
+    //             //itinerary.Activities[0].location.locality
+    //                 name: activity.name,
+    //                 city: activity.location.locality,
+    //                 price: 0,
+    //                 check_in: itinerary.Hotel.checkinDate,
+    //                 check_out: itinerary.Hotel.checkoutDate,
+    //             })),
             
-            flightData: {
-                origin: "new york",
-                destination: "california",
-                departing_at: "2023-09-02T00:46:00",
-                arriving_at: "2023-09-02T01:56:00",
-                carrier: {
-                    name: "carrierName",
-                },
-            },
-        });
-        setItinerariesSaved(itinerariesSaved + 1)
+    //         flightData: {
+    //             origin: "new york",
+    //             destination: "california",
+    //             departing_at: "2023-09-02T00:46:00",
+    //             arriving_at: "2023-09-02T01:56:00",
+    //             carrier: {
+    //                 name: "carrierName",
+    //             },
+    //         },
+    //     });
+    //     setItinerariesSaved(itinerariesSaved + 1)
        
 
-    };
+    // };
 
-    useEffect(() => {
+    // useEffect(() => {
         
-        const submitData = async () => {
-            try {
+    //     const submitData = async () => {
+    //         try {
         
-                const response = await axios.post(
-                    `http://localhost:3009/api/users/${userId}/itineraries`,
-                    savedItinerary
-                );
+    //             const response = await axios.post(
+    //                 `http://localhost:3009/api/users/${userId}/itineraries`,
+    //                 savedItinerary
+    //             );
 
-                console.log("successful", response.data.results);
-            } catch (error) {
-                console.error(error);
-            }
-        };
+    //             console.log("successful", response.data.results);
+    //         } catch (error) {
+    //             console.error(error);
+    //         }
+    //     };
 
-        // Call the submitData function when itinerariesSaved changes
-        submitData();
-    }, [itinerariesSaved]);
+    //     // Call the submitData function when itinerariesSaved changes
+    //     submitData();
+    // }, [itinerariesSaved]);
 
     
 
@@ -188,7 +188,7 @@ export default function Activities({
                     >
                       {itinerary['Activities'].length === 0 ? 'Select an activity to continue' : 'Continue'}
                     </button>
-                    <button onClick = {handleOnSubmit}> Save For Later </button>
+        
                   </div>
                 </div>
             </div>

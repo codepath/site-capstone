@@ -7,12 +7,8 @@ import axios from 'axios';
 
 const BASE_URL = 'https://nomadiafe.onrender.com/api';
 
-<<<<<<< HEAD
 export default function Navbar({ authenticated, setAuthenticated,
-                                 setDepartureDate, setArrivalDate }) {
-=======
-export default function Navbar({ authenticated, setAuthenticated, setUserId }) {
->>>>>>> main
+                                 setDepartureDate, setArrivalDate, setUserId }) {
   const [registerOpen, setRegisterOpen] = useState(false);
   const [registerLoad, setRegisterLoad] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
@@ -27,12 +23,8 @@ export default function Navbar({ authenticated, setAuthenticated, setUserId }) {
   async function handleLogout() {
     
     // Update authenticated state to false
-<<<<<<< HEAD
-    setAuthenticated(false)
-=======
     setAuthenticated(false);
     setUserId(0)
->>>>>>> main
 
     // Navigate to the home page
         navigate('/')

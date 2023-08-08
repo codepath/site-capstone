@@ -18,7 +18,7 @@ function FlightsCard({ flight, itinerary, setItinerary }) {
   const handleSelect = () => {
     onSelectFlight(flight);
   };
-
+ //console.log("flights", itinerary)
   function updateItinerary() {
     if (selected) {
       // Remove flight from itinerary
@@ -81,7 +81,7 @@ function FlightsCard({ flight, itinerary, setItinerary }) {
       }
     }
   }, [flight]);
-
+  console.log("fli-slices", flight)
   return (
     <div className='p-5'>
       {loading ? (
