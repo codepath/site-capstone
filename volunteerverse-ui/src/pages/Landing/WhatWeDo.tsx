@@ -1,10 +1,11 @@
 import {
     Button,
-    Container, Flex, Image,
-    Title, createStyles
+    Container, Flex, Group, Image,
+    Title, createStyles, useMantineTheme
 } from '@mantine/core';
 import StudentImage from "../../assets/floatingStudent.png";
 import OrgImage from "../../assets/team.png";
+import { useMediaQuery } from '@mantine/hooks';
 
 const useStyles = createStyles((theme) => ({ 
     container : {
@@ -45,6 +46,9 @@ const useStyles = createStyles((theme) => ({
     }
  }))
 function WhatWeDo() {
+    const theme = useMantineTheme();
+    const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
+
     const { classes } = useStyles();
     return (
         <Container id={"HowItWorks"} className={classes.container}>
@@ -56,16 +60,18 @@ function WhatWeDo() {
                     <Flex align={"center"} direction={"column"} className={classes.bodyLeft}>
                         <Title className={classes.bodyTitle}>Students:</Title>
                         <Image onClick={() => window.location.href = "/signup/volunteer"} src={StudentImage}/>
-                        <Button radius={"lg"} onClick={() => window.location.href = ("/signup/volunteer")} variant="default">Search for opportunties</Button>
                         {/* <Text className={classes.bodyDescription}>Search for opportunties</Text> */}
                     </Flex>
                     <Flex align={"center"} direction={"column"} className={classes.bodyRight}>
                         <Title className={classes.bodyTitle}>Non-Profits:</Title>
                         <Image onClick={() => window.location.href = "/signup/organization"} src={OrgImage} />
-                        <Button radius={"lg"} onClick={() => window.location.href = ("/signup/organization") }>Improve your org</Button>
                         {/* <Text className={classes.bodyDescription} >Improve your org</Text> */}
                     </Flex>
                 </Flex>
+                    <Group spacing={"xl"} mt={"lg"} position='center'>
+                        <Button size={isMobile ? "md" : "xl"}  radius={"lg"} onClick={() => window.location.href = ("/signup/volunteer")} variant="default">Search for opportunties</Button>
+                        <Button size={isMobile ? "md" : "xl"} radius={"lg"} onClick={() => window.location.href = ("/signup/organization") }>Improve your org</Button>
+                    </Group>
             </Container>
         </Container>
     )

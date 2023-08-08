@@ -6,7 +6,6 @@ import {
     Group,
     Image,
     Paper,
-    Stack,
     Text,
     Title,
     createStyles, useMantineTheme

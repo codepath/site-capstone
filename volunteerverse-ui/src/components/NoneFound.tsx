@@ -1,7 +1,7 @@
 import { Title, createStyles, useMantineTheme } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
   root:{
     height: "100vh",
   }

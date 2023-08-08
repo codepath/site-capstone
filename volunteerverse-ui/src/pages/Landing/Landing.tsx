@@ -33,19 +33,19 @@ const useStyles = createStyles((theme) => {
       },
     },
     landingContainer: {
-      maxWidth: "100%",
+      width: "100%",
       height: "100%",
-      margin: 0,
+      margin: "0 auto",
       [theme.fn.smallerThan("md")]: {
         // paddingLeft: theme.spacing.xs
       },
     },
     content: {
-      maxWidth: "60rem",
+      width: "100vw",
       display: "flex",
       flexDirection: "row",
       gap: theme.spacing.xl,
-      alignItems: "start",
+      alignItems: "center",
       margin: 0,
       [theme.fn.smallerThan("lg")]: {
         padding: 0,
@@ -150,7 +150,7 @@ export default function Landing() {
       justify={"space-evenly"}
       align={"center"}  
       className={classes.mainContainer} >
-        <Flex className={classes.landingContainer}>
+        {/* <Flex className={classes.landingContainer}> */}
           <Container className={classes.content}>
             <Container className={classes.leftContent}>
               <Title order={1}
@@ -171,7 +171,7 @@ export default function Landing() {
             </Container>
             <Image /* styles={{image : {filter : }}} */ title="High Five!" alt="VolunteerVerse Logo. A purple hand with a smiley face" className={classes.image} fit={"contain"} src={Logo} />
           </Container>
-        </Flex>
+        {/* </Flex> */}
         <WhatWeDo  />
         <CallToAction openModal={openModal} />
         <Modal 
