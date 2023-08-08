@@ -1,13 +1,20 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import CircularProgress from '@mui/material/CircularProgress';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import axios from 'axios';
 
 const BASE_URL = 'https://nomadiafe.onrender.com/api';
 
+<<<<<<< HEAD
+export default function Navbar({ authenticated, setAuthenticated,
+                                 setDepartureDate, setArrivalDate }) {
+=======
 export default function Navbar({ authenticated, setAuthenticated, setUserId }) {
+>>>>>>> main
   const [registerOpen, setRegisterOpen] = useState(false);
+  const [registerLoad, setRegisterLoad] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
 
   const [email, setEmail] = useState('');
@@ -20,11 +27,16 @@ export default function Navbar({ authenticated, setAuthenticated, setUserId }) {
   async function handleLogout() {
     
     // Update authenticated state to false
+<<<<<<< HEAD
+    setAuthenticated(false)
+=======
     setAuthenticated(false);
     setUserId(0)
+>>>>>>> main
 
     // Navigate to the home page
-        navigate('/');
+        navigate('/')
+        location.reload()
 
   }
 
@@ -36,6 +48,7 @@ export default function Navbar({ authenticated, setAuthenticated, setUserId }) {
       email: email,
       phone_number: "1111111"
     };
+    setRegisterLoad(true)
     try {
       const response = await axios.post('https://nomadiafe.onrender.com/api/register', userData);
       // Assuming the response contains a user object upon successful registration
@@ -48,6 +61,7 @@ export default function Navbar({ authenticated, setAuthenticated, setUserId }) {
       setEmail('');
       setPassword('');
       setConfirmPassword('');
+      setRegisterLoad(false)
       setRegisterOpen(false); // Close the register modal after successful registration
 
       // Navigate to the "Account" page
@@ -61,6 +75,7 @@ export default function Navbar({ authenticated, setAuthenticated, setUserId }) {
       // history.push('/Account'); // Make sure to have history object from react-router-dom available
     } catch (error) {
       // Handle registration error
+      setRegisterLoad(false)
       console.error(error);
     }
   }
@@ -106,24 +121,29 @@ export default function Navbar({ authenticated, setAuthenticated, setUserId }) {
         <div className="px-56 bg-gray-100 bg-opacity-75 flex h-16 border-b border-blue-500 sticky top-0 z-10 justify-between">
         <Link to="/" className="flex">
           <div className="flex">
-            <Button disabled={true}>Home</Button>
+            <Button onClick={() => {setDepartureDate(''), setArrivalDate('')}}>Home</Button>
           </div>
         </Link>
-        <Link to="/Account" className="flex">
-          <div className="flex">
-            <Button disabled={true}>Account</Button>
-          </div>
-        </Link>
+
+        <div className="flex">
+        
         <div className="flex">
           {authenticated ? (
-            <Button onClick={handleLogout}>Sign Out</Button>
+            <>
+                <Link to="/Account" className="flex">
+                <div className="flex">
+                <Button>Account</Button>
+                </div>
+                </Link>
+                <Button onClick={handleLogout}>Sign out</Button>
+            </>
           ) : (
             <>
-              <Button>FAQ</Button>
               <Button onClick={() => setRegisterOpen(true)}>Sign up</Button>
               <Button onClick={() => setLoginOpen(true)}>Log in</Button>
             </>
           )}
+          </div>
                 <Modal 
                     open={registerOpen}
                     >
@@ -154,6 +174,9 @@ export default function Navbar({ authenticated, setAuthenticated, setUserId }) {
                                         />
                                         {(confirmPassword !== password) && (
                                             <div className="text-red-500 mb-3">Passwords do not match.</div>
+                                        )}
+                                        {registerLoad && (
+                                            <div>Creating account... <CircularProgress size={25}/></div>
                                         )}
                                         <Button sx={{'border': '1px solid', 
                                                     'height' : '50px',

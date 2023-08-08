@@ -41,7 +41,9 @@ export default function Homepage({ filterFlights, setFilterFlights,
                                    departureDate, setDepartureDate,
                                    arrivalDate, setArrivalDate,
                                    destination, setDestination,
-                                   travelers, setTravelers, destID, setDestID, setActivities
+                                   travelers, setTravelers, destID, setDestID,
+                                   departureIATA, setDepartureIATA,
+                                   arrivalIATA, setArrivalIATA
                                  }) {
     
     const [submit, setSubmit] = useState(false)
@@ -56,18 +58,18 @@ export default function Homepage({ filterFlights, setFilterFlights,
         return number.toString().padStart(2, "0")
       }
 
-      async function handleSubmit() {
+      async function handleSearch() {
         if (submit && validDates !== false && validDates !== null) {
             console.log("searching?")
             const response = await axios.post('https://nomadiafe.onrender.com/api/hotels-location', {
                 location_name: destination,
             });
-            console.log("finsihed searching")
     
             setDestID(response.data);
-    
+            
             if (filterHotels) navigate('/hotels');
             else if (filterActivities) navigate('/activities');
+            else navigate('/flights')
         }
     }
 
@@ -80,18 +82,20 @@ export default function Homepage({ filterFlights, setFilterFlights,
     }, [validateArrival, validateDeparture]);
     
     useEffect(() => {
-        if (
-            (travelers === null || travelers === "") ||
+        if ((travelers === null || travelers === "") ||
             (arrivalDate === null || arrivalDate === "") ||
             (departureDate === null || departureDate === "") ||
             (destination === null || destination === "") ||
-            validateArrival.arrive >= validateDeparture.depart
-        ) {
+             validateArrival.arrive >= validateDeparture.depart ||
+             (filterFlights && (departureIATA.length < 3 || arrivalIATA.length < 3))) {
             setSubmit(false);
-        } else {
+        }
+        else {
             setSubmit(true);
         }
-    }, [travelers, arrivalDate, departureDate, destination, validateArrival, validateDeparture, destID]);
+    }, [travelers, arrivalDate, departureDate, destination, validateArrival, 
+        validateDeparture, destID, arrivalIATA, departureIATA, filterFlights,
+        filterHotels, filterActivities]);
     
     
     const homepage_america = {
@@ -176,17 +180,22 @@ export default function Homepage({ filterFlights, setFilterFlights,
                             color={filterFlights ? "success" : "default"}
                             sx={{'borderRadius':'4px', 'width':'67px',
                                  'fontFamily':'Cairo'}}
-                            disabled
                         />
                     </div>
-                    <div className={`flex space-x-4 w-full mt-4 ${filterHotels || filterActivities || filterFlights ? `border bg-white border-blue-500 rounded-md shadow-md` : `pl-0 font-semibold bg-transparent`}`}>
+                    <div className={`flex space-x-4 w-full mt-4 ${filterHotels || 
+                                     filterActivities || filterFlights ? 
+                                     `border bg-white border-blue-500 rounded-md shadow-md` 
+                                     : `pl-0 font-semibold bg-transparent`}`
+                                    }>
                         {(!filterHotels && !filterActivities && !filterFlights) && (
-                            <div><h2>Choose at least one search filter to begin.</h2></div>
+                            <div>
+                                <h2>Choose at least one search filter to begin.</h2>
+                            </div>
                         )}
-                        {(filterHotels || filterActivities) && (
+                        {(filterHotels || filterActivities || filterFlights) && (
                             <div>
                                 <form className="flex items-center justify-center space-x-4 p-4"
-                                    onSubmit={handleSubmit}
+                                    onSubmit={handleSearch}
                                 >
                                 <TextField
                                     required
@@ -223,13 +232,38 @@ export default function Homepage({ filterFlights, setFilterFlights,
                                     label="Travelers"
                                     type="number"
                                     value={travelers}
-                                    onChange={(e) => {e.target.value > 0 && e.target.value <= 12 ? setTravelers(e.target.value) : 
-                                                      e.target.value > 12 ? setTravelers(12) : setTravelers(1)}}
+                                    onChange={(e) => {e.target.value > 0 && e.target.value <= 12 
+                                                      ? setTravelers(e.target.value) 
+                                                      : e.target.value > 12 ? 
+                                                      setTravelers(12) 
+                                                      : setTravelers(1)}}
                                 />
+                                {filterFlights && (
+                                    <>
+                                    <TextField
+                                        required
+                                        id="outlined-required"
+                                        label="Origin IATA"
+                                        value={departureIATA}
+                                        onChange={(e) => {e.target.value.length <= 3 ?
+                                                          setDepartureIATA(e.target.value.toUpperCase())
+                                                          : ''}}
+                                    />
+                                    <TextField
+                                        required
+                                        id="outlined-required"
+                                        label="Arrival IATA"
+                                        value={arrivalIATA}
+                                        onChange={(e) => {e.target.value.length <= 3 ?
+                                                         setArrivalIATA(e.target.value.toUpperCase())
+                                                         : ''}}
+                                    />
+                                    </>
+                                )}
                                 <Button disabled={!submit ? true : false} 
                                         sx={{'border': '1px solid', 
                                         'height' : '55px'}}
-                                        onClick={handleSubmit}
+                                        onClick={handleSearch}
                                 >Search</Button>
                                 </form>
                                 {!validDates && (
