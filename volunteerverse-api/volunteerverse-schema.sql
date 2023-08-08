@@ -40,7 +40,8 @@ CREATE TABLE projects(
     external BOOLEAN DEFAULT FALSE,
     public_email TEXT NOT NULL,
     external_link TEXT,
-    public_number TEXT
+    public_number TEXT,
+    website,
 );
 
 CREATE TABLE interested_volunteers(
