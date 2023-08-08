@@ -1,6 +1,7 @@
 import { notifications } from "@mantine/notifications";
 import moment from "moment";
-
+import { imagurClient } from "../services/ImagurClient";
+import { ApiResponseProp, requestProp } from "../services/ApiClient";
 // export const fetchCorrectUserOption =  (
     
 //     unAuthOption: any, 
@@ -40,4 +41,20 @@ export const notify = {
         message: message,
 
     }),
+}
+export const handleImageUpload = (event : File, setUrl : (urlLink : string) => void) => {
+    console.log("handling image upload event with file: ", event)
+    imagurClient.uploadPhoto(event);
+    // upload image using imagurClient
+    imagurClient.uploadPhoto(event).then((response : ApiResponseProp) => {
+        if (response.success) {
+            // set image url in state
+            console.log("retrieved response from imagur: ", response)
+            // setUrl(response.link);
+        } else {
+            console.log("error uploading image: ", response)
+            // notify user of error
+            notify.error("An error occured while uploading your image. Please try again later.")
+        }
+    })    
 }
