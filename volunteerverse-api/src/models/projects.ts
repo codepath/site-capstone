@@ -185,7 +185,25 @@ export class Projects {
         return projectCard;
       }
       else if (external){
-        return result.rows[0]
+        let projectCard = {
+          founders: "",
+          imageUrl: image_url,
+          title: project_name,
+          tags: tags,
+          id: id,
+          createdAt: created_at,
+          orgDescription: null,
+          description: project_description,
+          orgName: project_name, // currently does not exist in backend
+          orgUrl: "", // currently does not exist in backend
+          requestedVolunteers: null,
+          approvedVolunteers: null,
+          external : true,
+          externalLink: external_link,
+          orgLogoUrl: "",
+          active: true
+        };
+        return projectCard;
       }
     }
     throw new BadRequestError(

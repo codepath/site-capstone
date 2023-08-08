@@ -305,10 +305,6 @@ export class Volunteer {
       })
     )
 
-    console.log(volunteerSkills)
-    console.log(await Projects.getProjectsWithTag('html', "melyssa@gmail.com"))
-    
-
     // add remaing projects to the end 
     const remainingProjects = await Projects.getAllProjects()
     console.log("found remaining Projects: ", remainingProjects);
@@ -322,6 +318,8 @@ export class Volunteer {
      console.log("projects retrieved: ", Array.from(Object.values(projects)))
     const activeOnlyProjects = Array.from(Object.values(projects)).filter((project : VolunteerProjectProp) => project.active === true)
     return activeOnlyProjects;
+    //return activeOnlyProjects;
+
   }
 
 

@@ -50,6 +50,7 @@ function VolunteerHome() {
 
   const theme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
+
   const projectCardSlides = volunteerProjects?.map((item) => (
     <Carousel.Slide key={item.title}>
       <ProjectCard {...item} />
