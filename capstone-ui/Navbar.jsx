@@ -7,8 +7,12 @@ import axios from 'axios';
 
 const BASE_URL = 'https://nomadiafe.onrender.com/api';
 
+<<<<<<< HEAD
 export default function Navbar({ authenticated, setAuthenticated,
                                  setDepartureDate, setArrivalDate }) {
+=======
+export default function Navbar({ authenticated, setAuthenticated, setUserId }) {
+>>>>>>> main
   const [registerOpen, setRegisterOpen] = useState(false);
   const [registerLoad, setRegisterLoad] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
@@ -17,12 +21,18 @@ export default function Navbar({ authenticated, setAuthenticated,
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
+  
   const navigate = useNavigate()
 
   async function handleLogout() {
     
     // Update authenticated state to false
+<<<<<<< HEAD
     setAuthenticated(false)
+=======
+    setAuthenticated(false);
+    setUserId(0)
+>>>>>>> main
 
     // Navigate to the home page
         navigate('/')
@@ -43,6 +53,8 @@ export default function Navbar({ authenticated, setAuthenticated,
       const response = await axios.post('https://nomadiafe.onrender.com/api/register', userData);
       // Assuming the response contains a user object upon successful registration
       const user = response.data;
+      console.log("userData/reg", user)
+      setUserId(user.id)
 
       // Update authenticated state to true
       setAuthenticated(true);
@@ -78,6 +90,8 @@ export default function Navbar({ authenticated, setAuthenticated,
       const response = await axios.post(`${BASE_URL}/login`, userData);
       // Assuming the response contains a token and user object upon successful login
       const { token, user } = response.data;
+      console.log("userData/log", user)
+      setUserId(user.id)
 
       // Save token in local storage or a secure cookie for future authenticated requests
       localStorage.setItem('token', token);
@@ -103,6 +117,7 @@ export default function Navbar({ authenticated, setAuthenticated,
   }
 
     return (
+      
         <div className="px-56 bg-gray-100 bg-opacity-75 flex h-16 border-b border-blue-500 sticky top-0 z-10 justify-between">
         <Link to="/" className="flex">
           <div className="flex">

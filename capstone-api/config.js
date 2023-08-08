@@ -1,7 +1,7 @@
 require("dotenv").config();
 const secretKey = `${process.env.SECRET_KEY}`;
 
-const PORT = process.env.PORT ? Number(process.env.PORT) : 3002;
+const PORT = process.env.PORT ? Number(process.env.PORT) : 3009;
 
 function getDatabaseUri() {
     const dbUser = process.env.DATABASE_USER || "codepath_capstone_user"; //change this to ur name when you run psql 
@@ -10,7 +10,7 @@ function getDatabaseUri() {
     const dbPort = process.env.DATABASE_PORT || 5432;
     const dbName = process.env.DATABASE_NAME || "codepath_capstone";
 
-    return process.env.DATABASE_URL || `postgresql://${dbUser}:${dbPass}@${dbHost}:${dbPort}/${dbName}?ssl=true`;
+    return process.env.DATABASE_URL || `postgres://nomadia_db_user:ZzvYi2rnw40muzcdGVeTHTR7HtCCjyvb@dpg-cj8ki9cl975s738h521g-a.oregon-postgres.render.com/nomadia_db?sslmode=require`;
     //     `postgresql://${dbUser}:${dbPass}@${dbHost}:${dbPort}/${dbName}`
 }
 const BCRYPT_WORK_FACTOR = 13

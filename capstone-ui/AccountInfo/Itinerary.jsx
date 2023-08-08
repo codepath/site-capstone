@@ -5,31 +5,73 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import backgroundImage from './Assets/backgroundimage.jpg'
 import { useState, useEffect } from "react"
 import data from './mockdata-hotels'
+import axios from "axios"
 import HotelCard from '../BookingPages/HotelCard'
 import mockItineraries from '../AccountInfo/mockitinerarydata'
 
 
 
+
 function Itinerary({ arrivalDate, departureDate,
   travelers, destination, 
-  destID, cost, setCost
- }) {
+  destID, cost, setCost,
+ userId }) {
 
-  const [searchResults, setSearchResults] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [hasItineraries,setHasItineraries] = useState(false)
+
 
   useEffect(() => {
-    setSearchResults(data.results);
-  }, []);
+    setTimeout(() => {
+        setLoading(false)
+    }, 5000)
+}, [])
+
+const [userItineraries, setUserItineraries] = useState(null)
+  useEffect(() => {
+   
+    axios
+    .get(`http://localhost:3009/api/users/${userId}/itineraries`)
+    .then((response) => {
+      console.log("successful")
+      console.log("res", response.data)
+      setUserItineraries(response.data)
+      setHasItineraries(true)
+
+    })
+    .catch((error) => {
+        console.error(error)
+    })
+}, []) // do on load
+
+console.log("user itineraries",userItineraries)
+console.log("userId", userId)
 
   return (
-    <div>
-     <ItineraryMenu searchResults={searchResults}/>
-    </div>
+    // <div>
+    //  <ItineraryMenu searchResults={searchResults}/>
+    // </div>
+     <>
+    {userItineraries === null  && (
+        <div>
+            <div className="text-4xl px-56 mt-4 ml-5 w-screen h-screen">Loading Itineraries...  <CircularProgress /></div>
+        </div>
+    )}
+    { userItineraries &&  (
+        <div>
+            <ItineraryMenu userItineraries={userItineraries}  hasItineraries = {hasItineraries} />
+        </div>
+    )}
+</>
+
     
   );
 }
 
-function ItineraryMenu({searchResults}) {
+function ItineraryMenu({userItineraries,hasItineraries}) {
+
+  console.log("user itineraries",userItineraries)
+  
  
   return (
     <>
@@ -82,15 +124,16 @@ function ItineraryMenu({searchResults}) {
             <div className="flex flex-col min-h-screen">
 
               <div className="grid grid-cols-3 gap-6 mt-3">
-               {/* { mockItineraries.length === 0 ? "No results found." :
-                      mockItineraries.map((mockItinerary) => (
-                          <ItineraryCards
-                          mockItinerary={mockItinerary}
-                          key={mockItinerary.id}
-                          />
-                      ))
-                      
-                  } */}
+              {userItineraries.length === 0? (
+                       <p>No itineraries saved.</p>
+                    ) : (
+                    userItineraries.map((userItinerary) => (
+                     <ItineraryCards
+                        userItinerary={userItinerary}
+                             key={userItinerary.id}
+                                               />
+                         ))
+                    )}
              </div>
           
           </div>
@@ -105,21 +148,50 @@ function ItineraryMenu({searchResults}) {
   );
 }
 
-function ItineraryCards({mockItinerary}){
-  console.log("mock", mockItinerary)
+function ItineraryCards({userItinerary}){
+  const activityNames = userItinerary.activities.map(activity => activity.name);
+
+  console.log("mock", userItinerary)
   return(
-    <div>
-      <div>
-        <h1>Itinerary {mockItinerary.id} </h1>
-      </div>
-      <div>
-        <h3>Hotel: {mockItinerary.Hotel.name}</h3>
+    <div className='cursor-pointer flex flex-col rounded-md shadow-md border border-blue-500 overflow-y-scroll h-100'>
+      <div className='p-3 overflow-show bg-white mb-3'>
+        <div className='font-bold text-2xl h-10 overflow-scroll text-black'>
+         Itinerary {userItinerary.id} 
+        </div>
+        <div className='flex text-center'>
+        <div className='flex flex-col'>
+          <div className='font-bold'>
+            Hotel: 
+          </div>
+        </div>
+        <div className='flex flex-col ml-2'>
+          {userItinerary.hotel.length === 0 ? "No hotels selected." : `${userItinerary.hotel.name}` }
+        </div>
+        </div>
+        <div>
+        <div className='underline font-bold'>
+          Activities
+        </div>
+        <div>
+            {userItinerary.activities.length === 0 ? "No activities selected." :
+            <ul>
+                {activityNames.map((name, index) => (
+                    <li key={index}>{name}</li>
+                ))}
+            </ul>
+            }
+        </div>
+        <div>
+          <h3>Total Price: ${userItinerary.hotel.price}</h3>
+        </div>
+        </div>
       </div>
     </div>
 
   );
 
 }
+
 
 export default Itinerary;
 

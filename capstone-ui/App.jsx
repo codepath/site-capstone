@@ -15,6 +15,7 @@ import Favorites from './AccountInfo/Favorites'
 import Booking from './AccountInfo/Booking'
 import Checkout from './AccountInfo/Checkout'
 import FlightsPage from './BookingPages/FlightsPage';
+import axios from "axios"
 
 
 const theme = createTheme({
@@ -52,7 +53,7 @@ function App() {
     const [activities, setActivities] = useState ({})
 
     const [cost, setCost] = useState(0.00)
-
+    const [userId, setUserId] = useState(0)
     const addToItinerary = (item)=>{
 
         
@@ -74,8 +75,12 @@ function App() {
             <div className="font-sans">
                 
                 <Router>
+<<<<<<< HEAD
                     <Navbar setAuthenticated={setAuthenticated} authenticated={authenticated}
                             setDepartureDate={setDepartureDate} setArrivalDate={setArrivalDate}/>
+=======
+                    <Navbar setAuthenticated={setAuthenticated} authenticated={authenticated} setUserId= {setUserId} />
+>>>>>>> main
                     <Routes>
                         <Route path="/" element={
                             <Homepage filterFlights={filterFlights} setFilterFlights={setFilterFlights}
@@ -100,7 +105,8 @@ function App() {
                                         arrivalDate={arrivalDate}
                                         cost={cost}
                                         destination={destination}
-                                        activities = {activities} /> }/>
+                                        activities = {activities}
+                                        userId={userId} /> }/>
                         <Route path="/hotels" element={
                             <HotelsPage 
                                     travelers={travelers}
@@ -124,8 +130,14 @@ function App() {
                                     destination={destination}
                                     destID={destID} setDestID={setDestID}
                                     cost={cost} setCost={setCost}
+<<<<<<< HEAD
                             />
                         }
+=======
+                                    userId = {userId}
+                            />} 
+
+>>>>>>> main
                         />
                           <Route path="/Flights" element={
                             <FlightsPage itinerary={itinerary} setItinerary={setItinerary} 

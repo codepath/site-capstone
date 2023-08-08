@@ -3,7 +3,7 @@ const { getDatabaseUri } = require('./config');
 require('dotenv').config();
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: `postgres://nomadia_db_user:ZzvYi2rnw40muzcdGVeTHTR7HtCCjyvb@dpg-cj8ki9cl975s738h521g-a.oregon-postgres.render.com/nomadia_db?sslmode=require`
 });
 
 async function testConnection() {
