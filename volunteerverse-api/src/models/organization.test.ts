@@ -74,6 +74,8 @@ describe("organization registration", () => {
      password :"",
     orgWebsite: "",
     founders : "",
+    publicEmail : "test@contact.com",
+    publicNumber : "",
     };
      expect(Organization.register(organizationInfo)).rejects.toThrow(
       UnprocessableEntityError
@@ -89,7 +91,9 @@ describe("organization registration", () => {
    userType : "organization",
   password :"1234",
   founders : "people",
- orgWebsite: "https://towebsite"
+ orgWebsite: "https://towebsite",
+ publicEmail : "tacky@contact.com",
+ publicNumber : "",
 }
     
 
@@ -124,7 +128,9 @@ describe("organization registration", () => {
    userType : "organization",
   password :"1234",
   founders : "people",
-  orgWebsite: "https://towebsite"
+  orgWebsite: "https://towebsite",
+  publicNumber: "1234567890",
+  publicEmail: "helpers@contact.org",
     };
 
     const mockResult = {
