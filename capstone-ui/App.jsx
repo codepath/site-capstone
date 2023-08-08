@@ -15,6 +15,7 @@ import Favorites from './AccountInfo/Favorites'
 import Booking from './AccountInfo/Booking'
 import Checkout from './AccountInfo/Checkout'
 import FlightsPage from './BookingPages/FlightsPage';
+import axios from "axios"
 
 
 const theme = createTheme({
@@ -49,6 +50,8 @@ function App() {
     const [activities, setActivities] = useState ({})
 
     const [cost, setCost] = useState(0.00)
+
+
 
     const addToItinerary = (item)=>{
 
