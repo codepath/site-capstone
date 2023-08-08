@@ -50,9 +50,7 @@ function App() {
     const [activities, setActivities] = useState ({})
 
     const [cost, setCost] = useState(0.00)
-
-
-
+    const [userId, setUserId] = useState(0)
     const addToItinerary = (item)=>{
 
         
@@ -75,7 +73,7 @@ function App() {
             <div className="font-sans">
                 
                 <Router>
-                    <Navbar setAuthenticated={setAuthenticated} authenticated={authenticated}/>
+                    <Navbar setAuthenticated={setAuthenticated} authenticated={authenticated} setUserId= {setUserId} />
                     <Routes>
                         <Route path="/" element={
                             <Homepage filterFlights={filterFlights} setFilterFlights={setFilterFlights}
@@ -98,7 +96,8 @@ function App() {
                                         arrivalDate={arrivalDate}
                                         cost={cost}
                                         destination={destination}
-                                        activities = {activities} /> }/>
+                                        activities = {activities}
+                                        userId={userId} /> }/>
                         <Route path="/hotels" element={
                             <HotelsPage 
                                     travelers={travelers}
@@ -122,6 +121,7 @@ function App() {
                                     destination={destination}
                                     destID={destID} setDestID={setDestID}
                                     cost={cost} setCost={setCost}
+                                    userId = {userId}
                             />} 
 
                         />

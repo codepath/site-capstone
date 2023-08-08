@@ -18,8 +18,6 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate, depart
     const [loading, setLoading] = useState(false);
     const [cabinClass, setCabinClass] = useState("economy");
     const [selectedFlight, setSelectedFlight] = useState(null);
-
-    
     
     dest_iata = "ORD"; // Replace with actual destination IATA code
     origin_iata = "JFK"; 
@@ -97,6 +95,8 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate, depart
     useEffect(() => {
         setFlight();
       }, [cabinClass]);
+
+
     //     let item = {
         
     //         "totalAmount": "290.71",
@@ -151,7 +151,6 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate, depart
                               <span className='ml-5'>{dest_iata}</span>
                          </h1>
                          </div>
-     
                          <div className="relative w-full lg:max-w-sm flex flex-row mr-[270px] mb-[120px]">
                          <h2 className='text-3xl mr-[10px] mt-[3px] font-semibold'>Cabin Class:</h2>
                          <select onChange={(e) => handleOnClick(e.target.value)} className="w-[200px] p-1 text-black bg-white border-white-2 rounded-md shadow-xl outline-md appearance-none focus:border-indigo-600 mb-5 text-center text-2xl">\

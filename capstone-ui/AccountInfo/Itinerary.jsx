@@ -11,25 +11,27 @@ import mockItineraries from '../AccountInfo/mockitinerarydata'
 
 
 
+
 function Itinerary({ arrivalDate, departureDate,
   travelers, destination, 
-  destID, cost, setCost
- }) {
+  destID, cost, setCost,
+ userId }) {
 
   const [loading, setLoading] = useState(true)
   const [hasItineraries,setHasItineraries] = useState(false)
 
+
   useEffect(() => {
     setTimeout(() => {
         setLoading(false)
-    }, 3000)
+    }, 5000)
 }, [])
 
 const [userItineraries, setUserItineraries] = useState(null)
   useEffect(() => {
    
     axios
-    .get("http://localhost:3009/api/users/5/itineraries")
+    .get(`http://localhost:3009/api/users/${userId}/itineraries`)
     .then((response) => {
       console.log("successful")
       console.log("res", response.data)
@@ -43,18 +45,19 @@ const [userItineraries, setUserItineraries] = useState(null)
 }, []) // do on load
 
 console.log("user itineraries",userItineraries)
+console.log("userId", userId)
 
   return (
     // <div>
     //  <ItineraryMenu searchResults={searchResults}/>
     // </div>
      <>
-    {loading && (
+    {userItineraries === null  && (
         <div>
             <div className="text-4xl px-56 mt-4 ml-5 w-screen h-screen">Loading Itineraries...  <CircularProgress /></div>
         </div>
     )}
-    {!loading && (
+    { userItineraries &&  (
         <div>
             <ItineraryMenu userItineraries={userItineraries}  hasItineraries = {hasItineraries} />
         </div>
@@ -121,7 +124,7 @@ function ItineraryMenu({userItineraries,hasItineraries}) {
             <div className="flex flex-col min-h-screen">
 
               <div className="grid grid-cols-3 gap-6 mt-3">
-              {userItineraries === null? (
+              {userItineraries.length === 0? (
                        <p>No itineraries saved.</p>
                     ) : (
                     userItineraries.map((userItinerary) => (
