@@ -2,10 +2,10 @@ import axios from "axios";
 import { API_BASE_URL } from "../../constants";
 import { OrganizationRegisterProp, ProjectRegisterProp, VolunteerRegisterProp } from "../props/register";
 
-interface requestProp {
+export interface requestProp {
     method : string,
     bodyData?: object,
-    subDirectory : string
+    subDirectory : string,
 }
 export interface ApiResponseProp {
     success: boolean;
