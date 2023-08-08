@@ -1,6 +1,7 @@
 import axios from "axios";
 import { API_BASE_URL } from "../../constants";
 import { OrganizationRegisterProp, ProjectRegisterProp, VolunteerRegisterProp } from "../props/register";
+import { QueryProps } from "../components/QueryBar";
 
 interface requestProp {
     method : string,
@@ -165,6 +166,32 @@ class ApiClient {
         }
         return this.request(requestOptions) 
     }
+
+    async searchProjectsByTitle(query: string){
+        const requestOptions = {
+            method: "get",
+            subDirectory: `/project/search/${query}`,
+        }
+        return this.request(requestOptions)
+    }
+
+    async filterProjectsByTag(tag:string){
+        const requestOptions = {
+            method: "get",
+            subDirectory: `/project/tag/${tag}`
+        }
+        return this.request(requestOptions)
+    }
+
+    async filterProjectsSearchFilter(tags:string[], query:string){
+        const tagsQueryString = tags.join('&tags=');
+        const requestOptions = {
+            method: "get",
+            subDirectory: `/project/searchfilter?query=${query}&tags=${tagsQueryString}`
+        }
+        return this.request(requestOptions)
+    }
+
 }
 
 export const apiClient = new ApiClient(API_BASE_URL);

@@ -146,8 +146,7 @@ export default function SignUp( {  userType } : {userType : "organization" | "vo
           termsOfService: values.termsOfService === false ? "You must agree to VolunteerVerse's terms of servcie" : null,
           imageFile: values.imageFile ?  null : "A logo must be provided.",
           publicNumber:  /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/.test(values.publicNumber) || values.publicNumber === "" ? null : "Please enter a valid phone number. E.g. 123-456-7890",
-          publicEmail:  /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(values.publicEmail) ? null : 'Please provide a valid email address',
-
+          publicEmail: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(values.publicEmail) ? null : 'Please provide a valid email address',
           // orgWebsite:  ^(http(s):\/\/.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$.test(values.orgWebsite) || values.orgWebsite === "" ? null : "Please provide a valid website link",
         }
       }
