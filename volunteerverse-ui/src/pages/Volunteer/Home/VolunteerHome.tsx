@@ -2,7 +2,8 @@ import { Carousel } from "@mantine/carousel";
 import {
   Button,
   Title,
-  useMantineTheme
+  useMantineTheme,
+  Space
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useMediaQuery } from "@mantine/hooks";
@@ -40,6 +41,28 @@ function VolunteerHome() {
     console.log("fetchingProjects");
   }
   useEffect(() => { fetchProjects() }, [user]) // fetch projects
+
+  const fetchFilteredProjects = async (query: string) => {
+  
+    apiClient.searchProjectsByTitle(query).then(({ data, success, statusCode, error }: ApiResponseProp) => {
+      if (success) {
+        console.log("fetched filtered projects for volunteer successfully: ", data)
+        setVolunteerProjects(data);
+        // setVolunteerProjects(projectCardData)
+      } else {
+        setVolunteerProjects([]);
+        // display error notification? (stretch)
+        console.log("Unable to fetch volunteer data", `error: ${error} code: ${statusCode}`);
+      }
+    }).catch((error) => {
+      console.log("a very unexpected error has occured: ", error)
+    });
+    console.log("fetchingProjects");
+  }
+  useEffect(() => {fetchFilteredProjects(queryForm.values.search)}, [user]) // fetch projects
+  
+
+
   const queryForm = useForm<QueryProps>({
     initialValues: {
       search: "",
@@ -47,6 +70,8 @@ function VolunteerHome() {
       timeRange: "Year"
     }
   });
+
+  
 
   const theme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
@@ -60,8 +85,11 @@ function VolunteerHome() {
   return isValidVolunteer ? (
     <>
       <Title>{`Welcome ${ user?.userType === "volunteer" ? user.firstName : ""}! `}</Title>
+      <Space h="md" />
       <QueryBar {...queryForm} />
-      <Button size="lg" radius={"md"} compact onClick={fetchProjects}>Search Projects</Button>
+      <Space h="md" />
+      <Button size="lg" radius={"md"} compact onClick={() => fetchFilteredProjects(queryForm.values.search)}>Search Projects</Button>
+      <Space h="md" />
       {
         volunteerProjects && volunteerProjects?.length > 0 ? <Carousel
           controlSize={isMobile ? 40 : 70}

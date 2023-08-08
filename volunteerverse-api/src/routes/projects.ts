@@ -60,8 +60,9 @@ projectRoutes.get(
     requireAuthenticatedUser,
     async function (req, res, next) {
       const search = req.params.searchTerm;
+      const { email } = res.locals.user;
       try {
-        const projects = await Projects.searchProjects(search);
+        const projects = await Projects.searchProjects(search, email);
         res.status(201).json(projects);
       } catch (error) {
         next(error);

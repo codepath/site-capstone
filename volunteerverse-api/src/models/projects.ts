@@ -3,7 +3,7 @@ import db from "../db";
 import { validateFields } from "../utils/validate";
 import { BadRequestError, NotFoundError } from "../utils/errors";
 import { Organization } from "./organization";
-import { Volunteer } from "./volunteer";
+import { Volunteer, VolunteerProjectProp } from "./volunteer";
 export interface ProjectCardProp {
   id: number;
   title: string;
@@ -124,7 +124,7 @@ export class Projects {
   ): Promise<ProjectCardProp> {
     const query = `SELECT * FROM projects WHERE id=$1`;
     const result = await db.query(query, [projectId]);
-    console.log("HERE ARE THE PROJECTS FOR VOL", result.rows)
+    console.log("HERE ARE THE PROJECTS FOR VOL", result.rows);
     //destructure to extract important info about project
     if (result.rows.length > 0) {
       const {
@@ -183,8 +183,7 @@ export class Projects {
           projectCard["orgPublicNumber"] = public_number;
         }
         return projectCard;
-      }
-      else if (external){
+      } else if (external) {
         let projectCard = {
           founders: "",
           imageUrl: image_url,
@@ -198,24 +197,22 @@ export class Projects {
           orgUrl: "", // currently does not exist in backend
           requestedVolunteers: null,
           approvedVolunteers: null,
-          external : true,
+          external: true,
           externalLink: external_link,
           orgLogoUrl: "",
-          active: true
+          active: true,
         };
         return projectCard;
       }
     }
-    throw new BadRequestError(
-      `Project ${projectId} does not exist`
-    );
+    throw new BadRequestError(`Project ${projectId} does not exist`);
   }
 
   static async getProjectsWithTag(tag: string, email: string) {
     const query = `SELECT project_id FROM project_tags WHERE tag_name=$1`;
     const result = await db.query(query, [tag]);
-    console.log('HERE IS THE PROJECTS WITHT HE TAG', result.rows)
-   
+    console.log("HERE IS THE PROJECTS WITHT HE TAG", result.rows);
+
     if (result.rows.length === 0) {
       // Return an empty array if no projects are found with the given tag
       return [];
@@ -261,17 +258,32 @@ export class Projects {
    * @param term
    * @returns array of projects results
    */
-  static async searchProjects(term: string) {
+  static async searchProjects(term: string, email: string) {
     const query = `SELECT * FROM projects WHERE project_name ILIKE $1`;
     const searchTerm = `%${term}%`;
     const result = await db.query(query, [searchTerm]);
     console.log(result.rows);
-    const projectResults = [];
+    const projectResults = {};
     if (result) {
-      result.rows.forEach((row: any) => {
-        projectResults.push(row);
-      });
-      return projectResults;
+      await Promise.all(
+        result.rows.map(async (row: any) => {
+          projectResults[row.id] = await this.fetchProjectByProjectId(
+            row.id,
+            "volunteer",
+            email
+          ); // updating object with new unqiue project
+        })
+      );
+
+      console.log("projects retrieved: ", Array.from(Object.values(projectResults)))
+
+      const activeOnlyProjects = Array.from(
+        Object.values(projectResults)
+      ).filter((project: VolunteerProjectProp) => project.active === true);
+      return activeOnlyProjects;
+    }
+    else {
+      throw new BadRequestError()
     }
   }
 }

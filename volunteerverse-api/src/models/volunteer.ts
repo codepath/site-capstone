@@ -5,7 +5,7 @@ import { validateFields } from "../utils/validate";
 import bcrypt from "bcrypt";
 import { Projects } from "./projects";
 
-interface VolunteerProjectProp{
+export interface VolunteerProjectProp{
   id: number,
   orgName: string,
   orgDescription: string,
