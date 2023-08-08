@@ -6,11 +6,6 @@ import ActivityCards from "./ActivityCards"
 import { useNavigate } from "react-router-dom"
 import { acts } from "./data"; // Check the correct path for this import
 
-// export default function Activities({ addToItinerary, departureDate, arrivalDate, destination, travelers, activities }) {
-//   const [searchValue, setSearchValue] = useState("");
-
-//Stuff added 
-
 export default function Activities({
                                     addToItinerary,
                                     departureDate,
@@ -40,7 +35,6 @@ export default function Activities({
             sort: sortValue
         })
         .then((response) => {
-            // Update the activities state with the fetched data
             console.log(response.data.results)
             setActivities(response.data.results)
             setLoading(false)
@@ -48,7 +42,7 @@ export default function Activities({
         .catch((error) => {
             console.error(error)
         })
-    }, [priceValue, destination, sortValue, searchValue]) // Add searchValue and destination to the dependencies array
+    }, [priceValue, destination, sortValue, searchValue])
 
     const handlePriceSelect = (event) =>{
         event.preventDefault()
@@ -58,8 +52,7 @@ export default function Activities({
         event.preventDefault()
         console.log(inputValue)
         setSearchValue(inputValue)
-    }   
-
+    }  
     const handleSortSelect = (event) => {
         event.preventDefault()
         setSortValue(event.target.value)
@@ -94,7 +87,7 @@ export default function Activities({
                   <div>Excluding taxes and fees.</div>
                   <div>
                     <button
-                      disabled={itinerary['Activities'].length === 0 === 0 ? true : false}
+                      disabled={itinerary['Activities'].length === 0 ? true : false}
                       onClick={() => {
                         navigate('/booking');
                       }}
@@ -141,14 +134,12 @@ export default function Activities({
                     itinerary={itinerary}
                     setItinerary={setItinerary}
                     />
-                ))
-                
-            }
+            ))
+        }
         </div>
-        </div>
-        </div>
-        )}
-        </div>
-        
+    </div>
+    </div>
+    )}
+    </div>   
   );
 }

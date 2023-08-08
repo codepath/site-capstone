@@ -32,6 +32,9 @@ function App() {
     const [filterActivities, setFilterActivities] = useState(true)
     const [filterHotels, setFilterHotels] = useState(true)
 
+    const [departureIATA, setDepartureIATA] = useState('')
+    const [arrivalIATA, setArrivalIATA] = useState('')
+
     const [destID, setDestID] = useState("")
 
     const [departureDate, setDepartureDate] = useState("")
@@ -55,7 +58,7 @@ function App() {
         
         if ( itinerary.includes(item) || itinerary.some(item => item.category === 'hotel')) {
            console.log("already added ")
-        }else{
+        } else{
             // itinerary.push(item)
             setItinerary([...itinerary, item])
         }
@@ -63,16 +66,16 @@ function App() {
           console.log("Itinerary")
           console.log(itinerary)
           console.log(itinerary.length)
-      }
-      
-      
+    }
+
     return ( 
     <LocalizationProvider dateAdapter={AdapterDayjs}>
         <ThemeProvider theme={theme}>
             <div className="font-sans">
                 
                 <Router>
-                    <Navbar setAuthenticated={setAuthenticated} authenticated={authenticated}/>
+                    <Navbar setAuthenticated={setAuthenticated} authenticated={authenticated}
+                            setDepartureDate={setDepartureDate} setArrivalDate={setArrivalDate}/>
                     <Routes>
                         <Route path="/" element={
                             <Homepage filterFlights={filterFlights} setFilterFlights={setFilterFlights}
@@ -84,6 +87,8 @@ function App() {
                                     travelers={travelers} setTravelers={setTravelers}
                                     destID={destID} setDestID={setDestID}
                                     setActivities = {setActivities}
+                                    departureIATA={departureIATA} arrivalIATA={arrivalIATA}
+                                    setDepartureIATA={setDepartureIATA} setArrivalIATA={setArrivalIATA}
                             />
                         } />
                         <Route path="/activities" element={
@@ -119,12 +124,16 @@ function App() {
                                     destination={destination}
                                     destID={destID} setDestID={setDestID}
                                     cost={cost} setCost={setCost}
-                            />} 
-
+                            />
+                        }
                         />
                           <Route path="/Flights" element={
-                            <FlightsPage itinerary={itinerary} setItinerary={setItinerary} destination={destination} arrivalDate={arrivalDate} departureDate={departureDate} 
-                            travelers={travelers}/>} 
+                            <FlightsPage itinerary={itinerary} setItinerary={setItinerary} 
+                                         destination={destination} arrivalDate={arrivalDate} 
+                                         departureDate={departureDate} 
+                                         travelers={travelers} departureIATA={departureIATA}
+                                         arrivalIATA={arrivalIATA} cost={cost}
+                            />} 
                         />
                          <Route path="/favorites" element={
                             <Favorites/>} 
@@ -143,5 +152,4 @@ function App() {
     </LocalizationProvider>
   )
 }
-
 export default App
