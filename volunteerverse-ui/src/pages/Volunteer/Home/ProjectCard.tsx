@@ -122,6 +122,7 @@ export default function ProjectCard(props: ProjectCardProps) {
     const { classes } = useStyles();
     const theme = useMantineTheme();
     const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
+    const isTablet = useMediaQuery(`(max-width: ${theme.breakpoints.md})`);
 
     return (
         <>
@@ -133,11 +134,11 @@ export default function ProjectCard(props: ProjectCardProps) {
                 <Flex className={classes.cardContent}>
                     <Flex justify={"space-around"} align={"center"} direction="column" className={classes.detailsContainer}>
                         {props.external && <Badge size={isMobile ? "md" : "lg"} variant="filled" color="orange">External</Badge>}
-                        <Flex direction={"column"}>
-                            <Text align="center" component={Link} to={props.externalLink || `/projects/${props.id}`} className={classes.title}>{props.title}</Text>
-                            <Text>By: {<Text to={props.orgUrl} component={Link}>{props.orgName}</Text>}</Text>
-                            <Badge> <Text size={"sm"}> {props.approvedVolunteers} / {props.requestedVolunteers} approved</Text></Badge>
-                        </Flex>
+                        <Container>
+                            <Text my={"xs"} align="center" component={Link} to={props.externalLink || `/projects/${props.id}`} className={classes.title}>{props.title}</Text>
+                            <Text mb={"xs"}>By:  { props.orgUrl ? <Text to={props.orgUrl} component={Link}>{props.orgName}</Text> :  props.orgName}</Text>
+                            <Badge> <Text size={"sm"}>  { props.requestedVolunteers ?  `${props.approvedVolunteers}/${props.requestedVolunteers} approved` : `${props.approvedVolunteers} approved` }</Text></Badge>
+                        </Container>
                         <Flex className={classes.detailsBody} direction={"column"}>
                             <Title p={"xs"} className={classes.descTitle} align="start" weight={600} order={3}>Project Description:</Title>
                             <Divider />
@@ -148,7 +149,7 @@ export default function ProjectCard(props: ProjectCardProps) {
                         </Flex>
                     </Flex>
                     <Flex direction={"column"} align={"center"} justify={"center"} className={classes.mediaContainer}>
-                        <Image width={200} height={200} withPlaceholder radius={"xl"} 
+                        <Image fit="cover" width={isMobile ? 200 : isTablet ? 250 : 400} height={isMobile ? 200 : isTablet ? 250 : 400} withPlaceholder radius={"xl"} 
                         src={props.imageUrl || props.orgLogoUrl} className={classes.image} />
                         <Group className={classes.tagGroup}>
                             <Text color="dimmed" fw={"bolder"}>Tags: </Text>
