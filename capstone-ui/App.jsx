@@ -75,12 +75,8 @@ function App() {
             <div className="font-sans">
                 
                 <Router>
-<<<<<<< HEAD
                     <Navbar setAuthenticated={setAuthenticated} authenticated={authenticated}
-                            setDepartureDate={setDepartureDate} setArrivalDate={setArrivalDate}/>
-=======
-                    <Navbar setAuthenticated={setAuthenticated} authenticated={authenticated} setUserId= {setUserId} />
->>>>>>> main
+                            setDepartureDate={setDepartureDate} setArrivalDate={setArrivalDate}  setUserId = {setUserId}/>
                     <Routes>
                         <Route path="/" element={
                             <Homepage filterFlights={filterFlights} setFilterFlights={setFilterFlights}
@@ -130,21 +126,16 @@ function App() {
                                     destination={destination}
                                     destID={destID} setDestID={setDestID}
                                     cost={cost} setCost={setCost}
-<<<<<<< HEAD
-                            />
-                        }
-=======
                                     userId = {userId}
                             />} 
 
->>>>>>> main
                         />
                           <Route path="/Flights" element={
                             <FlightsPage itinerary={itinerary} setItinerary={setItinerary} 
                                          destination={destination} arrivalDate={arrivalDate} 
                                          departureDate={departureDate} 
                                          travelers={travelers} departureIATA={departureIATA}
-                                         arrivalIATA={arrivalIATA} cost={cost}
+                                         arrivalIATA={arrivalIATA} cost={cost} userId = {userId}
                             />} 
                         />
                          <Route path="/favorites" element={

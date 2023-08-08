@@ -7,12 +7,44 @@ import axios from 'axios'
 
 function FlightsPage({ setItinerary, itinerary, destination, arrivalDate, 
                        departureDate, travelers, cost,
-                       departureIATA, arrivalIATA }) {
+                       departureIATA, arrivalIATA, userId }) {
 
     const [searchResults, setSearchResults] = useState([]);
     const [loading, setLoading] = useState(false);
     const [cabinClass, setCabinClass] = useState("economy");
     const [selectedFlight, setSelectedFlight] = useState(null);
+    const [itinerariesSaved, setItinerariesSaved] = useState(0)
+    const [savedItinerary, setSavedItinerary] = useState({
+        userId: 1,
+        hotelData:{
+            name: "",
+            city:"",
+            price:0,
+            check_in:"",
+            check_out:""
+        },
+        activities:[
+            {
+            name: "",
+            city:"",
+            price:0,
+            check_in:"",
+            check_out:""
+         },
+    ],
+    //should make these blank 
+        flightData:{
+            origin: departureIATA,
+            destination: arrivalIATA,
+            departing_at:"2023-09-02T00:46:00",
+            arriving_at: "2023-09-02T01:56:00",
+            carrier:{
+                name:"carrierName"
+            }
+
+
+    }
+    })
     
     async function setFlight() {
         departureDate= departureDate;
@@ -43,7 +75,7 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
 
     setLoading(true);
     await new Promise(resolve => setTimeout(resolve, 2000));
-    const response = await axios.post('https://nomadiafe.onrender.com/api/flights', flight);
+    const response = await axios.post('http://localhost:3009/api/flights', flight);
     localStorage.setItem("numTravelers", flight.numTravelers);
     localStorage.setItem("origin", flight.origin);
     localStorage.setItem("destination", flight.destination);
@@ -52,6 +84,7 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
     localStorage.setItem("cabin_class", flight.cabin_class);
 
     setSearchResults(response.data);
+    console.log("RES",searchResults)
     setLoading(false);
     }
     const handleSelectFlight = (flight) => {
@@ -77,6 +110,67 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
     useEffect(() => {
         setFlight();
       }, [cabinClass]);
+
+//for save for later feature
+      const handleOnSubmit = async (e) => {
+        e.preventDefault();
+       // if (itinerary['Activities'].length !== 0 && itinerary.Hotel !== null && itinerary.flight !== null){
+
+        
+        // Update the state using the setSavedItinerary function
+        setSavedItinerary({
+            hotelData: {
+                name: itinerary.Hotel.name,
+                city: itinerary.Hotel.wishlistName,
+                price: itinerary.Hotel.priceBreakdown.grossPrice.value.toFixed(2),
+                check_in: itinerary.Hotel.checkinDate,
+                check_out: itinerary.Hotel.checkoutDate,
+            },
+            activities:itinerary.Activities.map(activity => ({ 
+                //itinerary.Activities[0].name
+                //itinerary.Activities[0].location.locality
+                    name: activity.name,
+                    city: activity.location.locality,
+                    price: 0,
+                    check_in: itinerary.Hotel.checkinDate,
+                    check_out: itinerary.Hotel.checkoutDate,
+                })),
+            
+                //origin and destination are flipped in res
+            flightData: {
+                origin: itinerary.flight.slices[0].segments[0].destination, //or  departureIATA
+                destination: itinerary.flight.slices[0].segments[0].origin, // or arrivalIATA
+                departing_at: itinerary.flight.slices[0].segments[0].departingAt,
+                arriving_at:itinerary.flight.slices[0].segments[0].arrivingAt,
+                carrier: {
+                    name: itinerary.flight.slices[0].segments[0].carrier,
+                },
+            },
+        });
+        setItinerariesSaved(itinerariesSaved + 1)
+       
+
+    };
+
+    useEffect(() => {
+        
+        const submitData = async () => {
+            try {
+        
+                const response = await axios.post(
+                    `http://localhost:3009/api/users/${userId}/itineraries`,
+                    savedItinerary
+                );
+
+                console.log("successful", response.data.results);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        // Call the submitData function when itinerariesSaved changes
+        submitData();
+    }, [itinerariesSaved]);
       return (
         <>
           {!loading && (
@@ -120,6 +214,7 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
                               ? 'Select a flight to continue'
                               : 'Continue'}
                           </button>
+                          <button onClick = {handleOnSubmit}> Save For Later </button>
                         </div>
                       </div>
                     </div>
