@@ -1,6 +1,7 @@
 import axios from "axios";
 import { API_BASE_URL } from "../../constants";
 import { OrganizationRegisterProp, ProjectRegisterProp, VolunteerRegisterProp } from "../props/register";
+import { QueryProps } from "../components/QueryBar";
 
 interface requestProp {
     method : string,
@@ -164,6 +165,22 @@ class ApiClient {
             subDirectory: `/organization/project/interested/count/${projectId}`,
         }
         return this.request(requestOptions) 
+    }
+
+    async searchProjectsByTitle(query: string){
+        const requestOptions = {
+            method: "get",
+            subDirectory: `/project/search/${query}`,
+        }
+        return this.request(requestOptions)
+    }
+
+    async filterProjectsByTag(tag:string){
+        const requestOptions = {
+            method: "get",
+            subDirectory: `/project/tag/${tag}`
+        }
+        return this.request(requestOptions)
     }
 }
 

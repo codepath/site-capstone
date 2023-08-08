@@ -1,5 +1,6 @@
 import {
-    Group, MultiSelect, Select,
+    Button,
+    Group, MultiSelect,
     Text,
     TextInput
 } from '@mantine/core';
@@ -27,8 +28,10 @@ export function QueryBar(form: UseFormReturnType<QueryProps>) {
             setShowSearchButton(false);
         }
     }, [form])
+
+
     return (
-        <Group >
+        <Group position="center" spacing="xl" >
             <TextInput
                 icon={<Text size="xl" className='material-symbols-outlined' component="span">search</Text>}
                 radius="xl"
@@ -46,11 +49,11 @@ export function QueryBar(form: UseFormReturnType<QueryProps>) {
                 placeholder="Search projects by tags"
                 clearButtonProps={{ 'aria-label': 'Clear selection' }}
                 {...form.getInputProps("tags")} />
-            <Select
+            {/* <Select
                 label="Time Range"
                 placeholder="Search projects this..."
                 data={["Day", "Week", "Month", "Year"]}
-                {...form.getInputProps("timeRange")} />
+                {...form.getInputProps("timeRange")} /> */}
         </Group>
     );
 }

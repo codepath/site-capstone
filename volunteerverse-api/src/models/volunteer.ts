@@ -5,7 +5,7 @@ import { validateFields } from "../utils/validate";
 import bcrypt from "bcrypt";
 import { Projects } from "./projects";
 
-interface VolunteerProjectProp{
+export interface VolunteerProjectProp{
   id: number,
   orgName: string,
   orgDescription: string,
@@ -54,8 +54,6 @@ export class Volunteer {
   }
 
 
-
-  //interface??? could be useful to define types
 
   /**
    * Register volunteer with their information in the database
@@ -300,6 +298,7 @@ export class Volunteer {
     await Promise.all(
       volunteerSkills.map(async (tag: string) => {
         const tagProjects = await Projects.getProjectsWithTag(tag, email);
+        console.log(tagProjects)
         tagProjects.forEach((project) => {
           projects[project.id] = project; // updating object with new unqiue project
         });
@@ -319,6 +318,8 @@ export class Volunteer {
      console.log("projects retrieved: ", Array.from(Object.values(projects)))
     const activeOnlyProjects = Array.from(Object.values(projects)).filter((project : VolunteerProjectProp) => project.active === true)
     return activeOnlyProjects;
+    //return activeOnlyProjects;
+
   }
 
 
