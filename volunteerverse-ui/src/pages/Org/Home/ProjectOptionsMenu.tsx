@@ -1,7 +1,7 @@
 import { Menu, ActionIcon } from '@mantine/core';
 import { IconTrash, IconArchive, IconDotsVertical } from '@tabler/icons-react';
 
-export default function ProjectOptionsMenu({ projectId, handleDelete, handleArchiveToggle, isActive, ...props } : {isActive : boolean, projectId :  number, handleDelete: ({ projectId } : {projectId :  number}) => void, handleArchiveToggle: () => void}) {
+export default function ProjectOptionsMenu({ projectId, handleDelete, handleArchiveToggle, isActive } : {isActive : boolean, projectId :  number, handleDelete: ({ projectId } : {projectId :  number}) => void, handleArchiveToggle: () => void}) {
     
     return (
         <Menu shadow="md" width={200}>
