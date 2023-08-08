@@ -35,11 +35,11 @@ CREATE TABLE projects(
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     image_url TEXT,
     requested_people INTEGER,
-    approved_people INTEGER DEFAULT 0 (CHECK approved_people >= 0),
+    approved_people INTEGER DEFAULT 0 CHECK (approved_people >= 0) ,
     active BOOLEAN DEFAULT TRUE,
     external BOOLEAN DEFAULT FALSE,
     public_email TEXT NOT NULL,
-    contact_info TEXT,
+    external_link TEXT,
     public_number TEXT
 );
 
