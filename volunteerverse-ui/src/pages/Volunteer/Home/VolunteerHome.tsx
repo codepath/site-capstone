@@ -3,6 +3,10 @@ import {
   Button,
   Divider,
   Title,
+
+
+  Space,
+
   createStyles,
   useMantineTheme,
   Text,
@@ -48,6 +52,65 @@ function VolunteerHome() {
     console.log("fetchingProjects");
   }
   useEffect(() => { fetchProjects() }, [user]) // fetch projects
+
+  const fetchFilteredProjects = async (query: string, tags: string[]) => {
+    if (query.trim().length == 0 && tags.length == 0){
+      fetchProjects()
+    }
+    if (query.trim().length > 0 && tags.length == 0){
+    apiClient.searchProjectsByTitle(query).then(({ data, success, statusCode, error }: ApiResponseProp) => {
+      if (success) {
+        console.log("fetched filtered projects for volunteer successfully: ", data)
+        setVolunteerProjects(data);
+        // setVolunteerProjects(projectCardData)
+      } else {
+        setVolunteerProjects([]);
+        // display error notification? (stretch)
+        console.log("Unable to fetch volunteer data", `error: ${error} code: ${statusCode}`);
+      }
+    }).catch((error) => {
+      console.log("a very unexpected error has occured: ", error)
+    });
+  }
+
+  if (query.trim().length == 0 && tags.length > 0){
+    let projects: ProjectCardProps[] = []
+    const apiCalls = tags.map((tag: string) => {
+      return apiClient.filterProjectsByTag(tag)
+        .then(({ data, success, statusCode, error }: ApiResponseProp) => {
+          if (success) {
+            console.log("Fetched filtered projects for volunteer successfully: ", data);
+            projects.push(...data); // Use spread operator to push array elements
+          } else {
+            // Display error notification? (stretch)
+            console.log("Unable to fetch volunteer data", `error: ${error} code: ${statusCode}`);
+          }
+        })
+        .catch((error) => {
+          console.log("A very unexpected error has occurred: ", error);
+        });
+    });
+    
+    Promise.all(apiCalls)
+    .then(() => {
+      const result = new Set(projects);
+      const uniqueProjects = Array.from(result);
+      console.log("Unique projects: ", uniqueProjects);
+      setVolunteerProjects(uniqueProjects);
+    })
+    .catch((error) => {
+      console.log("Error in API calls: ", error);
+    });
+  }
+
+
+  }
+
+  
+  useEffect(() => {fetchFilteredProjects(queryForm.values.search, queryForm.values.tags)}, [user]) // fetch projects
+  
+
+
   const queryForm = useForm<QueryProps>({
     initialValues: {
       search: "",
@@ -55,9 +118,12 @@ function VolunteerHome() {
       timeRange: "Year"
     }
   });
+
   const { classes } = useStyles();
+
   const theme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
+
   const projectCardSlides = volunteerProjects?.map((item) => (
     <Carousel.Slide key={item.title}>
       <ProjectCard {...item} />
@@ -66,11 +132,13 @@ function VolunteerHome() {
 
   return isValidVolunteer ? (
     <>
+
     <div className={classes.root}>
       <Title fz={48} pl={isMobile ? "xl" :  "sm"} py={isMobile ? "md" : "xs"} order={1} align='left'>Welcome <Text c={"violet.7"} component="span">{user?.userType === "volunteer" ? user.firstName : ""}</Text> </Title>
       <Divider size={"md"} color='violet.2' h={"xl"} />
       <QueryBar {...queryForm} />
-      <Button size={isMobile ? "md" : "xl"} m={isMobile ? "xs" : "md"} radius={"xl"} variant="outline"  onClick={fetchProjects}>Search Projects</Button>
+      <Button size={isMobile ? "md" : "xl"} m={isMobile ? "xs" : "md"} radius={"xl"} variant="outline"  onClick={() => fetchFilteredProjects(queryForm.values.search, queryForm.values.tags)}>Search Projects</Button>
+
       {
         volunteerProjects && volunteerProjects?.length > 0 ? <Carousel
           controlSize={isMobile ? 40 : 70}

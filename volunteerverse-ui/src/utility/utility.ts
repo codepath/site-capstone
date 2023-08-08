@@ -24,7 +24,6 @@ export const fetchPrettyTime = (timestamp :  number) => {
      * @description: converts epcoch timestamp into a nice 
      * human readable time format using moment.js
      */
-    console.log(timestamp)
     return moment(timestamp).fromNow();
 }
 export const notify = {
