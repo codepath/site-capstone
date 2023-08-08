@@ -145,6 +145,7 @@ function CreateProject() {
                         maxWidth: "30rem"
                       }
                     }}
+                    onChange={(e) => console.log(e)}
                     {...props}>
                     {form.values.imageFile?.name || "Upload Project Cover"}</Button>}
                 </FileButton>

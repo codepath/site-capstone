@@ -14,7 +14,7 @@ import {
 } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 import { OrgFormValues } from '../../../props/forms';
-
+import { handleImageUpload } from '../../../utility/utility';
 const useStyles = createStyles((theme) => ({
   container: {
 
@@ -41,7 +41,10 @@ function CreateOrgProfileForm({ form }: { form: UseFormReturnType<OrgFormValues>
    *  posting the file to the db)
    * - handle image hosting
    */
-  const { classes } = useStyles()
+  const { classes } = useStyles();
+  const setUrl = (url: string) => {
+    form.setFieldValue("logoUrl", url);
+  }
 // console.log(form.values)
   return (
     <Container mt={"xl"}>
@@ -55,7 +58,10 @@ function CreateOrgProfileForm({ form }: { form: UseFormReturnType<OrgFormValues>
             align={"center"}
             gap={"sm"}
             mb={"xl"}>
-            <FileButton {...form.getInputProps("imageFile")}>
+            <FileButton 
+              accept="image/png,image/jpeg"
+             {...form.getInputProps("imageFile")}
+             onChange={(e) => {form.getInputProps("imageFile").onChange(e); e ? handleImageUpload(e, setUrl) : null}}>
               {(props) => 
                 
               <Button
