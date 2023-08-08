@@ -62,7 +62,7 @@ function CreateProject() {
       publicEmail: "",
       publicNumber: "",
     },
-    validateInputOnChange: ["requestedPeople", "desc", "title"],
+    validateInputOnChange: ["requestedPeople", "title"],
     validate: (values) => ({
       title: values.title.trim().length > 0  && values.title.trim().length <= 50 ? null : "Title cannot be empty of greater than 50 characters",
       desc: (values.desc.trim().length <= 400 && values.desc.trim().length > 50) ? null : "Descriptoin must be between 50-400 characters long",

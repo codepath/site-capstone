@@ -24,13 +24,6 @@ import NotAuthorized from "../NotAuthorized";
 
 
 const useStyles = createStyles((theme) => ({
-  container: {
-    // display: "flex",
-    // flexDirection: "column",
-    // gap: `calc(${theme.spacing.xl} * 1.5)`,
-    // alignItems: "center",
-    // height: "100%"
-  },
   textContent: {
 
   },
@@ -133,7 +126,7 @@ function VolunteerProjectDetails() {
   return (project === undefined || !isValidVolunteer) ? <NotAuthorized /> : (
     <Box p={0} m={0}>
       <GoBackButton mb={"md"} w={"100%"} maw={200} />
-      <Container className={classes.container} px={isMobile ? 0 : "md"}>
+      <Container px={isMobile ? 0 : "md"}>
         <Flex gap={isMobile ? "sm" : "md"} direction={"column"} w={"100%"} align={"center"}>
           <Image radius={"xl"} withPlaceholder src={project?.imageUrl} width={isMobile ? "100%" : "100%"} height={isMobile ? 300 : 500} />
           <Group variant="filled" >

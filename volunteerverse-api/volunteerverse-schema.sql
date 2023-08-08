@@ -38,7 +38,7 @@ CREATE TABLE projects(
     approved_people INTEGER DEFAULT 0 CHECK (approved_people >= 0),
     active BOOLEAN DEFAULT TRUE,
     external BOOLEAN DEFAULT FALSE,
-    public_email TEXT,
+    public_email TEXT NOT NULL,
     external_link TEXT,
     public_number TEXT
 );

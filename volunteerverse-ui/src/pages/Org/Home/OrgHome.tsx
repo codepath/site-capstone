@@ -1,10 +1,11 @@
 import {
   Badge, Button,
-  Container, Flex, Group,
+  Container, Divider, Flex, Group,
   Image,
   Paper, Skeleton,
   Text,
   Title,
+  createStyles,
   useMantineTheme
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
@@ -82,55 +83,64 @@ function SlimProjectCard({ project, handleDelete }: { project: VolunteerProjectP
   )
 }
 
-function SlimProjectCard2({ project, handleDelete }: { project: VolunteerProjectProp, handleDelete: ({ projectId }: { projectId: number }) => void }) {
-  // use for org projects too
-  const [projectStatus, setProjectStatus] = useState(project.active)
-  const toggleProjectActiveStatus = () => {
-    /**
-     * @description: toggles status state of a project between on and off
-     */
-    apiClient.toggleProjectStatus({ projectId: project.id }).then(({ success, data, statusCode, error }) => {
-      if (success) {
-        setProjectStatus(data.active)
-        project.active = data.active;
-        // change project active state here
-      } else {
-        console.log("error while toggling project active status : ", statusCode, error)
-        notify.error(); // shows error notification
-      }
-    }).catch((error) => {
-      console.log("a really unexpected error occured: ", error)
-    })
-    console.log("toggling projects status state")
-  }
+// function SlimProjectCard2({ project, handleDelete }: { project: VolunteerProjectProp, handleDelete: ({ projectId }: { projectId: number }) => void }) {
+//   // use for org projects too
+//   const [projectStatus, setProjectStatus] = useState(project.active)
+//   const toggleProjectActiveStatus = () => {
+//     /**
+//      * @description: toggles status state of a project between on and off
+//      */
+//     apiClient.toggleProjectStatus({ projectId: project.id }).then(({ success, data, statusCode, error }) => {
+//       if (success) {
+//         setProjectStatus(data.active)
+//         project.active = data.active;
+//         // change project active state here
+//       } else {
+//         console.log("error while toggling project active status : ", statusCode, error)
+//         notify.error(); // shows error notification
+//       }
+//     }).catch((error) => {
+//       console.log("a really unexpected error occured: ", error)
+//     })
+//     console.log("toggling projects status state")
+//   }
 
-  return (
-    <Paper sx={(theme) => ({
-      "&:hover": { "transform": "scale(1)", boxShadow: `${theme.shadows.xl}` },
-      transform: "scale(0.99)",
-      transition: "all 300ms ease-in-out"
-    })} p={"md"} shadow='md' radius={"xl"} h={200}>
-      <Group noWrap={true}>
-        <Image width={200} fit='cover' withPlaceholder src={project.imageUrl} />
-        <Flex direction={"column"} h={"100%"} justify={"space-between"} >
-          <ProjectOptionsMenu isActive={projectStatus} projectId={project.id} handleArchiveToggle={toggleProjectActiveStatus} handleDelete={handleDelete}/>
-          <Group position="left">
-            <Title> <Text sx={{ transition: "all 200ms ease-in-out" }} to={`/projects/${project.id}`} component={Link}>{project.title}</Text></Title>
-            <Text color='dimmed'>Posted: { project.createdAt ? fetchPrettyTime(project.createdAt) : "N/A"}</Text>
-          </Group>
-          <Group>
-            <Badge color={!project.active ? `orange.6` : `green.6`}>{project.active ? "active" : "archived"}</Badge>
-          </Group>
-        </Flex>
-      </Group>
-    </Paper>
-  )
-}
+//   return (
+//     <Paper sx={(theme) => ({
+//       "&:hover": { "transform": "scale(1)", boxShadow: `${theme.shadows.xl}` },
+//       transform: "scale(0.99)",
+//       transition: "all 300ms ease-in-out"
+//     })} p={"md"} shadow='md' radius={"xl"} h={200}>
+//       <Group noWrap={true}>
+//         <Image width={200} fit='cover' withPlaceholder src={project.imageUrl} />
+//         <Flex direction={"column"} h={"100%"} justify={"space-between"} >
+//           <ProjectOptionsMenu isActive={projectStatus} projectId={project.id} handleArchiveToggle={toggleProjectActiveStatus} handleDelete={handleDelete}/>
+//           <Group position="left">
+//             <Title> <Text sx={{ transition: "all 200ms ease-in-out" }} to={`/projects/${project.id}`} component={Link}>{project.title}</Text></Title>
+//             <Text color='dimmed'>Posted: { project.createdAt ? fetchPrettyTime(project.createdAt) : "N/A"}</Text>
+//           </Group>
+//           <Group>
+//             <Badge color={!project.active ? `orange.6` : `green.6`}>{project.active ? "active" : "archived"}</Badge>
+//           </Group>
+//         </Flex>
+//       </Group>
+//     </Paper>
+//   )
+// }
+
+const useStyles = createStyles((theme) => ({
+  root :{
+    padding: `calc(${theme.spacing.xl})`
+  }
+}))
 
 function OrgHome() {
   
   const [postedProjects, setPostedProjects] = useState<VolunteerProjectProp[] | undefined>(undefined);
   const {isValidOrg, user, } = useContext(AuthenticationContext);
+  const theme = useMantineTheme();
+  const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
+  const { classes } = useStyles();
   const navigate = useNavigate();
   const queryForm = useForm<QueryProps>({
     initialValues: {
@@ -161,7 +171,7 @@ function OrgHome() {
       apiClient.fetchProjects(user.userType).then(({ success, statusCode, data, error }: ApiResponseProp) => {
         if (success) {
           console.log("successfully receieved posted projects", data);
-          setPostedProjects(data.orgProjects)
+          setPostedProjects(data.orgProjects.reverse())
         } else {
           // maybe set state for an error message
           
@@ -177,8 +187,9 @@ function OrgHome() {
     searchPostedProjects();
   }, [])
   return !(isValidOrg) ? <NotAuthorized /> : (
-    <>
-      <Title align='left'>My Projects</Title>
+    <div className={classes.root}>
+      <Title fz={48} pl={isMobile ? "xl" :  "sm"} py={isMobile ? "md" : "xs"} order={1} c={"violet.8"} align='left'>Your Projects</Title>
+      <Divider size={"md"} color='violet.2' h={"xl"} />
       <Paper shadow={"md"} radius={"md"}>
         <Skeleton visible={postedProjects === undefined}>
           <Group>
@@ -187,7 +198,7 @@ function OrgHome() {
           </Group>
         </Skeleton>
       </Paper>
-      <Button my={"xl"} onClick={() => navigate("/projects/create")} variant='outline' radius={"xl"} size={"xl"}>Create Project</Button>
+      <Button my={"xl"} onClick={() => navigate("/projects/create")} variant='outline' radius={"xl"} size={ isMobile ? "md" : "xl"}>Create Project</Button>
       <Container ml={"auto"} mr={"auto"} maw={1000}>
         <Skeleton visible={postedProjects === undefined}>
           <Flex gap={"xl"} direction={"column"}>
@@ -195,13 +206,13 @@ function OrgHome() {
               return (
                 <SlimProjectCard project={project} handleDelete={deleteProject} key={`${project.id}`} />
                 )
-            }) :
+              }) :
               <NoneFound title='Post a project to see it here!' />
             }
           </Flex>
         </Skeleton>
       </Container>
-    </>
+            </div>
   )
 }
 

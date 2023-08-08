@@ -1,9 +1,15 @@
 import { Carousel } from "@mantine/carousel";
 import {
   Button,
+  Divider,
   Title,
+
+
+  Space,
+
+  createStyles,
   useMantineTheme,
-  Space
+  Text,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useMediaQuery } from "@mantine/hooks";
@@ -15,6 +21,11 @@ import { ApiResponseProp, apiClient } from "../../../services/ApiClient";
 import NotAuthorized from "../../NotAuthorized";
 import ProjectCard, { ProjectCardProps } from "./ProjectCard";
 
+const useStyles = createStyles((theme) => ({
+  root : {
+    padding: `0 calc(${theme.spacing.xl} * 1.5)`,
+  }
+}))
 
 function VolunteerHome() {
   /**
@@ -108,7 +119,7 @@ function VolunteerHome() {
     }
   });
 
-  
+  const { classes } = useStyles();
 
   const theme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
@@ -121,12 +132,13 @@ function VolunteerHome() {
 
   return isValidVolunteer ? (
     <>
-      <Title>{`Welcome ${ user?.userType === "volunteer" ? user.firstName : ""}! `}</Title>
-      <Space h="md" />
+
+    <div className={classes.root}>
+      <Title fz={48} pl={isMobile ? "xl" :  "sm"} py={isMobile ? "md" : "xs"} order={1} align='left'>Welcome <Text c={"violet.7"} component="span">{user?.userType === "volunteer" ? user.firstName : ""}</Text> </Title>
+      <Divider size={"md"} color='violet.2' h={"xl"} />
       <QueryBar {...queryForm} />
-      <Space h="md" />
-      <Button size="lg" radius={"md"} compact onClick={() => fetchFilteredProjects(queryForm.values.search, queryForm.values.tags)}>Search Projects</Button>
-      <Space h="md" />
+      <Button size={isMobile ? "md" : "xl"} m={isMobile ? "xs" : "md"} radius={"xl"} variant="outline"  onClick={() => fetchFilteredProjects(queryForm.values.search, queryForm.values.tags)}>Search Projects</Button>
+
       {
         volunteerProjects && volunteerProjects?.length > 0 ? <Carousel
           controlSize={isMobile ? 40 : 70}
@@ -152,6 +164,7 @@ function VolunteerHome() {
         </Carousel> :
           <NoneFound title="No projects found" />
       }
+    </div>
     </>
   ) : <NotAuthorized />
 }

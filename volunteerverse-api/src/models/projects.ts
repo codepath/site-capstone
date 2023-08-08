@@ -142,6 +142,7 @@ export class Projects {
         public_email,
         public_number,
       } = result.rows[0];
+
       const tags = await this.getProjectTags(project_name);
 
       if (external == false) {
@@ -203,6 +204,7 @@ export class Projects {
           active: true,
         };
         return projectCard;
+
       }
     }
     throw new BadRequestError(`Project ${projectId} does not exist`);
