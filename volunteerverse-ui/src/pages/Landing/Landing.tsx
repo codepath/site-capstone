@@ -6,6 +6,7 @@ import Logo from "../../assets/Logo.png";
 import { useDisclosure } from "@mantine/hooks";
 import SignUpModal from "./SignUpModal";
 import { keyframes } from '@emotion/react';
+import AboutUs from "./AboutUs";
 
 const useStyles = createStyles((theme) => {
   const waveAnimation = keyframes`
@@ -173,7 +174,8 @@ export default function Landing() {
           </Container>
         </Flex>
         <WhatWeDo  />
-        <CallToAction openModal={openModal} />
+        {/* <CallToAction openModal={openModal} /> */}
+        <AboutUs />
         <Modal 
         styles={() => ({ inner: {paddingLeft: "2rem"}})}
         title={<Title  align="center">Select Your Role:</Title>}
