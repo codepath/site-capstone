@@ -285,4 +285,26 @@ export class Projects {
       throw new BadRequestError()
     }
   }
+
+  static async searchFilteredProjects(tags:string[], query:string, email:string){
+    let projects = [];
+    const projectPromises = tags.map(async(tag:string)=> {return await this.getProjectsWithTag(tag, email)});
+    try {
+      const projectsArrays = await Promise.all(projectPromises);
+      const flattenedProjects = projectsArrays.flat();
+      
+      
+    // Filter projects that contain the query
+    const filteredProjects = flattenedProjects.filter((project: ProjectCardProp) =>
+      project.title.toLowerCase().includes(query)
+    );
+    
+    // Add the filtered projects to your 'projects' array
+    projects.push(...filteredProjects);
+    return projects;
+    } catch (error) {
+      console.error('Error fetching projects:', error);
+    }
+
+  }
 }

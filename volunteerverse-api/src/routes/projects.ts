@@ -3,6 +3,7 @@
 import express from "express";
 import { Projects } from "../models/projects";
 import { requireAuthenticatedUser } from "../middleware/security";
+import qs from "qs";
 
 
 export const projectRoutes = express.Router();
@@ -37,6 +38,25 @@ projectRoutes.get("/tags", async function (req, res, next) {
     next(error);
   }
 });
+
+    /**route that filters projects based on query and tags */
+    projectRoutes.get("/searchfilter/", requireAuthenticatedUser, 
+    async function (req,res, next){
+      const { query, tags } = req.query;
+      const { email } = res.locals.user;
+      // Convert 'tags' to an array using split and filter
+      const tagsArray = typeof tags === 'string' ? tags.split(',').filter(tag => tag.trim() !== '') : [];
+      // Ensure 'query' is treated as a string
+      const queryString = typeof query === 'string' ? query : '';
+      try {
+        const projects = await Projects.searchFilteredProjects(tagsArray, queryString, email);
+        
+        res.json(projects);
+      } catch (error) {
+        res.status(500).json({ error: 'Error fetching projects' });
+      }
+
+    })
 
 /**route that gets all projects with given tag */
 projectRoutes.get(
@@ -89,5 +109,9 @@ projectRoutes.get(
         }
       }
     );
+
+
+
+
     
     
