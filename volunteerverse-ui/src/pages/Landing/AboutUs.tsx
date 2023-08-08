@@ -1,5 +1,6 @@
 import { createStyles, Card, Avatar, Text, Group, Button, rem,  Image, Title, Stack, Flex, useMantineTheme} from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
+import { Link} from "react-router-dom";
 import { FaGithub, FaLinkedin,FaRegEnvelope} from 'react-icons/fa';
 
 const useStyles = createStyles((theme) => ({
@@ -62,8 +63,12 @@ function FoundersCard({ image, avatar, name, job, school, stats,linkdlnLink, git
           <a href={linkdlnLink}>
           <FaLinkedin/>
           </a>
-          <FaGithub/>
-          <FaRegEnvelope/>
+
+          <a href={githubLink}>
+          <FaGithub />
+          </a>
+
+          <Link to={`mailto:emailLink`}><FaRegEnvelope /></Link>
         </Group>
         <Text ta="center" fz="lg" fw={500} mt="sm">
           {school}
@@ -92,9 +97,9 @@ function FoundersCard({ image, avatar, name, job, school, stats,linkdlnLink, git
       name: "Kelechi Emeruwa",
       job: "Fullstack engineer",
       school: "University of Texas, Austin",
-      linkdlnLink: "",
-      githubLink: "",
-      emailLink: "",
+      linkdlnLink: "https://www.linkedin.com/in/kelechi-emeruwa",
+      githubLink: "https://github.com/Kelach",
+      emailLink: "kelechi@uttexas",
       stats: [
         {
           value: "34K",
@@ -119,8 +124,8 @@ function FoundersCard({ image, avatar, name, job, school, stats,linkdlnLink, git
       job: "Fullstack engineer",
       school: "Brown University",
       linkdlnLink: "https://www.linkedin.com/in/melyssa-cristino",
-      githubLink: "",
-      emailLink: "",
+      githubLink: "https://github.com/melyssa5",
+      emailLink: "melyssa_cristino@brown.edu",
       stats: [
         {
           value: "34K",
@@ -144,9 +149,9 @@ function FoundersCard({ image, avatar, name, job, school, stats,linkdlnLink, git
       name: "Iretomiwa Idowu",
       job: "Fullstack engineer",
       school: "Southern Illinois University E",
-      linkdlnLink: "",
-      githubLink: "",
-      emailLink: "",
+      linkdlnLink: "https://www.linkedin.com/in/iretomiwa-idowu",
+      githubLink: "https://github.com/Tomiwa2",
+      emailLink: "iidowu@siue.edu",
       stats: [
         {
           value: "34K",
