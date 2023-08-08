@@ -1,16 +1,22 @@
-import { Button, Header, Group, Text, Container, Image, createStyles, Title, Modal } from "@mantine/core";
-import { Link, useLocation } from "react-router-dom";
-import Logo from "../assets/Logo.png";
 import {
+  Box, Burger,
+  Button,
   Divider,
-  Box, Burger, Drawer,
-  ScrollArea, rem,
-} from '@mantine/core';
+  Drawer,
+  Group,
+  Header,
+  Modal,
+  ScrollArea,
+  Text,
+  Title,
+  createStyles,
+  rem
+} from "@mantine/core";
 import { useDisclosure } from '@mantine/hooks';
-import { useNavigate } from "react-router-dom";
-import SignUpModal from "../pages/Landing/SignUpModal";
 import { useContext, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthenticationContext } from "../context/AuthenicationContext";
+import SignUpModal from "../pages/Landing/SignUpModal";
 
 const useStyles = createStyles((theme) => ({
   link: {
@@ -80,7 +86,7 @@ export default function Navbar() {
   /**
    * @todo use navigation route to change navbar conditionallty
    */
-  const { isAuth, isValidOrg, user, removeToken} = useContext(AuthenticationContext)
+  const { isAuth, isValidOrg, removeToken} = useContext(AuthenticationContext)
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const [showModal, { open: openModal, close: closeModal }] = useDisclosure(false);
   const navigate = useNavigate();
