@@ -172,6 +172,8 @@ export class Projects {
         approvedVolunteers: approved_people,
         tags: tags,
         active: active,
+        orgPublicEmail: public_email,
+        orgPublicNumber:  public_number
       };
       
       if (userType == "volunteer") {
@@ -182,8 +184,6 @@ export class Projects {
           );
           projectCard["approved"] = await Volunteer.fetchProjectApproval(projectId, email)
           projectCard["external"] = external
-          projectCard["orgPublicEmail"] = public_email
-          projectCard["orgPublicNumber"] = public_number
       }
       return projectCard;
     }

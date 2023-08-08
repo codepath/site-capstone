@@ -2,6 +2,7 @@ import {
   Badge,
   Button,
   Container,
+  Divider,
   Flex,
   Group, Image,
   Paper,
@@ -113,14 +114,15 @@ function MyProjects() {
    */
   return !isValidVolunteer ? <NotAuthorized /> : (
     <>
-      <Title align='left'>My Projects</Title>
+            <Title fz={ isMobile ?  40 : 50} pl={isMobile ? "xl" :  "sm"} py={isMobile ? "md" : "xs"} order={1} c={"violet.8"} align='left'>Your Projects</Title>
+      <Divider size={"md"} color='violet.2' h={"xl"} />
       <Paper shadow={"md"} radius={"md"}>
         <Group>
           <QueryBar {...queryForm} />
           <Button onClick={() => { setMyProjects(undefined); searchMyProjects(); }} variant='light'>Search Filter</Button>
         </Group>
       </Paper>
-      <Container px={isMobile ? 0 : "md"} mt={"xl"} ml={"auto"} mr={"auto"} maw={ isMobile ? "100vw" :  "60vw"}>
+      <Container px={isMobile ? 0 : "md"} mt={"xl"} ml={"auto"} mr={"auto"} maw={ isMobile ? "100vw" :  "80vw"}>
           {myProjects?.length ? myProjects?.map((project: VolunteerProjectProp) => {
             console.log("maping projects: ", project)
             return (
