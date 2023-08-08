@@ -19,7 +19,8 @@ export default function Activities({
                                     travelers,
                                     itinerary,
                                     setItinerary,
-                                    cost
+                                    cost,
+                                    userId
 }) {
     const [searchValue, setSearchValue] = useState("")
     const [inputValue, setInputValue] = useState("")
@@ -97,8 +98,9 @@ export default function Activities({
     }
     const handleOnSubmit = async (e) => {
         e.preventDefault();
+       // if (itinerary['Activities'].length !== 0 && itinerary.Hotel !== null && itinerary.flight !== null){
 
-
+        
         // Update the state using the setSavedItinerary function
         setSavedItinerary({
             hotelData: {
@@ -129,6 +131,8 @@ export default function Activities({
             },
         });
         setItinerariesSaved(itinerariesSaved + 1)
+       
+
     };
 
     useEffect(() => {
@@ -137,7 +141,7 @@ export default function Activities({
             try {
         
                 const response = await axios.post(
-                    `http://localhost:3009/api/users/5/itineraries`,
+                    `http://localhost:3009/api/users/${userId}/itineraries`,
                     savedItinerary
                 );
 
