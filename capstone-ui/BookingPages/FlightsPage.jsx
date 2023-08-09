@@ -3,11 +3,17 @@ import { useState, useEffect } from 'react';
 import FlightCard from './FlightCard';
 import { CircularProgress } from '@mui/material'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 
 function FlightsPage({ setItinerary, itinerary, destination, arrivalDate, 
                        departureDate, travelers, cost,
-                       departureIATA, arrivalIATA, userId }) {
+                       departureIATA, arrivalIATA, userId, setCost }) {
+
+    const navigate = useNavigate();
+
+    
+
 
     const [searchResults, setSearchResults] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -75,7 +81,7 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
 
     setLoading(true);
     await new Promise(resolve => setTimeout(resolve, 2000));
-    const response = await axios.post('http://localhost:3009/api/flights', flight);
+    const response = await axios.post('https://nomadiafe.onrender.com/api/flights', flight);
     localStorage.setItem("numTravelers", flight.numTravelers);
     localStorage.setItem("origin", flight.origin);
     localStorage.setItem("destination", flight.destination);
@@ -111,6 +117,10 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
         setFlight();
       }, [cabinClass]);
 
+    useEffect(() => {
+      
+    }, [])
+
 //for save for later feature
       const handleOnSubmit = async (e) => {
         e.preventDefault();
@@ -138,10 +148,10 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
             
                 //origin and destination are flipped in res
             flightData: {
-                origin: itinerary.flight.slices[0].segments[0].destination, //or  departureIATA
-                destination: itinerary.flight.slices[0].segments[0].origin, // or arrivalIATA
-                departing_at: itinerary.flight.slices[0].segments[0].departingAt,
-                arriving_at:itinerary.flight.slices[0].segments[0].arrivingAt,
+                origin: itinerary.flight[0].slices[0].segments[0].destination, //or  departureIATA
+                destination: itinerary.flight[0].slices[0].segments[0].origin, // or arrivalIATA
+                departing_at: itinerary.flight[0].slices[0].segments[0].departingAt,
+                arriving_at:itinerary.flight[0].slices[0].segments[0].arrivingAt,
                 carrier: {
                     name: itinerary.flight.slices[0].segments[0].carrier,
                 },
@@ -153,12 +163,14 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
     };
 
     useEffect(() => {
+
+      let auserId = localStorage.getItem("userId");
         
         const submitData = async () => {
             try {
         
                 const response = await axios.post(
-                    `http://localhost:3009/api/users/${userId}/itineraries`,
+                    `https://nomadiafe.onrender.com/api/users/${auserId}/itineraries`,
                     savedItinerary
                 );
 
@@ -200,21 +212,21 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
                         <div>Excluding taxes and fees.</div>
                         <div>
                           <button
-                            disabled={itinerary['Activities'].length === 0}
+                            disabled={itinerary['Activities'] === null}
                             onClick={() => {
                               navigate('/booking');
                             }}
                             className={
-                              itinerary['Activities'].length === 0
+                              itinerary['flight'] == null
                                 ? 'bg-gray-100 text-gray-400'
                                 : ''
                             }
                           >
-                            {itinerary['Activities'].length === 0
+                            {itinerary['flight'] === null
                               ? 'Select a flight to continue'
                               : 'Continue'}
                           </button>
-                          <button onClick = {handleOnSubmit}> Save For Later </button>
+                          {/* <button onClick = {handleOnSubmit}> Save For Later </button> */}
                         </div>
                       </div>
                     </div>
@@ -242,6 +254,7 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
                         setItinerary={setItinerary}
                         selectedFlight={selectedFlight}
                         onSelectFlight={handleSelectFlight}
+                        setCost={setCost}
                       />
                     ))}
                   </div>

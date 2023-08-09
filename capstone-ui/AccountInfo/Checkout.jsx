@@ -1,20 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
+import { Link } from 'react-router-dom';
+
 
 function Checkout({ itinerary, arrivalDate, departureDate, destination }) {
   const [the_itinerary, set_the_itinerary] = useState(null);
   const [hotelDestination, setHotelDestination] = useState(destination);
   const [hotelArrivalDate, setHotelArrivalDate] = useState(arrivalDate);
   const [hotelDepartureDate, setHotelDepartureDate] = useState(departureDate);
+  console.log("checkout")
+
   useEffect(() => {
     if (itinerary) {
       set_the_itinerary(itinerary);
+      
+
+    } else if (storage.Hotel != null) {
+      console.log("entered");
+      let destination = localStorage.getItem("Destination");
+      set_the_itinerary(storage);
+      setHotelDestination(destination);
+      setHotelArrivalDate(storage.Hotel.checkinDate);
+      setHotelArrivalDate(storage.Hotel.checkoutDate);
+
     }
     // Update other state variables here if needed
     setHotelDestination(destination);
     setHotelArrivalDate(arrivalDate);
     setHotelDepartureDate(departureDate);
   }, [itinerary, destination, arrivalDate, departureDate]);
+  
 
   if (itinerary.length == 0) {
     return (
@@ -42,48 +57,53 @@ function Checkout({ itinerary, arrivalDate, departureDate, destination }) {
 
 // Concatenate all parameters into the final URL
 const bookingUrl = `${baseUrl}?${hotelIdParam}&${checkinParam}&${checkoutParam}&${intervalParam}&${stageParam}&${roomsParam}`;
+console.log(itinerary, "???")
 
 
-
-  return (
+return (
+  <div
+    className="flex w-screen h-screen px-64"
+    style={{
+      background: 'rgb(16,16,16)',
+      background: 'linear-gradient(90deg, rgba(16,16,16,1) -124%, rgba(90,90,95,1) -43%, rgba(140,143,144,1) 14%, rgba(182,189,195,1) 27%, rgba(232,237,238,1) 87%, rgba(254,255,255,1) 100%)',
+    }}
+  >
     <div
-      className="flex w-screen h-screen px-64"
       style={{
-        background: 'rgb(16,16,16)',
-        background: 'linear-gradient(90deg, rgba(16,16,16,1) -124%, rgba(90,90,95,1) -43%, rgba(140,143,144,1) 14%, rgba(182,189,195,1) 27%, rgba(232,237,238,1) 87%, rgba(254,255,255,1) 100%)',
+        width: '900px',
+        height: '600px',
+        backgroundColor: 'white',
+        boxShadow: '4px 4px 8px rgba(0, 0, 0, 0.2)',
       }}
+      className="mt-10 ml-20"
     >
-      <div
-        style={{
-          width: '900px',
-          height: '600px',
-          backgroundColor: 'white',
-          boxShadow: '4px 4px 8px rgba(0, 0, 0, 0.2)',
-        }}
-        className="mt-10 ml-20"
-      >
-        <h1 className="text-5xl mb-20 ml-2 font-bold font-sans text-black mt-10 ml-[40px] mb-12">Nomadia</h1>
-
-        <div className="flex">
-          <div className="mr-2 text-6xl mt-10 ml-[218px]">Hotel in </div>
-          <div className="font-semibold text-blue-500 text-6xl mt-10"> {hotelDestination?.toUpperCase()}</div>
-        </div>
-        <div className="flex-auto">
-          <div className="text-4xl flex flex-col mt-3">
-            <div className='ml-[240px]'>{hotelArrivalDate} to {hotelDepartureDate}</div>
-        <div className="text-2xl mt-10 ml-[345px]">Total trip cost: ${the_itinerary?.Hotel?.priceBreakdown?.grossPrice?.value?.toFixed(2)}</div>
-        <div className="text-[20px] text-black font-semibold mt-[140px] ml-[300px]">
-              For booking, please visit <a href={bookingUrl} target="_blank" rel="noopener noreferrer" className="underline">Booking.com</a>.
-            </div>
-      
+      <h1 className="text-5xl mb-20 ml-2 font-bold font-sans text-black mt-10 ml-[40px] mb-12">Nomadia</h1>
+      {itinerary.Hotel == null ? (
+        <p className="text-2xl mt-[180px] ml-[150px]">Go back to <Link to="/" className="text-blue-500 underline">homepage</Link> to start booking your next adventure!</p>
+      ) : (
+        <>
+          <div className="flex">
+            <div className="mr-2 text-6xl mt-10 ml-[218px]">Hotel in </div>
+            <div className="font-semibold text-blue-500 text-6xl mt-10"> {hotelDestination?.toUpperCase()}</div>
           </div>
-        </div>
-      </div>
-      <div className="absolute bottom-4 left-4 text-sm text-white font-semibold">
-        *Prices are subject to change based on availability and booking.com's policies.
-      </div>
+          <div className="flex-auto">
+            <div className="text-4xl flex flex-col mt-3">
+              <div className='ml-[240px]'>{hotelArrivalDate} to {hotelDepartureDate}</div>
+              <div className="text-2xl mt-10 ml-[345px]">Total trip cost: ${the_itinerary?.Hotel?.priceBreakdown?.grossPrice?.value?.toFixed(2)}</div>
+              <div className="text-[20px] text-black font-semibold mt-[140px] ml-[300px]">
+                For booking, please visit <a href={bookingUrl} target="_blank" rel="noopener noreferrer" className="underline">Booking.com</a>.
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
-  );
+    <div className="absolute bottom-4 left-4 text-sm text-white font-semibold">
+      *Prices are subject to change based on availability and booking.com's policies.
+    </div>
+  </div>
+);
+
   }
 
   

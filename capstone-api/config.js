@@ -1,7 +1,7 @@
 require("dotenv").config();
 const secretKey = `${process.env.SECRET_KEY}`;
 
-const PORT = process.env.PORT ? Number(process.env.PORT) : 3009;
+const PORT = process.env.PORT ? Number(process.env.PORT) : 3002;
 
 function getDatabaseUri() {
     const dbUser = process.env.DATABASE_USER || "codepath_capstone_user"; //change this to ur name when you run psql 

@@ -15,7 +15,7 @@ export default function Activities({
                                     itinerary,
                                     setItinerary,
                                     cost,
-                                    userId
+                                    userId, filterFlights
 }) {
     const [searchValue, setSearchValue] = useState("")
     const [inputValue, setInputValue] = useState("")
@@ -182,7 +182,7 @@ export default function Activities({
                     <button
                       disabled={itinerary['Activities'].length === 0 ? true : false}
                       onClick={() => {
-                        navigate('/booking');
+                        filterFlights ? navigate('/flights') : navigate('/booking')
                       }}
                       className={itinerary['Activities'].length === 0 ? `bg-gray-100 text-gray-400` : ``}
                     >

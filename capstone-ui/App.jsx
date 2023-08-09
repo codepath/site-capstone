@@ -54,6 +54,7 @@ function App() {
 
     const [cost, setCost] = useState(0.00)
     const [userId, setUserId] = useState(0)
+    const [userData, setUserdata] = useState();
     const addToItinerary = (item)=>{
 
         
@@ -69,6 +70,46 @@ function App() {
           console.log(itinerary.length)
     }
 
+    
+    async function fetchUserDataFromToken(token, userId) {
+        console.log("???", token, userId);
+        console.log("hereeee");
+        
+        try {
+            // Make an API call to fetch user data using the token
+            const response = await axios.get(`https://nomadiafe.onrender.com/api/users/${userId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            // Return the user data if successful
+            return response.data;
+        } catch (error) {
+            // Handle errors appropriately
+            console.error('Error fetching user data:', error);
+            throw error;
+        }
+    }
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+      
+        if (token) {
+          const userId = localStorage.getItem('userId');
+          fetchUserData(token, userId);
+        }
+      }, []);
+
+    const fetchUserData = async (token, userId) => {
+        try {
+          const user = await fetchUserDataFromToken(token, userId);
+          setUserdata(user);
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+        }
+      };
+      
+
     return ( 
     <LocalizationProvider dateAdapter={AdapterDayjs}>
         <ThemeProvider theme={theme}>
@@ -76,7 +117,8 @@ function App() {
                 
                 <Router>
                     <Navbar setAuthenticated={setAuthenticated} authenticated={authenticated}
-                            setDepartureDate={setDepartureDate} setArrivalDate={setArrivalDate}  setUserId = {setUserId}/>
+                            setDepartureDate={setDepartureDate} setArrivalDate={setArrivalDate}  setUserId = {setUserId}
+                            />
                     <Routes>
                         <Route path="/" element={
                             <Homepage filterFlights={filterFlights} setFilterFlights={setFilterFlights}
@@ -93,7 +135,7 @@ function App() {
                             />
                         } />
                         <Route path="/activities" element={
-                            <Activities itinerary ={itinerary}
+                            <Activities filterFlights={filterFlights} itinerary ={itinerary}
                                         setItinerary = {setItinerary}
                                         addToItinerary = {addToItinerary}
                                         travelers={travelers}
@@ -105,6 +147,7 @@ function App() {
                                         userId={userId} /> }/>
                         <Route path="/hotels" element={
                             <HotelsPage 
+                            filterFlights={filterFlights} 
                                     travelers={travelers}
                                     departureDate={departureDate}
                                     arrivalDate={arrivalDate}
@@ -116,7 +159,9 @@ function App() {
 
                         />
                          <Route path="/account" element={
-                            <Account/>} 
+                            <Account  authenticated={authenticated}
+                            setAuthenticated={setAuthenticated}
+                            userData={userData}/>} 
                         />
                          <Route path="/Itineraries" element={
                             <Itinerary
@@ -136,13 +181,14 @@ function App() {
                                          departureDate={departureDate} 
                                          travelers={travelers} departureIATA={departureIATA}
                                          arrivalIATA={arrivalIATA} cost={cost} userId = {userId}
+                                          setCost={setCost}
                             />} 
                         />
                          <Route path="/favorites" element={
-                            <Favorites/>} 
+                            <Favorites  authenticated={authenticated}/>} 
                         />
                          <Route path="/booking" element={
-                            <Booking itinerary={itinerary}/>} 
+                            <Booking itinerary={itinerary}  authenticated={authenticated}/>} 
                         />
                          <Route path="/checkout" element={
                             <Checkout itinerary={itinerary} arrivalDate={arrivalDate} departureDate={departureDate} destination={destination}/>} 
