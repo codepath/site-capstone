@@ -12,6 +12,7 @@ import {
   createStyles,
   useMantineTheme,
   Text,
+  Group,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useMediaQuery } from '@mantine/hooks';
@@ -22,7 +23,7 @@ import { AuthenticationContext } from '../../context/AuthenicationContext';
 import { ProjectFormValues } from '../../props/forms';
 import { apiClient } from '../../services/ApiClient';
 import { useSkills } from '../../services/hooks/useSkills';
-import { notify } from '../../utility/utility';
+import { demoCreateProjectFill, notify } from '../../utility/utility';
 import NotAuthorized from '../NotAuthorized';
 /**
  * @todo: 
@@ -195,7 +196,10 @@ function CreateProject() {
             />
           </Flex>
         </Container>
-        <Button onClick={createNewProject} radius={"lg"} size='lg' mt={"xl"}>Create Project</Button>
+        <Group position='center' mt={"xl"}>
+          <Button onClick={createNewProject} radius={"lg"} size='lg' >Create Project</Button>
+          <Button size='lg' onClick={() => demoCreateProjectFill(form)} variant='light'>Demo</Button>
+        </Group>
       </Paper>
     </>
   )

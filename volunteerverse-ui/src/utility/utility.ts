@@ -103,10 +103,10 @@ export const demoLoginFill = (userType: "organization" | "volunteer", form: UseF
     }
 }
 export const demoCreateProjectFill = (form: UseFormReturnType<ProjectFormValues>) => {
+    console.log("setting: ", form)
     form.setValues  ({
         title: "UX Researcher needed for HelpingHand Website",
         desc: "HelpingHand is a collaborative volunteer organization harnessing technology for meaningful impact. Our skilled volunteers create solutions, from educational platforms for underserved youth to aiding local businesses. Join us now to shape a better future through innovation and community!",
-        tags: ["React", "Node.js", "MongoDB"],
-        requestedPeople: "4",
+        tags: ['css', 'backend'],
     })
 }
