@@ -70,6 +70,9 @@ function CreateVolunteerProfileForm({ form }: { form: UseFormReturnType<Voluntee
                 withAsterisk
                 mt={"lg"}
                 radius={"lg"}
+                minRows={4}
+                minLength={50}
+                maxRows={4}
                 size={isMobile ? "sm" : "md"}
                 label="Short Bio"
                 placeholder={`Hi my name is ${firstName} ${lastName} and...`}

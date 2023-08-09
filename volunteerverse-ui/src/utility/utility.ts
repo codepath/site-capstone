@@ -2,6 +2,9 @@ import { notifications } from "@mantine/notifications";
 import moment from "moment";
 import { ApiResponseProp } from "../services/ApiClient";
 import { imagurClient } from "../services/ImagurClient";
+import { OrgFormValues, VolunteerFormValues } from "../props/forms";
+import { UseFormReturnType } from "@mantine/form";
+import { LoginFormProps } from "../pages/Login";
 
 export const fetchPrettyTime = (timestamp :  number) => {
     /**
@@ -43,18 +46,17 @@ export const handleImageUpload = (file : File, setUrl : (urlLink : string) => vo
     })    
 }
 
-export const demoFill = (index: number, userType: "organization" | "volunteer", form: any) => {
+export const demoSignUpFill = (index: number, userType: "organization" | "volunteer", form: UseFormReturnType<VolunteerFormValues> | UseFormReturnType<OrgFormValues>) => {
     if (index == 0) {
         if (userType === "organization") {
-            form.setFieldsValue({
-                firstName: "Jane",
-                email: "janedoe@email.com",
+            form.setValues({
+                orgName: "The Helping Hand Demo",
+                email: "helpinghand@demo.com",
                 confirmPassword: "123",
-                lastName: "Doe",
                 password: "123",
             })
         }else if (userType === "volunteer"){
-            form.setFieldsValue({
+            form.setValues({
                 firstName: "Jane",
                 email: "janedoe@email.com",
                 confirmPassword: "123",
@@ -66,19 +68,37 @@ export const demoFill = (index: number, userType: "organization" | "volunteer", 
     }
     else if(index == 1) {
         if (userType === "organization"){
-            form.setFieldsValue({
-                organizationName: "Demo Organization",
-                organizationEmail: ""
+            form.setValues({
+                logoUrl: "https://media.istockphoto.com/id/1341681278/vector/two-hands-the-concept-of-protecting-anything-vector-illustration-interconnection.jpg?s=612x612&w=0&k=20&c=QZmkMdTLOVyzaPi-SgvHy0KNa8cC47wl0b3mfPyxsM0=",
+                founders: ["Kelechi", "Melyssa", "Tom"],
+                orgDescription: "HelpingHand is a collaborative volunteer organization harnessing technology for meaningful impact. Our skilled volunteers create solutions, from educational platforms for underserved youth to aiding local businesses. Join us now to shape a better future through innovation and community!",
+                orgWebsite: "https://volunteerverse.org/",
+                termsOfService: true,
+                publicEmail:  "demoorg@contact.com",
+                publicNumber: "123-456-7890",
             })
-
+            
         }else if (userType === "volunteer"){
-            form.setFieldsValue({
-                bio: `I am a demo volunteer I am a demo volunteer I am a demo volunteer I am a demo volunteer I am a demo volunteer I am a demo volunteer I am a demo volunteer I am a demo volunteer I am a demo volunteer I am a demo volunteer I am a demo volunteer I am a demo volunteer I am a demo volunteer I am a demo volunteer I am a demo volunteer I am a demo volunteer`,
-                skills: ["cooking", "cleaning", "teaching"],
-                imageUrl: "https://i.imgur.com/3Z4tELV.png",
+            form.setValues({
+                bio: `Hey there! I'm Jane, a passionate full-stack developer. My journey in web development has equipped me with the skills to bring ideas to life. Eager to make a difference, I'm excited to collaborate with organizations in need of innovative digital solutions. Let's create impactful change together.`,
+                imageUrl: "https://avatar.iran.liara.run/public/49",
+                termsOfService: true,
 
             })
         }
         
+    }
+}
+export const demoLoginFill = (userType: "organization" | "volunteer", form: UseFormReturnType<LoginFormProps> ) => {
+    if (userType === "organization") {
+        form.setValues({
+            email: "helpinghand@demo.com",
+            password: "123",
+        })
+    }else if (userType === "volunteer"){
+        form.setValues({
+            email: "janedoe@email.com",
+            password: "123",
+        })
     }
 }

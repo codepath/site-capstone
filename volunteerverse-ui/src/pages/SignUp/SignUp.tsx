@@ -21,7 +21,7 @@ import { apiClient } from "../../services/ApiClient";
 import { OrganizationRegisterProp, VolunteerRegisterProp } from "../../props/register";
 import { AuthenticationContext } from "../../context/AuthenicationContext";
 import { TOS } from "../../assets/TOS";
-import { demoFill, notify } from "../../utility/utility";
+import { demoSignUpFill, notify } from "../../utility/utility";
 
 const useStyles = createStyles((theme) => ({
   // this object includes all styling for this component
@@ -183,8 +183,8 @@ export default function SignUp( {  userType } : {userType : "organization" | "vo
   });
   const registerOrg = async (form: UseFormReturnType<OrgFormValues>) => {
     if (form.validate().hasErrors === false) {
-      let { confirmPassword, termsOfService, imageFile, ...rest } = form.values;
-      await sendRegisterRequest({ ...rest, founders: rest.founders.toString(), logoUrl: imageFile?.name || "" })
+      let { confirmPassword, termsOfService, imageFile, publicNumber, ...rest } = form.values;
+      await sendRegisterRequest({ ...rest, founders: rest.founders.toString(), logoUrl: imageFile?.name || "" , publicNumber: publicNumber.replace(/-/g, "")})
     } else{
       console.log("form has errors", form.errors, form.values)
     }
@@ -264,7 +264,7 @@ export default function SignUp( {  userType } : {userType : "organization" | "vo
       </Stepper>
 
     <Group position="center" mt="xl">
-      <Button onClick={() => demoFill(activeStep, userType, userType  === "organization" ? orgForm : volunteerForm)} variant="light">Demo</Button>
+      <Button onClick={() => demoSignUpFill(activeStep, userType, userType  === "organization" ? orgForm : volunteerForm)} variant="light">Demo</Button>
         {
           activeStep === 1 ?
             (

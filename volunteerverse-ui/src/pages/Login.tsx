@@ -1,5 +1,6 @@
 import {
   Button, Flex,
+   Group,
    Paper, PasswordInput,
   TextInput, Title, createStyles
 } from "@mantine/core"
@@ -9,6 +10,7 @@ import { useForm } from "@mantine/form";
 import { useNavigate } from "react-router-dom";
 import { AuthenticationContext } from "../context/AuthenicationContext";
 import { useContext } from "react";
+import { demoLoginFill } from "../utility/utility";
 
 
 const useStyles = createStyles((theme) => ({
@@ -34,13 +36,16 @@ const useStyles = createStyles((theme) => ({
   }
 
 }))
-
+export interface LoginFormProps{
+  email: string;
+  password: string;
+}
 export default function Login() {
   const { setToken } = useContext(AuthenticationContext)
   const [showButtonLoader, { open: openButtonLoader, close: closeButtonLoader }] = useDisclosure(false)
   const { classes } = useStyles();
   const navigate = useNavigate();
-  const loginForm = useForm({
+  const loginForm = useForm<LoginFormProps>({
     initialValues: {
       email: "",
       password: ""
@@ -112,6 +117,12 @@ export default function Login() {
           label="Passowrd"
           placeholder="Password" />
         <Button loading={showButtonLoader} mt={"xl"} onClick={handleUserLogin}>Login</Button>
+        <Group position="center">
+          <Button variant="light" disabled={showButtonLoader} mt={"xl"} onClick={() => demoLoginFill("organization", loginForm)}>Demo (organization)</Button>
+          <Button variant="light" disabled={showButtonLoader} mt={"xl"} onClick={() => demoLoginFill("volunteer", loginForm)}>Demo (volunteer)</Button>
+
+        </Group>
+
       </Paper>
     </Flex>
   )

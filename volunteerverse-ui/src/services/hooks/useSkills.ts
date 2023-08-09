@@ -11,7 +11,8 @@ export const useSkills = () : {value: string, label:  string}[] => {
             // fecthes all all tags from db then sets state
             if (success) {
               console.log("setting tags: ", data.tags)
-              setSkillsTags(data.tags);
+              const uniqueSkills = new Set<string>(data.tags);
+              setSkillsTags(Array.from(uniqueSkills));
             } else {
                 setSkillsTags([])
               console.log("unable to retrieve all tags. error: ", {error, statusCode})
