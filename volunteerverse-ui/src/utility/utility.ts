@@ -1,24 +1,8 @@
 import { notifications } from "@mantine/notifications";
 import moment from "moment";
+import { ApiResponseProp } from "../services/ApiClient";
 import { imagurClient } from "../services/ImagurClient";
-import { ApiResponseProp, requestProp } from "../services/ApiClient";
-// export const fetchCorrectUserOption =  (
-    
-//     unAuthOption: any, 
-//     volunteerOption: any, 
-//     organizationOption: any, 
-//     props : {isAuth : boolean | undefined, user : useAuthenticationUserProp | undefined}) => {
-//         console.log("choosing option", props)
-//         if (!props.isAuth || !props.user){
-//             return unAuthOption;
-//         }else if (props.user.userType === "volunteer"){
-//             return volunteerOption;
-//         }else if (props.user.userType === "organization"){
-//             return organizationOption;
-//         } else{
-//             console.log("ERROR: unable to determine correct userType + isAuth option... recieved: \n\nuser:", props.user );
-//         }
-// }
+
 export const fetchPrettyTime = (timestamp :  number) => {
     /**
      * @description: converts epcoch timestamp into a nice 
@@ -41,13 +25,14 @@ export const notify = {
 
     }),
 }
-export const handleImageUpload = (event : File, setUrl : (urlLink : string) => void) => {
-    console.log("handling image upload event with file: ", event)
-    imagurClient.uploadPhoto(event);
+export const handleImageUpload = (file : File, setUrl : (urlLink : string) => void) => {
+    console.log("handling image upload event with file: ", file)
+    // imagurClient.uploadPhoto(event);
     // upload image using imagurClient
-    imagurClient.uploadPhoto(event).then((response : ApiResponseProp) => {
+    imagurClient.uploadPhoto(file).then((response : ApiResponseProp) => {
         if (response.success) {
             // set image url in state
+            setUrl(response.data.data.link)
             console.log("retrieved response from imagur: ", response)
             // setUrl(response.link);
         } else {
@@ -56,4 +41,44 @@ export const handleImageUpload = (event : File, setUrl : (urlLink : string) => v
             notify.error("An error occured while uploading your image. Please try again later.")
         }
     })    
+}
+
+export const demoFill = (index: number, userType: "organization" | "volunteer", form: any) => {
+    if (index == 0) {
+        if (userType === "organization") {
+            form.setFieldsValue({
+                firstName: "Jane",
+                email: "janedoe@email.com",
+                confirmPassword: "123",
+                lastName: "Doe",
+                password: "123",
+            })
+        }else if (userType === "volunteer"){
+            form.setFieldsValue({
+                firstName: "Jane",
+                email: "janedoe@email.com",
+                confirmPassword: "123",
+                lastName: "Doe",
+                password: "123",
+            })
+
+        }
+    }
+    else if(index == 1) {
+        if (userType === "organization"){
+            form.setFieldsValue({
+                organizationName: "Demo Organization",
+                organizationEmail: ""
+            })
+
+        }else if (userType === "volunteer"){
+            form.setFieldsValue({
+                bio: `I am a demo volunteer I am a demo volunteer I am a demo volunteer I am a demo volunteer I am a demo volunteer I am a demo volunteer I am a demo volunteer I am a demo volunteer I am a demo volunteer I am a demo volunteer I am a demo volunteer I am a demo volunteer I am a demo volunteer I am a demo volunteer I am a demo volunteer I am a demo volunteer`,
+                skills: ["cooking", "cleaning", "teaching"],
+                imageUrl: "https://i.imgur.com/3Z4tELV.png",
+
+            })
+        }
+        
+    }
 }

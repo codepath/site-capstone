@@ -1,7 +1,6 @@
 import axios from "axios";
 import { API_BASE_URL } from "../../constants";
 import { OrganizationRegisterProp, ProjectRegisterProp, VolunteerRegisterProp } from "../props/register";
-import { QueryProps } from "../components/QueryBar";
 
 export interface requestProp {
     method : string,

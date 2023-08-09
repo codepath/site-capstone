@@ -28,7 +28,7 @@ async function insertData() {
       }
 
       const query1 = `
-        INSERT into projects(org_name, project_name, project_description, image_url, external_link) VALUES ($1, $2, $3, $4, $5) RETURNING *
+        INSERT into projects(org_name, project_name, project_description, image_url, external_link, public_email) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *
         `;
       const values = [
         projectTitle,
@@ -36,6 +36,7 @@ async function insertData() {
         problem + action,
         image,
         externalLink,
+        "externalproject@volunteerverse123"
       ];
       let results = await db.query(query1, values);
 

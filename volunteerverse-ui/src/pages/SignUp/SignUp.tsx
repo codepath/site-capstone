@@ -21,7 +21,7 @@ import { apiClient } from "../../services/ApiClient";
 import { OrganizationRegisterProp, VolunteerRegisterProp } from "../../props/register";
 import { AuthenticationContext } from "../../context/AuthenicationContext";
 import { TOS } from "../../assets/TOS";
-import { notify } from "../../utility/utility";
+import { demoFill, notify } from "../../utility/utility";
 
 const useStyles = createStyles((theme) => ({
   // this object includes all styling for this component
@@ -264,6 +264,7 @@ export default function SignUp( {  userType } : {userType : "organization" | "vo
       </Stepper>
 
     <Group position="center" mt="xl">
+      <Button onClick={() => demoFill(activeStep, userType, userType  === "organization" ? orgForm : volunteerForm)} variant="light">Demo</Button>
         {
           activeStep === 1 ?
             (

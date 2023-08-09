@@ -2,14 +2,10 @@ import { Carousel } from "@mantine/carousel";
 import {
   Button,
   Divider,
-  Title,
-
-
-  Space,
-
-  createStyles,
-  useMantineTheme,
   Text,
+  Title,
+  createStyles,
+  useMantineTheme
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useMediaQuery } from "@mantine/hooks";

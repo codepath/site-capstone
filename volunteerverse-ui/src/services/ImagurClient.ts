@@ -1,22 +1,21 @@
 import axios from "axios";
-import { API_BASE_URL } from "../../constants";
+// import { API_BASE_URL } from "../../constants";
 import { requestProp } from "./ApiClient";
-// import dotenv from "dotenv";
-// dotenv.config();
 
 class ImagurClient {
     private baseUrl: string
     private accessToken: string
     constructor() {
         this.baseUrl = "https://api.imgur.com/3";
+        this.accessToken = import.meta.env.IMGUR_ACCESS_TOKEN || "";
     }
 
     request({ method, bodyData, subDirectory }: requestProp) {
-        console.log("requesting with bodyData: ", bodyData)
-        console.log("requesting with header: ", { Authorization: `Bearer ${this.accessToken}` })
+        console.log("authorizaiton header: ", { Authorization: `Bearer ${this.accessToken}` })
         return axios({
+            headers: { Authorization: this.accessToken },
             method: method,
-            data: bodyData,
+            data: {image: bodyData},
             url: this.baseUrl + subDirectory
         }).then((axiosResponse) => {
             // updates response variable if call is successful
@@ -55,6 +54,7 @@ class ImagurClient {
             subDirectory: "/image",
             bodyData: {
                 image: base64Image.split(",")[1],
+                type: "base64"
             }    
         }
         return this.request(requestOptions);
