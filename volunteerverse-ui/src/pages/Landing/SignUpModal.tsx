@@ -45,7 +45,7 @@ function SignUpModal( {close: closeModal} : {close : () => void}) {
                         size="xl" radius={"xl"}
                         component={Link}
                         leftIcon={<Text component="span" className="material-symbols-outlined">school</Text>}
-                        to={"/signup/volunteer"}>Student</Button>
+                        to={"/signup/volunteer"}>Volunteer</Button>
                     <Text className={classes.optionDescription} align="center">
                         Looking to gain experience as a volunteer
                     </Text>

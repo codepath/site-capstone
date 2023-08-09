@@ -2,7 +2,7 @@ import { notifications } from "@mantine/notifications";
 import moment from "moment";
 import { ApiResponseProp } from "../services/ApiClient";
 import { imagurClient } from "../services/ImagurClient";
-import { OrgFormValues, VolunteerFormValues } from "../props/forms";
+import { OrgFormValues, ProjectFormValues, VolunteerFormValues } from "../props/forms";
 import { UseFormReturnType } from "@mantine/form";
 import { LoginFormProps } from "../pages/Login";
 
@@ -101,4 +101,12 @@ export const demoLoginFill = (userType: "organization" | "volunteer", form: UseF
             password: "123",
         })
     }
+}
+export const demoCreateProjectFill = (form: UseFormReturnType<ProjectFormValues>) => {
+    form.setValues  ({
+        title: "UX Researcher needed for HelpingHand Website",
+        desc: "HelpingHand is a collaborative volunteer organization harnessing technology for meaningful impact. Our skilled volunteers create solutions, from educational platforms for underserved youth to aiding local businesses. Join us now to shape a better future through innovation and community!",
+        tags: ["React", "Node.js", "MongoDB"],
+        requestedPeople: "4",
+    })
 }

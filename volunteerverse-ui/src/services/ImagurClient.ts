@@ -11,9 +11,9 @@ class ImagurClient {
     }
 
     request({ method, bodyData, subDirectory }: requestProp) {
-        console.log("authorizaiton header: ", { Authorization: `Bearer ${this.accessToken}` })
+        console.log("authorizaiton header: ", { authorization: `Bearer ${this.accessToken}` })
         return axios({
-            headers: { Authorization: this.accessToken },
+            headers: { authorization: this.accessToken },
             method: method,
             data: {image: bodyData},
             url: this.baseUrl + subDirectory
