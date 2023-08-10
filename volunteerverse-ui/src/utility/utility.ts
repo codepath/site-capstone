@@ -30,8 +30,8 @@ export const notify = {
 }
 export const handleImageUpload = (file : File, setUrl : (urlLink : string) => void) => {
     console.log("handling image upload event with file: ", file)
-    // imagurClient.uploadPhoto(event);
     // upload image using imagurClient
+    console.log("meta " ,import.meta.env)
     imagurClient.uploadPhoto(file).then((response : ApiResponseProp) => {
         if (response.success) {
             // set image url in state

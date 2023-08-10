@@ -23,6 +23,7 @@ import { AuthenticationContext } from '../../context/AuthenicationContext';
 import { VolunteerProjectProp } from '../../props/projects';
 import { ApiResponseProp, apiClient } from '../../services/ApiClient';
 import { fetchPrettyTime } from '../../utility/utility';
+import projectplaceholder from '../../assets/projectplace.png';
 
 function SlimProjectCard(project: VolunteerProjectProp) {
   const theme = useMantineTheme();
@@ -118,8 +119,8 @@ function MyProjects() {
       <Divider size={"md"} color='violet.2' h={"xl"} />
       <Paper shadow={"md"} radius={"md"}>
         <Group>
-          <QueryBar {...queryForm} />
-          <Button onClick={() => { setMyProjects(undefined); searchMyProjects(); }} variant='light'>Search Filter</Button>
+          {/* <QueryBar {...queryForm} /> */}
+          {/* <Button onClick={() => { setMyProjects(undefined); searchMyProjects(); }} variant='light'>Search Filter</Button> */}
         </Group>
       </Paper>
       <Container px={isMobile ? 0 : "md"} mt={"xl"} ml={"auto"} mr={"auto"} maw={ isMobile ? "100vw" :  "80vw"}>

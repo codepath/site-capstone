@@ -7,7 +7,7 @@ class ImagurClient {
     private accessToken: string
     constructor() {
         this.baseUrl = "https://api.imgur.com/3";
-        this.accessToken = import.meta.env.IMGUR_ACCESS_TOKEN || "";
+        this.accessToken = import.meta.env.VITE_IMAGUR_API_ACCESS_TOKEN || "";
     }
 
     request({ method, bodyData, subDirectory }: requestProp) {
@@ -49,6 +49,7 @@ class ImagurClient {
     async uploadPhoto(image: File) {
         // convert image to base64, then upload to imagur and return data
         const base64Image = await this.toBase64(image);
+        console.log(base64Image.split(",")[1]);
         const requestOptions = {
             method: "post",
             subDirectory: "/image",
@@ -60,5 +61,4 @@ class ImagurClient {
         return this.request(requestOptions);
     }
 }
-
 export const imagurClient = new ImagurClient();
