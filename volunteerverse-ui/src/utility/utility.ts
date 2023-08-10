@@ -37,7 +37,6 @@ export const handleImageUpload = (file : File, setUrl : (urlLink : string) => vo
             // set image url in state
             setUrl(response.data.data.link)
             console.log("retrieved response from imagur: ", response)
-            // setUrl(response.link);
         } else {
             console.log("error uploading image: ", response)
             // notify user of error

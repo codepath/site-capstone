@@ -23,7 +23,7 @@ import { AuthenticationContext } from '../../context/AuthenicationContext';
 import { ProjectFormValues } from '../../props/forms';
 import { apiClient } from '../../services/ApiClient';
 import { useSkills } from '../../services/hooks/useSkills';
-import { demoCreateProjectFill, notify } from '../../utility/utility';
+import { demoCreateProjectFill, handleImageUpload, notify } from '../../utility/utility';
 import NotAuthorized from '../NotAuthorized';
 /**
  * @todo: 
@@ -62,6 +62,7 @@ function CreateProject() {
       tags: [],
       publicEmail: "",
       publicNumber: "",
+      imageUrl: "",
     },
     validateInputOnChange: ["requestedPeople", "title"],
     validate: (values) => ({
@@ -79,7 +80,9 @@ function CreateProject() {
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
   const skillsTags = useSkills();
   const navigate = useNavigate();
-
+  const setUrl = (url: string) => {
+    form.setFieldValue("imageUrl", url);
+}
   const createNewProject = () => {
     // makes reques to create a new project
     // if the form is valid
@@ -93,7 +96,7 @@ function CreateProject() {
         tags: form.values.tags,
         orgPublicEmail: user?.userType === "organization" ? user.publicEmail : "",
         orgPublicNumber: user?.userType === "organization" ? user.publicNumber : undefined,
-        imageUrl: form.values.imageFile?.name || "",
+        imageUrl: form.values.imageUrl,
         requestedPeople: parseInt(form.values.requestedPeople),
 
         // @todo: change imageUrl using image hosting api
@@ -126,19 +129,21 @@ function CreateProject() {
           <Flex direction={"column"}>
             <Flex direction={"column"} gap={"md"} align={"center"}>
               <Image
-              src={user?.userType === "organization" ? user.logoUrl : ""}
+              src={form.values.imageUrl ||  user?.userType === "organization" ? user?.userType === "organization" ? user.logoUrl: "" : ""}
                 width={"100%"}
                 height={300}
                 withPlaceholder
                 radius={"lg"}
                 mb={"md"} />
-              <Flex 
+              <Flex
                 direction={"column"}
                 justify={"center"}
                 align={"center"}
                 gap={"sm"}
                 mb={"xl"}>
-                <FileButton {...form.getInputProps("imageFile")} accept="image/png,image/jpeg">
+                <FileButton 
+                {...form.getInputProps("imageFile")} accept="image/png,image/jpeg"
+                  onChange={(e) => { form.getInputProps("imageFile").onChange(e); e ? handleImageUpload(e, setUrl) : null }}>
                   {(props) => <Button mb={"xl"} variant="light"
                     radius={"lg"}
                     styles={{

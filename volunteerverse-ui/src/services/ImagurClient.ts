@@ -4,18 +4,21 @@ import { requestProp } from "./ApiClient";
 
 class ImagurClient {
     private baseUrl: string
-    private accessToken: string
+    private clientID: string
     constructor() {
         this.baseUrl = "https://api.imgur.com/3";
-        this.accessToken = import.meta.env.VITE_IMAGUR_API_ACCESS_TOKEN || "";
+        this.clientID = import.meta.env.VITE_IMAGUR_API_CLIENT_ID || "";
     }
 
     request({ method, bodyData, subDirectory }: requestProp) {
-        console.log("authorizaiton header: ", { authorization: `Bearer ${this.accessToken}` })
+        console.log("authorizaiton header: ", { Authorization: `Client-ID ${this.clientID}` })
         return axios({
-            headers: { authorization: this.accessToken },
+            headers: {
+                Authorization: `Client-ID ${this.clientID}`,
+                "Content-type": "application/x-www-form-urlencoded"
+            },
             method: method,
-            data: {image: bodyData},
+            data: bodyData,
             url: this.baseUrl + subDirectory
         }).then((axiosResponse) => {
             // updates response variable if call is successful
@@ -48,15 +51,16 @@ class ImagurClient {
     }
     async uploadPhoto(image: File) {
         // convert image to base64, then upload to imagur and return data
-        const base64Image = await this.toBase64(image);
-        console.log(base64Image.split(",")[1]);
+        // const base64Image = await this.toBase64(image);
+        // console.log(base64Image.split(",")[1]);
+        const data = new FormData();
+        data.append("image", image);
+        // data.append("type", "base64");
+
         const requestOptions = {
             method: "post",
             subDirectory: "/image",
-            bodyData: {
-                image: base64Image.split(",")[1],
-                type: "base64"
-            }    
+            bodyData: data
         }
         return this.request(requestOptions);
     }

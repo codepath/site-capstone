@@ -184,7 +184,7 @@ export default function SignUp( {  userType } : {userType : "organization" | "vo
   const registerOrg = async (form: UseFormReturnType<OrgFormValues>) => {
     if (form.validate().hasErrors === false) {
       let { confirmPassword, termsOfService, imageFile, publicNumber, ...rest } = form.values;
-      await sendRegisterRequest({ ...rest, founders: rest.founders.toString(), logoUrl: imageFile?.name || "" , publicNumber: publicNumber.replace(/-/g, "")})
+      await sendRegisterRequest({ ...rest, founders: rest.founders.toString() , publicNumber: publicNumber.replace(/-/g, "")})
     } else{
       console.log("form has errors", form.errors, form.values)
     }
@@ -192,7 +192,7 @@ export default function SignUp( {  userType } : {userType : "organization" | "vo
   const registerVolunteer = async (form: UseFormReturnType<VolunteerFormValues>) => {
     if (form.validate().hasErrors === false) {
       let { confirmPassword, termsOfService, imageFile, ...rest } = form.values;
-      await sendRegisterRequest({ ...rest, imageUrl: imageFile?.name || "" })
+      await sendRegisterRequest({ ...rest })
     } else{
       console.log("form has errors", form.errors)
     }

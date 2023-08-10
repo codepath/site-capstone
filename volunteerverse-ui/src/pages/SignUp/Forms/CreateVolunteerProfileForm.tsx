@@ -4,6 +4,7 @@ import { useMediaQuery } from "@mantine/hooks";
 import { createStyles, useMantineTheme } from "@mantine/styles";
 import { VolunteerFormValues } from "../../../props/forms";
 import { useSkills } from "../../../services/hooks/useSkills";
+import { handleImageUpload } from "../../../utility/utility";
 const useStyles = createStyles((theme) => ({
     title: {
         color: theme.colors.violet[6],
@@ -23,8 +24,10 @@ function CreateVolunteerProfileForm({ form }: { form: UseFormReturnType<Voluntee
     const theme = useMantineTheme();
     const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
     const skillsTags = useSkills();
-
     const { firstName, lastName } = form.values;
+    const setUrl = (url: string) => {
+        form.setFieldValue("imageUrl", url);
+    }
     return (
         <Container>
             <Title
@@ -35,12 +38,16 @@ function CreateVolunteerProfileForm({ form }: { form: UseFormReturnType<Voluntee
             <Flex direction={"column"} gap={"md"} align={"center"}>
                 <Avatar
                     src={form.values.imageUrl}
-                    size={isMobile ? "10rem" :"15rem"}
+                    size={isMobile ? "10rem" : "15rem"}
                     mb={"sm"}
                     color="violet"
                     radius={"50%"}>{firstName[0]}{lastName[0]}</Avatar>
-                <FileButton {...form.getInputProps("imageFile")}>
+                <FileButton 
+                accept="image/png,image/jpeg"
+                    {...form.getInputProps("imageFile")}
+                    onChange={(e) => { form.getInputProps("imageFile").onChange(e); e ? handleImageUpload(e, setUrl) : null }}>
                     {(props) => <Button
+
                         mb={"xl"}
                         variant="light"
                         radius={"lg"}
@@ -50,7 +57,10 @@ function CreateVolunteerProfileForm({ form }: { form: UseFormReturnType<Voluntee
                             }
                         }}
                         {...props}>
-                            {form.values.imageFile?.name || "Upload Photo"}</Button>}
+                        {form.values.imageFile?.name || "Upload Photo"}</Button>
+
+                    }
+
 
                 </FileButton>
                 {form.errors.imageFile && <Text color='red dimmed'>Please provide a Logo</Text>}
@@ -76,7 +86,7 @@ function CreateVolunteerProfileForm({ form }: { form: UseFormReturnType<Voluntee
                 size={isMobile ? "sm" : "md"}
                 label="Short Bio"
                 placeholder={`Hi my name is ${firstName} ${lastName} and...`}
-                description={ <><Text>50-300 characters</Text><Text color="black">Count: {form.values.bio.length}</Text></>}/>
+                description={<><Text>50-300 characters</Text><Text color="black">Count: {form.values.bio.length}</Text></>} />
         </Container>
     )
 }

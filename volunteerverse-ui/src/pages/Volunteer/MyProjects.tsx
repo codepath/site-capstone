@@ -1,6 +1,5 @@
 import {
   Badge,
-  Button,
   Container,
   Divider,
   Flex,
@@ -10,10 +9,10 @@ import {
   Title,
   useMantineTheme
 } from '@mantine/core';
-import { useForm } from '@mantine/form';
+// import { useForm } from '@mantine/form';
 import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { QueryBar, QueryProps } from '../../components/QueryBar';
+// import { QueryProps } from '../../components/QueryBar';
 import NotAuthorized from '../NotAuthorized';
 // import { projectDetailsData } from './Home/data';
 import { useMediaQuery } from '@mantine/hooks';
@@ -23,7 +22,6 @@ import { AuthenticationContext } from '../../context/AuthenicationContext';
 import { VolunteerProjectProp } from '../../props/projects';
 import { ApiResponseProp, apiClient } from '../../services/ApiClient';
 import { fetchPrettyTime } from '../../utility/utility';
-import projectplaceholder from '../../assets/projectplace.png';
 
 function SlimProjectCard(project: VolunteerProjectProp) {
   const theme = useMantineTheme();
@@ -81,13 +79,13 @@ function MyProjects() {
   const { isValidVolunteer, user } = useContext(AuthenticationContext);
   const theme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
-  const queryForm = useForm<QueryProps>({
-    initialValues: {
-      search: "",
-      tags: [],
-      timeRange: "Year"
-    }
-  });
+  // const queryForm = useForm<QueryProps>({
+  //   initialValues: {
+  //     search: "",
+  //     tags: [],
+  //     timeRange: "Year"
+  //   }
+  // });
   const searchMyProjects = async () => {
     // fetches project using the query form 
     apiClient.fetchAllInterestedProjects().then(({ data, success, statusCode, error }: ApiResponseProp) => {
