@@ -2,7 +2,7 @@
 
 # SITE Capstone Project
 
-SITE Course Year: **20__**
+SITE Course Year: **2025**
 
 Cohort: **Add Company Sponsor Name**
 
