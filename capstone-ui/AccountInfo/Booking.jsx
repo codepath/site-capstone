@@ -8,7 +8,7 @@ import HotelCard from '../BookingPages/HotelCard';
 import { useState, useEffect } from 'react'
 import pfp from '../../public/assets/user.png'
 import axios from 'axios'
-import FlightCard from '../BookingPages/FlightCard';
+import FlightsCard from '../BookingPages/FlightCard';
 
 
 
@@ -244,7 +244,7 @@ function BookingMenu({ itinerary, itineraryPresent, loading, authenticated, set_
                                     return (<div className="mb-3"><ActivityCards activity={item} checkout={true} key={index} /></div>)
                                 })}{itineraryPresent && itinerary.flight != null && (
                                     <div className="flight-card-container">
-                                      <FlightCard
+                                      <FlightsCard
                                         flight={itinerary.flight}
                                         itinerary={itinerary}
                                         setItinerary={set_the_itinerary}

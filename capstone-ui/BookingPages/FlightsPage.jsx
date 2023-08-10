@@ -38,14 +38,14 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
             check_out:""
          },
     ],
-    //should make these blank 
+ 
         flightData:{
-            origin: departureIATA,
-            destination: arrivalIATA,
-            departing_at:"2023-09-02T00:46:00",
-            arriving_at: "2023-09-02T01:56:00",
+            origin: "",
+            destination: "",
+            departing_at:"",
+            arriving_at: "",
             carrier:{
-                name:"carrierName"
+                name:""
             }
 
 
@@ -130,11 +130,16 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
         // Update the state using the setSavedItinerary function
         setSavedItinerary({
             hotelData: {
-                name: itinerary.Hotel.name,
-                city: itinerary.Hotel.wishlistName,
-                price: itinerary.Hotel.priceBreakdown.grossPrice.value.toFixed(2),
-                check_in: itinerary.Hotel.checkinDate,
-                check_out: itinerary.Hotel.checkoutDate,
+                // name: itinerary.Hotel.name,
+                // city: itinerary.Hotel.wishlistName,
+                // price: itinerary.Hotel.priceBreakdown.grossPrice.value.toFixed(2),
+                // check_in: itinerary.Hotel.checkinDate,
+                // check_out: itinerary.Hotel.checkoutDate,
+                name: "hotel1",
+                city: "city1",
+                price: 500000000,
+                check_in:"2023-08-10",
+                check_out: "2023-08-14"
             },
             activities:itinerary.Activities.map(activity => ({ 
                 //itinerary.Activities[0].name
@@ -142,21 +147,27 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
                     name: activity.name,
                     city: activity.location.locality,
                     price: 0,
-                    check_in: itinerary.Hotel.checkinDate,
-                    check_out: itinerary.Hotel.checkoutDate,
+                    check_in:"2023-08-10",
+                    check_out: "2023-08-14"
+                    // check_in: itinerary.Hotel.checkinDate,
+                    // check_out: itinerary.Hotel.checkoutDate,
                 })),
             
                 //origin and destination are flipped in res
             flightData: {
-                origin: itinerary.flight[0].slices[0].segments[0].destination, //or  departureIATA
-                destination: itinerary.flight[0].slices[0].segments[0].origin, // or arrivalIATA
+                origin: departureIATA, //itinerary.flight[0].slices[0].segments[0].destination, //or  departureIATA
+                destination: arrivalIATA, //itinerary.flight[0].slices[0].segments[0].origin, // or arrivalIATA
                 departing_at: itinerary.flight[0].slices[0].segments[0].departingAt,
                 arriving_at:itinerary.flight[0].slices[0].segments[0].arrivingAt,
                 carrier: {
-                    name: itinerary.flight.slices[0].segments[0].carrier,
+                    name: itinerary.flight[0].slices[0].segments[0].carrier.name,
+                    website: itinerary.flight[0].slices[0].segments[0].carrier.website
                 },
             },
         });
+        setItinerary({'Activities' : [],
+                        'Hotel' : null,
+                        'flight': null})
         setItinerariesSaved(itinerariesSaved + 1)
        
 
@@ -170,11 +181,12 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
             try {
         
                 const response = await axios.post(
-                    `https://nomadiafe.onrender.com/api/users/${auserId}/itineraries`,
+                    `http://localhost:3002/api/users/${auserId}/itineraries`,
                     savedItinerary
                 );
-
+                console.log(savedItinerary)
                 console.log("successful", response.data.results);
+                navigate("/account")
             } catch (error) {
                 console.error(error);
             }
@@ -226,7 +238,7 @@ function FlightsPage({ setItinerary, itinerary, destination, arrivalDate,
                               ? 'Select a flight to continue'
                               : 'Continue'}
                           </button>
-                          {/* <button onClick = {handleOnSubmit}> Save For Later </button> */}
+                          <button onClick = {handleOnSubmit}> Save For Later </button>
                         </div>
                       </div>
                     </div>

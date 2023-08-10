@@ -14,7 +14,7 @@ function FlightsCard({ flight, itinerary, setItinerary, checkout, cost, setCost 
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  console.log("The itienrary in flight card", itinerary);
+  //console.log("The itienrary in flight card", itinerary);
 
   useEffect(() => {
     // Check if the selected flight is in the itinerary
@@ -131,16 +131,16 @@ function FlightsCard({ flight, itinerary, setItinerary, checkout, cost, setCost 
                     alt="Airline Logo"
                   />
                   <h1 className='ml-10 mt-4 text-4xl whitespace-nowrap'>
-                    {formattedDepartureInbound}
+                    {formattedDepartureInbound} hi
                   </h1>
                   <div className='flex flex-col'>
                     <hr className="absolute h-1 mt-[40px] w-[400px] my-8 bg-gray-200 border-0 dark:bg-black ml-[10px] mb-[10px]" />
                     <h1 className='absolute text-3xl ml-[140px] mt-[50px] text-blue-500'>
-                      {flight.slices[0].segments[0].carrier.name}
+                      {flight.slices[0].segments[0].carrier.name} ?
                     </h1>
                   </div>
                   <h1 className='absolute ml-[627px] mt-4 text-4xl whitespace-nowrap'>
-                    {formattedDepartureOutbound}
+                    {formattedDepartureOutbound} ho
                   </h1>
                 </div>
                 <div className='flex flex-row'>

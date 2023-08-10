@@ -8,6 +8,7 @@ import data from './mockdata-hotels'
 import axios from "axios"
 import HotelCard from '../BookingPages/HotelCard'
 import mockItineraries from '../AccountInfo/mockitinerarydata'
+import pfp from '../../public/assets/user.png'
 
 
 
@@ -15,11 +16,11 @@ import mockItineraries from '../AccountInfo/mockitinerarydata'
 function Itinerary({ arrivalDate, departureDate,
   travelers, destination, 
   destID, cost, setCost,
- userId }) {
+ userId, itinerary }) {
 
   const [loading, setLoading] = useState(true)
   const [hasItineraries,setHasItineraries] = useState(false)
-
+  console.log("ITINERARY", itinerary)
 
   useEffect(() => {
     setTimeout(() => {
@@ -127,10 +128,11 @@ function ItineraryMenu({userItineraries,hasItineraries}) {
               {userItineraries.length === 0? (
                        <p>No itineraries saved.</p>
                     ) : (
-                    userItineraries.map((userItinerary) => (
+                    userItineraries.map((userItinerary, index) => (
                      <ItineraryCards
                         userItinerary={userItinerary}
-                             key={userItinerary.id}
+                             key={index}
+                             index = {index}
                                                />
                          ))
                     )}
@@ -148,15 +150,55 @@ function ItineraryMenu({userItineraries,hasItineraries}) {
   );
 }
 
-function ItineraryCards({userItinerary}){
+function ItineraryCards({userItinerary, index}){
   const activityNames = userItinerary.activities.map(activity => activity.name);
+  const id = index + 1
+
+  function convertToNormalTime(dateTimeString) {
+    const dateObj = new Date(dateTimeString);
+    const hours = dateObj.getHours();
+    const minutes = dateObj.getMinutes();
+
+    const amPm = hours >= 12 ? 'pm' : 'am';
+    const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+
+    return `${formattedHours}:${formattedMinutes} ${amPm}`;
+
+  }
+  
+    const startDate = new Date(userItinerary.hotel.check_in);
+    const endDate = new Date(userItinerary.hotel.check_out);
+    const formattedStartDate = `${
+      (startDate.getMonth() + 1).toString().padStart(2, '0')
+    }-${
+      startDate.getDate().toString().padStart(2, '0')
+    }-${
+      startDate.getFullYear()
+    }`;
+    const formattedEndDate = `${
+      (endDate.getMonth() + 1).toString().padStart(2, '0')
+    }-${
+      endDate.getDate().toString().padStart(2, '0')
+    }-${
+      endDate.getFullYear()
+    }`;
+  
+   
+  
+  const departure = convertToNormalTime(userItinerary.flight.departing_at)
+  const arrival = convertToNormalTime(userItinerary.flight.arriving_at)
+  //SECOND console.log ("TIME",convertToNormalTime(userItinerary.flight.arriving_at))
+  //FIRST console.log ("TIME 2",convertToNormalTime(userItinerary.flight.departing_at))
+  console.log( "DATE",userItinerary.hotel.check_in)
+  
 
   console.log("mock", userItinerary)
   return(
     <div className='cursor-pointer flex flex-col rounded-md shadow-md border border-blue-500 overflow-y-scroll h-100'>
-      <div className='p-3 overflow-show bg-white mb-3'>
+      <div className='p-3 overflow-show bg-white mb-3' style={{ flex: 1 }}>
         <div className='font-bold text-2xl h-10 overflow-scroll text-black'>
-         Itinerary {userItinerary.id} 
+         Itinerary {id}
         </div>
         <div className='flex text-center'>
         <div className='flex flex-col'>
@@ -181,8 +223,24 @@ function ItineraryCards({userItinerary}){
             </ul>
             }
         </div>
+        <div className='underline font-bold'>
+          Flight
+        </div>
+        <div>
+          {departure} - {arrival}
+        </div>
+
+        <div className='flex flex-col ml-2'>
+         <p className='text-gray-500'> {userItinerary.hotel.length === 0 ? "No flight selected." : `${userItinerary.flight.carrier_name}` } </p>
+        </div>
+        <div className='flex flex-col ml-2 '>
+          <p className='text-gray-500'>{userItinerary.flight.origin} - {userItinerary.flight.destination}</p>
+        </div>
         <div>
           <h3>Total Price: ${userItinerary.hotel.price}</h3>
+        </div>
+        <div>
+          Dates: {formattedStartDate} - {formattedEndDate}
         </div>
         </div>
       </div>

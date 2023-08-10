@@ -11,7 +11,7 @@ export default function Navbar({
     authenticated,
     setAuthenticated,
     name,
-    setName, setDepartureDate, setArrivalDate, setUserId }) {
+    setName, setDepartureDate, setArrivalDate, setUserId, setItinerary }) {
   const [registerOpen, setRegisterOpen] = useState(false);
   const [registerLoad, setRegisterLoad] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
@@ -49,9 +49,10 @@ export default function Navbar({
     localStorage.removeItem("password");
     localStorage.removeItem("Itinerary");
 
-
-
-      setUserId(0)
+    setUserId(0)
+    setItinerary({'Activities' : [],
+                        'Hotel' : null,
+                        'flight': null}) //resets itinerary when user logs out
 
     // Navigate to the home page
     navigate('/')
