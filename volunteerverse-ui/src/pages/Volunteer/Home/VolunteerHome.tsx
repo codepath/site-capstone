@@ -2,10 +2,11 @@ import { Carousel } from "@mantine/carousel";
 import {
   Button,
   Divider,
-  Text,
   Title,
   createStyles,
-  useMantineTheme
+  useMantineTheme,
+  Text,
+  Loader
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useMediaQuery } from "@mantine/hooks";
@@ -29,11 +30,14 @@ function VolunteerHome() {
    */
   const { user, isValidVolunteer } = useContext(AuthenticationContext);
   const [volunteerProjects, setVolunteerProjects] = useState<ProjectCardProps[] | undefined>(undefined);
+  const [projectsLoading, setProjectsLoading] = useState(false);
 
   const fetchProjects = async () => {
+    setProjectsLoading(true);
     // fetches project using the query form 
     apiClient.fetchProjects("volunteer").then(({ data, success, statusCode, error }: ApiResponseProp) => {
       if (success) {
+        setProjectsLoading(false);
         console.log("fetched recommended projects for volunteer successfully: ", data)
         setVolunteerProjects(data);
         // setVolunteerProjects(projectCardData)
@@ -98,9 +102,24 @@ function VolunteerHome() {
       console.log("Error in API calls: ", error);
     });
   }
-
-
+  if (query.trim().length > 0 && tags.length > 0){
+    apiClient.filterProjectsSearchFilter(tags,query).then(({ data, success, statusCode, error }: ApiResponseProp) => {
+      if (success) {
+        console.log("fetched filtered projects for volunteer successfully: ", data)
+        setVolunteerProjects(data);
+        // setVolunteerProjects(projectCardData)
+      } else {
+        setVolunteerProjects([]);
+        // display error notification? (stretch)
+        console.log("Unable to fetch volunteer data", `error: ${error} code: ${statusCode}`);
+      }
+    }).catch((error) => {
+      console.log("a very unexpected error has occured: ", error)
+    });
   }
+
+  
+}
 
   
   useEffect(() => {fetchFilteredProjects(queryForm.values.search, queryForm.values.tags)}, [user]) // fetch projects
@@ -133,8 +152,10 @@ function VolunteerHome() {
       <Title fz={48} pl={isMobile ? "xl" :  "sm"} py={isMobile ? "md" : "xs"} order={1} align='left'>Welcome <Text c={"violet.7"} component="span">{user?.userType === "volunteer" ? user.firstName : ""}</Text> </Title>
       <Divider size={"md"} color='violet.2' h={"xl"} />
       <QueryBar {...queryForm} />
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
       <Button size={isMobile ? "md" : "xl"} m={isMobile ? "xs" : "md"} radius={"xl"} variant="outline"  onClick={() => fetchFilteredProjects(queryForm.values.search, queryForm.values.tags)}>Search Projects</Button>
-
+       {projectsLoading && <Loader color="violet" size="lg" variant="dots" />}
+       </div>
       {
         volunteerProjects && volunteerProjects?.length > 0 ? <Carousel
           controlSize={isMobile ? 40 : 70}
@@ -158,8 +179,11 @@ function VolunteerHome() {
 
           {projectCardSlides}
         </Carousel> :
-          <NoneFound title="No projects found" />
+          null
       }
+      {!projectsLoading && volunteerProjects && volunteerProjects.length === 0 && (
+  <NoneFound title="No projects found" />
+)}
     </div>
     </>
   ) : <NotAuthorized />

@@ -181,6 +181,16 @@ class ApiClient {
         }
         return this.request(requestOptions)
     }
+
+    async filterProjectsSearchFilter(tags:string[], query:string){
+        const tagsQueryString = tags.join('&tags=');
+        const requestOptions = {
+            method: "get",
+            subDirectory: `/project/searchfilter?query=${query}&tags=${tagsQueryString}`
+        }
+        return this.request(requestOptions)
+    }
+
 }
 
 export const apiClient = new ApiClient(API_BASE_URL);

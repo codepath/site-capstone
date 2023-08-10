@@ -1,6 +1,7 @@
 import { Avatar, Card, Flex, Group, Text, Title, createStyles, rem } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
-import { FaGithub, FaLinkedin, FaRegEnvelope } from 'react-icons/fa';
+import { Link} from "react-router-dom";
+import { FaGithub, FaLinkedin,FaRegEnvelope} from 'react-icons/fa';
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -31,7 +32,7 @@ interface FounderCardImageProps {
   stats: { label: string; value: string }[];
 }
 
-function FoundersCard({ image, avatar, name, job, school,linkdlnLink }: FounderCardImageProps) {
+function FoundersCard({ image, avatar, name, job, school, stats,linkdlnLink, githubLink, emailLink, major }: FounderCardImageProps) {
   const {classes} = useStyles();
     // const items = stats.map((stat) => (
     //   <div key={stat.label}>
@@ -52,21 +53,27 @@ function FoundersCard({ image, avatar, name, job, school,linkdlnLink }: FounderC
       <Card w={"20rem"} withBorder padding="xl" radius="md" className={classes.card}>
         <Card.Section sx={{ backgroundImage: `url(${image})`, height: 140 }} />
         <Avatar src={avatar} size={150} radius={100} mx="auto" mt={-30} className={classes.avatar} />
-        <Text ta="center" fz="lg" fw={500} mt="sm">
+        <Text ta="center" fz="xl" fw={500} mt="sm">
           {name}
         </Text>
         <Text ta="center" fz="sm" c="dimmed">
-          {job}
         </Text>
         <Group mt="md" position="center" spacing={30}>
           <a href={linkdlnLink}>
           <FaLinkedin/>
           </a>
-          <FaGithub/>
-          <FaRegEnvelope/>
+
+          <a href={githubLink}>
+          <FaGithub />
+          </a>
+
+          <Link to={`mailto:emailLink`}><FaRegEnvelope /></Link>
         </Group>
         <Text ta="center" fz="lg" fw={500} mt="sm">
           {school}
+        </Text>
+        <Text ta="center" fz="lg" fw={500} mt="sm">
+          {major}
         </Text>
         {/* <Button
           fullWidth
@@ -91,10 +98,11 @@ function FoundersCard({ image, avatar, name, job, school,linkdlnLink }: FounderC
       avatar: "https://vc.bridgew.edu/hoba/1008/preview.jpg",
       name: "Kelechi Emeruwa",
       job: "Fullstack engineer",
-      school: "University of Texas, Austin",
-      linkdlnLink: "",
-      githubLink: "",
-      emailLink: "",
+      school: "University of Texas, Austin 25'",
+      linkdlnLink: "https://www.linkedin.com/in/kelechi-emeruwa",
+      githubLink: "https://github.com/Kelach",
+      emailLink: "kelechi@uttexas",
+      major: "Computational Engineering",
       stats: [
         {
           value: "34K",
@@ -117,10 +125,11 @@ function FoundersCard({ image, avatar, name, job, school,linkdlnLink }: FounderC
       avatar: "https://media.licdn.com/dms/image/D5603AQFZrdFq0i6Rvw/profile-displayphoto-shrink_800_800/0/1690899123842?e=2147483647&v=beta&t=APgfMju3GK-8covSWHcgcpYJ_bNrygzSVCgc8eNIBWY",
       name: "Melyssa Cristino",
       job: "Fullstack engineer",
-      school: "Brown University",
+      school: "Brown University 25'",
       linkdlnLink: "https://www.linkedin.com/in/melyssa-cristino",
-      githubLink: "",
-      emailLink: "",
+      githubLink: "https://github.com/melyssa5",
+      emailLink: "melyssa_cristino@brown.edu",
+      major: " Computer Science",
       stats: [
         {
           value: "34K",
@@ -143,10 +152,11 @@ function FoundersCard({ image, avatar, name, job, school,linkdlnLink }: FounderC
       avatar: "https://images.unsplash.com/photo-1623582854588-d60de57fa33f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=250&q=80",
       name: "Iretomiwa Idowu",
       job: "Fullstack engineer",
-      school: "Southern Illinois University E",
-      linkdlnLink: "",
-      githubLink: "",
-      emailLink: "",
+      school: "Southern Illinois University E 25'",
+      linkdlnLink: "https://www.linkedin.com/in/iretomiwa-idowu",
+      githubLink: "https://github.com/Tomiwa2",
+      emailLink: "iidowu@siue.edu",
+      major: " Mechatronics Engineering",
       stats: [
         {
           value: "34K",
