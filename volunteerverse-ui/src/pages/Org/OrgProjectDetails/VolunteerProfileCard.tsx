@@ -3,7 +3,7 @@ import { IconMail } from '@tabler/icons-react';
 import { VolunteerUserProp } from '../../../props/users';
 
 export default function VolunteerProfileCard({volunteerProfile, closeModal} : {volunteerProfile: VolunteerUserProp, closeModal: () => void}) {
-const { firstName, lastName, imageUrl, bio, approved } = volunteerProfile;
+const { firstName, lastName, imageUrl, bio, approved, skills } = volunteerProfile;
     return (
         <Paper
             radius="md"
@@ -17,6 +17,10 @@ const { firstName, lastName, imageUrl, bio, approved } = volunteerProfile;
             <Text ta="center" fz="lg" weight={500} mt="md">
                 {`${firstName} ${lastName}`}
             </Text>
+            <Group>
+                <Text ta="center" fz="sm">Skills:</Text>
+                <Text ta="center" c="dimmed" fz="sm">{skills.toString()}</Text>
+            </Group>
             <Text mt={"xl"} ta="center" fz="sm">Bio:</Text>
             <Text ta="center" c="dimmed" fz="sm">{bio}</Text>
             <Group mt={"lg"} spacing={"sm"} position='center'>

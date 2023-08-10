@@ -37,13 +37,13 @@ function CreateVolunteerProfileForm({ form }: { form: UseFormReturnType<Voluntee
                 mb={"xl"}>Create Your Profile</Title>
             <Flex direction={"column"} gap={"md"} align={"center"}>
                 <Avatar
-                    src={form.values.imageUrl}
+                    src={form.values.imageUrl || ""}
                     size={isMobile ? "10rem" : "15rem"}
                     mb={"sm"}
                     color="violet"
                     radius={"50%"}>{firstName[0]}{lastName[0]}</Avatar>
                 <FileButton 
-                accept="image/png,image/jpeg"
+                    accept="image/png,image/jpeg"
                     {...form.getInputProps("imageFile")}
                     onChange={(e) => { form.getInputProps("imageFile").onChange(e); e ? handleImageUpload(e, setUrl) : null }}>
                     {(props) => <Button

@@ -129,7 +129,7 @@ function CreateProject() {
           <Flex direction={"column"}>
             <Flex direction={"column"} gap={"md"} align={"center"}>
               <Image
-              src={form.values.imageUrl ||  user?.userType === "organization" ? user?.userType === "organization" ? user.logoUrl: "" : ""}
+              src={user?.userType === "organization" && !form.values.imageUrl ? user?.logoUrl : form.values.imageUrl }
                 width={"100%"}
                 height={300}
                 withPlaceholder

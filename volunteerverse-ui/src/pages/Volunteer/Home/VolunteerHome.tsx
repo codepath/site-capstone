@@ -39,7 +39,7 @@ function VolunteerHome() {
       if (success) {
         setProjectsLoading(false);
         console.log("fetched recommended projects for volunteer successfully: ", data)
-        setVolunteerProjects(data);
+        setVolunteerProjects(data.reverse());
         // setVolunteerProjects(projectCardData)
       } else {
         setVolunteerProjects([]);

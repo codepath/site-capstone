@@ -166,7 +166,7 @@ export class Organization {
         organization_email AS "email",
         logo_url AS "imageUrl",
         founders,
-        public_email AS "publicName",
+        public_email AS "publicEmail",
         public_number AS "publicNumber"
         FROM organizations
         WHERE  organization_email = $1`, 

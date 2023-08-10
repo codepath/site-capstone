@@ -91,7 +91,7 @@ function MyProjects() {
     apiClient.fetchAllInterestedProjects().then(({ data, success, statusCode, error }: ApiResponseProp) => {
       if (success) {
         console.log("fetched all interseted for volunteer successfully: ", data)
-        setMyProjects(data);
+        setMyProjects(data.reverse());
       } else {
         // display error notification? (stretch)
         console.log("Unable to fetch volunteer data", `error: ${error} code: ${statusCode}`);

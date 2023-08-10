@@ -152,7 +152,7 @@ function OrgHome() {
   const deleteProject = ({ projectId: deleteProjectId } : {projectId :  number}) => {
     apiClient.deleteProject({projectId :  deleteProjectId}).then(({success, statusCode, error}) => {
         if (success) {
-          setPostedProjects((initialProject) => initialProject?.filter((project) =>  project.id !== deleteProjectId))
+          setPostedProjects((initialProject) => initialProject?.reverse().filter((project) =>  project.id !== deleteProjectId))
           console.log("deleting project")
             // change project active state here
         } else{
