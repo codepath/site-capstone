@@ -30,6 +30,7 @@ export interface ProjectFormValues {
   title: string;
   desc: string;
   imageFile: File | null,
+  imageUrl: string;
   requestedPeople: string;
   tags: string[];
   publicEmail: string;

@@ -21,7 +21,7 @@ import { apiClient } from "../../services/ApiClient";
 import { OrganizationRegisterProp, VolunteerRegisterProp } from "../../props/register";
 import { AuthenticationContext } from "../../context/AuthenicationContext";
 import { TOS } from "../../assets/TOS";
-import { notify } from "../../utility/utility";
+import { demoSignUpFill, notify } from "../../utility/utility";
 
 const useStyles = createStyles((theme) => ({
   // this object includes all styling for this component
@@ -183,8 +183,8 @@ export default function SignUp( {  userType } : {userType : "organization" | "vo
   });
   const registerOrg = async (form: UseFormReturnType<OrgFormValues>) => {
     if (form.validate().hasErrors === false) {
-      let { confirmPassword, termsOfService, imageFile, ...rest } = form.values;
-      await sendRegisterRequest({ ...rest, founders: rest.founders.toString(), logoUrl: imageFile?.name || "" })
+      let { confirmPassword, termsOfService, imageFile, publicNumber, ...rest } = form.values;
+      await sendRegisterRequest({ ...rest, founders: rest.founders.toString() , publicNumber: publicNumber.replace(/-/g, "")})
     } else{
       console.log("form has errors", form.errors, form.values)
     }
@@ -192,7 +192,7 @@ export default function SignUp( {  userType } : {userType : "organization" | "vo
   const registerVolunteer = async (form: UseFormReturnType<VolunteerFormValues>) => {
     if (form.validate().hasErrors === false) {
       let { confirmPassword, termsOfService, imageFile, ...rest } = form.values;
-      await sendRegisterRequest({ ...rest, imageUrl: imageFile?.name || "" })
+      await sendRegisterRequest({ ...rest })
     } else{
       console.log("form has errors", form.errors)
     }
@@ -264,6 +264,7 @@ export default function SignUp( {  userType } : {userType : "organization" | "vo
       </Stepper>
 
     <Group position="center" mt="xl">
+      <Button onClick={() => demoSignUpFill(activeStep, userType, userType  === "organization" ? orgForm : volunteerForm)} variant="light">Demo</Button>
         {
           activeStep === 1 ?
             (

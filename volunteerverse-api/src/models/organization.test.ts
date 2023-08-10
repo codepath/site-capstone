@@ -141,15 +141,131 @@ jest.mock("");
 //       ],
 //     };
 
-//     // Mock the fetchOrganizationByEmail method to return null, indicating no duplicate email exists
-//     Organization.fetchOrganizationByEmail = jest.fn().mockResolvedValue(undefined);
+  beforeAll(() => {
+    db.query = jest.fn().mockReturnValue(mockData);
+  });
 
-//     // Create a mock for bcrypt.hash to spy on its usage
-//     const mockHash = jest.spyOn(bcrypt, "hash");
+  test("it should get email", async function () {
+    const result = await Organization.fetchOrganizationByEmail(validEmail);
+    expect(result).toStrictEqual({
+      organization_name: "JelloWorld",
+      organization_description: "a compnau duh",
+      organization_email: "hii@gaffamawfwfil.com",
+      logo_url: "xgxhhsb",
+      userType: "organization",
+      password: "1234",
+      founders: "people",
+    });
+  });
 
-//     db.query = jest.fn().mockReturnValue(mockResult);
-//     const organization = await Organization.register(organizationInfo);
-//     console.log('organizatopm', organization)
+
+  test("it should return undefined" , async function ()  {
+    Organization.fetchOrganizationByEmail = jest.fn().mockReturnValue(undefined)
+    const invaildEmail = "forhelpgmail.com"
+    const result = await Organization.fetchOrganizationByEmail(invaildEmail)
+    expect (result).toBeUndefined();
+  })
+});
+
+
+describe("organization registration", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("should return an error if input does not contain all required fields", async () => {
+   
+    const organizationInfo = {
+      orgName : "Helping Hands",
+      orgDescription: "",
+      email: "",
+      logoUrl : "",
+      userType : "",
+     password :"",
+    orgWebsite: "",
+    founders : "",
+    publicEmail : "test@contact.com",
+    publicNumber : "",
+    };
+     expect(Organization.register(organizationInfo)).rejects.toThrow(
+      UnprocessableEntityError
+    );
+  });
+
+  test("can not register a duplicate email", async () => {
+    const organizationInfo = {
+	 orgName : "Helping Hands",
+   orgDescription: "a compnau duh",
+   email: "forhelp1@gmail.com",
+   logoUrl : "https://helpme",
+   userType : "organization",
+  password :"1234",
+  founders : "people",
+ orgWebsite: "https://towebsite",
+ publicEmail : "tacky@contact.com",
+ publicNumber : "",
+}
+    
+
+    const existingOrganization = {
+      organization: {
+        id: 1,
+        organization_name : "Helping Hands",
+        organization_description : "a compnau duh",
+        organization_email: "forhelp1@gmail.com",
+        logo_url  : "https://helpme",
+       founders : "people",
+      website: "https://towebsite",
+      },
+    };
+
+    // Mock the behavior of fetchOrganizationByEmail to simulate an existing organization 
+    Organization.fetchOrganizationByEmail = jest
+      .fn()
+      .mockReturnValue(existingOrganization);
+
+    await expect(Organization.register(organizationInfo)).rejects.toThrow(
+      new BadRequestError(`Duplicate email: forhelp1@gmail.com`)
+    );
+  });
+
+  test("registers a new organization successfully", async () => {
+    const organizationInfo = {
+   orgName : "Helping Hands",
+   orgDescription: "a compnau duh",
+   email: "forhelpnew@gmail.com ",
+   logoUrl : "https://helpme",
+   userType : "organization",
+  password :"1234",
+  founders : "people",
+  orgWebsite: "https://towebsite",
+  publicNumber: "1234567890",
+  publicEmail: "helpers@contact.org",
+    };
+
+    const mockResult = {
+      rows: [
+        {
+   orgName : "Helping Hands",
+   orgDescription: "a compnau duh",
+   email: "forhelpnew@gmail.com ",
+   logoUrl : null,
+   userType : "organization",
+  founders : "people",
+ orgWebsite: "https://towebsite"
+        },
+      ],
+    };
+
+    // Mock the fetchOrganizationByEmail method to return null, indicating no duplicate email exists
+    Organization.fetchOrganizationByEmail = jest.fn().mockResolvedValue(undefined);
+
+    // Create a mock for bcrypt.hash to spy on its usage
+    const mockHash = jest.spyOn(bcrypt, "hash");
+
+    db.query = jest.fn().mockReturnValue(mockResult);
+    const organization = await Organization.register(organizationInfo);
+    console.log('organizatopm', organization)
     
 //     const { id }  = organization
 //     expect(organization).toEqual(mockResult.rows[0]);

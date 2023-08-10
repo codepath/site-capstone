@@ -8,11 +8,11 @@ import {
   createStyles,
   useMantineTheme
 } from '@mantine/core';
-import { useForm } from '@mantine/form';
+// import { useForm } from '@mantine/form';
 import { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import NoneFound from '../../../components/NoneFound';
-import { QueryBar, QueryProps } from '../../../components/QueryBar';
+// import { QueryBar, QueryProps } from '../../../components/QueryBar';
 import { AuthenticationContext } from '../../../context/AuthenicationContext';
 import { VolunteerProjectProp } from '../../../props/projects';
 import { ApiResponseProp, apiClient } from '../../../services/ApiClient';
@@ -142,13 +142,13 @@ function OrgHome() {
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
   const { classes } = useStyles();
   const navigate = useNavigate();
-  const queryForm = useForm<QueryProps>({
-    initialValues: {
-      search: "",
-      tags: [],
-      timeRange: "Year"
-    }
-  });
+  // const queryForm = useForm<QueryProps>({
+  //   initialValues: {
+  //     search: "",
+  //     tags: [],
+  //     timeRange: "Year"
+  //   }
+  // });
   const deleteProject = ({ projectId: deleteProjectId } : {projectId :  number}) => {
     apiClient.deleteProject({projectId :  deleteProjectId}).then(({success, statusCode, error}) => {
         if (success) {
@@ -193,8 +193,8 @@ function OrgHome() {
       <Paper shadow={"md"} radius={"md"}>
         <Skeleton visible={postedProjects === undefined}>
           <Group>
-            <QueryBar {...queryForm} />
-            <Button onClick={() => { setPostedProjects(undefined); searchPostedProjects() }} variant='light'>Search Filter</Button>
+            {/* <QueryBar {...queryForm} /> */}
+            {/* <Button onClick={() => { setPostedProjects(undefined); searchPostedProjects() }} variant='light'>Search Filter</Button> */}
           </Group>
         </Skeleton>
       </Paper>

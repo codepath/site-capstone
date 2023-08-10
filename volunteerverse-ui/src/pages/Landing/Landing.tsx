@@ -1,12 +1,11 @@
-import { Button, Text, Group, Title, Container, createStyles, Image, Flex, Modal } from "@mantine/core";
-import WhatWeDo from "./WhatWeDo";
-import CallToAction from "./CallToAction";
+import { keyframes } from '@emotion/react';
+import { Button, Container, Flex, Group, Image, Modal, Text, Title, createStyles } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { Link } from "react-router-dom";
 import Logo from "../../assets/Logo.png";
-import { useDisclosure } from "@mantine/hooks";
-import SignUpModal from "./SignUpModal";
-import { keyframes } from '@emotion/react';
 import AboutUs from "./AboutUs";
+import SignUpModal from "./SignUpModal";
+import WhatWeDo from "./WhatWeDo";
 
 const useStyles = createStyles((theme) => {
   const waveAnimation = keyframes`

@@ -55,7 +55,7 @@ function WhatWeDo() {
             <Container className={classes.content}>
                 <Title className={classes.title}>How It Works</Title>
 
-                <Flex direction={"row"} justify={"space-between"} className={classes.bodyContainer}>
+                <Flex w="100%" direction={"row"} justify={"space-between"} className={classes.bodyContainer}>
 
                     <Flex align={"center"} direction={"column"} className={classes.bodyLeft}>
                         <Title className={classes.bodyTitle}>Students:</Title>

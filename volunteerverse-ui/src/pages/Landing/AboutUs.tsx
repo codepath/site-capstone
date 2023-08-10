@@ -1,7 +1,7 @@
-import { createStyles, Card, Avatar, Text, Group, Button, rem,  Image, Title, Stack, Flex, useMantineTheme} from '@mantine/core';
+import { Avatar, Card, Flex, Group, Text, Title, createStyles, rem } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
-import { Link} from "react-router-dom";
-import { FaGithub, FaLinkedin,FaRegEnvelope} from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaRegEnvelope } from 'react-icons/fa';
+import { Link } from "react-router-dom";
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -22,6 +22,7 @@ const useStyles = createStyles((theme) => ({
 
 interface FounderCardImageProps {
   image: string;
+  major: string;
   avatar: string;
   name: string;
   job: string;
@@ -32,21 +33,21 @@ interface FounderCardImageProps {
   stats: { label: string; value: string }[];
 }
 
-function FoundersCard({ image, avatar, name, job, school, stats,linkdlnLink, githubLink, emailLink, major }: FounderCardImageProps) {
-  const {classes, theme} = useStyles();
-    const items = stats.map((stat) => (
-      <div key={stat.label}>
-        <Text ta="center" fz="lg" fw={500}>
-          {stat.value}
-        </Text>
-        <Text ta="center" fz="sm" c="dimmed">
-          {stat.label}
-           <Text ta="center" fz="lg" fw={500} mt="sm">
-          {name}
-        </Text>
-        </Text>
-      </div>
-    ));
+function FoundersCard({ image, avatar, name, school,linkdlnLink, githubLink, major }: FounderCardImageProps) {
+  const {classes} = useStyles();
+    // const items = stats.map((stat) => (
+    //   <div key={stat.label}>
+    //     <Text ta="center" fz="lg" fw={500}>
+    //       {stat.value}
+    //     </Text>
+    //     <Text ta="center" fz="sm" c="dimmed">
+    //       {stat.label}
+    //        <Text ta="center" fz="lg" fw={500} mt="sm">
+    //       {name}
+    //     </Text>
+    //     </Text>
+    //   </div>
+    // ));
   
     return (
       

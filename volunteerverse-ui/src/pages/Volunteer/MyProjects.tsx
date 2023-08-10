@@ -1,6 +1,5 @@
 import {
   Badge,
-  Button,
   Container,
   Divider,
   Flex,
@@ -10,10 +9,10 @@ import {
   Title,
   useMantineTheme
 } from '@mantine/core';
-import { useForm } from '@mantine/form';
+// import { useForm } from '@mantine/form';
 import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { QueryBar, QueryProps } from '../../components/QueryBar';
+// import { QueryProps } from '../../components/QueryBar';
 import NotAuthorized from '../NotAuthorized';
 // import { projectDetailsData } from './Home/data';
 import { useMediaQuery } from '@mantine/hooks';
@@ -80,13 +79,13 @@ function MyProjects() {
   const { isValidVolunteer, user } = useContext(AuthenticationContext);
   const theme = useMantineTheme();
   const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
-  const queryForm = useForm<QueryProps>({
-    initialValues: {
-      search: "",
-      tags: [],
-      timeRange: "Year"
-    }
-  });
+  // const queryForm = useForm<QueryProps>({
+  //   initialValues: {
+  //     search: "",
+  //     tags: [],
+  //     timeRange: "Year"
+  //   }
+  // });
   const searchMyProjects = async () => {
     // fetches project using the query form 
     apiClient.fetchAllInterestedProjects().then(({ data, success, statusCode, error }: ApiResponseProp) => {
@@ -118,8 +117,8 @@ function MyProjects() {
       <Divider size={"md"} color='violet.2' h={"xl"} />
       <Paper shadow={"md"} radius={"md"}>
         <Group>
-          <QueryBar {...queryForm} />
-          <Button onClick={() => { setMyProjects(undefined); searchMyProjects(); }} variant='light'>Search Filter</Button>
+          {/* <QueryBar {...queryForm} /> */}
+          {/* <Button onClick={() => { setMyProjects(undefined); searchMyProjects(); }} variant='light'>Search Filter</Button> */}
         </Group>
       </Paper>
       <Container px={isMobile ? 0 : "md"} mt={"xl"} ml={"auto"} mr={"auto"} maw={ isMobile ? "100vw" :  "80vw"}>
